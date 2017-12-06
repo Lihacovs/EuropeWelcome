@@ -20,6 +20,8 @@ import com.bmd.android.europewelcome.di.module.ActivityModule;
 import com.bmd.android.europewelcome.ui.about.AboutFragment;
 import com.bmd.android.europewelcome.ui.auth.LoginActivity;
 import com.bmd.android.europewelcome.ui.posts.PostsActivity;
+import com.bmd.android.europewelcome.ui.posts.free.FreePostsFragment;
+import com.bmd.android.europewelcome.ui.posts.premium.PremiumPostsFragment;
 import com.bmd.android.europewelcome.ui.posts.rating.RateUsDialog;
 
 import dagger.Component;
@@ -42,9 +44,9 @@ public interface ActivityComponent {
 
     void inject(AboutFragment fragment);
 
-    //void inject(OpenSourceFragment fragment);
+    void inject(PremiumPostsFragment fragment);
 
-    //void inject(BlogFragment fragment);
+    void inject(FreePostsFragment fragment);
 
     void inject(RateUsDialog dialog);
 

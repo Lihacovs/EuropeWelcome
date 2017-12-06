@@ -29,7 +29,14 @@ import com.bmd.android.europewelcome.ui.auth.LoginMvpView;
 import com.bmd.android.europewelcome.ui.auth.LoginPresenter;
 import com.bmd.android.europewelcome.ui.posts.PostsMvpPresenter;
 import com.bmd.android.europewelcome.ui.posts.PostsMvpView;
+import com.bmd.android.europewelcome.ui.posts.PostsPagerAdapter;
 import com.bmd.android.europewelcome.ui.posts.PostsPresenter;
+import com.bmd.android.europewelcome.ui.posts.free.FreePostsMvpPresenter;
+import com.bmd.android.europewelcome.ui.posts.free.FreePostsMvpView;
+import com.bmd.android.europewelcome.ui.posts.free.FreePostsPresenter;
+import com.bmd.android.europewelcome.ui.posts.premium.PremiumPostsMvpPresenter;
+import com.bmd.android.europewelcome.ui.posts.premium.PremiumPostsMvpView;
+import com.bmd.android.europewelcome.ui.posts.premium.PremiumPostsPresenter;
 import com.bmd.android.europewelcome.ui.posts.rating.RatingDialogMvpPresenter;
 import com.bmd.android.europewelcome.ui.posts.rating.RatingDialogMvpView;
 import com.bmd.android.europewelcome.ui.posts.rating.RatingDialogPresenter;
@@ -100,22 +107,22 @@ public class ActivityModule {
         return presenter;
     }*/
 
-    /*@Provides
-    OpenSourceMvpPresenter<OpenSourceMvpView> provideOpenSourcePresenter(
-            OpenSourcePresenter<OpenSourceMvpView> presenter) {
+    @Provides
+    PremiumPostsMvpPresenter<PremiumPostsMvpView> providePremiumPostsPresenter(
+            PremiumPostsPresenter<PremiumPostsMvpView> presenter) {
         return presenter;
-    }*/
+    }
 
-    /*@Provides
-    BlogMvpPresenter<BlogMvpView> provideBlogMvpPresenter(
-            BlogPresenter<BlogMvpView> presenter) {
+    @Provides
+    FreePostsMvpPresenter<FreePostsMvpView> provideFreePostsPresenter(
+            FreePostsPresenter<FreePostsMvpView> presenter) {
         return presenter;
-    }*/
+    }
 
-    /*@Provides
-    FeedPagerAdapter provideFeedPagerAdapter(AppCompatActivity activity) {
-        return new FeedPagerAdapter(activity.getSupportFragmentManager());
-    }*/
+    @Provides
+    PostsPagerAdapter providePostsPagerAdapter(AppCompatActivity activity) {
+        return new PostsPagerAdapter(activity.getSupportFragmentManager());
+    }
 
     /*@Provides
     OpenSourceAdapter provideOpenSourceAdapter() {
@@ -123,8 +130,8 @@ public class ActivityModule {
     }*/
 
     /*@Provides
-    BlogAdapter provideBlogAdapter() {
-        return new BlogAdapter(new ArrayList<BlogResponse.Blog>());
+    FreePostsAdapter provideFreePostsAdapter(FirestoreRecyclerOptions<Post> options) {
+        return new FreePostsAdapter(options);
     }*/
 
     @Provides

@@ -15,10 +15,15 @@
 
 package com.bmd.android.europewelcome.ui.auth;
 
+import android.support.annotation.NonNull;
+
 import com.bmd.android.europewelcome.R;
 import com.bmd.android.europewelcome.data.DataManager;
 import com.bmd.android.europewelcome.ui.base.BasePresenter;
 import com.bmd.android.europewelcome.utils.CommonUtils;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 
 import javax.inject.Inject;
 
@@ -53,12 +58,83 @@ public class LoginPresenter<V extends LoginMvpView>
             return;
         }
         getMvpView().showLoading();
-
-        //TODO: implement firebase login in AppDataManager class
-        //getDataManager().
-        getMvpView().hideLoading();
-        getMvpView().openMainActivity();
+        signInFirebaseUser(email, password);
     }
+
+    private void signInFirebaseUser(final String email, final String password){
+        getDataManager().signInUser(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+
+                    if (!isViewAttached()) {
+                        return;
+                    }
+
+                    // Sign in success, update UI with the signed-in user's information
+                    getMvpView().showMessage("user signedIn");
+
+                    getDataManager().updateUserInfo(
+                            null,
+                            null,
+                            DataManager.LoggedInMode.LOGGED_IN_MODE_SERVER,
+                            getDataManager().getUserName(),
+                            getDataManager().getUserEmail(),
+                            null
+                    );
+
+                    getMvpView().hideLoading();
+                    getMvpView().openMainActivity();
+                } else {
+                    if (!isViewAttached()) {
+                        return;
+                    }
+                    // If sign in fails, create user.
+                    createFirebaseUser(email, password);
+                    getMvpView().hideLoading();
+                }
+            }
+        });
+    }
+
+    private void createFirebaseUser(String email, String password){
+        getDataManager().createUser(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+
+                    if (!isViewAttached()) {
+                        return;
+                    }
+
+                    // Sign in success, update UI with the signed-in user's information
+                    getMvpView().showMessage("user created");
+
+                    getDataManager().updateUserInfo(
+                            null,
+                            null,
+                            DataManager.LoggedInMode.LOGGED_IN_MODE_SERVER,
+                            getDataManager().getUserName(),
+                            getDataManager().getUserEmail(),
+                            null
+                    );
+
+                    getMvpView().hideLoading();
+                    getMvpView().openMainActivity();
+                } else {
+                    // If sign in fails, display a message to the user.
+                    if (!isViewAttached()) {
+                        return;
+                    }
+                    getMvpView().showMessage("user creation failed");
+                    getMvpView().hideLoading();
+                }
+            }
+        });
+    }
+
+
+
 
     @Override
     public void onGoogleLoginClick() {

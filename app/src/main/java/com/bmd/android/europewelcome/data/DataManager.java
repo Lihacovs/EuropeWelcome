@@ -16,6 +16,7 @@
 package com.bmd.android.europewelcome.data;
 
 
+import com.bmd.android.europewelcome.data.firebase.FirebaseHelper;
 import com.bmd.android.europewelcome.data.prefs.PreferencesHelper;
 
 /**
@@ -23,7 +24,7 @@ import com.bmd.android.europewelcome.data.prefs.PreferencesHelper;
  * Contains methods, exposed for all the data handling operations.
  */
 
-public interface DataManager extends PreferencesHelper {
+public interface DataManager extends FirebaseHelper, PreferencesHelper {
 
     void setUserAsLoggedOut();
 

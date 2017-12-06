@@ -21,6 +21,8 @@ import android.content.Context;
 import com.bmd.android.europewelcome.R;
 import com.bmd.android.europewelcome.data.AppDataManager;
 import com.bmd.android.europewelcome.data.DataManager;
+import com.bmd.android.europewelcome.data.firebase.AppFirebaseHelper;
+import com.bmd.android.europewelcome.data.firebase.FirebaseHelper;
 import com.bmd.android.europewelcome.data.prefs.AppPreferencesHelper;
 import com.bmd.android.europewelcome.data.prefs.PreferencesHelper;
 import com.bmd.android.europewelcome.di.ApplicationContext;
@@ -74,6 +76,12 @@ public class ApplicationModule {
     @Singleton
     DataManager provideDataManager(AppDataManager appDataManager) {
         return appDataManager;
+    }
+
+    @Provides
+    @Singleton
+    FirebaseHelper provideFirebaseHelper(AppFirebaseHelper appFirebaseHelper) {
+        return appFirebaseHelper;
     }
 
     @Provides

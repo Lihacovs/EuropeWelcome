@@ -18,8 +18,14 @@ package com.bmd.android.europewelcome.data;
 
 import android.content.Context;
 
+import com.bmd.android.europewelcome.data.firebase.FirebaseHelper;
+import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.data.prefs.PreferencesHelper;
 import com.bmd.android.europewelcome.di.ApplicationContext;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -36,12 +42,15 @@ public class AppDataManager implements DataManager {
 
     private final Context mContext;
     private final PreferencesHelper mPreferencesHelper;
+    private final FirebaseHelper mFirebaseHelper;
 
     @Inject
     public AppDataManager(@ApplicationContext Context context,
-                          PreferencesHelper preferencesHelper) {
+                          PreferencesHelper preferencesHelper,
+                          FirebaseHelper firebaseHelper) {
         mContext = context;
         mPreferencesHelper = preferencesHelper;
+        mFirebaseHelper = firebaseHelper;
     }
 
     @Override
@@ -130,5 +139,45 @@ public class AppDataManager implements DataManager {
                 null,
                 null,
                 null);
+    }
+
+    @Override
+    public Task<AuthResult> createUser(String email, String password) {
+        return mFirebaseHelper.createUser(email, password);
+    }
+
+    @Override
+    public Task<AuthResult> signInUser(String email, String password) {
+        return mFirebaseHelper.signInUser(email, password);
+    }
+
+    @Override
+    public FirebaseUser getCurrentUser() {
+        return mFirebaseHelper.getCurrentUser();
+    }
+
+    @Override
+    public String getUserId() {
+        return mFirebaseHelper.getUserId();
+    }
+
+    @Override
+    public String getUserName() {
+        return mFirebaseHelper.getUserName();
+    }
+
+    @Override
+    public String getUserEmail() {
+        return mFirebaseHelper.getUserEmail();
+    }
+
+    @Override
+    public CollectionReference getPostsColRef() {
+        return mFirebaseHelper.getPostsColRef();
+    }
+
+    @Override
+    public Task<Void> savePost(Post post) {
+        return mFirebaseHelper.savePost(post);
     }
 }
