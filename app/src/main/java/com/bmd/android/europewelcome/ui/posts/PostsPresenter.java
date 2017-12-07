@@ -93,6 +93,6 @@ public class PostsPresenter <V extends PostsMvpView> extends BasePresenter<V>
     @Override
     public void onDrawerMyFeedClick() {
         getMvpView().closeNavigationDrawer();
-        getMvpView().openMyFeedActivity();
+        getMvpView().openAddPostActivity();
     }
 }

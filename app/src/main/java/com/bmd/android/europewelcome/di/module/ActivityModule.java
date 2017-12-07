@@ -24,9 +24,15 @@ import com.bmd.android.europewelcome.di.PerActivity;
 import com.bmd.android.europewelcome.ui.about.AboutMvpPresenter;
 import com.bmd.android.europewelcome.ui.about.AboutMvpView;
 import com.bmd.android.europewelcome.ui.about.AboutPresenter;
+import com.bmd.android.europewelcome.ui.addpost.AddPostMvpPresenter;
+import com.bmd.android.europewelcome.ui.addpost.AddPostMvpView;
+import com.bmd.android.europewelcome.ui.addpost.AddPostPresenter;
 import com.bmd.android.europewelcome.ui.auth.LoginMvpPresenter;
 import com.bmd.android.europewelcome.ui.auth.LoginMvpView;
 import com.bmd.android.europewelcome.ui.auth.LoginPresenter;
+import com.bmd.android.europewelcome.ui.postdetail.PostDetailMvpPresenter;
+import com.bmd.android.europewelcome.ui.postdetail.PostDetailMvpView;
+import com.bmd.android.europewelcome.ui.postdetail.PostDetailPresenter;
 import com.bmd.android.europewelcome.ui.posts.PostsMvpPresenter;
 import com.bmd.android.europewelcome.ui.posts.PostsMvpView;
 import com.bmd.android.europewelcome.ui.posts.PostsPagerAdapter;
@@ -116,6 +122,18 @@ public class ActivityModule {
     @Provides
     FreePostsMvpPresenter<FreePostsMvpView> provideFreePostsPresenter(
             FreePostsPresenter<FreePostsMvpView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    PostDetailMvpPresenter<PostDetailMvpView> providePostDetailPresenter(
+            PostDetailPresenter<PostDetailMvpView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    AddPostMvpPresenter<AddPostMvpView> provideAddPostPresenter(
+            AddPostPresenter<AddPostMvpView> presenter) {
         return presenter;
     }
 

@@ -13,35 +13,26 @@
  * limitations under the License.
  */
 
-package com.bmd.android.europewelcome.ui.posts;
+package com.bmd.android.europewelcome.ui.addpost;
 
+import com.bmd.android.europewelcome.data.DataManager;
+import com.bmd.android.europewelcome.ui.base.BasePresenter;
 import com.bmd.android.europewelcome.ui.base.MvpView;
 
+import javax.inject.Inject;
+
 /**
- * View interface for {@link PostsActivity}
+ * Created by Konstantins on 12/7/2017.
  */
 
-public interface PostsMvpView extends MvpView {
+public class AddPostPresenter<V extends MvpView> extends BasePresenter<V> implements
+        AddPostMvpPresenter<V> {
 
-    void openLoginActivity();
+    private static final String TAG = "AddPostPresenter";
 
-    void showAboutFragment();
-
-    void updateUserName(String currentUserName);
-
-    void updateUserEmail(String currentUserEmail);
-
-    void updateUserProfilePic(String currentUserProfilePicUrl);
-
-    void updateAppVersion();
-
-    void showRateUsDialog();
-
-    void openAddPostActivity();
-
-    void closeNavigationDrawer();
-
-    void lockDrawer();
-
-    void unlockDrawer();
+    @Inject
+    public AddPostPresenter(DataManager dataManager) {
+        super(dataManager);
+    }
 }
+

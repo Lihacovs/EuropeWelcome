@@ -13,35 +13,13 @@
  * limitations under the License.
  */
 
-package com.bmd.android.europewelcome.ui.posts;
+package com.bmd.android.europewelcome.ui.addpost;
 
 import com.bmd.android.europewelcome.ui.base.MvpView;
 
 /**
- * View interface for {@link PostsActivity}
+ * Created by Konstantins on 12/7/2017.
  */
 
-public interface PostsMvpView extends MvpView {
-
-    void openLoginActivity();
-
-    void showAboutFragment();
-
-    void updateUserName(String currentUserName);
-
-    void updateUserEmail(String currentUserEmail);
-
-    void updateUserProfilePic(String currentUserProfilePicUrl);
-
-    void updateAppVersion();
-
-    void showRateUsDialog();
-
-    void openAddPostActivity();
-
-    void closeNavigationDrawer();
-
-    void lockDrawer();
-
-    void unlockDrawer();
+public interface AddPostMvpView extends MvpView {
 }

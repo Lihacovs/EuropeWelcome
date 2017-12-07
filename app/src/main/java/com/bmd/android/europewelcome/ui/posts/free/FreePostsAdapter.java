@@ -81,7 +81,7 @@ public class FreePostsAdapter extends FirestoreRecyclerAdapter<Post, FreePostsAd
 
 
     public interface Callback {
-        void onBlogEmptyViewRetryClick();
+        void onPostItemViewClick(Post post);
     }
 
     public class ViewHolder extends BaseViewHolder {
@@ -185,7 +185,8 @@ public class FreePostsAdapter extends FirestoreRecyclerAdapter<Post, FreePostsAd
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    /*mPresenter.openPost(mPost);*/
+                    if (mCallback != null)
+                        mCallback.onPostItemViewClick(mPost);
                 }
             });
         }

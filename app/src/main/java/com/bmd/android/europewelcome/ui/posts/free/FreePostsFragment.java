@@ -29,6 +29,7 @@ import com.bmd.android.europewelcome.R;
 import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.di.component.ActivityComponent;
 import com.bmd.android.europewelcome.ui.base.BaseFragment;
+import com.bmd.android.europewelcome.ui.postdetail.PostDetailActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
 import javax.inject.Inject;
@@ -122,7 +123,7 @@ public class FreePostsFragment extends BaseFragment implements
     }
 
     @Override
-    public void onBlogEmptyViewRetryClick() {
-
+    public void onPostItemViewClick(Post post) {
+        startActivity(PostDetailActivity.getStartIntent(this.getContext(), post.getPostId()));
     }
 }

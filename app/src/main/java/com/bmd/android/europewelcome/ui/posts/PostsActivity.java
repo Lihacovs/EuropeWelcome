@@ -39,6 +39,7 @@ import android.widget.TextView;
 import com.bmd.android.europewelcome.BuildConfig;
 import com.bmd.android.europewelcome.R;
 import com.bmd.android.europewelcome.ui.about.AboutFragment;
+import com.bmd.android.europewelcome.ui.addpost.AddPostActivity;
 import com.bmd.android.europewelcome.ui.auth.LoginActivity;
 import com.bmd.android.europewelcome.ui.base.BaseActivity;
 import com.bmd.android.europewelcome.ui.custom.RoundedImageView;
@@ -48,6 +49,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Posts Activity
@@ -104,6 +106,11 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
         mPresenter.onAttach(this);
 
         setUp();
+    }
+
+    @OnClick(R.id.fab)
+    void onFabClick(View v) {
+        openAddPostActivity();
     }
 
     @Override
@@ -323,8 +330,8 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
     }
 
     @Override
-    public void openMyFeedActivity() {
-        //startActivity(FeedActivity.getStartIntent(this));
+    public void openAddPostActivity() {
+        startActivity(AddPostActivity.getStartIntent(this));
     }
 
     @Override
