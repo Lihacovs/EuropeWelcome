@@ -16,6 +16,7 @@
 package com.bmd.android.europewelcome;
 
 import android.app.Application;
+import android.support.v7.app.AppCompatDelegate;
 
 import com.androidnetworking.AndroidNetworking;
 import com.bmd.android.europewelcome.data.DataManager;
@@ -65,6 +66,7 @@ public class MyApp extends Application {
         }
 
         CalligraphyConfig.initDefault(mCalligraphyConfig);
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
 
     public ApplicationComponent getComponent() {

@@ -16,6 +16,8 @@
 package com.bmd.android.europewelcome.data.firebase;
 
 import com.bmd.android.europewelcome.data.firebase.model.Post;
+import com.bmd.android.europewelcome.data.firebase.model.PostImage;
+import com.bmd.android.europewelcome.data.firebase.model.PostText;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
@@ -43,4 +45,8 @@ public interface FirebaseHelper {
     CollectionReference getPostsColRef();
 
     Task<Void> savePost(Post post);
+
+    Task<Void> savePostText(String postId, PostText postText);
+
+    Task<Void> savePostImage(String postId, PostImage postImage);
 }

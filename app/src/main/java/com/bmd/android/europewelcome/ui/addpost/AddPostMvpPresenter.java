@@ -15,6 +15,8 @@
 
 package com.bmd.android.europewelcome.ui.addpost;
 
+import com.bmd.android.europewelcome.data.firebase.model.PostImage;
+import com.bmd.android.europewelcome.data.firebase.model.PostText;
 import com.bmd.android.europewelcome.ui.base.MvpPresenter;
 import com.bmd.android.europewelcome.ui.base.MvpView;
 
@@ -23,4 +25,22 @@ import com.bmd.android.europewelcome.ui.base.MvpView;
  */
 
 public interface AddPostMvpPresenter<V extends MvpView> extends MvpPresenter<V> {
+
+    void addPostTextToList(PostText postText);
+
+    void removePostTextFromList(PostText postText);
+
+    void updatePostTextInList(PostText postText);
+
+    void addPostImageToList(PostImage postImage);
+
+    void removePostImageFromList(PostImage postImage);
+
+    void updatePostImageInList(PostImage postImage);
+
+    void savePost();
+
+    void savePostText(PostText postText, String postId);
+
+    void savePostImage(PostImage postImage, String postId);
 }

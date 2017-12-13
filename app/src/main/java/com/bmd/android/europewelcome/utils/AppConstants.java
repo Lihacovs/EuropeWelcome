@@ -36,6 +36,11 @@ public final class AppConstants {
 
     public static final String TIMESTAMP_FORMAT = "yyyyMMdd_HHmmss";
 
+    public static final String POSTS_COLLECTION = "posts";
+    public static final String POST_TEXT_COLLECTION = "postText";
+    public static final String POST_IMAGE_COLLECTION = "postImage";
+
+
     private AppConstants() {
         // This utility class is not publicly instantiable
     }

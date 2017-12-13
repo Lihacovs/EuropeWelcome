@@ -16,6 +16,9 @@
 package com.bmd.android.europewelcome.data.firebase;
 
 import com.bmd.android.europewelcome.data.firebase.model.Post;
+import com.bmd.android.europewelcome.data.firebase.model.PostImage;
+import com.bmd.android.europewelcome.data.firebase.model.PostText;
+import com.bmd.android.europewelcome.utils.AppConstants;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -75,5 +78,25 @@ public class AppFirebaseHelper implements FirebaseHelper {
     @Override
     public Task<Void> savePost(Post post) {
         return mFirestore.collection("posts").document(post.getPostId()).set(post);
+    }
+
+    @Override
+    public Task<Void> savePostText(String postId, PostText postText) {
+        return mFirestore
+                .collection(AppConstants.POSTS_COLLECTION)
+                .document(postId)
+                .collection(AppConstants.POST_TEXT_COLLECTION)
+                .document(postText.getPostTextId())
+                .set(postText);
+    }
+
+    @Override
+    public Task<Void> savePostImage(String postId, PostImage postImage) {
+        return mFirestore
+                .collection(AppConstants.POSTS_COLLECTION)
+                .document(postId)
+                .collection(AppConstants.POST_IMAGE_COLLECTION)
+                .document(postImage.getPostImageId())
+                .set(postImage);
     }
 }

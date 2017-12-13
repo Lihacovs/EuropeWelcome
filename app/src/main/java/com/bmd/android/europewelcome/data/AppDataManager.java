@@ -20,6 +20,8 @@ import android.content.Context;
 
 import com.bmd.android.europewelcome.data.firebase.FirebaseHelper;
 import com.bmd.android.europewelcome.data.firebase.model.Post;
+import com.bmd.android.europewelcome.data.firebase.model.PostImage;
+import com.bmd.android.europewelcome.data.firebase.model.PostText;
 import com.bmd.android.europewelcome.data.prefs.PreferencesHelper;
 import com.bmd.android.europewelcome.di.ApplicationContext;
 import com.google.android.gms.tasks.Task;
@@ -179,5 +181,15 @@ public class AppDataManager implements DataManager {
     @Override
     public Task<Void> savePost(Post post) {
         return mFirebaseHelper.savePost(post);
+    }
+
+    @Override
+    public Task<Void> savePostText(String postId, PostText postText) {
+        return mFirebaseHelper.savePostText(postId, postText);
+    }
+
+    @Override
+    public Task<Void> savePostImage(String postId, PostImage postImage) {
+        return mFirebaseHelper.savePostImage(postId, postImage);
     }
 }
