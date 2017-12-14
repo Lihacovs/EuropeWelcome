@@ -16,6 +16,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.bmd.android.europewelcome">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
     <application
         android:name="com.bmd.android.europewelcome.MyApp"
         android:allowBackup="true"
@@ -48,7 +51,7 @@
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.posts.PostsActivity" />
+                android:value=".ui.posts.PostsActivity"/>
         </activity>
         <activity
             android:name="com.bmd.android.europewelcome.ui.addpost.AddPostActivity"
@@ -59,7 +62,7 @@
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.posts.PostsActivity" />
+                android:value=".ui.posts.PostsActivity"/>
         </activity>
     </application>
 </manifest>

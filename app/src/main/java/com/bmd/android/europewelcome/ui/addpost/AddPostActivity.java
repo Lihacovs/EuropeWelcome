@@ -15,10 +15,14 @@
 
 package com.bmd.android.europewelcome.ui.addpost;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.res.ResourcesCompat;
@@ -33,23 +37,41 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import com.bmd.android.europewelcome.R;
 import com.bmd.android.europewelcome.data.firebase.model.PostImage;
 import com.bmd.android.europewelcome.data.firebase.model.PostText;
+import com.bmd.android.europewelcome.di.module.GlideApp;
 import com.bmd.android.europewelcome.ui.base.BaseActivity;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.google.firebase.storage.StorageReference;
+
+import java.util.Collections;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.AppSettingsDialog;
+import pub.devrel.easypermissions.EasyPermissions;
 
 /**
  * Created by Konstantins on 12/7/2017.
  */
 
-public class AddPostActivity extends BaseActivity implements AddPostMvpView {
+public class AddPostActivity extends BaseActivity implements AddPostMvpView,
+        EasyPermissions.PermissionCallbacks {
+
+    private static final int RC_CHOOSE_PHOTO = 101;
+    private static final int RC_IMAGE_PERMS = 102;
+    private static final String PERMS = Manifest.permission.READ_EXTERNAL_STORAGE;
+    private static final String TAG = "AddPostActivity";
+
+    private StorageReference mImageRef;
 
     @Inject
     AddPostMvpPresenter<AddPostMvpView> mPresenter;
@@ -107,7 +129,7 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView {
 
     @OnClick(R.id.iv_addpost_texticon)
     void onTextIconClick(){
-        attachPostTextLayout(mPostContentLl,newPostText());
+        attachPostTextLayout(mPresenter.newPostText());
         mScrollView.post(new Runnable() {
             @Override
             public void run() {
@@ -117,14 +139,16 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView {
     }
 
     @OnClick(R.id.iv_addpost_imageicon)
+    @AfterPermissionGranted(RC_IMAGE_PERMS)
     void onImageIconClick(){
-        attachPostImageLayout(mPostContentLl,newPostImage());
-        mScrollView.post(new Runnable() {
-            @Override
-            public void run() {
-                mScrollView.fullScroll(ScrollView.FOCUS_DOWN);
-            }
-        });
+        if (!EasyPermissions.hasPermissions(this, PERMS)) {
+            EasyPermissions.requestPermissions(this, getString(R.string.rational_image_perm),
+                    RC_IMAGE_PERMS, PERMS);
+            return;
+        }
+
+        Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(i, RC_CHOOSE_PHOTO);
     }
 
     @OnClick(R.id.iv_addpost_locationicon)
@@ -135,6 +159,30 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView {
     @OnClick(R.id.iv_addpost_videoicon)
     void onVideoIconClick(){
         showMessage("Video Image Click");
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_CHOOSE_PHOTO) {
+            if (resultCode == RESULT_OK) {
+                Uri selectedImage = data.getData();
+                mPresenter.uploadFileToStorage(selectedImage);
+
+                mScrollView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mScrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                    }
+                });
+            } else {
+                Toast.makeText(this, "No image chosen", Toast.LENGTH_SHORT).show();
+            }
+        } else if (requestCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE
+                && EasyPermissions.hasPermissions(this, PERMS)) {
+            onImageIconClick();
+        }
     }
 
     @Override
@@ -183,16 +231,24 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView {
 
     /**
      * Handles actions in new added PostImage block layout
-     * @param parentLayout root parent layout
      * @param postImage PostImage to attach
      */
-    private void attachPostImageLayout(final ViewGroup parentLayout, final PostImage postImage){
+    @Override
+    public void attachPostImageLayout(final PostImage postImage){
+        final ImageView imageIv;
         //Adds PostImage to list and to layout
         mPresenter.addPostImageToList(postImage);
 
         View imageView = LayoutInflater.from(this)
-                .inflate(R.layout.item_addpost_image, parentLayout, false);
-        parentLayout.addView(imageView);
+                .inflate(R.layout.item_addpost_image, mPostContentLl, false);
+        mPostContentLl.addView(imageView);
+
+        imageIv = imageView.findViewById(R.id.iv_addpostitem_image);
+        GlideApp.with(this)
+                .load(postImage.getPostImageUrl())
+                .centerCrop()
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(imageIv);
 
         //Removes PostImage from list and from layout
         ImageView deleteImageIv = imageView.findViewById(R.id.iv_addpostitem_deleteimage);
@@ -201,24 +257,24 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView {
             public void onClick(View view) {
                 mPresenter.removePostImageFromList(postImage);
                 View parentView = (View) view.getParent();
-                parentLayout.removeView(parentView);
+                mPostContentLl.removeView(parentView);
             }
         });
     }
 
     /**
      * Handles actions in added PostText block layout
-     * @param parentLayout root parent layout
      * @param postText PostText entity to attach
      */
-    private void attachPostTextLayout(final ViewGroup parentLayout, final PostText postText){
+    @Override
+    public void attachPostTextLayout(final PostText postText){
         final EditText textEt;
         //Adds PostText to list and to layout
         mPresenter.addPostTextToList(postText);
 
         final View textLayout = LayoutInflater.from(this)
-                .inflate(R.layout.item_addpost_text, parentLayout, false);
-        parentLayout.addView(textLayout);
+                .inflate(R.layout.item_addpost_text, mPostContentLl, false);
+        mPostContentLl.addView(textLayout);
 
         //Removes PostText from list and from layout
         ImageView deleteTextIv = textLayout.findViewById(R.id.iv_addpostitem_deletetext);
@@ -227,7 +283,7 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView {
             public void onClick(View view) {
                 mPresenter.removePostTextFromList(postText);
                 View parentView = (View) view.getParent();
-                parentLayout.removeView(parentView);
+                mPostContentLl.removeView(parentView);
             }
         });
 
@@ -330,19 +386,24 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView {
         });
     }
 
-    private PostImage newPostImage(){
-        return new PostImage("www.random.com/image1"
-                ,"Some image caption"
-                ,"24 Oct 2017"
-        );
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions,
+                                           int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
-    private PostText newPostText(){
-        return new PostText("This mixes stuff"
-                ,14
-                ,false
-                ,false
-                ,"24 Oct 2017"
-        );
+    @Override
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+        // See #choosePhoto with @AfterPermissionGranted
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
+        if (EasyPermissions.somePermissionPermanentlyDenied(this,
+                Collections.singletonList(PERMS))) {
+            new AppSettingsDialog.Builder(this).build().show();
+        }
     }
 }

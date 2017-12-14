@@ -29,6 +29,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'pub.devrel:easypermissions:1.1.1'
 
     // android support libraries
     compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
@@ -44,7 +45,9 @@ dependencies {
     // firebase
     compile 'com.google.firebase:firebase-auth:11.6.2'
     compile 'com.google.firebase:firebase-firestore:11.6.2'
-    compile 'com.firebaseui:firebase-ui-firestore:3.0.0'
+    compile 'com.google.firebase:firebase-storage:11.6.2'
+    compile 'com.firebaseui:firebase-ui-firestore:3.1.0'
+    compile 'com.firebaseui:firebase-ui-storage:3.1.0'
 
     // font
     compile "uk.co.chrisjenx:calligraphy:$rootProject.calligraphyVersion"
@@ -54,6 +57,7 @@ dependencies {
 
     // image
     compile "com.github.bumptech.glide:glide:$rootProject.glideVersion"
+    annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
 
     // parser
     compile "com.google.code.gson:gson:$rootProject.gsonVersion"

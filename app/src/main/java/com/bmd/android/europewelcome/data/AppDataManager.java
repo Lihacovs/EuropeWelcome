@@ -17,6 +17,7 @@ package com.bmd.android.europewelcome.data;
 
 
 import android.content.Context;
+import android.net.Uri;
 
 import com.bmd.android.europewelcome.data.firebase.FirebaseHelper;
 import com.bmd.android.europewelcome.data.firebase.model.Post;
@@ -28,6 +29,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.storage.UploadTask;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -191,5 +193,10 @@ public class AppDataManager implements DataManager {
     @Override
     public Task<Void> savePostImage(String postId, PostImage postImage) {
         return mFirebaseHelper.savePostImage(postId, postImage);
+    }
+
+    @Override
+    public UploadTask uploadFileToStorage(Uri uri) {
+        return mFirebaseHelper.uploadFileToStorage(uri);
     }
 }

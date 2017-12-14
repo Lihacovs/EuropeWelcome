@@ -101,6 +101,19 @@ public class FreePostsFragment extends BaseFragment implements
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        mFreePostsAdapter.startListening();
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mFreePostsAdapter.stopListening();
+    }
+
+    @Override
     protected void setUp(View view) {
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -108,7 +121,6 @@ public class FreePostsFragment extends BaseFragment implements
         mFreePostsAdapter = new FreePostsAdapter(
                 new FirestoreRecyclerOptions.Builder<Post>()
                         .setQuery(mPresenter.getPostsQuery(), Post.class)
-                        .setLifecycleOwner(this)
                         .build());
         mFreePostsAdapter.setCallback(this);
         mRecyclerView.setAdapter(mFreePostsAdapter);

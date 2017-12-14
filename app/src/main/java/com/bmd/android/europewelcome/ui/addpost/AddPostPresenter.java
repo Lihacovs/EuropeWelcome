@@ -15,16 +15,20 @@
 
 package com.bmd.android.europewelcome.ui.addpost;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.bmd.android.europewelcome.data.DataManager;
 import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.data.firebase.model.PostImage;
 import com.bmd.android.europewelcome.data.firebase.model.PostText;
 import com.bmd.android.europewelcome.ui.base.BasePresenter;
-import com.bmd.android.europewelcome.ui.base.MvpView;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +39,7 @@ import javax.inject.Inject;
  * Created by Konstantins on 12/7/2017.
  */
 
-public class AddPostPresenter<V extends MvpView> extends BasePresenter<V> implements
+public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V> implements
         AddPostMvpPresenter<V> {
 
     private static final String TAG = "AddPostPresenter";
@@ -93,12 +97,12 @@ public class AddPostPresenter<V extends MvpView> extends BasePresenter<V> implem
             }
         });
 
-        for (PostImage postImage : mPostImageList) {
-            savePostImage(postImage, mPost.getPostId());
-        }
-
         for (PostText postText : mPostTextList) {
             savePostText(postText, mPost.getPostId());
+        }
+
+        for (PostImage postImage : mPostImageList) {
+            savePostImage(postImage, mPost.getPostId());
         }
     }
 
@@ -119,10 +123,43 @@ public class AddPostPresenter<V extends MvpView> extends BasePresenter<V> implem
             public void onComplete(@NonNull Task<Void> task) {
 
             }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
         });
     }
 
-    private Post newPost(){
+    @Override
+    public void uploadFileToStorage(Uri uri) {
+        getMvpView().showMessage("Uploading...");
+        getDataManager().uploadFileToStorage(uri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Log.d(TAG, "uploadPhoto:onSuccess:" +
+                        taskSnapshot.getMetadata().getReference().getPath());
+
+                String downloadUrl = taskSnapshot.getDownloadUrl().toString();
+                PostImage postImage = newPostImage();
+                postImage.setPostImageUrl(downloadUrl);
+
+                getMvpView().attachPostImageLayout(postImage);
+
+                getMvpView().showMessage("Image uploaded");
+            }
+        }).removeOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w(TAG, "uploadPhoto:onError", e);
+                getMvpView().showMessage("Upload failed");
+            }
+        });
+    }
+
+    @Override
+    public Post newPost(){
         return new Post(null
                 ,"Jonathan Doherty"
                 ,"Post Title Is Awesome"
@@ -131,6 +168,24 @@ public class AddPostPresenter<V extends MvpView> extends BasePresenter<V> implem
                 ,"1"
                 ,null
                 ,"18 Oct 2017");
+    }
+
+    @Override
+    public PostText newPostText(){
+        return new PostText("This mixes stuff"
+                ,14
+                ,false
+                ,false
+                ,"24 Oct 2017"
+        );
+    }
+
+    @Override
+    public PostImage newPostImage(){
+        return new PostImage(null
+                ,"Some image caption"
+                ,"24 Oct 2017"
+        );
     }
 }
 

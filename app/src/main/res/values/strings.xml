@@ -84,4 +84,8 @@
     <string name="empty_screen">We do not have anything\nhere right now.</string>
     <string name="please_retry">Please Retry</string>
     <string name="retry">Retry</string>
+
+
+    <!--Add Image-->
+    <string name="rational_image_perm">This sample will read an image from local storage to upload to Cloud Storage.</string>
 </resources>

@@ -15,6 +15,8 @@
 
 package com.bmd.android.europewelcome.data.firebase;
 
+import android.net.Uri;
+
 import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.data.firebase.model.PostImage;
 import com.bmd.android.europewelcome.data.firebase.model.PostText;
@@ -22,6 +24,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.storage.UploadTask;
 
 /**
  * Interface decouples any specific implementation of the {@link AppFirebaseHelper}
@@ -49,4 +52,6 @@ public interface FirebaseHelper {
     Task<Void> savePostText(String postId, PostText postText);
 
     Task<Void> savePostImage(String postId, PostImage postImage);
+
+    UploadTask uploadFileToStorage(Uri uri);
 }

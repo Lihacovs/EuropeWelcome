@@ -15,16 +15,18 @@
 
 package com.bmd.android.europewelcome.ui.addpost;
 
+import android.net.Uri;
+
+import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.data.firebase.model.PostImage;
 import com.bmd.android.europewelcome.data.firebase.model.PostText;
 import com.bmd.android.europewelcome.ui.base.MvpPresenter;
-import com.bmd.android.europewelcome.ui.base.MvpView;
 
 /**
  * Created by Konstantins on 12/7/2017.
  */
 
-public interface AddPostMvpPresenter<V extends MvpView> extends MvpPresenter<V> {
+public interface AddPostMvpPresenter<V extends AddPostMvpView> extends MvpPresenter<V> {
 
     void addPostTextToList(PostText postText);
 
@@ -43,4 +45,12 @@ public interface AddPostMvpPresenter<V extends MvpView> extends MvpPresenter<V> 
     void savePostText(PostText postText, String postId);
 
     void savePostImage(PostImage postImage, String postId);
+
+    void uploadFileToStorage(Uri uri);
+
+    Post newPost();
+
+    PostText newPostText();
+
+    PostImage newPostImage();
 }

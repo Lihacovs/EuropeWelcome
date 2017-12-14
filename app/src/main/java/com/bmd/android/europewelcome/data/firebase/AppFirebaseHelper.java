@@ -15,6 +15,8 @@
 
 package com.bmd.android.europewelcome.data.firebase;
 
+import android.net.Uri;
+
 import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.data.firebase.model.PostImage;
 import com.bmd.android.europewelcome.data.firebase.model.PostText;
@@ -25,6 +27,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.util.UUID;
 
 import javax.inject.Inject;
 
@@ -36,11 +43,13 @@ public class AppFirebaseHelper implements FirebaseHelper {
 
     private final FirebaseFirestore mFirestore;
     private final FirebaseAuth mAuth;
+    private final FirebaseStorage mStorage;
 
     @Inject
     public AppFirebaseHelper() {
         mFirestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
+        mStorage = FirebaseStorage.getInstance();
     }
 
     @Override
@@ -98,5 +107,15 @@ public class AppFirebaseHelper implements FirebaseHelper {
                 .collection(AppConstants.POST_IMAGE_COLLECTION)
                 .document(postImage.getPostImageId())
                 .set(postImage);
+    }
+
+
+    //=//=// F I R E B A S E  -  S T O R A G E //=//=//
+
+
+    public UploadTask uploadFileToStorage(Uri uri){
+        String uuid = UUID.randomUUID().toString();
+        StorageReference imageRef = mStorage.getReference().child("images/" + uuid);
+        return imageRef.putFile(uri);
     }
 }

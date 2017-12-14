@@ -21,6 +21,7 @@ allprojects {
         google()
         jcenter()
         maven { url 'https://jitpack.io' }
+        mavenCentral()
     }
 }
 
@@ -32,15 +33,15 @@ task clean(type: Delete) {
 ext {
     // Sdk and tools
     minSdkVersion = 14
-    targetSdkVersion = 26
-    compileSdkVersion = 26
-    buildToolsVersion = '26.0.2'
+    targetSdkVersion = 27
+    compileSdkVersion = 27
+    buildToolsVersion = '27.0.2'
 
     // App dependencies
-    supportLibraryVersion = '26.1.0'
+    supportLibraryVersion = '27.0.2'
     gsonVersion = '2.8.0'
     calligraphyVersion = '2.2.0'
-    glideVersion = '3.7.0'
+    glideVersion = '4.4.0'
 
     rx2FastAndroidNetworking = '1.0.0'
 
