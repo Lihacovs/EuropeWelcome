@@ -35,7 +35,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
@@ -90,9 +89,6 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
 
     @BindView(R.id.ll_addpost_postcontent)
     ViewGroup mPostContentLl;
-
-    @BindView(R.id.ll_addpost_focuscontainer)
-    LinearLayout mFocusContainer;
 
     @BindView(R.id.sv_addpost_postcontent)
     ScrollView mScrollView;
@@ -215,8 +211,9 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
                 return true;
             case R.id.save_post:
                 //removing focus will trigger PostText update in Presenter list
-                mFocusContainer.requestFocus();
+                mPostContentLl.requestFocus();
 
+                mPresenter.setPostTitle(mPostTitleEt.getText().toString());
                 mPresenter.savePost();
                 this.finish();
         }
@@ -281,16 +278,14 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
         deleteTextIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mPresenter.removePostTextFromList(postText);
                 View parentView = (View) view.getParent();
                 mPostContentLl.removeView(parentView);
+                mPresenter.removePostTextFromList(postText);
             }
         });
 
         textEt = textLayout.findViewById(R.id.et_addpostitem_text);
-        textEt.requestFocus();
         textEt.setTypeface(Typeface.DEFAULT);
-        textEt.setText(postText.getPostText());
         //postText.setPostText(textEt.getText().toString());
 
         //TODO: save text to Entity on focus change

@@ -89,6 +89,16 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
     }
 
     @Override
+    public void setPostTitle(String postTitle) {
+        mPost.setPostTitle(postTitle);
+    }
+
+    @Override
+    public void setPostImage(String imageUrl) {
+        mPost.setPostImageUrl(imageUrl);
+    }
+
+    @Override
     public void savePost() {
         getDataManager().savePost(mPost).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -144,7 +154,6 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
                 String downloadUrl = taskSnapshot.getDownloadUrl().toString();
                 PostImage postImage = newPostImage();
                 postImage.setPostImageUrl(downloadUrl);
-
                 getMvpView().attachPostImageLayout(postImage);
 
                 getMvpView().showMessage("Image uploaded");

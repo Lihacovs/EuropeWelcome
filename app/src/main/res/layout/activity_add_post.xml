@@ -60,35 +60,21 @@
             android:id="@+id/ll_addpost_postcontent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="8dp">
-
-            <!-- Dummy item to prevent Views from receiving focus -->
-            <LinearLayout
-                android:id="@+id/ll_addpost_focuscontainer"
-                android:layout_width="0px"
-                android:layout_height="0px"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:orientation="vertical"/>
+            android:orientation="vertical">
 
             <EditText
                 android:id="@+id/et_addpost_posttitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:hint="Tap Here to add Title"
-                android:paddingLeft="8dp"
+                android:hint="Type Post Title Here"
                 android:inputType="textCapWords|textMultiLine"
-                android:singleLine="false"
-                android:textSize="24sp"/>
-
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:padding="8dp"
-                app:srcCompat="@drawable/ic_image_black_24dp"/>
+                android:singleLine="false"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:textStyle="bold"/>
+
         </LinearLayout>
     </ScrollView>
 

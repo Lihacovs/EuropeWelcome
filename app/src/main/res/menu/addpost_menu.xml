@@ -18,7 +18,7 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/save_post"
-        android:icon="@drawable/ic_star"
+        android:icon="@drawable/ic_save_black_24dp"
         android:title="Save Post"
         app:showAsAction="always"/>
     <item
