@@ -25,7 +25,9 @@ import android.widget.TextView;
 
 import com.bmd.android.europewelcome.R;
 import com.bmd.android.europewelcome.data.firebase.model.Post;
+import com.bmd.android.europewelcome.di.module.GlideApp;
 import com.bmd.android.europewelcome.ui.base.BaseViewHolder;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -85,6 +87,9 @@ public class FreePostsAdapter extends FirestoreRecyclerAdapter<Post, FreePostsAd
     }
 
     public class ViewHolder extends BaseViewHolder {
+        @BindView(R.id.iv_addpostitem_postimage)
+        ImageView mPostImageIv;
+
         @BindView(R.id.tv_postitem_posttitle)
         TextView mPostTitleTv;
 
@@ -132,11 +137,11 @@ public class FreePostsAdapter extends FirestoreRecyclerAdapter<Post, FreePostsAd
             mPost = post;
 
             if (post.getPostImageUrl() != null) {
-                /*Glide.with(itemView.getContext())
-                        .load(post.getCoverImgUrl())
-                        .asBitmap()
+                GlideApp.with(itemView.getContext())
+                        .load(post.getPostImageUrl())
                         .centerCrop()
-                        .into(coverImageView);*/
+                        .transition(DrawableTransitionOptions.withCrossFade())
+                        .into(mPostImageIv);
             }
 
             if (post.getPostTitle() != null) {

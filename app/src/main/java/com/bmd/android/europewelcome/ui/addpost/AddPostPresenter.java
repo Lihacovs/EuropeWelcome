@@ -154,6 +154,9 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
                 String downloadUrl = taskSnapshot.getDownloadUrl().toString();
                 PostImage postImage = newPostImage();
                 postImage.setPostImageUrl(downloadUrl);
+                if(mPost.getPostImageUrl()==null){
+                    mPost.setPostImageUrl(downloadUrl);
+                }
                 getMvpView().attachPostImageLayout(postImage);
 
                 getMvpView().showMessage("Image uploaded");
