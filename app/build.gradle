@@ -24,10 +24,14 @@ android {
             buildConfigField("String", "API_KEY", "\"ABCXYZ123TEST\"")
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation 'pub.devrel:easypermissions:1.1.1'
 
@@ -83,6 +87,7 @@ dependencies {
     annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterKnifeVersion"
 
     // swipe view
+
     //compile "com.mindorks:placeholderview:$rootProject.placeholderviewVersion"
 
     // logger

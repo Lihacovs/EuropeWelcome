@@ -28,7 +28,7 @@ import com.bmd.android.europewelcome.R;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -89,6 +89,12 @@ public final class CommonUtils {
     }
 
     public static String getTimeStamp() {
-        return new SimpleDateFormat(AppConstants.TIMESTAMP_FORMAT, Locale.US).format(new Date());
+        return new SimpleDateFormat(AppConstants.TIMESTAMP_FORMAT, Locale.US)
+                .format(Calendar.getInstance().getTime());
+    }
+
+    public static String getCurrentDate() {
+        return new SimpleDateFormat(AppConstants.DATE_FORMAT, Locale.US)
+                .format(Calendar.getInstance().getTime());
     }
 }

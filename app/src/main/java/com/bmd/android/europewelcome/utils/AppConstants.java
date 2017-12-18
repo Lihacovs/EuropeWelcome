@@ -35,6 +35,7 @@ public final class AppConstants {
     public static final String SEED_DATABASE_QUESTIONS = "seed/questions.json";
 
     public static final String TIMESTAMP_FORMAT = "yyyyMMdd_HHmmss";
+    public static final String DATE_FORMAT = "d MMM yyyy";
 
     public static final String POSTS_COLLECTION = "posts";
     public static final String POST_TEXT_COLLECTION = "postText";

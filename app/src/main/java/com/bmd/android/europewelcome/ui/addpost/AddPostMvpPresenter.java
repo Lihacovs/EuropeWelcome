@@ -42,8 +42,6 @@ public interface AddPostMvpPresenter<V extends AddPostMvpView> extends MvpPresen
 
     void setPostTitle(String postTitle);
 
-    void setPostImage(String imageUrl);
-
     void savePost();
 
     void savePostText(PostText postText, String postId);

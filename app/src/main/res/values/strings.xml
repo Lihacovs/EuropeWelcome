@@ -85,7 +85,18 @@
     <string name="please_retry">Please Retry</string>
     <string name="retry">Retry</string>
 
-
     <!--Add Image-->
     <string name="rational_image_perm">This sample will read an image from local storage to upload to Cloud Storage.</string>
+
+    <!--item_post_view-->
+    <string name="item_post_image">Post image</string>
+    <string name="item_post_title">Post Title</string>
+    <string name="item_post_author">Post author</string>
+    <string name="item_post_date">Post date</string>
+    <string name="item_post_text">Post text</string>
+    <string name="item_post_stars">Post stars</string>
+    <string name="item_post_views">Post views</string>
+    <string name="item_post_share">Share post</string>
+
+
 </resources>

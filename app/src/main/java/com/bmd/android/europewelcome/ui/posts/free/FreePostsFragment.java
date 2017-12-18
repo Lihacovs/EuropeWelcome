@@ -23,7 +23,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.bmd.android.europewelcome.R;
 import com.bmd.android.europewelcome.data.firebase.model.Post;
@@ -52,9 +51,6 @@ public class FreePostsFragment extends BaseFragment implements
     @Inject
     LinearLayoutManager mLayoutManager;
 
-    @BindView(R.id.add_post)
-    Button addPostButton;
-
     @BindView(R.id.free_posts_recycler_view)
     RecyclerView mRecyclerView;
 
@@ -79,24 +75,6 @@ public class FreePostsFragment extends BaseFragment implements
             setUnBinder(ButterKnife.bind(this, view));
             mPresenter.onAttach(this);
         }
-
-        addPostButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Post post = new Post(null
-                        , "Jonathan Doherty"
-                        , "New Awesome Post"
-                        , " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed consectetur dolor venenatis, sodales lacus id, pellentesque lorem. Nunc tempus viverra nibh, ut semper metus lacinia non. Sed mollis scelerisque odio. Suspendisse vitae aliquet diam. Nulla facilisi. Morbi faucibus consequat metus fringilla hendrerit. Integer sed eleifend quam.\n" +
-                        "\n" +
-                        "Praesent at turpis egestas, fermentum lacus vel, posuere magna. Aenean laoreet interdum neque, eu vehicula risus commodo quis. Sed ultricies felis id imperdiet convallis. Phasellus condimentum, ligula varius pulvinar bibendum, elit erat condimentum turpis, ac sollicitudin tellus mauris a nibh. Integer ullamcorper enim vitae turpis fringilla, vel faucibus erat tempus. Praesent luctus eu ex non vehicula. Pellentesque non nisi non arcu venenatis condimentum. Sed non pellentesque sem. Aliquam varius mauris massa, ut tincidunt sem condimentum in. Vestibulum id ipsum id neque auctor sollicitudin. Vestibulum nec egestas sapien. Vestibulum placerat felis eu orci porttitor, in placerat est hendrerit. Sed id tincidunt lorem. "
-                        , "18"
-                        , "182"
-                        , null
-                        , "18 Oct 2017");
-                mPresenter.savePost(post);
-            }
-        });
-
         return view;
     }
 

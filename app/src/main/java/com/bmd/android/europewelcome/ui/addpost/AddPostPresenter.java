@@ -24,6 +24,7 @@ import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.data.firebase.model.PostImage;
 import com.bmd.android.europewelcome.data.firebase.model.PostText;
 import com.bmd.android.europewelcome.ui.base.BasePresenter;
+import com.bmd.android.europewelcome.utils.CommonUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,7 +37,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 /**
- * Created by Konstantins on 12/7/2017.
+ * Add Post Presenter
  */
 
 public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V> implements
@@ -94,40 +95,48 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
     }
 
     @Override
-    public void setPostImage(String imageUrl) {
-        mPost.setPostImageUrl(imageUrl);
-    }
-
-    @Override
     public void savePost() {
+
+        if(mPost.getPostText()==null){
+            if (!mPostTextList.isEmpty() && mPostTextList.size() > 0) {
+                mPost.setPostText(mPostTextList.get(0).getPostText());
+            }
+        }
+
+        if(mPost.getPostImageUrl()==null){
+            if (!mPostImageList.isEmpty() && mPostImageList.size() > 0) {
+                mPost.setPostImageUrl(mPostImageList.get(0).getPostImageUrl());
+            }
+        }
+
         getDataManager().savePost(mPost).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
 
+                for (PostText postText : mPostTextList) {
+                    savePostText(postText, mPost.getPostId());
+                }
+
+                for (PostImage postImage : mPostImageList) {
+                    savePostImage(postImage, mPost.getPostId());
+                }
+
             }
         });
-
-        for (PostText postText : mPostTextList) {
-            savePostText(postText, mPost.getPostId());
-        }
-
-        for (PostImage postImage : mPostImageList) {
-            savePostImage(postImage, mPost.getPostId());
-        }
     }
 
     @Override
-    public void savePostText(PostText postText, String postId) {
-        getDataManager().savePostText(postId, postText).addOnCompleteListener(new OnCompleteListener<Void>() {
+    public void savePostText(final PostText postText, final String postId) {
+        getDataManager().savePostText(postId, postText).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
+            public void onSuccess(Void aVoid) {
 
             }
         });
     }
 
     @Override
-    public void savePostImage(PostImage postImage, String postId) {
+    public void savePostImage(final PostImage postImage, String postId) {
         getDataManager().savePostImage(postId, postImage).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -154,9 +163,6 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
                 String downloadUrl = taskSnapshot.getDownloadUrl().toString();
                 PostImage postImage = newPostImage();
                 postImage.setPostImageUrl(downloadUrl);
-                if(mPost.getPostImageUrl()==null){
-                    mPost.setPostImageUrl(downloadUrl);
-                }
                 getMvpView().attachPostImageLayout(postImage);
 
                 getMvpView().showMessage("Image uploaded");
@@ -173,30 +179,31 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
     @Override
     public Post newPost(){
         return new Post(null
-                ,"Jonathan Doherty"
-                ,"Post Title Is Awesome"
+                ,null
+                ,null
                 ,null
                 ,"1"
                 ,"1"
                 ,null
-                ,"18 Oct 2017");
+                , CommonUtils.getCurrentDate()
+        );
     }
 
     @Override
     public PostText newPostText(){
-        return new PostText("This mixes stuff"
+        return new PostText(null
                 ,14
                 ,false
                 ,false
-                ,"24 Oct 2017"
+                , CommonUtils.getTimeStamp()
         );
     }
 
     @Override
     public PostImage newPostImage(){
         return new PostImage(null
-                ,"Some image caption"
-                ,"24 Oct 2017"
+                ,null
+                ,CommonUtils.getTimeStamp()
         );
     }
 }
