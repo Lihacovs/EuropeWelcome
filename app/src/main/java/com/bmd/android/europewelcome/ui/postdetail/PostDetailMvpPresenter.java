@@ -23,4 +23,14 @@ import com.bmd.android.europewelcome.ui.base.MvpView;
  */
 
 public interface PostDetailMvpPresenter<V extends MvpView> extends MvpPresenter<V> {
+
+    void setPostId(String postId);
+
+    void getPost(String postId);
+
+    void getPostTextList(String postId);
+
+    void getPostImageList(String postId);
+
+    void attachContentToLayout();
 }

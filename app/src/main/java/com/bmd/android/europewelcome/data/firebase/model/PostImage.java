@@ -26,15 +26,17 @@ public class PostImage {
     private String mPostImageUrl;
     private String mPostImageCaption;
     private String mPostImageCreationDate;
+    private int mLayoutOrderNum;
 
     public PostImage() {
     }
 
-    public PostImage(String postImageUrl, String postImageCaption, String postImageCreationDate) {
+    public PostImage(String postImageUrl, String postImageCaption, String postImageCreationDate, int layoutOrderNum) {
         mPostImageId = UUID.randomUUID().toString();
         mPostImageUrl = postImageUrl;
         mPostImageCaption = postImageCaption;
         mPostImageCreationDate = postImageCreationDate;
+        mLayoutOrderNum = layoutOrderNum;
     }
 
     public String getPostImageId() {
@@ -67,5 +69,13 @@ public class PostImage {
 
     public void setPostImageCreationDate(String postImageCreationDate) {
         mPostImageCreationDate = postImageCreationDate;
+    }
+
+    public int getLayoutOrderNum() {
+        return mLayoutOrderNum;
+    }
+
+    public void setLayoutOrderNum(int layoutOrderNum) {
+        mLayoutOrderNum = layoutOrderNum;
     }
 }

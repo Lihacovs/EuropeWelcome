@@ -48,6 +48,7 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
     private List<PostImage> mPostImageList;
     private List<PostText> mPostTextList;
     private Post mPost;
+    private int mLayoutOrderNum = 1;
 
     @Inject
     public AddPostPresenter(DataManager dataManager) {
@@ -196,6 +197,7 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
                 ,false
                 ,false
                 , CommonUtils.getTimeStamp()
+                ,mLayoutOrderNum++
         );
     }
 
@@ -204,6 +206,7 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
         return new PostImage(null
                 ,null
                 ,CommonUtils.getTimeStamp()
+                ,mLayoutOrderNum++
         );
     }
 }

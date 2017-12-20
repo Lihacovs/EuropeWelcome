@@ -15,9 +15,22 @@
 
 package com.bmd.android.europewelcome.ui.postdetail;
 
+import android.support.annotation.NonNull;
+
 import com.bmd.android.europewelcome.data.DataManager;
+import com.bmd.android.europewelcome.data.firebase.model.Post;
+import com.bmd.android.europewelcome.data.firebase.model.PostImage;
+import com.bmd.android.europewelcome.data.firebase.model.PostText;
 import com.bmd.android.europewelcome.ui.base.BasePresenter;
-import com.bmd.android.europewelcome.ui.base.MvpView;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -25,13 +38,88 @@ import javax.inject.Inject;
  * Created by Konstantins on 12/7/2017.
  */
 
-public class PostDetailPresenter<V extends MvpView> extends BasePresenter<V> implements
+public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresenter<V> implements
         PostDetailMvpPresenter<V> {
 
     private static final String TAG = "PostDetailPresenter";
 
+    private String mPostId;
+    private Post mPost;
+    private List<PostText> mPostTextList;
+    private List<PostImage> mPostImageList;
+
     @Inject
     public PostDetailPresenter(DataManager dataManager) {
         super(dataManager);
+        mPostTextList = new ArrayList<>();
+        mPostImageList = new ArrayList<>();
     }
+
+
+    @Override
+    public void setPostId(String postId) {
+        mPostId = postId;
+    }
+
+    @Override
+    public void getPost(String postId) {
+        getDataManager().getPost(postId).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                mPost = documentSnapshot.toObject(Post.class);
+                getMvpView().setPostTitle(mPost.getPostTitle());
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                getMvpView().showMessage("Unable to get Data");
+            }
+        });
+    }
+
+    @Override
+    public void getPostTextList(String postId){
+        getDataManager().getPostTextList(postId).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                for (DocumentSnapshot document : task.getResult()) {
+                    mPostTextList.add(document.toObject(PostText.class));
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getPostImageList(String postId){
+        getDataManager().getPostImageList(postId).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                for (DocumentSnapshot document : task.getResult()) {
+                    mPostImageList.add(document.toObject(PostImage.class));
+                }
+                attachContentToLayout();
+            }
+        });
+    }
+
+    @Override
+    public void attachContentToLayout() {
+
+        for(int i=0; i<10; i++){
+            for (PostText postText : mPostTextList){
+                if(postText.getLayoutOrderNum() == i) {
+                    getMvpView().attachPostTextLayout(postText);
+                }
+            }
+
+            for(PostImage postImage: mPostImageList){
+                if(postImage.getLayoutOrderNum() == i) {
+                    getMvpView().attachPostImageLayout(postImage);
+                }
+            }
+
+        }
+
+    }
+
 }

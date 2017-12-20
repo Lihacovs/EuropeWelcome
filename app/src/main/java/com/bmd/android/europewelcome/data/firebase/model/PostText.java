@@ -28,17 +28,19 @@ public class PostText {
     private boolean mPostTextBold;
     private boolean mPostTextItalic;
     private String mPostCreationDate;
+    private int mLayoutOrderNum;
 
     public PostText() {
     }
 
-    public PostText(String postText, float postTextSize, boolean postTextBold, boolean postTextItalic, String postCreationDate) {
+    public PostText(String postText, float postTextSize, boolean postTextBold, boolean postTextItalic, String postCreationDate, int layoutOrderNum) {
         mPostTextId = UUID.randomUUID().toString();
         mPostText = postText;
         mPostTextSize = postTextSize;
         mPostTextBold = postTextBold;
         mPostTextItalic = postTextItalic;
         mPostCreationDate = postCreationDate;
+        mLayoutOrderNum = layoutOrderNum;
     }
 
     public String getPostTextId() {
@@ -87,5 +89,13 @@ public class PostText {
 
     public void setPostCreationDate(String postCreationDate) {
         mPostCreationDate = postCreationDate;
+    }
+
+    public int getLayoutOrderNum() {
+        return mLayoutOrderNum;
+    }
+
+    public void setLayoutOrderNum(int layoutOrderNum) {
+        mLayoutOrderNum = layoutOrderNum;
     }
 }

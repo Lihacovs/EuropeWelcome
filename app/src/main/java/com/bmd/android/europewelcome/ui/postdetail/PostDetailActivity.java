@@ -21,10 +21,20 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.bmd.android.europewelcome.R;
+import com.bmd.android.europewelcome.data.firebase.model.PostImage;
+import com.bmd.android.europewelcome.data.firebase.model.PostText;
+import com.bmd.android.europewelcome.di.module.GlideApp;
 import com.bmd.android.europewelcome.ui.base.BaseActivity;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 
 import javax.inject.Inject;
 
@@ -35,7 +45,7 @@ import butterknife.ButterKnife;
  * Created by Konstantins on 12/7/2017.
  */
 
-public class PostDetailActivity extends BaseActivity implements PostDetailMvpView{
+public class PostDetailActivity extends BaseActivity implements PostDetailMvpView {
 
     private static final String EXTRA_POST_ID =
             "com.bmd.android.europewelcome.postdetail.post_id";
@@ -45,6 +55,14 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+
+    @BindView(R.id.ll_post_postcontent)
+    LinearLayout mPostContentLl;
+
+    @BindView(R.id.tv_post_posttitle)
+    TextView mPostTitle;
+
+    private String mPostId;
 
     public static Intent getStartIntent(Context context, String postId) {
         Intent intent = new Intent(context, PostDetailActivity.class);
@@ -56,6 +74,8 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_detail);
+
+        mPostId = (String) getIntent().getSerializableExtra(EXTRA_POST_ID);
 
         getActivityComponent().inject(this);
 
@@ -75,6 +95,11 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
+        mPresenter.getPost(mPostId);
+        mPresenter.getPostTextList(mPostId);
+        mPresenter.getPostImageList(mPostId);
+
+        //mPresenter.attachContentToLayout();
     }
 
     @Override
@@ -106,5 +131,47 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
     protected void onDestroy() {
         mPresenter.onDetach();
         super.onDestroy();
+    }
+
+    @Override
+    public void setPostTitle(String postTitle) {
+        if (postTitle != null) {
+            mPostTitle.setText(postTitle);
+        }
+    }
+
+    /**
+     * Attaches PostImage block layout to parent layout
+     * @param postImage PostImage to attach
+     */
+    @Override
+    public void attachPostImageLayout(final PostImage postImage){
+        final ImageView imageIv;
+
+        View imageView = LayoutInflater.from(this)
+                .inflate(R.layout.item_addpost_image, mPostContentLl, false);
+        mPostContentLl.addView(imageView);
+
+        imageIv = imageView.findViewById(R.id.iv_addpostitem_image);
+        GlideApp.with(this)
+                .load(postImage.getPostImageUrl())
+                .centerCrop()
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(imageIv);
+    }
+
+    /**
+     * Handles actions in added PostText block layout
+     * @param postText PostText entity to attach
+     */
+    @Override
+    public void attachPostTextLayout(final PostText postText){
+
+        final View textLayout = LayoutInflater.from(this)
+                .inflate(R.layout.item_addpost_text, mPostContentLl, false);
+        mPostContentLl.addView(textLayout);
+
+        EditText textEt = textLayout.findViewById(R.id.et_addpostitem_text);
+        textEt.setText(postText.getPostText());
     }
 }

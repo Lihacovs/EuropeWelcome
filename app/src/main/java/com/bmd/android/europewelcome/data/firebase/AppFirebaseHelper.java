@@ -26,7 +26,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -109,6 +112,30 @@ public class AppFirebaseHelper implements FirebaseHelper {
                 .set(postImage);
     }
 
+    @Override
+    public Task<DocumentSnapshot> getPost(String postId) {
+        DocumentReference docRef
+                = mFirestore.collection(AppConstants.POSTS_COLLECTION).document(postId);
+        return docRef.get();
+    }
+
+    @Override
+    public Task<QuerySnapshot> getPostTextList(String postId) {
+        CollectionReference colRef = mFirestore
+                .collection(AppConstants.POSTS_COLLECTION)
+                .document(postId)
+                .collection(AppConstants.POST_TEXT_COLLECTION);
+        return colRef.get();
+    }
+
+    @Override
+    public Task<QuerySnapshot> getPostImageList(String postId) {
+        CollectionReference colRef = mFirestore
+                .collection(AppConstants.POSTS_COLLECTION)
+                .document(postId)
+                .collection(AppConstants.POST_IMAGE_COLLECTION);
+        return colRef.get();
+    }
 
     //=//=// F I R E B A S E  -  S T O R A G E //=//=//
 

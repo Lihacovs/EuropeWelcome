@@ -29,6 +29,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.UploadTask;
 
 import javax.inject.Inject;
@@ -196,7 +198,22 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Task<DocumentSnapshot> getPost(String postId) {
+        return mFirebaseHelper.getPost(postId);
+    }
+
+    @Override
     public UploadTask uploadFileToStorage(Uri uri) {
         return mFirebaseHelper.uploadFileToStorage(uri);
+    }
+
+    @Override
+    public Task<QuerySnapshot> getPostTextList(String postId) {
+        return mFirebaseHelper.getPostTextList(postId);
+    }
+
+    @Override
+    public Task<QuerySnapshot> getPostImageList(String postId) {
+        return mFirebaseHelper.getPostImageList(postId);
     }
 }
