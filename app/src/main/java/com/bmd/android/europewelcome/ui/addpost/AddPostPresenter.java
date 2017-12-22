@@ -110,6 +110,8 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
             }
         }
 
+        mPost.setChildLayoutNum(mLayoutOrderNum);
+
         getDataManager().savePost(mPost).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -187,6 +189,7 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
                 ,"1"
                 ,null
                 , CommonUtils.getCurrentDate()
+                , 0
         );
     }
 

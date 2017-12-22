@@ -47,6 +47,7 @@ public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresen
     private Post mPost;
     private List<PostText> mPostTextList;
     private List<PostImage> mPostImageList;
+    private int mChildLayoutNum;
 
     @Inject
     public PostDetailPresenter(DataManager dataManager) {
@@ -67,7 +68,9 @@ public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresen
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 mPost = documentSnapshot.toObject(Post.class);
+                mChildLayoutNum= mPost.getChildLayoutNum();
                 getMvpView().setPostTitle(mPost.getPostTitle());
+                getPostTextList(mPost.getPostId());
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -85,6 +88,7 @@ public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresen
                 for (DocumentSnapshot document : task.getResult()) {
                     mPostTextList.add(document.toObject(PostText.class));
                 }
+                getPostImageList(mPost.getPostId());
             }
         });
     }
@@ -102,24 +106,26 @@ public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresen
         });
     }
 
+    /**
+     * Attaches Post's content {@link PostImage}, {@link PostText} to layout in particular order
+     */
     @Override
     public void attachContentToLayout() {
-
-        for(int i=0; i<10; i++){
+        for(int i=0; i<=mChildLayoutNum; i++){
             for (PostText postText : mPostTextList){
                 if(postText.getLayoutOrderNum() == i) {
                     getMvpView().attachPostTextLayout(postText);
+                    break;
                 }
             }
 
             for(PostImage postImage: mPostImageList){
                 if(postImage.getLayoutOrderNum() == i) {
                     getMvpView().attachPostImageLayout(postImage);
+                    break;
                 }
             }
 
         }
-
     }
-
 }

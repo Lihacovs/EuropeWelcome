@@ -19,7 +19,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="25dp">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -47,7 +49,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <ScrollView
-        android:id="@+id/sv_post_postcontent"
+        android:id="@+id/sv_postdetail_postcontent"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -56,18 +58,85 @@
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
 
         <LinearLayout
-            android:id="@+id/ll_post_postcontent"
+            android:id="@+id/ll_postdetail_postcontainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_post_posttitle"
+                android:id="@+id/tv_postdetail_posttitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="8dp"
                 android:textAlignment="center"
                 android:textSize="24sp"
                 android:textStyle="bold"/>
+
+            <LinearLayout
+                android:id="@+id/ll_postdetail_postcontent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/cl_postdetail_commentscontainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/iv_postdetail_newcommentimage"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_margin="8dp"
+                    android:scaleType="fitXY"
+                    android:contentDescription="TODO"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_account_circle_black_24dp"/>
+
+                <TextView
+                    android:id="@+id/tv_postdetail_newcommenttext"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="Type New Comment"
+                    app:layout_constraintBottom_toTopOf="@+id/rv_postdetail_comments"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_postdetail_newcommentsend"
+                    app:layout_constraintStart_toEndOf="@+id/iv_postdetail_newcommentimage"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <ImageView
+                    android:id="@+id/iv_postdetail_newcommentsend"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_margin="8dp"
+                    android:contentDescription="TODO"
+                    app:layout_constraintBottom_toTopOf="@+id/rv_postdetail_comments"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_send_black_24dp"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_postdetail_comments"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_postdetail_newcommentimage"
+                    tools:listitem="@layout/item_postdetail_comment"/>
+
+            </android.support.constraint.ConstraintLayout>
+
         </LinearLayout>
     </ScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_postdetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_star_border_black_24dp"/>
 </android.support.constraint.ConstraintLayout>

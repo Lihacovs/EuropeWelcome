@@ -32,6 +32,7 @@ public class Post {
     private String mPostWatches;
     private String mPostImageUrl;
     private String mPostCreationDate;
+    private int mChildLayoutNum;
 
     public Post() {
     }
@@ -43,7 +44,8 @@ public class Post {
                 String postStars,
                 String postWatches,
                 String postImageUrl,
-                String postCreationDate) {
+                String postCreationDate,
+                int childLayoutNum) {
         mPostId = UUID.randomUUID().toString();
         mPostAuthorId = postAuthorId;
         mPostAuthorName = postAuthorName;
@@ -53,6 +55,7 @@ public class Post {
         mPostWatches = postWatches;
         mPostImageUrl = postImageUrl;
         mPostCreationDate = postCreationDate;
+        mChildLayoutNum = childLayoutNum;
     }
 
     public String getPostId() {
@@ -125,6 +128,14 @@ public class Post {
 
     public void setPostCreationDate(String postCreationDate) {
         mPostCreationDate = postCreationDate;
+    }
+
+    public int getChildLayoutNum() {
+        return mChildLayoutNum;
+    }
+
+    public void setChildLayoutNum(int childLayoutNum) {
+        mChildLayoutNum = childLayoutNum;
     }
 }
 

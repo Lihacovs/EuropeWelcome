@@ -17,14 +17,15 @@ package com.bmd.android.europewelcome.ui.postdetail;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -56,10 +57,10 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    @BindView(R.id.ll_post_postcontent)
+    @BindView(R.id.ll_postdetail_postcontent)
     LinearLayout mPostContentLl;
 
-    @BindView(R.id.tv_post_posttitle)
+    @BindView(R.id.tv_postdetail_posttitle)
     TextView mPostTitle;
 
     private String mPostId;
@@ -96,8 +97,6 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
         mPresenter.getPost(mPostId);
-        mPresenter.getPostTextList(mPostId);
-        mPresenter.getPostImageList(mPostId);
 
         //mPresenter.attachContentToLayout();
     }
@@ -149,10 +148,10 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
         final ImageView imageIv;
 
         View imageView = LayoutInflater.from(this)
-                .inflate(R.layout.item_addpost_image, mPostContentLl, false);
+                .inflate(R.layout.item_postdetail_image, mPostContentLl, false);
         mPostContentLl.addView(imageView);
 
-        imageIv = imageView.findViewById(R.id.iv_addpostitem_image);
+        imageIv = imageView.findViewById(R.id.iv_postdetailitem_image);
         GlideApp.with(this)
                 .load(postImage.getPostImageUrl())
                 .centerCrop()
@@ -161,17 +160,27 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
     }
 
     /**
-     * Handles actions in added PostText block layout
+     * Attaches PostText block layout to parent layout
      * @param postText PostText entity to attach
      */
     @Override
     public void attachPostTextLayout(final PostText postText){
 
         final View textLayout = LayoutInflater.from(this)
-                .inflate(R.layout.item_addpost_text, mPostContentLl, false);
+                .inflate(R.layout.item_postdetail_text, mPostContentLl, false);
         mPostContentLl.addView(textLayout);
 
-        EditText textEt = textLayout.findViewById(R.id.et_addpostitem_text);
-        textEt.setText(postText.getPostText());
+        TextView textTv = textLayout.findViewById(R.id.tv_postdetailitem_posttext);
+        textTv.setText(postText.getPostText());
+        textTv.setTextSize(TypedValue.COMPLEX_UNIT_SP, postText.getPostTextSize());
+        if(postText.isPostTextBold() & !postText.isPostTextItalic()){
+            textTv.setTypeface(null, Typeface.BOLD);
+        }
+        if(!postText.isPostTextBold() & postText.isPostTextItalic()){
+            textTv.setTypeface(null, Typeface.ITALIC);
+        }
+        if(postText.isPostTextBold() & postText.isPostTextItalic()){
+            textTv.setTypeface(null, Typeface.BOLD_ITALIC);
+        }
     }
 }
