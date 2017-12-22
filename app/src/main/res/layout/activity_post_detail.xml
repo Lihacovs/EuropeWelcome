@@ -19,9 +19,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:layout_editor_absoluteX="0dp"
-    tools:layout_editor_absoluteY="25dp">
+    android:layout_height="match_parent">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -36,10 +34,63 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             style="@style/Toolbar"
-            app:subtitleTextColor="@color/white"
-            app:title="@string/app_name"
-            app:titleTextAppearance="@style/Toolbar.TitleText"
-            app:titleTextColor="@color/white"/>
+            android:contentInsetLeft="0dp"
+            android:contentInsetStart="0dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
+            app:subtitleTextColor="@color/white">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/iv_postdetail_userimage"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:contentDescription="TODO"
+                    android:scaleType="fitXY"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_account_circle_black_24dp"/>
+
+                <TextView
+                    android:id="@+id/tv_postdetail_username"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="User Name"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/iv_postdetail_userimage"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tv_postdetail_postcreationdate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:text="Post Creation Date"
+                    app:layout_constraintStart_toEndOf="@+id/iv_postdetail_userimage"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_postdetail_username"/>
+
+                <TextView
+                    android:id="@+id/tv_postdetail_readtime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:text="Read Time"
+                    app:layout_constraintStart_toEndOf="@+id/tv_postdetail_postcreationdate"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_postdetail_username"/>
+
+
+            </android.support.constraint.ConstraintLayout>
+
+        </android.support.v7.widget.Toolbar>
 
         <View
             android:layout_width="match_parent"
@@ -88,8 +139,8 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_margin="8dp"
-                    android:scaleType="fitXY"
                     android:contentDescription="TODO"
+                    android:scaleType="fitXY"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_account_circle_black_24dp"/>
