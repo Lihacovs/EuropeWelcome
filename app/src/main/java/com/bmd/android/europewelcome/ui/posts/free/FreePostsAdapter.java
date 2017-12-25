@@ -84,6 +84,8 @@ public class FreePostsAdapter extends FirestoreRecyclerAdapter<Post, FreePostsAd
 
     public interface Callback {
         void onPostItemViewClick(Post post);
+
+        void onStarIconClick(Post post);
     }
 
     public class ViewHolder extends BaseViewHolder {
@@ -181,15 +183,18 @@ public class FreePostsAdapter extends FirestoreRecyclerAdapter<Post, FreePostsAd
             mStarIv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    /*int newStarCount = Integer.parseInt(post.getPostStars()) + 1;
-                    post.setPostStars(Integer.toString(newStarCount));
-                    mPresenter.updatePost(post);*/
+                    int newStarCount = Integer.parseInt(post.getPostStars()) + 1;
+                    mPost.setPostStars(Integer.toString(newStarCount));
+                    if(mCallback != null)
+                        mCallback.onStarIconClick(mPost);
                 }
             });
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    int newWatches = Integer.parseInt(post.getPostWatches()) + 1;
+                    mPost.setPostWatches(Integer.toString(newWatches));
                     if (mCallback != null)
                         mCallback.onPostItemViewClick(mPost);
                 }

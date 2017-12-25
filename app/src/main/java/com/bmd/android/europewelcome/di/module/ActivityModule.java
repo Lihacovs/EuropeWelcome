@@ -46,6 +46,9 @@ import com.bmd.android.europewelcome.ui.posts.premium.PremiumPostsPresenter;
 import com.bmd.android.europewelcome.ui.posts.rating.RatingDialogMvpPresenter;
 import com.bmd.android.europewelcome.ui.posts.rating.RatingDialogMvpView;
 import com.bmd.android.europewelcome.ui.posts.rating.RatingDialogPresenter;
+import com.bmd.android.europewelcome.ui.profile.ProfileMvpPresenter;
+import com.bmd.android.europewelcome.ui.profile.ProfileMvpView;
+import com.bmd.android.europewelcome.ui.profile.ProfilePresenter;
 
 import dagger.Module;
 import dagger.Provides;
@@ -134,6 +137,12 @@ public class ActivityModule {
     @Provides
     AddPostMvpPresenter<AddPostMvpView> provideAddPostPresenter(
             AddPostPresenter<AddPostMvpView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    ProfileMvpPresenter<ProfileMvpView> provideProfilePresenter(
+            ProfilePresenter<ProfileMvpView> presenter) {
         return presenter;
     }
 

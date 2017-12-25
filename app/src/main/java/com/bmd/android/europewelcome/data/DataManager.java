@@ -30,7 +30,7 @@ public interface DataManager extends FirebaseHelper, PreferencesHelper {
 
     void updateUserInfo(
             String accessToken,
-            Long userId,
+            String userId,
             LoggedInMode loggedInMode,
             String userName,
             String email,

@@ -36,6 +36,7 @@ import com.bmd.android.europewelcome.data.firebase.model.PostText;
 import com.bmd.android.europewelcome.di.module.GlideApp;
 import com.bmd.android.europewelcome.ui.base.BaseActivity;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.RequestOptions;
 
 import javax.inject.Inject;
 
@@ -62,6 +63,15 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
 
     @BindView(R.id.tv_postdetail_posttitle)
     TextView mPostTitle;
+
+    @BindView(R.id.iv_postdetail_userimage)
+    ImageView mPostUserImageIv;
+
+    @BindView(R.id.tv_postdetail_username)
+    TextView mPostUserNameTv;
+
+    @BindView(R.id.tv_postdetail_postcreationdate)
+    TextView mPostDateTv;
 
     private String mPostId;
 
@@ -98,7 +108,7 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
         }
         mPresenter.getPost(mPostId);
 
-        //mPresenter.attachContentToLayout();
+
     }
 
     @Override
@@ -136,6 +146,31 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
     public void setPostTitle(String postTitle) {
         if (postTitle != null) {
             mPostTitle.setText(postTitle);
+        }
+    }
+
+    @Override
+    public void setPostUserImage(String userImageUrl) {
+        if(userImageUrl != null){
+            GlideApp.with(this)
+                    .load(userImageUrl)
+                    .apply(RequestOptions.circleCropTransform())
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .into(mPostUserImageIv);
+        }
+    }
+
+    @Override
+    public void setPostUserName(String userName) {
+        if(userName != null){
+            mPostUserNameTv.setText(userName);
+        }
+    }
+
+    @Override
+    public void setPostCreationDate(String creationDate) {
+        if(creationDate != null){
+            mPostDateTv.setText(creationDate);
         }
     }
 

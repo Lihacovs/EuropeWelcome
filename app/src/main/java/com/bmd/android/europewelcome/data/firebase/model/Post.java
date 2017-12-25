@@ -26,6 +26,7 @@ public class Post {
     private String mPostId;
     private String mPostAuthorId;
     private String mPostAuthorName;
+    private String mPostAuthorImageUrl;
     private String mPostTitle;
     private String mPostText;
     private String mPostStars;
@@ -39,6 +40,7 @@ public class Post {
 
     public Post(String postAuthorId,
                 String postAuthorName,
+                String postAuthorImageUrl,
                 String postTitle,
                 String postText,
                 String postStars,
@@ -49,6 +51,7 @@ public class Post {
         mPostId = UUID.randomUUID().toString();
         mPostAuthorId = postAuthorId;
         mPostAuthorName = postAuthorName;
+        mPostAuthorImageUrl = postAuthorImageUrl;
         mPostTitle = postTitle;
         mPostText = postText;
         mPostStars = postStars;
@@ -80,6 +83,14 @@ public class Post {
 
     public void setPostAuthorName(String postAuthorName) {
         mPostAuthorName = postAuthorName;
+    }
+
+    public String getPostAuthorImageUrl() {
+        return mPostAuthorImageUrl;
+    }
+
+    public void setPostAuthorImageUrl(String postAuthorImageUrl) {
+        mPostAuthorImageUrl = postAuthorImageUrl;
     }
 
     public String getPostTitle() {

@@ -16,14 +16,18 @@
 package com.bmd.android.europewelcome.ui.auth;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.bmd.android.europewelcome.R;
 import com.bmd.android.europewelcome.data.DataManager;
 import com.bmd.android.europewelcome.ui.base.BasePresenter;
 import com.bmd.android.europewelcome.utils.CommonUtils;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 import javax.inject.Inject;
 
@@ -76,11 +80,11 @@ public class LoginPresenter<V extends LoginMvpView>
 
                     getDataManager().updateUserInfo(
                             null,
-                            null,
+                            getDataManager().getUserId(),
                             DataManager.LoggedInMode.LOGGED_IN_MODE_SERVER,
                             getDataManager().getUserName(),
                             getDataManager().getUserEmail(),
-                            null
+                            getDataManager().getUserImageUrl().toString()
                     );
 
                     getMvpView().hideLoading();
@@ -112,7 +116,7 @@ public class LoginPresenter<V extends LoginMvpView>
 
                     getDataManager().updateUserInfo(
                             null,
-                            null,
+                            getDataManager().getUserId(),
                             DataManager.LoggedInMode.LOGGED_IN_MODE_SERVER,
                             getDataManager().getUserName(),
                             getDataManager().getUserEmail(),
@@ -133,15 +137,54 @@ public class LoginPresenter<V extends LoginMvpView>
         });
     }
 
-
-
-
     @Override
-    public void onGoogleLoginClick() {
+    public void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         // instruct LoginActivity to initiate google login
-        getMvpView().showLoading();
         //TODO: implement firebase login with Google in AppDataManager class
-        getMvpView().hideLoading();
+        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
+        // [START_EXCLUDE silent]
+        getMvpView().showLoading();
+        // [END_EXCLUDE]
+
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        getDataManager().signInWithCredential(credential)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithCredential:success");
+
+                            getDataManager().updateUserInfo(
+                                    null,
+                                    getDataManager().getUserId(),
+                                    DataManager.LoggedInMode.LOGGED_IN_MODE_GOOGLE,
+                                    getDataManager().getUserName(),
+                                    getDataManager().getUserEmail(),
+                                    getDataManager().getUserImageUrl().toString()
+                            );
+
+                            if (!isViewAttached()) {
+                                return;
+                            }
+
+
+                            getMvpView().hideLoading();
+                            getMvpView().openMainActivity();
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            /*Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
+                            updateUI(null);*/
+                        }
+
+                        // [START_EXCLUDE]
+                        getMvpView().hideLoading();
+                        // [END_EXCLUDE]
+                    }
+                });
+
+
         getMvpView().openMainActivity();
 
     }

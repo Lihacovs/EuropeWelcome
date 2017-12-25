@@ -181,15 +181,16 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
 
     @Override
     public Post newPost(){
-        return new Post(null
-                ,null
+        return new Post(getDataManager().getCurrentUserId()
+                ,getDataManager().getCurrentUserName()
+                ,getDataManager().getCurrentUserProfilePicUrl()
                 ,null
                 ,null
                 ,"1"
                 ,"1"
                 ,null
                 , CommonUtils.getCurrentDate()
-                , 0
+                ,0
         );
     }
 

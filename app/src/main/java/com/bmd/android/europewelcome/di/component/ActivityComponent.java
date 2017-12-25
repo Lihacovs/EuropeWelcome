@@ -25,6 +25,7 @@ import com.bmd.android.europewelcome.ui.posts.PostsActivity;
 import com.bmd.android.europewelcome.ui.posts.free.FreePostsFragment;
 import com.bmd.android.europewelcome.ui.posts.premium.PremiumPostsFragment;
 import com.bmd.android.europewelcome.ui.posts.rating.RateUsDialog;
+import com.bmd.android.europewelcome.ui.profile.ProfileActivity;
 
 import dagger.Component;
 
@@ -43,6 +44,8 @@ public interface ActivityComponent {
     void inject(PostDetailActivity activity);
 
     void inject(AddPostActivity activity);
+
+    void inject(ProfileActivity activity);
 
     void inject(AboutFragment fragment);
 

@@ -51,6 +51,7 @@ public class PostsPresenter <V extends PostsMvpView> extends BasePresenter<V>
         }
 
         getDataManager().setUserAsLoggedOut();
+        getDataManager().signOutUser();
         getMvpView().hideLoading();
         getMvpView().openLoginActivity();
 

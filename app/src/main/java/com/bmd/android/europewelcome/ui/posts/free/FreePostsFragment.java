@@ -114,6 +114,12 @@ public class FreePostsFragment extends BaseFragment implements
 
     @Override
     public void onPostItemViewClick(Post post) {
+        mPresenter.updatePost(post);
         startActivity(PostDetailActivity.getStartIntent(this.getContext(), post.getPostId()));
+    }
+
+    @Override
+    public void onStarIconClick(Post post) {
+        mPresenter.updatePost(post);
     }
 }

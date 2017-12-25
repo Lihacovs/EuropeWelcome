@@ -46,10 +46,10 @@
                     app:titleTextAppearance="@style/Toolbar.TitleText"
                     app:titleTextColor="@color/white" />
 
-                <View
+                <!--<View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/light_gray" />
+                    android:background="@color/light_gray" />-->
 
                 <android.support.design.widget.TabLayout
                     android:id="@+id/tab_layout"

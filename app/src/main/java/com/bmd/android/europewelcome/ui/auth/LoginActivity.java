@@ -18,12 +18,20 @@ package com.bmd.android.europewelcome.ui.auth;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
 import com.bmd.android.europewelcome.R;
 import com.bmd.android.europewelcome.ui.base.BaseActivity;
 import com.bmd.android.europewelcome.ui.posts.PostsActivity;
+import com.bmd.android.europewelcome.utils.AppConstants;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 
 import javax.inject.Inject;
 
@@ -37,6 +45,9 @@ import butterknife.OnClick;
 
 public class LoginActivity extends BaseActivity implements LoginMvpView {
 
+    private static final String TAG = "LoginActivity";
+    private static final int RC_SIGN_IN = 9001;
+
     @Inject
     LoginMvpPresenter<LoginMvpView> mPresenter;
 
@@ -45,6 +56,8 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
 
     @BindView(R.id.et_password)
     EditText mPasswordEditText;
+
+    private GoogleSignInClient mGoogleSignInClient;
 
     public static Intent getStartIntent(Context context) {
         Intent intent = new Intent(context, LoginActivity.class);
@@ -61,6 +74,14 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
         setUnBinder(ButterKnife.bind(this));
 
         mPresenter.onAttach(LoginActivity.this);
+
+        // Configure Google Sign In
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(AppConstants.CLIENT_ID_TOKEN)
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
 
     @OnClick(R.id.btn_server_login)
@@ -71,13 +92,39 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
 
     @OnClick(R.id.ib_google_login)
     void onGoogleLoginClick(View v) {
-        mPresenter.onGoogleLoginClick();
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+
+        //mPresenter.onGoogleLoginClick();
     }
 
     @OnClick(R.id.ib_fb_login)
     void onFbLoginClick(View v) {
         mPresenter.onFacebookLoginClick();
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                mPresenter.firebaseAuthWithGoogle(account);
+            } catch (ApiException e) {
+                // Google Sign In failed, update UI appropriately
+                Log.w(TAG, "Google sign in failed", e);
+                // [START_EXCLUDE]
+                //updateUI(null);
+                // [END_EXCLUDE]
+            }
+        }
+    }
+
+
 
     @Override
     public void openMainActivity() {

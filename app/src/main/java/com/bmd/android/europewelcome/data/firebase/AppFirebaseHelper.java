@@ -22,14 +22,17 @@ import com.bmd.android.europewelcome.data.firebase.model.PostImage;
 import com.bmd.android.europewelcome.data.firebase.model.PostText;
 import com.bmd.android.europewelcome.utils.AppConstants;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -55,6 +58,8 @@ public class AppFirebaseHelper implements FirebaseHelper {
         mStorage = FirebaseStorage.getInstance();
     }
 
+    //=//=// F I R E B A S E  -  A U T H E N T I C A T I O N //=//=//
+
     @Override
     public Task<AuthResult> createUser(String email, String password) {
         return mAuth.createUserWithEmailAndPassword(email, password);
@@ -66,21 +71,67 @@ public class AppFirebaseHelper implements FirebaseHelper {
     }
 
     @Override
+    public Task<AuthResult> signInWithCredential(AuthCredential credential) {
+        return mAuth.signInWithCredential(credential);
+    }
+
+    @Override
+    public void signOutUser() {
+        mAuth.signOut();
+    }
+
+    @Override
     public FirebaseUser getCurrentUser() {
         return mAuth.getCurrentUser();
     }
 
+    @Override
     public String getUserId(){
         return mAuth.getCurrentUser().getUid();
     }
 
+    @Override
     public String getUserName(){
         return mAuth.getCurrentUser().getDisplayName();
     }
 
+    @Override
     public String getUserEmail(){
         return mAuth.getCurrentUser().getEmail();
     }
+
+    @Override
+    public Uri getUserImageUrl() {
+        return mAuth.getCurrentUser().getPhotoUrl();
+    }
+
+    @Override
+    public void setUserName(String userName) {
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                .setDisplayName(userName).build();
+        if(getCurrentUser()!=null){
+            getCurrentUser().updateProfile(profileUpdates);
+        }
+    }
+
+    @Override
+    public void setUserEmail(String userEmail) {
+        if(getCurrentUser()!=null) {
+            getCurrentUser().updateEmail(userEmail);
+        }
+    }
+
+    @Override
+    public void setUserImageUrl(Uri userImageUrl) {
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                .setPhotoUri(userImageUrl).build();
+        if(getCurrentUser()!=null){
+            getCurrentUser().updateProfile(profileUpdates);
+        }
+    }
+
+
+    //=//=// F I R E B A S E  -  F I R E S T O R E //=//=//
 
     @Override
     public CollectionReference getPostsColRef() {
@@ -110,6 +161,12 @@ public class AppFirebaseHelper implements FirebaseHelper {
                 .collection(AppConstants.POST_IMAGE_COLLECTION)
                 .document(postImage.getPostImageId())
                 .set(postImage);
+    }
+
+    @Override
+    public Task<Void> updatePost(Post post) {
+            return mFirestore.collection(AppConstants.POSTS_COLLECTION).document(post.getPostId())
+                    .set(post, SetOptions.merge());
     }
 
     @Override

@@ -28,9 +28,9 @@ public interface PreferencesHelper {
 
     void setCurrentUserLoggedInMode(DataManager.LoggedInMode mode);
 
-    Long getCurrentUserId();
+    String getCurrentUserId();
 
-    void setCurrentUserId(Long userId);
+    void setCurrentUserId(String userId);
 
     String getCurrentUserName();
 

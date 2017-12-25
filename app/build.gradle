@@ -47,11 +47,14 @@ dependencies {
     compile 'com.github.apl-devs:appintro:v4.2.2'
 
     // firebase
-    compile 'com.google.firebase:firebase-auth:11.6.2'
-    compile 'com.google.firebase:firebase-firestore:11.6.2'
-    compile 'com.google.firebase:firebase-storage:11.6.2'
+    compile 'com.google.firebase:firebase-auth:11.8.0'
+    compile 'com.google.firebase:firebase-firestore:11.8.0'
+    compile 'com.google.firebase:firebase-storage:11.8.0'
     compile 'com.firebaseui:firebase-ui-firestore:3.1.0'
     compile 'com.firebaseui:firebase-ui-storage:3.1.0'
+
+    // Google Sign In SDK (only required for Google Sign In)
+    compile 'com.google.android.gms:play-services-auth:11.8.0'
 
     // font
     compile "uk.co.chrisjenx:calligraphy:$rootProject.calligraphyVersion"

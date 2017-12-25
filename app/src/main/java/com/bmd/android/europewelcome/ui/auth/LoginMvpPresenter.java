@@ -16,6 +16,7 @@
 package com.bmd.android.europewelcome.ui.auth;
 
 import com.bmd.android.europewelcome.ui.base.MvpPresenter;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
 /**
  * Presenter interface for {@link LoginPresenter}
@@ -25,7 +26,7 @@ public interface LoginMvpPresenter <V extends LoginMvpView> extends MvpPresenter
 
     void onServerLoginClick(String email, String password);
 
-    void onGoogleLoginClick();
+    void firebaseAuthWithGoogle(GoogleSignInAccount acct);
 
     void onFacebookLoginClick();
 

@@ -21,7 +21,6 @@ import android.content.SharedPreferences;
 import com.bmd.android.europewelcome.data.DataManager;
 import com.bmd.android.europewelcome.di.ApplicationContext;
 import com.bmd.android.europewelcome.di.PreferenceInfo;
-import com.bmd.android.europewelcome.utils.AppConstants;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -50,15 +49,13 @@ public class AppPreferencesHelper implements PreferencesHelper {
     }
 
     @Override
-    public Long getCurrentUserId() {
-        long userId = mPrefs.getLong(PREF_KEY_CURRENT_USER_ID, AppConstants.NULL_INDEX);
-        return userId == AppConstants.NULL_INDEX ? null : userId;
+    public String getCurrentUserId() {
+        return mPrefs.getString(PREF_KEY_CURRENT_USER_ID, null);
     }
 
     @Override
-    public void setCurrentUserId(Long userId) {
-        long id = userId == null ? AppConstants.NULL_INDEX : userId;
-        mPrefs.edit().putLong(PREF_KEY_CURRENT_USER_ID, id).apply();
+    public void setCurrentUserId(String userId) {
+        mPrefs.edit().putString(PREF_KEY_CURRENT_USER_ID, userId).apply();
     }
 
     @Override

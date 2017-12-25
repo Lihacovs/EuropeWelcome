@@ -27,6 +27,12 @@ public interface PostDetailMvpView extends MvpView {
 
     void setPostTitle(String postTitle);
 
+    void setPostUserImage(String userImageUrl);
+
+    void setPostUserName(String userName);
+
+    void setPostCreationDate(String creationDate);
+
     void attachPostImageLayout(final PostImage postImage);
 
     void attachPostTextLayout(final PostText postText);

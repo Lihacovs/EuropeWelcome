@@ -21,6 +21,7 @@ import com.bmd.android.europewelcome.data.DataManager;
 import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.ui.base.BasePresenter;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.Query;
 
@@ -54,6 +55,16 @@ public class FreePostsPresenter<V extends FreePostsMvpView> extends BasePresente
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 getMvpView().showMessage("postSaved");
+            }
+        });
+    }
+
+    @Override
+    public void updatePost(Post post) {
+        getDataManager().updatePost(post).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                getMvpView().onError("Error accured: " + e.getMessage());
             }
         });
     }

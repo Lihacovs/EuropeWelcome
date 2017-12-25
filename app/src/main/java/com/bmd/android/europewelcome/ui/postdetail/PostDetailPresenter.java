@@ -69,7 +69,12 @@ public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresen
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 mPost = documentSnapshot.toObject(Post.class);
                 mChildLayoutNum= mPost.getChildLayoutNum();
+
+                getMvpView().setPostUserImage(mPost.getPostAuthorImageUrl());
+                getMvpView().setPostUserName(mPost.getPostAuthorName());
+                getMvpView().setPostCreationDate(mPost.getPostCreationDate());
                 getMvpView().setPostTitle(mPost.getPostTitle());
+
                 getPostTextList(mPost.getPostId());
             }
         }).addOnFailureListener(new OnFailureListener() {

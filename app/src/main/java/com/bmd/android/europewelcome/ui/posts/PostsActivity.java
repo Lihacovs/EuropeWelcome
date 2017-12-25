@@ -38,12 +38,16 @@ import android.widget.TextView;
 
 import com.bmd.android.europewelcome.BuildConfig;
 import com.bmd.android.europewelcome.R;
+import com.bmd.android.europewelcome.di.module.GlideApp;
 import com.bmd.android.europewelcome.ui.about.AboutFragment;
 import com.bmd.android.europewelcome.ui.addpost.AddPostActivity;
 import com.bmd.android.europewelcome.ui.auth.LoginActivity;
 import com.bmd.android.europewelcome.ui.base.BaseActivity;
 import com.bmd.android.europewelcome.ui.custom.RoundedImageView;
 import com.bmd.android.europewelcome.ui.posts.rating.RateUsDialog;
+import com.bmd.android.europewelcome.ui.profile.ProfileActivity;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.RequestOptions;
 
 import javax.inject.Inject;
 
@@ -142,7 +146,13 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
 
     @Override
     public void updateUserProfilePic(String currentUserProfilePicUrl) {
-        //load profile pic url into ANImageView
+        if (currentUserProfilePicUrl != null) {
+            GlideApp.with(this)
+                    .load(currentUserProfilePicUrl)
+                    .apply(RequestOptions.circleCropTransform())
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .into(mProfileImageView);
+        }
     }
 
     @Override
@@ -292,6 +302,13 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
         mProfileImageView = (RoundedImageView) headerLayout.findViewById(R.id.iv_profile_pic);
         mNameTextView = (TextView) headerLayout.findViewById(R.id.tv_name);
         mEmailTextView = (TextView) headerLayout.findViewById(R.id.tv_email);
+
+        headerLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(ProfileActivity.getStartIntent(getBaseContext()));
+            }
+        });
 
         mNavigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {

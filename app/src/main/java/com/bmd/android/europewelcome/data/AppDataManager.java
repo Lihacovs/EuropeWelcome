@@ -26,6 +26,7 @@ import com.bmd.android.europewelcome.data.firebase.model.PostText;
 import com.bmd.android.europewelcome.data.prefs.PreferencesHelper;
 import com.bmd.android.europewelcome.di.ApplicationContext;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -80,12 +81,12 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Long getCurrentUserId() {
+    public String getCurrentUserId() {
         return mPreferencesHelper.getCurrentUserId();
     }
 
     @Override
-    public void setCurrentUserId(Long userId) {
+    public void setCurrentUserId(String userId) {
         mPreferencesHelper.setCurrentUserId(userId);
     }
 
@@ -122,7 +123,7 @@ public class AppDataManager implements DataManager {
     @Override
     public void updateUserInfo(
             String accessToken,
-            Long userId,
+            String  userId,
             LoggedInMode loggedInMode,
             String userName,
             String email,
@@ -158,6 +159,16 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Task<AuthResult> signInWithCredential(AuthCredential credential) {
+        return mFirebaseHelper.signInWithCredential(credential);
+    }
+
+    @Override
+    public void signOutUser() {
+        mFirebaseHelper.signOutUser();
+    }
+
+    @Override
     public FirebaseUser getCurrentUser() {
         return mFirebaseHelper.getCurrentUser();
     }
@@ -178,6 +189,26 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Uri getUserImageUrl() {
+        return mFirebaseHelper.getUserImageUrl();
+    }
+
+    @Override
+    public void setUserName(String userName) {
+        mFirebaseHelper.setUserName(userName);
+    }
+
+    @Override
+    public void setUserEmail(String userEmail) {
+        mFirebaseHelper.setUserEmail(userEmail);
+    }
+
+    @Override
+    public void setUserImageUrl(Uri userImageUrl) {
+        mFirebaseHelper.setUserImageUrl(userImageUrl);
+    }
+
+    @Override
     public CollectionReference getPostsColRef() {
         return mFirebaseHelper.getPostsColRef();
     }
@@ -195,6 +226,11 @@ public class AppDataManager implements DataManager {
     @Override
     public Task<Void> savePostImage(String postId, PostImage postImage) {
         return mFirebaseHelper.savePostImage(postId, postImage);
+    }
+
+    @Override
+    public Task<Void> updatePost(Post post) {
+        return mFirebaseHelper.updatePost(post);
     }
 
     @Override

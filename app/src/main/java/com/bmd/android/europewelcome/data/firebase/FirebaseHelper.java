@@ -21,6 +21,7 @@ import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.data.firebase.model.PostImage;
 import com.bmd.android.europewelcome.data.firebase.model.PostText;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -39,6 +40,10 @@ public interface FirebaseHelper {
 
     Task<AuthResult> signInUser(String email, String password);
 
+    Task<AuthResult> signInWithCredential(AuthCredential credential);
+
+    void signOutUser();
+
     FirebaseUser getCurrentUser();
 
     String getUserId();
@@ -47,6 +52,14 @@ public interface FirebaseHelper {
 
     String getUserEmail();
 
+    Uri getUserImageUrl();
+
+    void setUserName(String userName);
+
+    void setUserEmail(String userEmail);
+
+    void setUserImageUrl(Uri userImageUrl);
+
     CollectionReference getPostsColRef();
 
     Task<Void> savePost(Post post);
@@ -54,6 +67,8 @@ public interface FirebaseHelper {
     Task<Void> savePostText(String postId, PostText postText);
 
     Task<Void> savePostImage(String postId, PostImage postImage);
+
+    Task<Void> updatePost(Post post);
 
     Task<DocumentSnapshot> getPost(String postId);
 

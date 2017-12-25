@@ -13,24 +13,19 @@
  * limitations under the License.
  */
 
-package com.bmd.android.europewelcome.ui.posts.free;
+package com.bmd.android.europewelcome.ui.profile;
 
-import com.bmd.android.europewelcome.data.firebase.model.Post;
-import com.bmd.android.europewelcome.ui.base.MvpPresenter;
-import com.google.firebase.firestore.Query;
+import com.bmd.android.europewelcome.ui.base.MvpView;
 
 /**
- * Created by Konstantins on 12/6/2017.
+ * Created by Konstantins on 12/23/2017.
  */
 
-public interface FreePostsMvpPresenter<V extends FreePostsMvpView>
-        extends MvpPresenter<V> {
+public interface ProfileMvpView extends MvpView {
 
-    void onViewPrepared();
+    void loadUserName(String userName);
 
-    Query getPostsQuery();
+    void loadUserEmail(String userEmail);
 
-    void savePost(Post post);
-
-    void updatePost(Post post);
+    void loadUserImageUrl(String userName);
 }
