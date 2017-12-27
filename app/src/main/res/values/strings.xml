@@ -16,6 +16,10 @@
 <resources>
     <string name="app_name">EuropeWelcome</string>
 
+    <!--Facebook login-->
+    <string name="facebook_app_id">1547663578681146</string>
+    <string name="fb_login_protocol_scheme">fb1547663578681146</string>
+
     <!--Toolbar menus-->
     <string name="clear">Clear</string>
     <string name="cut">Cut</string>

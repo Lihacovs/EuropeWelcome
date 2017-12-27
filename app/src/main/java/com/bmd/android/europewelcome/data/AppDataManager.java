@@ -17,12 +17,14 @@ package com.bmd.android.europewelcome.data;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 
 import com.bmd.android.europewelcome.data.firebase.FirebaseHelper;
 import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.data.firebase.model.PostImage;
 import com.bmd.android.europewelcome.data.firebase.model.PostText;
+import com.bmd.android.europewelcome.data.network.NetworkHelper;
 import com.bmd.android.europewelcome.data.prefs.PreferencesHelper;
 import com.bmd.android.europewelcome.di.ApplicationContext;
 import com.google.android.gms.tasks.Task;
@@ -50,14 +52,17 @@ public class AppDataManager implements DataManager {
     private final Context mContext;
     private final PreferencesHelper mPreferencesHelper;
     private final FirebaseHelper mFirebaseHelper;
+    private final NetworkHelper mNetworkHelper;
 
     @Inject
     public AppDataManager(@ApplicationContext Context context,
                           PreferencesHelper preferencesHelper,
-                          FirebaseHelper firebaseHelper) {
+                          FirebaseHelper firebaseHelper,
+                          NetworkHelper networkHelper) {
         mContext = context;
         mPreferencesHelper = preferencesHelper;
         mFirebaseHelper = firebaseHelper;
+        mNetworkHelper = networkHelper;
     }
 
     @Override
@@ -251,5 +256,15 @@ public class AppDataManager implements DataManager {
     @Override
     public Task<QuerySnapshot> getPostImageList(String postId) {
         return mFirebaseHelper.getPostImageList(postId);
+    }
+
+    @Override
+    public Intent getGoogleSignInIntent() {
+        return mNetworkHelper.getGoogleSignInIntent();
+    }
+
+    @Override
+    public Task<Void> accountGoogleSignOut() {
+        return mNetworkHelper.accountGoogleSignOut();
     }
 }

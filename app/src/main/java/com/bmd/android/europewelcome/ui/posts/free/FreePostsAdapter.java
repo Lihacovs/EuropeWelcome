@@ -54,7 +54,7 @@ public class FreePostsAdapter extends FirestoreRecyclerAdapter<Post, FreePostsAd
         super(options);
     }
 
-    public void setCallback(Callback callback) {
+    public void setAdapterCallback(Callback callback) {
         mCallback = callback;
     }
 

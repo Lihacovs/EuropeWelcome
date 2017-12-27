@@ -29,6 +29,7 @@ import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.di.component.ActivityComponent;
 import com.bmd.android.europewelcome.ui.base.BaseFragment;
 import com.bmd.android.europewelcome.ui.postdetail.PostDetailActivity;
+import com.bmd.android.europewelcome.ui.posts.PostsActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
 import javax.inject.Inject;
@@ -41,7 +42,7 @@ import butterknife.ButterKnife;
  */
 
 public class FreePostsFragment extends BaseFragment implements
-        FreePostsMvpView, FreePostsAdapter.Callback {
+        FreePostsMvpView, FreePostsAdapter.Callback, PostsActivity.Callback{
 
     private static final String TAG = "FreePostsFragment";
 
@@ -75,6 +76,8 @@ public class FreePostsFragment extends BaseFragment implements
             setUnBinder(ButterKnife.bind(this, view));
             mPresenter.onAttach(this);
         }
+
+        ((PostsActivity) getActivity()).setActivityCallback(this);
         return view;
     }
 
@@ -100,9 +103,8 @@ public class FreePostsFragment extends BaseFragment implements
                 new FirestoreRecyclerOptions.Builder<Post>()
                         .setQuery(mPresenter.getPostsQuery(), Post.class)
                         .build());
-        mFreePostsAdapter.setCallback(this);
+        mFreePostsAdapter.setAdapterCallback(this);
         mRecyclerView.setAdapter(mFreePostsAdapter);
-
         mPresenter.onViewPrepared();
     }
 
@@ -121,5 +123,39 @@ public class FreePostsFragment extends BaseFragment implements
     @Override
     public void onStarIconClick(Post post) {
         mPresenter.updatePost(post);
+    }
+
+    @Override
+    public void onFilterPostsByStarsClick() {
+        mFreePostsAdapter.stopListening();
+        mFreePostsAdapter = new FreePostsAdapter(
+                new FirestoreRecyclerOptions.Builder<Post>()
+                        .setQuery(mPresenter.getPostsQueryOrderedByStars(), Post.class)
+                        .build());
+        mFreePostsAdapter.setAdapterCallback(this);
+        mRecyclerView.setAdapter(mFreePostsAdapter);
+        mFreePostsAdapter.startListening();
+    }
+
+    @Override
+    public void onFilterPostsByViewsClick() {
+        mFreePostsAdapter.stopListening();
+        mFreePostsAdapter = new FreePostsAdapter(
+                new FirestoreRecyclerOptions.Builder<Post>()
+                        .setQuery(mPresenter.getPostsQueryOrderedByViews(), Post.class)
+                        .build());
+        mFreePostsAdapter.setAdapterCallback(this);
+        mRecyclerView.setAdapter(mFreePostsAdapter);
+        mFreePostsAdapter.startListening();
+    }
+
+    @Override
+    public void onFilterPostsByDateClick() {
+        mFreePostsAdapter = new FreePostsAdapter(
+                new FirestoreRecyclerOptions.Builder<Post>()
+                        .setQuery(mPresenter.getPostsQueryOrderedByDate(), Post.class)
+                        .build());
+        mFreePostsAdapter.setAdapterCallback(this);
+        mRecyclerView.setAdapter(mFreePostsAdapter);
     }
 }

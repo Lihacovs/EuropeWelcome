@@ -25,11 +25,15 @@ import android.widget.EditText;
 import com.bmd.android.europewelcome.R;
 import com.bmd.android.europewelcome.ui.base.BaseActivity;
 import com.bmd.android.europewelcome.ui.posts.PostsActivity;
-import com.bmd.android.europewelcome.utils.AppConstants;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
@@ -45,7 +49,7 @@ import butterknife.OnClick;
 
 public class LoginActivity extends BaseActivity implements LoginMvpView {
 
-    private static final String TAG = "LoginActivity";
+    private static final String TAG = "LoginActivityTag";
     private static final int RC_SIGN_IN = 9001;
 
     @Inject
@@ -57,7 +61,12 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
     @BindView(R.id.et_password)
     EditText mPasswordEditText;
 
+    @BindView(R.id.button_facebook_login)
+    LoginButton mFacebookLoginButton;
+
     private GoogleSignInClient mGoogleSignInClient;
+
+    private CallbackManager mCallbackManager;
 
     public static Intent getStartIntent(Context context) {
         Intent intent = new Intent(context, LoginActivity.class);
@@ -67,6 +76,9 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
         setContentView(R.layout.activity_login);
 
         getActivityComponent().inject(this);
@@ -75,14 +87,45 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
 
         mPresenter.onAttach(LoginActivity.this);
 
-        // Configure Google Sign In
+        /*// Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(AppConstants.CLIENT_ID_TOKEN)
                 .requestEmail()
                 .build();
 
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);*/
+
+        // [START initialize_fblogin]
+        // Initialize Facebook Login button
+        mCallbackManager = CallbackManager.Factory.create();
+        mFacebookLoginButton.setReadPermissions("email", "public_profile");
+        mFacebookLoginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Log.d(TAG, "facebook:onSuccess:" + loginResult);
+                mPresenter.firebaseAuthWithFacebook(loginResult.getAccessToken());
+            }
+
+            @Override
+            public void onCancel() {
+                Log.d(TAG, "facebook:onCancel");
+                // [START_EXCLUDE]
+                //updateUI(null);
+                // [END_EXCLUDE]
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Log.d(TAG, "facebook:onError", error);
+                // [START_EXCLUDE]
+                //updateUI(null);
+                // [END_EXCLUDE]
+            }
+        });
+        // [END initialize_fblogin]
     }
+
+
 
     @OnClick(R.id.btn_server_login)
     void onServerLoginClick(View v) {
@@ -92,20 +135,22 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
 
     @OnClick(R.id.ib_google_login)
     void onGoogleLoginClick(View v) {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        Intent signInIntent = mPresenter.getGoogleSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
-
         //mPresenter.onGoogleLoginClick();
     }
 
     @OnClick(R.id.ib_fb_login)
     void onFbLoginClick(View v) {
-        mPresenter.onFacebookLoginClick();
+        mFacebookLoginButton.performClick();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        // Pass the activity result back to the Facebook SDK
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {

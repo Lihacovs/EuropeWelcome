@@ -15,7 +15,10 @@
 
 package com.bmd.android.europewelcome.ui.auth;
 
+import android.content.Intent;
+
 import com.bmd.android.europewelcome.ui.base.MvpPresenter;
+import com.facebook.AccessToken;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
 /**
@@ -26,7 +29,11 @@ public interface LoginMvpPresenter <V extends LoginMvpView> extends MvpPresenter
 
     void onServerLoginClick(String email, String password);
 
+    Intent getGoogleSignInIntent();
+
     void firebaseAuthWithGoogle(GoogleSignInAccount acct);
+
+    void firebaseAuthWithFacebook(AccessToken token);
 
     void onFacebookLoginClick();
 

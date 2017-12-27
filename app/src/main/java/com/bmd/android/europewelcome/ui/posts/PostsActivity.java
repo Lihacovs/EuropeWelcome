@@ -29,11 +29,14 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bmd.android.europewelcome.BuildConfig;
@@ -43,7 +46,6 @@ import com.bmd.android.europewelcome.ui.about.AboutFragment;
 import com.bmd.android.europewelcome.ui.addpost.AddPostActivity;
 import com.bmd.android.europewelcome.ui.auth.LoginActivity;
 import com.bmd.android.europewelcome.ui.base.BaseActivity;
-import com.bmd.android.europewelcome.ui.custom.RoundedImageView;
 import com.bmd.android.europewelcome.ui.posts.rating.RateUsDialog;
 import com.bmd.android.europewelcome.ui.profile.ProfileActivity;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
@@ -85,11 +87,13 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
     @BindView(R.id.tv_app_version)
     TextView mAppVersionTextView;
 
+    private Callback mCallback;
+
     private TextView mNameTextView;
 
     private TextView mEmailTextView;
 
-    private RoundedImageView mProfileImageView;
+    private ImageView mUserImageIv;
 
     private ActionBarDrawerToggle mDrawerToggle;
 
@@ -110,6 +114,18 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
         mPresenter.onAttach(this);
 
         setUp();
+    }
+
+    public void setActivityCallback(Callback callback) {
+        mCallback = callback;
+    }
+
+    public interface Callback {
+        void onFilterPostsByStarsClick();
+
+        void onFilterPostsByViewsClick();
+
+        void onFilterPostsByDateClick();
     }
 
     @OnClick(R.id.fab)
@@ -151,15 +167,16 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
                     .load(currentUserProfilePicUrl)
                     .apply(RequestOptions.circleCropTransform())
                     .transition(DrawableTransitionOptions.withCrossFade())
-                    .into(mProfileImageView);
+                    .into(mUserImageIv);
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (mDrawer != null)
+        if (mDrawer != null) {
             mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        }
     }
 
     @Override
@@ -225,6 +242,7 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
         }
         switch (item.getItemId()) {
             case R.id.filter_posts:
+                showFilterPopup(this.findViewById(R.id.filter_posts));
                 return true;
             case R.id.new_post:
                 return true;
@@ -239,9 +257,63 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
         }
     }
 
+    /**
+     * Popup menu for post's list filter options
+     * @param v popup view anchor
+     */
+    private void showFilterPopup(View v) {
+        PopupMenu popup = new PopupMenu(this, v);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.filter_allposts_menu, popup.getMenu());
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.filter_posts_by_stars:
+                        if (mCallback != null)
+                            mCallback.onFilterPostsByStarsClick();
+                        return true;
+                    case R.id.filter_posts_by_views:
+                        if (mCallback != null)
+                            mCallback.onFilterPostsByViewsClick();
+                        return true;
+                    case R.id.filter_posts_by_date:
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+
+        popup.show();
+    }
+
     @Override
     protected void setUp() {
         setSupportActionBar(mToolbar);
+
+        //Navigation drawer
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this,
+                mDrawer,
+                mToolbar,
+                R.string.open_drawer,
+                R.string.close_drawer) {
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                hideKeyboard();
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+            }
+        };
+        mDrawer.addDrawerListener(mDrawerToggle);
+        mDrawerToggle.syncState();
+        setupNavMenu();
+        mPresenter.onNavMenuCreated();
 
         //Tabs
         mPagerAdapter.setCount(2);
@@ -272,36 +344,14 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
             }
         });
 
-        //Navigation drawer
-        mDrawerToggle = new ActionBarDrawerToggle(
-                this,
-                mDrawer,
-                mToolbar,
-                R.string.open_drawer,
-                R.string.close_drawer) {
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                hideKeyboard();
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-            }
-        };
-        mDrawer.addDrawerListener(mDrawerToggle);
-        mDrawerToggle.syncState();
-        setupNavMenu();
-        mPresenter.onNavMenuCreated();
         mPresenter.onViewInitialized();
     }
 
     void setupNavMenu() {
         View headerLayout = mNavigationView.getHeaderView(0);
-        mProfileImageView = (RoundedImageView) headerLayout.findViewById(R.id.iv_profile_pic);
-        mNameTextView = (TextView) headerLayout.findViewById(R.id.tv_name);
-        mEmailTextView = (TextView) headerLayout.findViewById(R.id.tv_email);
+        mUserImageIv = headerLayout.findViewById(R.id.iv_drawerheader_userimage);
+        mNameTextView = headerLayout.findViewById(R.id.tv_name);
+        mEmailTextView = headerLayout.findViewById(R.id.tv_email);
 
         headerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -338,7 +388,7 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
     @Override
     public void openLoginActivity() {
         startActivity(LoginActivity.getStartIntent(this));
-        finish();
+        this.finish();
     }
 
     @Override

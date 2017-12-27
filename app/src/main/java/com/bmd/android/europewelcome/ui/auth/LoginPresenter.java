@@ -15,6 +15,7 @@
 
 package com.bmd.android.europewelcome.ui.auth;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -22,11 +23,13 @@ import com.bmd.android.europewelcome.R;
 import com.bmd.android.europewelcome.data.DataManager;
 import com.bmd.android.europewelcome.ui.base.BasePresenter;
 import com.bmd.android.europewelcome.utils.CommonUtils;
+import com.facebook.AccessToken;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 import javax.inject.Inject;
@@ -35,8 +38,7 @@ import javax.inject.Inject;
  * Login Presenter
  */
 
-public class LoginPresenter<V extends LoginMvpView>
-        extends BasePresenter<V>
+public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
         implements LoginMvpPresenter<V>{
 
     private static final String TAG = "LoginPresenter";
@@ -63,6 +65,11 @@ public class LoginPresenter<V extends LoginMvpView>
         }
         getMvpView().showLoading();
         signInFirebaseUser(email, password);
+    }
+
+    @Override
+    public Intent getGoogleSignInIntent() {
+        return getDataManager().getGoogleSignInIntent();
     }
 
     private void signInFirebaseUser(final String email, final String password){
@@ -152,8 +159,14 @@ public class LoginPresenter<V extends LoginMvpView>
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
+                            Log.d(TAG, "UserName:" + getDataManager().getUserName());
+                            Log.d(TAG, "UserEmail:" + getDataManager().getUserEmail());
+                            Log.d(TAG, "UserPicUrl:" + getDataManager().getUserImageUrl());
+
+
 
                             getDataManager().updateUserInfo(
                                     null,
@@ -164,10 +177,14 @@ public class LoginPresenter<V extends LoginMvpView>
                                     getDataManager().getUserImageUrl().toString()
                             );
 
+                            Log.d(TAG, "signInWithCredential: current User: ");
+                            Log.d(TAG, "CurrentUserName:" + getDataManager().getCurrentUserName());
+                            Log.d(TAG, "CurrentUserEmail:" + getDataManager().getCurrentUserEmail());
+                            Log.d(TAG, "CurrentUserPicUrl:" + getDataManager().getCurrentUserProfilePicUrl());
+
                             if (!isViewAttached()) {
                                 return;
                             }
-
 
                             getMvpView().hideLoading();
                             getMvpView().openMainActivity();
@@ -187,6 +204,62 @@ public class LoginPresenter<V extends LoginMvpView>
 
         getMvpView().openMainActivity();
 
+    }
+
+    @Override
+    public void firebaseAuthWithFacebook(AccessToken token) {
+        Log.d(TAG, "handleFacebookAccessToken:" + token);
+        // [START_EXCLUDE silent]
+        getMvpView().showLoading();
+        // [END_EXCLUDE]
+
+        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        getDataManager().signInWithCredential(credential)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithCredential:success");
+                            Log.d(TAG, "UserName:" + getDataManager().getUserName());
+                            Log.d(TAG, "UserEmail:" + getDataManager().getUserEmail());
+                            Log.d(TAG, "UserPicUrl:" + getDataManager().getUserImageUrl());
+
+
+
+                            getDataManager().updateUserInfo(
+                                    null,
+                                    getDataManager().getUserId(),
+                                    DataManager.LoggedInMode.LOGGED_IN_MODE_GOOGLE,
+                                    getDataManager().getUserName(),
+                                    getDataManager().getUserEmail(),
+                                    getDataManager().getUserImageUrl().toString()
+                            );
+
+                            Log.d(TAG, "signInWithCredential: current User: ");
+                            Log.d(TAG, "CurrentUserName:" + getDataManager().getCurrentUserName());
+                            Log.d(TAG, "CurrentUserEmail:" + getDataManager().getCurrentUserEmail());
+                            Log.d(TAG, "CurrentUserPicUrl:" + getDataManager().getCurrentUserProfilePicUrl());
+
+                            if (!isViewAttached()) {
+                                return;
+                            }
+
+                            getMvpView().hideLoading();
+                            //getMvpView().openMainActivity();
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            /*Toast.makeText(FacebookLoginActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                            updateUI(null);*/
+                        }
+
+                        // [START_EXCLUDE]
+                        getMvpView().hideLoading();
+                        // [END_EXCLUDE]
+                    }
+                });
     }
 
     @Override

@@ -50,6 +50,21 @@ public class FreePostsPresenter<V extends FreePostsMvpView> extends BasePresente
     }
 
     @Override
+    public Query getPostsQueryOrderedByStars() {
+        return getDataManager().getPostsColRef().orderBy("postStars", Query.Direction.DESCENDING);
+    }
+
+    @Override
+    public Query getPostsQueryOrderedByViews() {
+        return getDataManager().getPostsColRef().orderBy("postWatches", Query.Direction.DESCENDING);
+    }
+
+    @Override
+    public Query getPostsQueryOrderedByDate() {
+        return null;
+    }
+
+    @Override
     public void savePost(Post post) {
         getDataManager().savePost(post).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

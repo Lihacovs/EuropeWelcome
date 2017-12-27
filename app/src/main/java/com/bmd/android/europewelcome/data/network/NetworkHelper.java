@@ -13,30 +13,19 @@
  * limitations under the License.
  */
 
-package com.bmd.android.europewelcome.ui.posts.free;
+package com.bmd.android.europewelcome.data.network;
 
-import com.bmd.android.europewelcome.data.firebase.model.Post;
-import com.bmd.android.europewelcome.ui.base.MvpPresenter;
-import com.google.firebase.firestore.Query;
+import android.content.Intent;
+
+import com.google.android.gms.tasks.Task;
 
 /**
- * Created by Konstantins on 12/6/2017.
+ * Created by Konstantins on 12/26/2017.
  */
 
-public interface FreePostsMvpPresenter<V extends FreePostsMvpView>
-        extends MvpPresenter<V> {
+public interface NetworkHelper {
 
-    void onViewPrepared();
+    Intent getGoogleSignInIntent();
 
-    Query getPostsQuery();
-
-    Query getPostsQueryOrderedByStars();
-
-    Query getPostsQueryOrderedByViews();
-
-    Query getPostsQueryOrderedByDate();
-
-    void savePost(Post post);
-
-    void updatePost(Post post);
+    Task<Void> accountGoogleSignOut();
 }

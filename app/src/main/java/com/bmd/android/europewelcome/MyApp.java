@@ -15,7 +15,7 @@
 
 package com.bmd.android.europewelcome;
 
-import android.app.Application;
+import android.support.multidex.MultiDexApplication;
 import android.support.v7.app.AppCompatDelegate;
 
 import com.androidnetworking.AndroidNetworking;
@@ -35,7 +35,7 @@ import static com.androidnetworking.interceptors.HttpLoggingInterceptor.Level;
  * Application level instantiations
  */
 
-public class MyApp extends Application {
+public class MyApp extends MultiDexApplication {
 
     @Inject
     DataManager mDataManager;

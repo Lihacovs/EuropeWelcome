@@ -15,6 +15,8 @@
 
 package com.bmd.android.europewelcome.ui.posts;
 
+import android.util.Log;
+
 import com.bmd.android.europewelcome.data.DataManager;
 import com.bmd.android.europewelcome.ui.base.BasePresenter;
 
@@ -27,7 +29,7 @@ import javax.inject.Inject;
 public class PostsPresenter <V extends PostsMvpView> extends BasePresenter<V>
         implements PostsMvpPresenter<V>{
 
-    private static final String TAG = "MainPresenter";
+    private static final String TAG = "PostsPresenter";
 
     @Inject
     public PostsPresenter(DataManager dataManager) {
@@ -52,6 +54,7 @@ public class PostsPresenter <V extends PostsMvpView> extends BasePresenter<V>
 
         getDataManager().setUserAsLoggedOut();
         getDataManager().signOutUser();
+        getDataManager().accountGoogleSignOut();
         getMvpView().hideLoading();
         getMvpView().openLoginActivity();
 
@@ -60,6 +63,9 @@ public class PostsPresenter <V extends PostsMvpView> extends BasePresenter<V>
     @Override
     public void onViewInitialized() {
         //get all posts here
+        Log.d(TAG, "UserName:" + getDataManager().getCurrentUserName());
+        Log.d(TAG, "UserEmail:" + getDataManager().getCurrentUserEmail());
+        Log.d(TAG, "UserPicUrl:" + getDataManager().getCurrentUserProfilePicUrl());
     }
 
     @Override
@@ -69,17 +75,17 @@ public class PostsPresenter <V extends PostsMvpView> extends BasePresenter<V>
         }
         getMvpView().updateAppVersion();
 
-        final String currentUserName = getDataManager().getCurrentUserName();
+        String currentUserName = getDataManager().getCurrentUserName();
         if (currentUserName != null && !currentUserName.isEmpty()) {
             getMvpView().updateUserName(currentUserName);
         }
 
-        final String currentUserEmail = getDataManager().getCurrentUserEmail();
+        String currentUserEmail = getDataManager().getCurrentUserEmail();
         if (currentUserEmail != null && !currentUserEmail.isEmpty()) {
             getMvpView().updateUserEmail(currentUserEmail);
         }
 
-        final String profilePicUrl = getDataManager().getCurrentUserProfilePicUrl();
+        String profilePicUrl = getDataManager().getCurrentUserProfilePicUrl();
         if (profilePicUrl != null && !profilePicUrl.isEmpty()) {
             getMvpView().updateUserProfilePic(profilePicUrl);
         }

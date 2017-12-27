@@ -23,6 +23,8 @@ import com.bmd.android.europewelcome.data.AppDataManager;
 import com.bmd.android.europewelcome.data.DataManager;
 import com.bmd.android.europewelcome.data.firebase.AppFirebaseHelper;
 import com.bmd.android.europewelcome.data.firebase.FirebaseHelper;
+import com.bmd.android.europewelcome.data.network.AppNetworkHelper;
+import com.bmd.android.europewelcome.data.network.NetworkHelper;
 import com.bmd.android.europewelcome.data.prefs.AppPreferencesHelper;
 import com.bmd.android.europewelcome.data.prefs.PreferencesHelper;
 import com.bmd.android.europewelcome.di.ApplicationContext;
@@ -88,6 +90,12 @@ public class ApplicationModule {
     @Singleton
     PreferencesHelper providePreferencesHelper(AppPreferencesHelper appPreferencesHelper) {
         return appPreferencesHelper;
+    }
+
+    @Provides
+    @Singleton
+    NetworkHelper provideNetworkHelper(AppNetworkHelper appNetworkHelper) {
+        return appNetworkHelper;
     }
 
     @Provides
