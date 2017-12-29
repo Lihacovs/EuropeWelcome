@@ -114,6 +114,7 @@ public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresen
     /**
      * Attaches Post's content {@link PostImage}, {@link PostText} to layout in particular order
      */
+    //TODO: Error on activity close before loop finish
     @Override
     public void attachContentToLayout() {
         for(int i=0; i<=mChildLayoutNum; i++){

@@ -26,6 +26,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.UploadTask;
 
@@ -61,6 +62,12 @@ public interface FirebaseHelper {
     void setUserImageUrl(Uri userImageUrl);
 
     CollectionReference getPostsColRef();
+
+    Query getPostsQueryOrderedByStars();
+
+    Query getPostsQueryOrderedByViews();
+
+    Query getPostsQueryOrderedByDate();
 
     Task<Void> savePost(Post post);
 

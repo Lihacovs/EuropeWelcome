@@ -51,17 +51,17 @@ public class FreePostsPresenter<V extends FreePostsMvpView> extends BasePresente
 
     @Override
     public Query getPostsQueryOrderedByStars() {
-        return getDataManager().getPostsColRef().orderBy("postStars", Query.Direction.DESCENDING);
+        return getDataManager().getPostsQueryOrderedByStars();
     }
 
     @Override
     public Query getPostsQueryOrderedByViews() {
-        return getDataManager().getPostsColRef().orderBy("postWatches", Query.Direction.DESCENDING);
+        return getDataManager().getPostsQueryOrderedByViews();
     }
 
     @Override
     public Query getPostsQueryOrderedByDate() {
-        return null;
+        return getDataManager().getPostsQueryOrderedByDate();
     }
 
     @Override

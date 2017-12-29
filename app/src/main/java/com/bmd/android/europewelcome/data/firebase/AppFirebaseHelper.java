@@ -31,6 +31,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
@@ -136,6 +137,25 @@ public class AppFirebaseHelper implements FirebaseHelper {
     @Override
     public CollectionReference getPostsColRef() {
         return mFirestore.collection("posts");
+    }
+
+    @Override
+    public Query getPostsQueryOrderedByStars() {
+        return mFirestore
+                .collection(AppConstants.POSTS_COLLECTION)
+                .orderBy("postStars", Query.Direction.DESCENDING);
+    }
+
+    @Override
+    public Query getPostsQueryOrderedByViews() {
+        return mFirestore
+                .collection(AppConstants.POSTS_COLLECTION)
+                .orderBy("postWatches", Query.Direction.DESCENDING);
+    }
+
+    @Override
+    public Query getPostsQueryOrderedByDate() {
+        return null;
     }
 
     @Override

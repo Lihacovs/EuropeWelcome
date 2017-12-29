@@ -17,8 +17,8 @@
     <string name="app_name">EuropeWelcome</string>
 
     <!--Facebook login-->
-    <string name="facebook_app_id">1547663578681146</string>
-    <string name="fb_login_protocol_scheme">fb1547663578681146</string>
+    <string name="facebook_app_id">142244099814655</string>
+    <string name="fb_login_protocol_scheme">7e655f23e3117ab007aea719273f0daf</string>
 
     <!--Toolbar menus-->
     <string name="clear">Clear</string>

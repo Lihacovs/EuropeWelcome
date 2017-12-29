@@ -44,6 +44,11 @@ import com.bmd.android.europewelcome.data.firebase.model.PostText;
 import com.bmd.android.europewelcome.di.module.GlideApp;
 import com.bmd.android.europewelcome.ui.base.BaseActivity;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.Collections;
@@ -63,7 +68,7 @@ import pub.devrel.easypermissions.EasyPermissions;
  */
 
 public class AddPostActivity extends BaseActivity implements AddPostMvpView,
-        EasyPermissions.PermissionCallbacks {
+        EasyPermissions.PermissionCallbacks, OnMapReadyCallback {
 
     private static final int RC_CHOOSE_PHOTO = 101;
     private static final int RC_IMAGE_PERMS = 102;
@@ -149,12 +154,12 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
 
     @OnClick(R.id.iv_addpost_locationicon)
     void onLocationIconClick(){
-        showMessage("Location Image Click");
+        attachPostMapLayout();
     }
 
     @OnClick(R.id.iv_addpost_videoicon)
     void onVideoIconClick(){
-        showMessage("Video Image Click");
+        attachPostVideoLayout();
     }
 
     @Override
@@ -382,6 +387,36 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
     }
 
     @Override
+    public void attachPostMapLayout() {
+
+        MapView mapView;
+
+        final View mapLayout = LayoutInflater.from(this)
+                .inflate(R.layout.item_addpost_map, mPostContentLl, false);
+        mPostContentLl.addView(mapLayout);
+
+        //Removes PostText from list and from layout
+        ImageView deleteTextIv = mapLayout.findViewById(R.id.iv_addpostitem_deletemap);
+        deleteTextIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                View parentView = (View) view.getParent();
+                mPostContentLl.removeView(parentView);
+            }
+        });
+
+        mapView = mapLayout.findViewById(R.id.mv_addpostitem_map);
+        mapView.onCreate(null);
+
+        mapView.getMapAsync(this);
+    }
+
+    @Override
+    public void attachPostVideoLayout() {
+
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String[] permissions,
                                            int[] grantResults) {
@@ -400,5 +435,10 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
                 Collections.singletonList(PERMS))) {
             new AppSettingsDialog.Builder(this).build().show();
         }
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        googleMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
     }
 }

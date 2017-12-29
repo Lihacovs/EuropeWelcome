@@ -33,6 +33,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.UploadTask;
 
@@ -216,6 +217,21 @@ public class AppDataManager implements DataManager {
     @Override
     public CollectionReference getPostsColRef() {
         return mFirebaseHelper.getPostsColRef();
+    }
+
+    @Override
+    public Query getPostsQueryOrderedByStars() {
+        return mFirebaseHelper.getPostsQueryOrderedByStars();
+    }
+
+    @Override
+    public Query getPostsQueryOrderedByViews() {
+        return mFirebaseHelper.getPostsQueryOrderedByViews();
+    }
+
+    @Override
+    public Query getPostsQueryOrderedByDate() {
+        return mFirebaseHelper.getPostsQueryOrderedByDate();
     }
 
     @Override

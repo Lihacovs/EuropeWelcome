@@ -28,4 +28,8 @@ public interface AddPostMvpView extends MvpView {
     void attachPostTextLayout(final PostText postText);
 
     void attachPostImageLayout(final PostImage postImage);
+
+    void attachPostMapLayout();
+
+    void attachPostVideoLayout();
 }
