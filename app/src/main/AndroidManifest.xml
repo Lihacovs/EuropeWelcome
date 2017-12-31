@@ -18,6 +18,7 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <application
         android:name="com.bmd.android.europewelcome.MyApp"
@@ -33,7 +34,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAejctIwTeZ0gphpqh9xO08_NNYpaTCkDQ"/>
+            android:value="AIzaSyByraF4EaclX12v43bAKldVHZfMjazz9y8"/>
 
         <meta-data
             android:name="com.google.android.gms.version"

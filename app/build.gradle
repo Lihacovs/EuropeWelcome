@@ -59,6 +59,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-auth:11.8.0'
 
     compile 'com.google.android.gms:play-services-maps:11.8.0'
+    compile 'com.google.android.gms:play-services-places:11.8.0'
 
     //Facebook Login
     implementation 'com.facebook.android:facebook-login:[4,5)'

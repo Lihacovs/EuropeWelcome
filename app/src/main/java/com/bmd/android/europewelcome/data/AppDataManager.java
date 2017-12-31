@@ -23,6 +23,7 @@ import android.net.Uri;
 import com.bmd.android.europewelcome.data.firebase.FirebaseHelper;
 import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.data.firebase.model.PostImage;
+import com.bmd.android.europewelcome.data.firebase.model.PostPlace;
 import com.bmd.android.europewelcome.data.firebase.model.PostText;
 import com.bmd.android.europewelcome.data.network.NetworkHelper;
 import com.bmd.android.europewelcome.data.prefs.PreferencesHelper;
@@ -250,6 +251,11 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Task<Void> savePostPlace(String postId, PostPlace postPlace) {
+        return mFirebaseHelper.savePostPlace(postId, postPlace);
+    }
+
+    @Override
     public Task<Void> updatePost(Post post) {
         return mFirebaseHelper.updatePost(post);
     }
@@ -272,6 +278,11 @@ public class AppDataManager implements DataManager {
     @Override
     public Task<QuerySnapshot> getPostImageList(String postId) {
         return mFirebaseHelper.getPostImageList(postId);
+    }
+
+    @Override
+    public Task<QuerySnapshot> getPostPlaceList(String postId) {
+        return mFirebaseHelper.getPostPlaceList(postId);
     }
 
     @Override

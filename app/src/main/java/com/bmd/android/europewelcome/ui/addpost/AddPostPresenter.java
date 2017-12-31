@@ -22,6 +22,7 @@ import android.util.Log;
 import com.bmd.android.europewelcome.data.DataManager;
 import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.data.firebase.model.PostImage;
+import com.bmd.android.europewelcome.data.firebase.model.PostPlace;
 import com.bmd.android.europewelcome.data.firebase.model.PostText;
 import com.bmd.android.europewelcome.ui.base.BasePresenter;
 import com.bmd.android.europewelcome.utils.CommonUtils;
@@ -47,6 +48,7 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
 
     private List<PostImage> mPostImageList;
     private List<PostText> mPostTextList;
+    private List<PostPlace> mPostPlaceList;
     private Post mPost;
     private int mLayoutOrderNum = 1;
 
@@ -56,6 +58,7 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
 
         mPostTextList = new ArrayList<>();
         mPostImageList = new ArrayList<>();
+        mPostPlaceList = new ArrayList<>();
         mPost = newPost();
     }
 
@@ -88,6 +91,16 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
     @Override
     public void updatePostImageInList(PostImage postImage) {
         mPostImageList.set(mPostImageList.indexOf(postImage), postImage);
+    }
+
+    @Override
+    public void addPostPlaceToList(PostPlace postPlace) {
+        mPostPlaceList.add(postPlace);
+    }
+
+    @Override
+    public void removePostPlaceFromList(PostPlace postPlace) {
+        mPostPlaceList.remove(postPlace);
     }
 
     @Override
@@ -124,6 +137,10 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
                     savePostImage(postImage, mPost.getPostId());
                 }
 
+                for (PostPlace postPlace : mPostPlaceList) {
+                    savePostPlace(postPlace, mPost.getPostId());
+                }
+
             }
         });
     }
@@ -141,6 +158,21 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
     @Override
     public void savePostImage(final PostImage postImage, String postId) {
         getDataManager().savePostImage(postId, postImage).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+    }
+
+    @Override
+    public void savePostPlace(PostPlace postPlace, String postId) {
+        getDataManager().savePostPlace(postId, postPlace).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
 
@@ -209,6 +241,17 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
     public PostImage newPostImage(){
         return new PostImage(null
                 ,null
+                ,CommonUtils.getTimeStamp()
+                ,mLayoutOrderNum++
+        );
+    }
+
+    @Override
+    public PostPlace newPostPlace() {
+        return new PostPlace(null
+                ,null
+                ,0
+                ,0
                 ,CommonUtils.getTimeStamp()
                 ,mLayoutOrderNum++
         );

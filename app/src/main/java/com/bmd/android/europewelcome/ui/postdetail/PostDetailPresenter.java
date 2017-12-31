@@ -20,6 +20,7 @@ import android.support.annotation.NonNull;
 import com.bmd.android.europewelcome.data.DataManager;
 import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.data.firebase.model.PostImage;
+import com.bmd.android.europewelcome.data.firebase.model.PostPlace;
 import com.bmd.android.europewelcome.data.firebase.model.PostText;
 import com.bmd.android.europewelcome.ui.base.BasePresenter;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -47,6 +48,7 @@ public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresen
     private Post mPost;
     private List<PostText> mPostTextList;
     private List<PostImage> mPostImageList;
+    private List<PostPlace> mPostPlaceList;
     private int mChildLayoutNum;
 
     @Inject
@@ -54,6 +56,7 @@ public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresen
         super(dataManager);
         mPostTextList = new ArrayList<>();
         mPostImageList = new ArrayList<>();
+        mPostPlaceList = new ArrayList<>();
     }
 
 
@@ -106,6 +109,19 @@ public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresen
                 for (DocumentSnapshot document : task.getResult()) {
                     mPostImageList.add(document.toObject(PostImage.class));
                 }
+                getPostPlaceList(mPost.getPostId());
+            }
+        });
+    }
+
+    @Override
+    public void getPostPlaceList(String postId) {
+        getDataManager().getPostPlaceList(postId).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                for (DocumentSnapshot document : task.getResult()) {
+                    mPostPlaceList.add(document.toObject(PostPlace.class));
+                }
                 attachContentToLayout();
             }
         });
@@ -128,6 +144,13 @@ public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresen
             for(PostImage postImage: mPostImageList){
                 if(postImage.getLayoutOrderNum() == i) {
                     getMvpView().attachPostImageLayout(postImage);
+                    break;
+                }
+            }
+
+            for(PostPlace postPlace: mPostPlaceList){
+                if(postPlace.getLayoutOrderNum() == i) {
+                    getMvpView().attachPostPlaceLayout(postPlace);
                     break;
                 }
             }

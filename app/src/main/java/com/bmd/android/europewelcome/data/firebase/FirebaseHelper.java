@@ -19,6 +19,7 @@ import android.net.Uri;
 
 import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.data.firebase.model.PostImage;
+import com.bmd.android.europewelcome.data.firebase.model.PostPlace;
 import com.bmd.android.europewelcome.data.firebase.model.PostText;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -75,6 +76,8 @@ public interface FirebaseHelper {
 
     Task<Void> savePostImage(String postId, PostImage postImage);
 
+    Task<Void> savePostPlace(String postId, PostPlace postPlace);
+
     Task<Void> updatePost(Post post);
 
     Task<DocumentSnapshot> getPost(String postId);
@@ -84,4 +87,6 @@ public interface FirebaseHelper {
     Task<QuerySnapshot> getPostTextList(String postId);
 
     Task<QuerySnapshot> getPostImageList(String postId);
+
+    Task<QuerySnapshot> getPostPlaceList(String postId);
 }

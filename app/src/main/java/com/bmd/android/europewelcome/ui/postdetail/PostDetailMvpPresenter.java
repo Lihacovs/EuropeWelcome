@@ -32,5 +32,7 @@ public interface PostDetailMvpPresenter<V extends MvpView> extends MvpPresenter<
 
     void getPostImageList(String postId);
 
+    void getPostPlaceList(String postId);
+
     void attachContentToLayout();
 }

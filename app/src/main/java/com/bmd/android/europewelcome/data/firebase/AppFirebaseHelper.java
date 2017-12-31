@@ -19,6 +19,7 @@ import android.net.Uri;
 
 import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.data.firebase.model.PostImage;
+import com.bmd.android.europewelcome.data.firebase.model.PostPlace;
 import com.bmd.android.europewelcome.data.firebase.model.PostText;
 import com.bmd.android.europewelcome.utils.AppConstants;
 import com.google.android.gms.tasks.Task;
@@ -184,6 +185,16 @@ public class AppFirebaseHelper implements FirebaseHelper {
     }
 
     @Override
+    public Task<Void> savePostPlace(String postId, PostPlace postPlace) {
+        return mFirestore
+                .collection(AppConstants.POSTS_COLLECTION)
+                .document(postId)
+                .collection(AppConstants.POST_PLACE_COLLECTION)
+                .document(postPlace.getPostPlaceId())
+                .set(postPlace);
+    }
+
+    @Override
     public Task<Void> updatePost(Post post) {
             return mFirestore.collection(AppConstants.POSTS_COLLECTION).document(post.getPostId())
                     .set(post, SetOptions.merge());
@@ -211,6 +222,15 @@ public class AppFirebaseHelper implements FirebaseHelper {
                 .collection(AppConstants.POSTS_COLLECTION)
                 .document(postId)
                 .collection(AppConstants.POST_IMAGE_COLLECTION);
+        return colRef.get();
+    }
+
+    @Override
+    public Task<QuerySnapshot> getPostPlaceList(String postId) {
+        CollectionReference colRef = mFirestore
+                .collection(AppConstants.POSTS_COLLECTION)
+                .document(postId)
+                .collection(AppConstants.POST_PLACE_COLLECTION);
         return colRef.get();
     }
 

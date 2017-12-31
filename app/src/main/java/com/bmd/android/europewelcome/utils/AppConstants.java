@@ -42,6 +42,7 @@ public final class AppConstants {
     public static final String POSTS_COLLECTION = "posts";
     public static final String POST_TEXT_COLLECTION = "postText";
     public static final String POST_IMAGE_COLLECTION = "postImage";
+    public static final String POST_PLACE_COLLECTION = "postPlace";
 
 
     private AppConstants() {

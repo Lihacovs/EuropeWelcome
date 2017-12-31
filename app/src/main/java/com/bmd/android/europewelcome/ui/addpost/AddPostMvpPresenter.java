@@ -19,6 +19,7 @@ import android.net.Uri;
 
 import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.data.firebase.model.PostImage;
+import com.bmd.android.europewelcome.data.firebase.model.PostPlace;
 import com.bmd.android.europewelcome.data.firebase.model.PostText;
 import com.bmd.android.europewelcome.ui.base.MvpPresenter;
 
@@ -40,6 +41,10 @@ public interface AddPostMvpPresenter<V extends AddPostMvpView> extends MvpPresen
 
     void updatePostImageInList(PostImage postImage);
 
+    void addPostPlaceToList(PostPlace postPlace);
+
+    void removePostPlaceFromList(PostPlace postPlace);
+
     void setPostTitle(String postTitle);
 
     void savePost();
@@ -48,6 +53,8 @@ public interface AddPostMvpPresenter<V extends AddPostMvpView> extends MvpPresen
 
     void savePostImage(PostImage postImage, String postId);
 
+    void savePostPlace(PostPlace postPlace, String postId);
+
     void uploadFileToStorage(Uri uri);
 
     Post newPost();
@@ -55,4 +62,6 @@ public interface AddPostMvpPresenter<V extends AddPostMvpView> extends MvpPresen
     PostText newPostText();
 
     PostImage newPostImage();
+
+    PostPlace newPostPlace();
 }

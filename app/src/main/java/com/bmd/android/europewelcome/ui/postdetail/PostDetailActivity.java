@@ -32,11 +32,19 @@ import android.widget.TextView;
 
 import com.bmd.android.europewelcome.R;
 import com.bmd.android.europewelcome.data.firebase.model.PostImage;
+import com.bmd.android.europewelcome.data.firebase.model.PostPlace;
 import com.bmd.android.europewelcome.data.firebase.model.PostText;
 import com.bmd.android.europewelcome.di.module.GlideApp;
 import com.bmd.android.europewelcome.ui.base.BaseActivity;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import javax.inject.Inject;
 
@@ -218,4 +226,35 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
             textTv.setTypeface(null, Typeface.BOLD_ITALIC);
         }
     }
+
+    @Override
+    public void attachPostPlaceLayout(PostPlace postPlace) {
+        final View mapLayout = LayoutInflater.from(this)
+                .inflate(R.layout.item_addpost_map, mPostContentLl, false);
+        mPostContentLl.addView(mapLayout);
+
+        MapView mapView = mapLayout.findViewById(R.id.mv_addpostitem_map);
+        mapView.onCreate(null);
+        mapView.onResume();
+
+        mapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                LatLng place = new LatLng(postPlace.getPostPlaceLat(), postPlace.getPostPlaceLng());
+
+                googleMap.addMarker(new MarkerOptions()
+                        .position(place)
+                        .title(postPlace.getPostPlaceName()));
+
+                // For zooming automatically to the location of the marker
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(place)
+                        .zoom(15)
+                        .build();
+                googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            }
+        });
+    }
+
+
 }

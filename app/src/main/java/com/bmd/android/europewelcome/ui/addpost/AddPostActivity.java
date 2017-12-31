@@ -40,16 +40,23 @@ import android.widget.Toast;
 
 import com.bmd.android.europewelcome.R;
 import com.bmd.android.europewelcome.data.firebase.model.PostImage;
+import com.bmd.android.europewelcome.data.firebase.model.PostPlace;
 import com.bmd.android.europewelcome.data.firebase.model.PostText;
 import com.bmd.android.europewelcome.di.module.GlideApp;
 import com.bmd.android.europewelcome.ui.base.BaseActivity;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.Collections;
 import java.util.List;
@@ -68,14 +75,13 @@ import pub.devrel.easypermissions.EasyPermissions;
  */
 
 public class AddPostActivity extends BaseActivity implements AddPostMvpView,
-        EasyPermissions.PermissionCallbacks, OnMapReadyCallback {
+        EasyPermissions.PermissionCallbacks {
 
     private static final int RC_CHOOSE_PHOTO = 101;
     private static final int RC_IMAGE_PERMS = 102;
+    private static final int PLACE_PICKER_REQUEST = 1;
     private static final String PERMS = Manifest.permission.READ_EXTERNAL_STORAGE;
     private static final String TAG = "AddPostActivity";
-
-    private StorageReference mImageRef;
 
     @Inject
     AddPostMvpPresenter<AddPostMvpView> mPresenter;
@@ -126,6 +132,12 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
+
+        try {
+            MapsInitializer.initialize(this.getApplicationContext());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @OnClick(R.id.iv_addpost_texticon)
@@ -154,7 +166,16 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
 
     @OnClick(R.id.iv_addpost_locationicon)
     void onLocationIconClick(){
-        attachPostMapLayout();
+        //Instantiate Google PlacePicker API
+        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+
+        try {
+            startActivityForResult(builder.build(this), PLACE_PICKER_REQUEST);
+        } catch (GooglePlayServicesRepairableException e) {
+            e.printStackTrace();
+        } catch (GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+        }
     }
 
     @OnClick(R.id.iv_addpost_videoicon)
@@ -165,6 +186,23 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(this, data);
+                //attach map layout with selected place
+                PostPlace postPlace = mPresenter.newPostPlace();
+                postPlace.setPostPlaceAddress(place.getAddress().toString());
+                postPlace.setPostPlaceName(place.getName().toString());
+                postPlace.setPostPlaceLat(place.getLatLng().latitude);
+                postPlace.setPostPlaceLng(place.getLatLng().longitude);
+                attachPostMapLayout(postPlace);
+
+                String toastMsg = String.format("Place: %s", place.getName() + " " + place.getLatLng().toString());
+                Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+
+            }
+        }
 
         if (requestCode == RC_CHOOSE_PHOTO) {
             if (resultCode == RESULT_OK) {
@@ -387,8 +425,9 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
     }
 
     @Override
-    public void attachPostMapLayout() {
+    public void attachPostMapLayout(PostPlace postPlace) {
 
+        mPresenter.addPostPlaceToList(postPlace);
         MapView mapView;
 
         final View mapLayout = LayoutInflater.from(this)
@@ -402,13 +441,30 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
             public void onClick(View view) {
                 View parentView = (View) view.getParent();
                 mPostContentLl.removeView(parentView);
+                mPresenter.removePostPlaceFromList(postPlace);
             }
         });
 
         mapView = mapLayout.findViewById(R.id.mv_addpostitem_map);
         mapView.onCreate(null);
+        mapView.onResume();
 
-        mapView.getMapAsync(this);
+        mapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                // Add a marker in Sydney, Australia,
+                // and move the map's camera to the same location.
+                LatLng place = new LatLng(postPlace.getPostPlaceLat(), postPlace.getPostPlaceLng());
+                googleMap.addMarker(new MarkerOptions()
+                        .position(place)
+                        .title(postPlace.getPostPlaceName()));
+
+                // For zooming automatically to the location of the marker
+                CameraPosition cameraPosition = new CameraPosition.Builder().target(place).zoom(15).build();
+                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            }
+        });
+
     }
 
     @Override
@@ -437,8 +493,4 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
         }
     }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
-    }
 }
