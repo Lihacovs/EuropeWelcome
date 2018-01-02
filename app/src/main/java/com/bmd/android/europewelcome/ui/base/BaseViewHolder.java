@@ -18,6 +18,8 @@ package com.bmd.android.europewelcome.ui.base;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.bmd.android.europewelcome.data.firebase.model.PostSection;
+
 /**
  * Base Holder
  */
@@ -32,7 +34,7 @@ public abstract class BaseViewHolder extends RecyclerView.ViewHolder {
 
     protected abstract void clear();
 
-    public void onBind(int position) {
+    public void onBind(int position, PostSection model) {
         mCurrentPosition = position;
         clear();
     }

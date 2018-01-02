@@ -21,9 +21,11 @@ import android.content.Intent;
 import android.net.Uri;
 
 import com.bmd.android.europewelcome.data.firebase.FirebaseHelper;
+import com.bmd.android.europewelcome.data.firebase.model.PostComment;
 import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.data.firebase.model.PostImage;
 import com.bmd.android.europewelcome.data.firebase.model.PostPlace;
+import com.bmd.android.europewelcome.data.firebase.model.PostSection;
 import com.bmd.android.europewelcome.data.firebase.model.PostText;
 import com.bmd.android.europewelcome.data.network.NetworkHelper;
 import com.bmd.android.europewelcome.data.prefs.PreferencesHelper;
@@ -236,6 +238,16 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Query getPostCommentsQuery(String postId) {
+        return mFirebaseHelper.getPostCommentsQuery(postId);
+    }
+
+    @Override
+    public Query getPostSectionQuery(String postId) {
+        return mFirebaseHelper.getPostSectionQuery(postId);
+    }
+
+    @Override
     public Task<Void> savePost(Post post) {
         return mFirebaseHelper.savePost(post);
     }
@@ -253,6 +265,16 @@ public class AppDataManager implements DataManager {
     @Override
     public Task<Void> savePostPlace(String postId, PostPlace postPlace) {
         return mFirebaseHelper.savePostPlace(postId, postPlace);
+    }
+
+    @Override
+    public Task<Void> savePostSection(PostSection postSection, String postId) {
+        return mFirebaseHelper.savePostSection(postSection, postId);
+    }
+
+    @Override
+    public Task<Void> saveComment(String postId, PostComment postComment) {
+        return mFirebaseHelper.saveComment(postId, postComment);
     }
 
     @Override
@@ -283,6 +305,11 @@ public class AppDataManager implements DataManager {
     @Override
     public Task<QuerySnapshot> getPostPlaceList(String postId) {
         return mFirebaseHelper.getPostPlaceList(postId);
+    }
+
+    @Override
+    public Task<QuerySnapshot> getPostCommentList(String postId) {
+        return mFirebaseHelper.getPostCommentList(postId);
     }
 
     @Override

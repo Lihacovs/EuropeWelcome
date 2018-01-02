@@ -18,9 +18,7 @@ package com.bmd.android.europewelcome.ui.addpost;
 import android.net.Uri;
 
 import com.bmd.android.europewelcome.data.firebase.model.Post;
-import com.bmd.android.europewelcome.data.firebase.model.PostImage;
-import com.bmd.android.europewelcome.data.firebase.model.PostPlace;
-import com.bmd.android.europewelcome.data.firebase.model.PostText;
+import com.bmd.android.europewelcome.data.firebase.model.PostSection;
 import com.bmd.android.europewelcome.ui.base.MvpPresenter;
 
 /**
@@ -29,7 +27,7 @@ import com.bmd.android.europewelcome.ui.base.MvpPresenter;
 
 public interface AddPostMvpPresenter<V extends AddPostMvpView> extends MvpPresenter<V> {
 
-    void addPostTextToList(PostText postText);
+    /*void addPostTextToList(PostText postText);
 
     void removePostTextFromList(PostText postText);
 
@@ -43,25 +41,41 @@ public interface AddPostMvpPresenter<V extends AddPostMvpView> extends MvpPresen
 
     void addPostPlaceToList(PostPlace postPlace);
 
-    void removePostPlaceFromList(PostPlace postPlace);
+    void removePostPlaceFromList(PostPlace postPlace);*/
+
+
+    void addPostSectionToList(PostSection postSection);
+
+    void removePostSectionFromList(PostSection postSection);
+
+    void updatePostSectionInList(PostSection postSection);
+
 
     void setPostTitle(String postTitle);
 
+    void setPostImageUrl(String downloadUrl);
+
+    void setPostText(String postText);
+
     void savePost();
 
-    void savePostText(PostText postText, String postId);
+    /*void savePostText(PostText postText, String postId);
 
     void savePostImage(PostImage postImage, String postId);
 
-    void savePostPlace(PostPlace postPlace, String postId);
+    void savePostPlace(PostPlace postPlace, String postId);*/
+
+    void savePostSection(PostSection postSection, String postId);
 
     void uploadFileToStorage(Uri uri);
 
     Post newPost();
 
-    PostText newPostText();
+    /*PostText newPostText();
 
     PostImage newPostImage();
 
-    PostPlace newPostPlace();
+    PostPlace newPostPlace();*/
+
+    PostSection newPostSection();
 }

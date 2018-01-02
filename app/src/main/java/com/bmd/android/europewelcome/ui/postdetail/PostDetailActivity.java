@@ -21,6 +21,9 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -31,13 +34,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bmd.android.europewelcome.R;
+import com.bmd.android.europewelcome.data.firebase.model.PostComment;
 import com.bmd.android.europewelcome.data.firebase.model.PostImage;
 import com.bmd.android.europewelcome.data.firebase.model.PostPlace;
+import com.bmd.android.europewelcome.data.firebase.model.PostSection;
 import com.bmd.android.europewelcome.data.firebase.model.PostText;
 import com.bmd.android.europewelcome.di.module.GlideApp;
 import com.bmd.android.europewelcome.ui.base.BaseActivity;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -50,6 +56,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Konstantins on 12/7/2017.
@@ -63,11 +70,20 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
     @Inject
     PostDetailMvpPresenter<PostDetailMvpView> mPresenter;
 
+    @Inject
+    LinearLayoutManager mLayoutManager;
+
+    @Inject
+    LinearLayoutManager mLayoutManager2;
+
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
     @BindView(R.id.ll_postdetail_postcontent)
     LinearLayout mPostContentLl;
+
+    @BindView(R.id.ll_postdetail_comments)
+    LinearLayout mPostCommentsLl;
 
     @BindView(R.id.tv_postdetail_posttitle)
     TextView mPostTitle;
@@ -80,6 +96,16 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
 
     @BindView(R.id.tv_postdetail_postcreationdate)
     TextView mPostDateTv;
+
+    @BindView(R.id.rv_postdetail_postsection)
+    RecyclerView mPostSectionRv;
+
+    @BindView(R.id.rv_postdetail_comments)
+    RecyclerView mRecyclerView;
+
+    PostSectionAdapter mPostSectionAdapter;
+
+    PostCommentsAdapter mPostCommentsAdapter;
 
     private String mPostId;
 
@@ -114,9 +140,65 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
+        mPresenter.setPostId(mPostId);
+
+
+        mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mPostSectionRv.setLayoutManager(mLayoutManager);
+        mPostSectionRv.setItemAnimator(new DefaultItemAnimator());
+        mPostSectionAdapter = new PostSectionAdapter(
+                new FirestoreRecyclerOptions.Builder<PostSection>()
+                        .setQuery(mPresenter.getPostSectionQuery(), PostSection.class)
+                        .build());
+        mPostSectionRv.setAdapter(mPostSectionAdapter);
+
+
+        mLayoutManager2.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(mLayoutManager2);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mPostCommentsAdapter = new PostCommentsAdapter(
+                new FirestoreRecyclerOptions.Builder<PostComment>()
+                        .setQuery(mPresenter.getPostCommentsQuery(), PostComment.class)
+                        .build());
+        //mPostCommentsAdapter.setAdapterCallback(this);
+        mRecyclerView.setAdapter(mPostCommentsAdapter);
+
+
         mPresenter.getPost(mPostId);
 
 
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mPostCommentsAdapter.startListening();
+        mPostSectionAdapter.startListening();
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mPostCommentsAdapter.stopListening();
+        mPostSectionAdapter.stopListening();
+    }
+
+
+    @OnClick(R.id.iv_postdetail_newcommentsend)
+    void onCommentSend(){
+        PostComment postComment = new PostComment(
+                mPostId,
+                null,
+                null,
+                null,
+                null,
+                "Some Awesome Post PostComment",
+                "8"
+                );
+
+        mPresenter.saveComment(mPostId, postComment);
     }
 
     @Override
@@ -230,10 +312,10 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
     @Override
     public void attachPostPlaceLayout(PostPlace postPlace) {
         final View mapLayout = LayoutInflater.from(this)
-                .inflate(R.layout.item_addpost_map, mPostContentLl, false);
+                .inflate(R.layout.item_postdetail_map, mPostContentLl, false);
         mPostContentLl.addView(mapLayout);
 
-        MapView mapView = mapLayout.findViewById(R.id.mv_addpostitem_map);
+        MapView mapView = mapLayout.findViewById(R.id.mv_postdetailitem_map);
         mapView.onCreate(null);
         mapView.onResume();
 
@@ -254,6 +336,16 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
                 googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             }
         });
+    }
+
+    @Override
+    public void attachCommentLayout(PostComment postComment) {
+        final View commentLayout = LayoutInflater.from(this)
+                .inflate(R.layout.item_postdetail_comment, mPostCommentsLl, false);
+        mPostContentLl.addView(commentLayout);
+
+        TextView commentTv = commentLayout.findViewById(R.id.tv_postdetailitem_comment);
+        commentTv.setText(postComment.getPostCommentText());
     }
 
 

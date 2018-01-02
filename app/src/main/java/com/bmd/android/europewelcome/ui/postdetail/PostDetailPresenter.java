@@ -18,6 +18,7 @@ package com.bmd.android.europewelcome.ui.postdetail;
 import android.support.annotation.NonNull;
 
 import com.bmd.android.europewelcome.data.DataManager;
+import com.bmd.android.europewelcome.data.firebase.model.PostComment;
 import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.data.firebase.model.PostImage;
 import com.bmd.android.europewelcome.data.firebase.model.PostPlace;
@@ -28,6 +29,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -49,6 +51,9 @@ public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresen
     private List<PostText> mPostTextList;
     private List<PostImage> mPostImageList;
     private List<PostPlace> mPostPlaceList;
+
+    private List<PostComment> mPostCommentList;
+
     private int mChildLayoutNum;
 
     @Inject
@@ -57,6 +62,7 @@ public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresen
         mPostTextList = new ArrayList<>();
         mPostImageList = new ArrayList<>();
         mPostPlaceList = new ArrayList<>();
+        mPostCommentList = new ArrayList<>();
     }
 
 
@@ -71,7 +77,7 @@ public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresen
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 mPost = documentSnapshot.toObject(Post.class);
-                mChildLayoutNum= mPost.getChildLayoutNum();
+                mChildLayoutNum = mPost.getChildLayoutNum();
 
                 getMvpView().setPostUserImage(mPost.getPostAuthorImageUrl());
                 getMvpView().setPostUserName(mPost.getPostAuthorName());
@@ -89,7 +95,7 @@ public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresen
     }
 
     @Override
-    public void getPostTextList(String postId){
+    public void getPostTextList(String postId) {
         getDataManager().getPostTextList(postId).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -102,7 +108,7 @@ public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresen
     }
 
     @Override
-    public void getPostImageList(String postId){
+    public void getPostImageList(String postId) {
         getDataManager().getPostImageList(postId).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -122,39 +128,78 @@ public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresen
                 for (DocumentSnapshot document : task.getResult()) {
                     mPostPlaceList.add(document.toObject(PostPlace.class));
                 }
+                //getPostCommentList(mPost.getPostId());
                 attachContentToLayout();
             }
         });
+    }
+
+    @Override
+    public void getPostCommentList(String postId) {
+        getDataManager().getPostCommentList(postId).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                for (DocumentSnapshot document : task.getResult()) {
+                    mPostCommentList.add(document.toObject(PostComment.class));
+                }
+                attachContentToLayout();
+            }
+        });
+    }
+
+    @Override
+    public Query getPostCommentsQuery() {
+        return getDataManager().getPostCommentsQuery(mPostId);
+    }
+
+    @Override
+    public Query getPostSectionQuery() {
+        return getDataManager().getPostSectionQuery(mPostId);
     }
 
     /**
      * Attaches Post's content {@link PostImage}, {@link PostText} to layout in particular order
      */
     //TODO: Error on activity close before loop finish
+    //TODO: Find if it possible to use adapter and ViewHolders to load data to layout
     @Override
     public void attachContentToLayout() {
-        for(int i=0; i<=mChildLayoutNum; i++){
-            for (PostText postText : mPostTextList){
-                if(postText.getLayoutOrderNum() == i) {
+        for (int i = 0; i <= mChildLayoutNum; i++) {
+            for (PostText postText : mPostTextList) {
+                if (postText.getLayoutOrderNum() == i) {
                     getMvpView().attachPostTextLayout(postText);
                     break;
                 }
             }
 
-            for(PostImage postImage: mPostImageList){
-                if(postImage.getLayoutOrderNum() == i) {
+            for (PostImage postImage : mPostImageList) {
+                if (postImage.getLayoutOrderNum() == i) {
                     getMvpView().attachPostImageLayout(postImage);
                     break;
                 }
             }
 
-            for(PostPlace postPlace: mPostPlaceList){
-                if(postPlace.getLayoutOrderNum() == i) {
+            for (PostPlace postPlace : mPostPlaceList) {
+                if (postPlace.getLayoutOrderNum() == i) {
                     getMvpView().attachPostPlaceLayout(postPlace);
                     break;
                 }
             }
-
         }
+
+        /*for (PostComment postComment : mPostCommentList) {
+            getMvpView().attachCommentLayout(postComment);
+        }*/
+    }
+
+    @Override
+    public void saveComment(String postId, PostComment postComment) {
+        getDataManager().saveComment(postId, postComment)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                    }
+                });
     }
 }

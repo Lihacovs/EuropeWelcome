@@ -21,9 +21,7 @@ import android.util.Log;
 
 import com.bmd.android.europewelcome.data.DataManager;
 import com.bmd.android.europewelcome.data.firebase.model.Post;
-import com.bmd.android.europewelcome.data.firebase.model.PostImage;
-import com.bmd.android.europewelcome.data.firebase.model.PostPlace;
-import com.bmd.android.europewelcome.data.firebase.model.PostText;
+import com.bmd.android.europewelcome.data.firebase.model.PostSection;
 import com.bmd.android.europewelcome.ui.base.BasePresenter;
 import com.bmd.android.europewelcome.utils.CommonUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -46,9 +44,10 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
 
     private static final String TAG = "AddPostPresenter";
 
-    private List<PostImage> mPostImageList;
+    /*private List<PostImage> mPostImageList;
     private List<PostText> mPostTextList;
-    private List<PostPlace> mPostPlaceList;
+    private List<PostPlace> mPostPlaceList;*/
+    private List<PostSection> mPostSectionList;
     private Post mPost;
     private int mLayoutOrderNum = 1;
 
@@ -56,14 +55,15 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
     public AddPostPresenter(DataManager dataManager) {
         super(dataManager);
 
-        mPostTextList = new ArrayList<>();
+        /*mPostTextList = new ArrayList<>();
         mPostImageList = new ArrayList<>();
-        mPostPlaceList = new ArrayList<>();
+        mPostPlaceList = new ArrayList<>();*/
+        mPostSectionList = new ArrayList<>();
         mPost = newPost();
     }
 
 
-    @Override
+    /*@Override
     public void addPostTextToList(PostText postText) {
         mPostTextList.add(postText);
     }
@@ -75,7 +75,7 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
 
     @Override
     public void updatePostTextInList(PostText postText) {
-        mPostTextList.set(mPostTextList.indexOf(postText),postText);
+        mPostTextList.set(mPostTextList.indexOf(postText), postText);
     }
 
     @Override
@@ -101,6 +101,21 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
     @Override
     public void removePostPlaceFromList(PostPlace postPlace) {
         mPostPlaceList.remove(postPlace);
+    }*/
+
+    @Override
+    public void addPostSectionToList(PostSection postSection) {
+        mPostSectionList.add(postSection);
+    }
+
+    @Override
+    public void removePostSectionFromList(PostSection postSection) {
+        mPostSectionList.remove(postSection);
+    }
+
+    @Override
+    public void updatePostSectionInList(PostSection postSection) {
+        mPostSectionList.set(mPostSectionList.indexOf(postSection), postSection);
     }
 
     @Override
@@ -108,20 +123,35 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
         mPost.setPostTitle(postTitle);
     }
 
+
+    @Override
+    public void setPostImageUrl(String downloadUrl) {
+        if (mPost.getPostImageUrl() == null) {
+            mPost.setPostImageUrl(downloadUrl);
+        }
+    }
+
+    @Override
+    public void setPostText(String postText) {
+        if (mPost.getPostText() == null) {
+            mPost.setPostText(postText);
+        }
+    }
+
     @Override
     public void savePost() {
 
-        if(mPost.getPostText()==null){
-            if (!mPostTextList.isEmpty() && mPostTextList.size() > 0) {
-                mPost.setPostText(mPostTextList.get(0).getPostText());
+        /*if (mPost.getPostText() == null) {
+            if (!mPostSectionList.isEmpty() && mPostSectionList.size() > 0) {
+                mPost.setPostText(mPostSectionList.get(0).getPostText());
             }
         }
 
-        if(mPost.getPostImageUrl()==null){
-            if (!mPostImageList.isEmpty() && mPostImageList.size() > 0) {
-                mPost.setPostImageUrl(mPostImageList.get(0).getPostImageUrl());
+        if (mPost.getPostImageUrl() == null) {
+            if (!mPostSectionList.isEmpty() && mPostSectionList.size() > 0) {
+                mPost.setPostImageUrl(mPostSectionList.get(0).getPostImageUrl());
             }
-        }
+        }*/
 
         mPost.setChildLayoutNum(mLayoutOrderNum);
 
@@ -129,7 +159,11 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
             @Override
             public void onComplete(@NonNull Task<Void> task) {
 
-                for (PostText postText : mPostTextList) {
+                for (PostSection postSection : mPostSectionList) {
+                    savePostSection(postSection, mPost.getPostId());
+                }
+
+                /*for (PostText postText : mPostTextList) {
                     savePostText(postText, mPost.getPostId());
                 }
 
@@ -139,13 +173,13 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
 
                 for (PostPlace postPlace : mPostPlaceList) {
                     savePostPlace(postPlace, mPost.getPostId());
-                }
+                }*/
 
             }
         });
     }
 
-    @Override
+    /*@Override
     public void savePostText(final PostText postText, final String postId) {
         getDataManager().savePostText(postId, postText).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -183,6 +217,17 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
 
             }
         });
+    }*/
+
+    @Override
+    public void savePostSection(PostSection postSection, String postId) {
+        getDataManager().savePostSection(postSection, postId)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                    }
+                });
     }
 
     @Override
@@ -190,19 +235,22 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
         getMvpView().showMessage("Uploading...");
         getDataManager().uploadFileToStorage(uri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Log.d(TAG, "uploadPhoto:onSuccess:" +
-                        taskSnapshot.getMetadata().getReference().getPath());
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Log.d(TAG, "uploadPhoto:onSuccess:" +
+                                taskSnapshot.getMetadata().getReference().getPath());
 
-                String downloadUrl = taskSnapshot.getDownloadUrl().toString();
-                PostImage postImage = newPostImage();
-                postImage.setPostImageUrl(downloadUrl);
-                getMvpView().attachPostImageLayout(postImage);
+                        String downloadUrl = taskSnapshot.getDownloadUrl().toString();
+                        PostSection postSection = newPostSection();
+                        postSection.setPostSectionViewType("Image");
+                        postSection.setPostImageUrl(downloadUrl);
+                        getMvpView().attachPostImageLayout(postSection);
 
-                getMvpView().showMessage("Image uploaded");
-            }
-        }).removeOnFailureListener(new OnFailureListener() {
+                        setPostImageUrl(downloadUrl);
+
+                        getMvpView().showMessage("Image uploaded");
+                    }
+                }).removeOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Log.w(TAG, "uploadPhoto:onError", e);
@@ -212,49 +260,67 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
     }
 
     @Override
-    public Post newPost(){
+    public Post newPost() {
         return new Post(getDataManager().getCurrentUserId()
-                ,getDataManager().getCurrentUserName()
-                ,getDataManager().getCurrentUserProfilePicUrl()
-                ,null
-                ,null
-                ,"1"
-                ,"1"
-                ,null
+                , getDataManager().getCurrentUserName()
+                , getDataManager().getCurrentUserProfilePicUrl()
+                , null
+                , null
+                , "1"
+                , "1"
+                , null
                 , CommonUtils.getCurrentDate()
-                ,0
+                , 0
         );
     }
 
-    @Override
-    public PostText newPostText(){
+    /*@Override
+    public PostText newPostText() {
         return new PostText(null
-                ,14
-                ,false
-                ,false
+                , 14
+                , false
+                , false
                 , CommonUtils.getTimeStamp()
-                ,mLayoutOrderNum++
+                , mLayoutOrderNum++
         );
     }
 
     @Override
-    public PostImage newPostImage(){
+    public PostImage newPostImage() {
         return new PostImage(null
-                ,null
-                ,CommonUtils.getTimeStamp()
-                ,mLayoutOrderNum++
+                , null
+                , CommonUtils.getTimeStamp()
+                , mLayoutOrderNum++
         );
     }
 
     @Override
     public PostPlace newPostPlace() {
         return new PostPlace(null
-                ,null
-                ,0
-                ,0
-                ,CommonUtils.getTimeStamp()
-                ,mLayoutOrderNum++
+                , null
+                , 0
+                , 0
+                , CommonUtils.getTimeStamp()
+                , mLayoutOrderNum++
         );
+    }*/
+
+    @Override
+    public PostSection newPostSection() {
+        return new PostSection(null,
+                CommonUtils.getCurrentDate(),
+                CommonUtils.getTimeStamp(),
+                mLayoutOrderNum++,
+                null,
+                14,
+                false,
+                false,
+                null,
+                null,
+                null,
+                null,
+                0,
+                0);
     }
 }
 

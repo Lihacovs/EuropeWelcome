@@ -129,6 +129,11 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"/>
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_postdetail_postsection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/cl_postdetail_commentscontainer"
                 android:layout_width="match_parent"
@@ -151,7 +156,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:text="Type New Comment"
-                    app:layout_constraintBottom_toTopOf="@+id/rv_postdetail_comments"
+                    app:layout_constraintBottom_toTopOf="@+id/ll_postdetail_comments"
                     app:layout_constraintEnd_toStartOf="@+id/iv_postdetail_newcommentsend"
                     app:layout_constraintStart_toEndOf="@+id/iv_postdetail_newcommentimage"
                     app:layout_constraintTop_toTopOf="parent"/>
@@ -162,11 +167,20 @@
                     android:layout_height="36dp"
                     android:layout_margin="8dp"
                     android:contentDescription="TODO"
-                    app:layout_constraintBottom_toTopOf="@+id/rv_postdetail_comments"
+                    app:layout_constraintBottom_toTopOf="@+id/ll_postdetail_comments"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_send_black_24dp"/>
 
+                <LinearLayout
+                    android:id="@+id/ll_postdetail_comments"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:orientation="vertical"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_postdetail_newcommentimage"/>
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_postdetail_comments"
                     android:layout_width="match_parent"
@@ -178,7 +192,6 @@
                     tools:listitem="@layout/item_postdetail_comment"/>
 
             </android.support.constraint.ConstraintLayout>
-
         </LinearLayout>
     </ScrollView>
 

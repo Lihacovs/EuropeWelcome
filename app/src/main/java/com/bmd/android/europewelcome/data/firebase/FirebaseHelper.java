@@ -17,9 +17,11 @@ package com.bmd.android.europewelcome.data.firebase;
 
 import android.net.Uri;
 
+import com.bmd.android.europewelcome.data.firebase.model.PostComment;
 import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.data.firebase.model.PostImage;
 import com.bmd.android.europewelcome.data.firebase.model.PostPlace;
+import com.bmd.android.europewelcome.data.firebase.model.PostSection;
 import com.bmd.android.europewelcome.data.firebase.model.PostText;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -70,6 +72,10 @@ public interface FirebaseHelper {
 
     Query getPostsQueryOrderedByDate();
 
+    Query getPostCommentsQuery(String postId);
+
+    Query getPostSectionQuery(String postId);
+
     Task<Void> savePost(Post post);
 
     Task<Void> savePostText(String postId, PostText postText);
@@ -77,6 +83,10 @@ public interface FirebaseHelper {
     Task<Void> savePostImage(String postId, PostImage postImage);
 
     Task<Void> savePostPlace(String postId, PostPlace postPlace);
+
+    Task<Void> savePostSection(PostSection postSection, String postId);
+
+    Task<Void> saveComment(String postId, PostComment postComment);
 
     Task<Void> updatePost(Post post);
 
@@ -89,4 +99,6 @@ public interface FirebaseHelper {
     Task<QuerySnapshot> getPostImageList(String postId);
 
     Task<QuerySnapshot> getPostPlaceList(String postId);
+
+    Task<QuerySnapshot> getPostCommentList(String postId);
 }

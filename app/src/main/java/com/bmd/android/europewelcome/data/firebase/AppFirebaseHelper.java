@@ -17,9 +17,11 @@ package com.bmd.android.europewelcome.data.firebase;
 
 import android.net.Uri;
 
+import com.bmd.android.europewelcome.data.firebase.model.PostComment;
 import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.data.firebase.model.PostImage;
 import com.bmd.android.europewelcome.data.firebase.model.PostPlace;
+import com.bmd.android.europewelcome.data.firebase.model.PostSection;
 import com.bmd.android.europewelcome.data.firebase.model.PostText;
 import com.bmd.android.europewelcome.utils.AppConstants;
 import com.google.android.gms.tasks.Task;
@@ -160,6 +162,23 @@ public class AppFirebaseHelper implements FirebaseHelper {
     }
 
     @Override
+    public Query getPostCommentsQuery(String postId) {
+        return mFirestore
+                .collection(AppConstants.POSTS_COLLECTION)
+                .document(postId)
+                .collection(AppConstants.COMMENT_COLLECTION);
+    }
+
+    @Override
+    public Query getPostSectionQuery(String postId) {
+        return mFirestore
+                .collection(AppConstants.POSTS_COLLECTION)
+                .document(postId)
+                .collection(AppConstants.POST_SECTION_COLLECTION)
+                .orderBy("layoutOrderNum", Query.Direction.ASCENDING);
+    }
+
+    @Override
     public Task<Void> savePost(Post post) {
         return mFirestore.collection("posts").document(post.getPostId()).set(post);
     }
@@ -192,6 +211,26 @@ public class AppFirebaseHelper implements FirebaseHelper {
                 .collection(AppConstants.POST_PLACE_COLLECTION)
                 .document(postPlace.getPostPlaceId())
                 .set(postPlace);
+    }
+
+    @Override
+    public Task<Void> savePostSection(PostSection postSection, String postId) {
+        return mFirestore
+                .collection(AppConstants.POSTS_COLLECTION)
+                .document(postId)
+                .collection(AppConstants.POST_SECTION_COLLECTION)
+                .document(postSection.getPostSectionId())
+                .set(postSection);
+    }
+
+    @Override
+    public Task<Void> saveComment(String postId, PostComment postComment) {
+        return mFirestore
+                .collection(AppConstants.POSTS_COLLECTION)
+                .document(postId)
+                .collection(AppConstants.COMMENT_COLLECTION)
+                .document(postComment.getPostCommentId())
+                .set(postComment);
     }
 
     @Override
@@ -231,6 +270,15 @@ public class AppFirebaseHelper implements FirebaseHelper {
                 .collection(AppConstants.POSTS_COLLECTION)
                 .document(postId)
                 .collection(AppConstants.POST_PLACE_COLLECTION);
+        return colRef.get();
+    }
+
+    @Override
+    public Task<QuerySnapshot> getPostCommentList(String postId) {
+        CollectionReference colRef = mFirestore
+                .collection(AppConstants.POSTS_COLLECTION)
+                .document(postId)
+                .collection(AppConstants.COMMENT_COLLECTION);
         return colRef.get();
     }
 

@@ -15,8 +15,10 @@
 
 package com.bmd.android.europewelcome.ui.postdetail;
 
+import com.bmd.android.europewelcome.data.firebase.model.PostComment;
 import com.bmd.android.europewelcome.ui.base.MvpPresenter;
 import com.bmd.android.europewelcome.ui.base.MvpView;
+import com.google.firebase.firestore.Query;
 
 /**
  * Created by Konstantins on 12/7/2017.
@@ -34,5 +36,13 @@ public interface PostDetailMvpPresenter<V extends MvpView> extends MvpPresenter<
 
     void getPostPlaceList(String postId);
 
+    void getPostCommentList(String postId);
+
+    Query getPostCommentsQuery();
+
+    Query getPostSectionQuery();
+
     void attachContentToLayout();
+
+    void saveComment(String postId, PostComment postComment);
 }

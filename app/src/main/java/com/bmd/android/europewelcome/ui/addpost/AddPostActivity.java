@@ -39,9 +39,7 @@ import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.bmd.android.europewelcome.R;
-import com.bmd.android.europewelcome.data.firebase.model.PostImage;
-import com.bmd.android.europewelcome.data.firebase.model.PostPlace;
-import com.bmd.android.europewelcome.data.firebase.model.PostText;
+import com.bmd.android.europewelcome.data.firebase.model.PostSection;
 import com.bmd.android.europewelcome.di.module.GlideApp;
 import com.bmd.android.europewelcome.ui.base.BaseActivity;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
@@ -142,7 +140,7 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
 
     @OnClick(R.id.iv_addpost_texticon)
     void onTextIconClick(){
-        attachPostTextLayout(mPresenter.newPostText());
+        attachPostTextLayout(mPresenter.newPostSection());
         mScrollView.post(new Runnable() {
             @Override
             public void run() {
@@ -191,12 +189,14 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(this, data);
                 //attach map layout with selected place
-                PostPlace postPlace = mPresenter.newPostPlace();
-                postPlace.setPostPlaceAddress(place.getAddress().toString());
-                postPlace.setPostPlaceName(place.getName().toString());
-                postPlace.setPostPlaceLat(place.getLatLng().latitude);
-                postPlace.setPostPlaceLng(place.getLatLng().longitude);
-                attachPostMapLayout(postPlace);
+                PostSection postSection = mPresenter.newPostSection();
+                postSection.setPostSectionViewType("Map");
+                postSection.setPostPlaceAddress(place.getAddress().toString());
+                postSection.setPostPlaceName(place.getName().toString());
+                postSection.setPostPlaceLat(place.getLatLng().latitude);
+                postSection.setPostPlaceLng(place.getLatLng().longitude);
+
+                attachPostMapLayout(postSection);
 
                 String toastMsg = String.format("Place: %s", place.getName() + " " + place.getLatLng().toString());
                 Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
@@ -271,13 +271,13 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
 
     /**
      * Handles actions in new added PostImage block layout
-     * @param postImage PostImage to attach
+     * @param postSection PostSection entity of image to attach
      */
     @Override
-    public void attachPostImageLayout(final PostImage postImage){
+    public void attachPostImageLayout(PostSection postSection){
         final ImageView imageIv;
         //Adds PostImage to list and to layout
-        mPresenter.addPostImageToList(postImage);
+        mPresenter.addPostSectionToList(postSection);
 
         View imageView = LayoutInflater.from(this)
                 .inflate(R.layout.item_addpost_image, mPostContentLl, false);
@@ -285,7 +285,7 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
 
         imageIv = imageView.findViewById(R.id.iv_addpostitem_image);
         GlideApp.with(this)
-                .load(postImage.getPostImageUrl())
+                .load(postSection.getPostImageUrl())
                 .centerCrop()
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(imageIv);
@@ -295,7 +295,7 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
         deleteImageIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mPresenter.removePostImageFromList(postImage);
+                mPresenter.removePostSectionFromList(postSection);
                 View parentView = (View) view.getParent();
                 mPostContentLl.removeView(parentView);
             }
@@ -304,13 +304,14 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
 
     /**
      * Handles actions in added PostText block layout
-     * @param postText PostText entity to attach
+     * @param postSection PostSection entity of text to attach
      */
     @Override
-    public void attachPostTextLayout(final PostText postText){
+    public void attachPostTextLayout(PostSection postSection){
         final EditText textEt;
         //Adds PostText to list and to layout
-        mPresenter.addPostTextToList(postText);
+        postSection.setPostSectionViewType("Text");
+        mPresenter.addPostSectionToList(postSection);
 
         final View textLayout = LayoutInflater.from(this)
                 .inflate(R.layout.item_addpost_text, mPostContentLl, false);
@@ -323,7 +324,7 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
             public void onClick(View view) {
                 View parentView = (View) view.getParent();
                 mPostContentLl.removeView(parentView);
-                mPresenter.removePostTextFromList(postText);
+                mPresenter.removePostSectionFromList(postSection);
             }
         });
 
@@ -337,8 +338,9 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
                     //removing focus from textPost block will trigger post update
-                    postText.setPostText(textEt.getText().toString());
-                    mPresenter.updatePostTextInList(postText);
+                    postSection.setPostText(textEt.getText().toString());
+                    mPresenter.updatePostSectionInList(postSection);
+                    mPresenter.setPostText(postSection.getPostText());
                 }
             }
         });
@@ -352,24 +354,24 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
                     textEt.setTypeface(Typeface.DEFAULT);
                     formatBoldIv.setImageDrawable(ResourcesCompat.getDrawable(
                             getResources(), R.drawable.ic_format_bold_black_24dp, null));
-                    postText.setPostTextBold(false);
+                    postSection.setPostTextBold(false);
                 } else if (textEt.getTypeface().getStyle() == Typeface.ITALIC) {
                     textEt.setTypeface(textEt.getTypeface(), Typeface.BOLD_ITALIC);
                     formatBoldIv.setImageDrawable(ResourcesCompat.getDrawable(
                             getResources(), R.drawable.ic_format_bold_off_black_24dp, null));
-                    postText.setPostTextBold(true);
+                    postSection.setPostTextBold(true);
                 } else if (textEt.getTypeface().getStyle() == Typeface.BOLD_ITALIC) {
                     textEt.setTypeface(textEt.getTypeface(), Typeface.ITALIC);
                     formatBoldIv.setImageDrawable(ResourcesCompat.getDrawable(
                             getResources(), R.drawable.ic_format_bold_black_24dp, null));
-                    postText.setPostTextBold(false);
+                    postSection.setPostTextBold(false);
                 } else {
                     textEt.setTypeface(textEt.getTypeface(), Typeface.BOLD);
                     formatBoldIv.setImageDrawable(ResourcesCompat.getDrawable(
                             getResources(), R.drawable.ic_format_bold_off_black_24dp, null));
-                    postText.setPostTextBold(true);
+                    postSection.setPostTextBold(true);
                 }
-                mPresenter.updatePostTextInList(postText);
+                mPresenter.updatePostSectionInList(postSection);
             }
 
         });
@@ -383,24 +385,24 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
                     textEt.setTypeface(Typeface.DEFAULT);
                     formatItalicIv.setImageDrawable(ResourcesCompat.getDrawable(
                             getResources(), R.drawable.ic_format_italic_black_24dp, null));
-                    postText.setPostTextItalic(false);
+                    postSection.setPostTextItalic(false);
                 } else if (textEt.getTypeface().getStyle() == Typeface.BOLD) {
                     textEt.setTypeface(textEt.getTypeface(), Typeface.BOLD_ITALIC);
                     formatItalicIv.setImageDrawable(ResourcesCompat.getDrawable(
                             getResources(), R.drawable.ic_format_italic_off_black_24dp, null));
-                    postText.setPostTextItalic(true);
+                    postSection.setPostTextItalic(true);
                 } else if (textEt.getTypeface().getStyle() == Typeface.BOLD_ITALIC) {
                     textEt.setTypeface(textEt.getTypeface(), Typeface.ITALIC);
                     formatItalicIv.setImageDrawable(ResourcesCompat.getDrawable(
                             getResources(), R.drawable.ic_format_italic_black_24dp, null));
-                    postText.setPostTextItalic(false);
+                    postSection.setPostTextItalic(false);
                 } else {
                     textEt.setTypeface(textEt.getTypeface(), Typeface.ITALIC);
                     formatItalicIv.setImageDrawable(ResourcesCompat.getDrawable(
                             getResources(), R.drawable.ic_format_italic_off_black_24dp, null));
-                    postText.setPostTextItalic(true);
+                    postSection.setPostTextItalic(true);
                 }
-                mPresenter.updatePostTextInList(postText);
+                mPresenter.updatePostSectionInList(postSection);
             }
         });
 
@@ -418,16 +420,16 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
                     //TODO add constant to dimen file
                     textEt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
                 }
-                postText.setPostTextSize(textEt.getTextSize()/density);
-                mPresenter.updatePostTextInList(postText);
+                postSection.setPostTextSize(textEt.getTextSize()/density);
+                mPresenter.updatePostSectionInList(postSection);
             }
         });
     }
 
     @Override
-    public void attachPostMapLayout(PostPlace postPlace) {
+    public void attachPostMapLayout(PostSection postSection) {
 
-        mPresenter.addPostPlaceToList(postPlace);
+        mPresenter.addPostSectionToList(postSection);
         MapView mapView;
 
         final View mapLayout = LayoutInflater.from(this)
@@ -441,7 +443,7 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
             public void onClick(View view) {
                 View parentView = (View) view.getParent();
                 mPostContentLl.removeView(parentView);
-                mPresenter.removePostPlaceFromList(postPlace);
+                mPresenter.removePostSectionFromList(postSection);
             }
         });
 
@@ -454,10 +456,10 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
             public void onMapReady(GoogleMap googleMap) {
                 // Add a marker in Sydney, Australia,
                 // and move the map's camera to the same location.
-                LatLng place = new LatLng(postPlace.getPostPlaceLat(), postPlace.getPostPlaceLng());
+                LatLng place = new LatLng(postSection.getPostPlaceLat(), postSection.getPostPlaceLng());
                 googleMap.addMarker(new MarkerOptions()
                         .position(place)
-                        .title(postPlace.getPostPlaceName()));
+                        .title(postSection.getPostPlaceName()));
 
                 // For zooming automatically to the location of the marker
                 CameraPosition cameraPosition = new CameraPosition.Builder().target(place).zoom(15).build();

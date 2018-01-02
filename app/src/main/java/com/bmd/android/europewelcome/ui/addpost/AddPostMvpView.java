@@ -15,9 +15,7 @@
 
 package com.bmd.android.europewelcome.ui.addpost;
 
-import com.bmd.android.europewelcome.data.firebase.model.PostImage;
-import com.bmd.android.europewelcome.data.firebase.model.PostPlace;
-import com.bmd.android.europewelcome.data.firebase.model.PostText;
+import com.bmd.android.europewelcome.data.firebase.model.PostSection;
 import com.bmd.android.europewelcome.ui.base.MvpView;
 
 /**
@@ -26,11 +24,11 @@ import com.bmd.android.europewelcome.ui.base.MvpView;
 
 public interface AddPostMvpView extends MvpView {
 
-    void attachPostTextLayout(final PostText postText);
+    void attachPostTextLayout(PostSection postSection);
 
-    void attachPostImageLayout(final PostImage postImage);
+    void attachPostImageLayout(PostSection postSection);
 
-    void attachPostMapLayout(PostPlace postPlace);
+    void attachPostMapLayout(PostSection postSection);
 
     void attachPostVideoLayout();
 }
