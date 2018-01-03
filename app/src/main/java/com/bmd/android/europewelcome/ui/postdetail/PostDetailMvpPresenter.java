@@ -21,7 +21,7 @@ import com.bmd.android.europewelcome.ui.base.MvpView;
 import com.google.firebase.firestore.Query;
 
 /**
- * Created by Konstantins on 12/7/2017.
+ * Presenter interface for {@link PostDetailPresenter}
  */
 
 public interface PostDetailMvpPresenter<V extends MvpView> extends MvpPresenter<V> {
@@ -30,19 +30,11 @@ public interface PostDetailMvpPresenter<V extends MvpView> extends MvpPresenter<
 
     void getPost(String postId);
 
-    void getPostTextList(String postId);
-
-    void getPostImageList(String postId);
-
-    void getPostPlaceList(String postId);
-
-    void getPostCommentList(String postId);
-
     Query getPostCommentsQuery();
 
     Query getPostSectionQuery();
 
-    void attachContentToLayout();
-
     void saveComment(String postId, PostComment postComment);
+
+    PostComment newPostComment();
 }

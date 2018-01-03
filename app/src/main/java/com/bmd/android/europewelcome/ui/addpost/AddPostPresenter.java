@@ -44,9 +44,6 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
 
     private static final String TAG = "AddPostPresenter";
 
-    /*private List<PostImage> mPostImageList;
-    private List<PostText> mPostTextList;
-    private List<PostPlace> mPostPlaceList;*/
     private List<PostSection> mPostSectionList;
     private Post mPost;
     private int mLayoutOrderNum = 1;
@@ -55,53 +52,9 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
     public AddPostPresenter(DataManager dataManager) {
         super(dataManager);
 
-        /*mPostTextList = new ArrayList<>();
-        mPostImageList = new ArrayList<>();
-        mPostPlaceList = new ArrayList<>();*/
         mPostSectionList = new ArrayList<>();
         mPost = newPost();
     }
-
-
-    /*@Override
-    public void addPostTextToList(PostText postText) {
-        mPostTextList.add(postText);
-    }
-
-    @Override
-    public void removePostTextFromList(PostText postText) {
-        mPostTextList.remove(postText);
-    }
-
-    @Override
-    public void updatePostTextInList(PostText postText) {
-        mPostTextList.set(mPostTextList.indexOf(postText), postText);
-    }
-
-    @Override
-    public void addPostImageToList(PostImage postImage) {
-        mPostImageList.add(postImage);
-    }
-
-    @Override
-    public void removePostImageFromList(PostImage postImage) {
-        mPostImageList.remove(postImage);
-    }
-
-    @Override
-    public void updatePostImageInList(PostImage postImage) {
-        mPostImageList.set(mPostImageList.indexOf(postImage), postImage);
-    }
-
-    @Override
-    public void addPostPlaceToList(PostPlace postPlace) {
-        mPostPlaceList.add(postPlace);
-    }
-
-    @Override
-    public void removePostPlaceFromList(PostPlace postPlace) {
-        mPostPlaceList.remove(postPlace);
-    }*/
 
     @Override
     public void addPostSectionToList(PostSection postSection) {
@@ -141,18 +94,6 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
     @Override
     public void savePost() {
 
-        /*if (mPost.getPostText() == null) {
-            if (!mPostSectionList.isEmpty() && mPostSectionList.size() > 0) {
-                mPost.setPostText(mPostSectionList.get(0).getPostText());
-            }
-        }
-
-        if (mPost.getPostImageUrl() == null) {
-            if (!mPostSectionList.isEmpty() && mPostSectionList.size() > 0) {
-                mPost.setPostImageUrl(mPostSectionList.get(0).getPostImageUrl());
-            }
-        }*/
-
         mPost.setChildLayoutNum(mLayoutOrderNum);
 
         getDataManager().savePost(mPost).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -163,61 +104,9 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
                     savePostSection(postSection, mPost.getPostId());
                 }
 
-                /*for (PostText postText : mPostTextList) {
-                    savePostText(postText, mPost.getPostId());
-                }
-
-                for (PostImage postImage : mPostImageList) {
-                    savePostImage(postImage, mPost.getPostId());
-                }
-
-                for (PostPlace postPlace : mPostPlaceList) {
-                    savePostPlace(postPlace, mPost.getPostId());
-                }*/
-
             }
         });
     }
-
-    /*@Override
-    public void savePostText(final PostText postText, final String postId) {
-        getDataManager().savePostText(postId, postText).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-
-            }
-        });
-    }
-
-    @Override
-    public void savePostImage(final PostImage postImage, String postId) {
-        getDataManager().savePostImage(postId, postImage).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-            }
-        });
-    }
-
-    @Override
-    public void savePostPlace(PostPlace postPlace, String postId) {
-        getDataManager().savePostPlace(postId, postPlace).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-            }
-        });
-    }*/
 
     @Override
     public void savePostSection(PostSection postSection, String postId) {
@@ -273,37 +162,6 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
                 , 0
         );
     }
-
-    /*@Override
-    public PostText newPostText() {
-        return new PostText(null
-                , 14
-                , false
-                , false
-                , CommonUtils.getTimeStamp()
-                , mLayoutOrderNum++
-        );
-    }
-
-    @Override
-    public PostImage newPostImage() {
-        return new PostImage(null
-                , null
-                , CommonUtils.getTimeStamp()
-                , mLayoutOrderNum++
-        );
-    }
-
-    @Override
-    public PostPlace newPostPlace() {
-        return new PostPlace(null
-                , null
-                , 0
-                , 0
-                , CommonUtils.getTimeStamp()
-                , mLayoutOrderNum++
-        );
-    }*/
 
     @Override
     public PostSection newPostSection() {

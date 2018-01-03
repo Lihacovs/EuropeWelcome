@@ -22,11 +22,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bmd.android.europewelcome.R;
-import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.data.firebase.model.PostComment;
 import com.bmd.android.europewelcome.di.module.GlideApp;
 import com.bmd.android.europewelcome.ui.base.BaseViewHolder;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -35,21 +35,20 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by Konstantins on 1/2/2018.
+ * Post Comments Adapter
  */
 
 public class PostCommentsAdapter extends FirestoreRecyclerAdapter<PostComment, PostCommentsAdapter.ViewHolder> {
 
     private Callback mCallback;
-    private FirestoreRecyclerOptions<Post> mOptions;
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See
      * {@link FirestoreRecyclerOptions} for configuration options.
      *
-     * @param options
+     * @param options Query in builder
      */
-    public PostCommentsAdapter(FirestoreRecyclerOptions<PostComment> options) {
+    PostCommentsAdapter(FirestoreRecyclerOptions<PostComment> options) {
         super(options);
     }
 
@@ -107,7 +106,7 @@ public class PostCommentsAdapter extends FirestoreRecyclerAdapter<PostComment, P
 
         private PostComment mPostComment;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
@@ -127,6 +126,7 @@ public class PostCommentsAdapter extends FirestoreRecyclerAdapter<PostComment, P
                 GlideApp.with(itemView.getContext())
                         .load(postComment.getPostCommentUserImageUrl())
                         .centerCrop()
+                        .apply(RequestOptions.circleCropTransform())
                         .transition(DrawableTransitionOptions.withCrossFade())
                         .into(mPostCommentUserImageIv);
             }

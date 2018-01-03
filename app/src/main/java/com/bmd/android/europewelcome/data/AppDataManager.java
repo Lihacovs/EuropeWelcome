@@ -21,12 +21,9 @@ import android.content.Intent;
 import android.net.Uri;
 
 import com.bmd.android.europewelcome.data.firebase.FirebaseHelper;
-import com.bmd.android.europewelcome.data.firebase.model.PostComment;
 import com.bmd.android.europewelcome.data.firebase.model.Post;
-import com.bmd.android.europewelcome.data.firebase.model.PostImage;
-import com.bmd.android.europewelcome.data.firebase.model.PostPlace;
+import com.bmd.android.europewelcome.data.firebase.model.PostComment;
 import com.bmd.android.europewelcome.data.firebase.model.PostSection;
-import com.bmd.android.europewelcome.data.firebase.model.PostText;
 import com.bmd.android.europewelcome.data.network.NetworkHelper;
 import com.bmd.android.europewelcome.data.prefs.PreferencesHelper;
 import com.bmd.android.europewelcome.di.ApplicationContext;
@@ -37,7 +34,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.UploadTask;
 
 import javax.inject.Inject;
@@ -253,21 +249,6 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Task<Void> savePostText(String postId, PostText postText) {
-        return mFirebaseHelper.savePostText(postId, postText);
-    }
-
-    @Override
-    public Task<Void> savePostImage(String postId, PostImage postImage) {
-        return mFirebaseHelper.savePostImage(postId, postImage);
-    }
-
-    @Override
-    public Task<Void> savePostPlace(String postId, PostPlace postPlace) {
-        return mFirebaseHelper.savePostPlace(postId, postPlace);
-    }
-
-    @Override
     public Task<Void> savePostSection(PostSection postSection, String postId) {
         return mFirebaseHelper.savePostSection(postSection, postId);
     }
@@ -290,26 +271,6 @@ public class AppDataManager implements DataManager {
     @Override
     public UploadTask uploadFileToStorage(Uri uri) {
         return mFirebaseHelper.uploadFileToStorage(uri);
-    }
-
-    @Override
-    public Task<QuerySnapshot> getPostTextList(String postId) {
-        return mFirebaseHelper.getPostTextList(postId);
-    }
-
-    @Override
-    public Task<QuerySnapshot> getPostImageList(String postId) {
-        return mFirebaseHelper.getPostImageList(postId);
-    }
-
-    @Override
-    public Task<QuerySnapshot> getPostPlaceList(String postId) {
-        return mFirebaseHelper.getPostPlaceList(postId);
-    }
-
-    @Override
-    public Task<QuerySnapshot> getPostCommentList(String postId) {
-        return mFirebaseHelper.getPostCommentList(postId);
     }
 
     @Override

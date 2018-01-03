@@ -40,9 +40,10 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
- * Created by Konstantins on 1/2/2018.
+ * Post Section Adapter
  */
 
 public class PostSectionAdapter extends FirestoreRecyclerAdapter<PostSection, BaseViewHolder> {
@@ -52,19 +53,18 @@ public class PostSectionAdapter extends FirestoreRecyclerAdapter<PostSection, Ba
     private static final int VIEW_TYPE_VIDEO = 3;
 
     private Callback mCallback;
-    private FirestoreRecyclerOptions<PostSection> mOptions;
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See
      * {@link FirestoreRecyclerOptions} for configuration options.
      *
-     * @param options
+     * @param options Query in builder
      */
-    public PostSectionAdapter(FirestoreRecyclerOptions<PostSection> options) {
+    PostSectionAdapter(FirestoreRecyclerOptions<PostSection> options) {
         super(options);
     }
 
-    public void setAdapterCallback(Callback callback) {
+    void setAdapterCallback(Callback callback) {
         mCallback = callback;
     }
 
@@ -77,18 +77,18 @@ public class PostSectionAdapter extends FirestoreRecyclerAdapter<PostSection, Ba
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
             case VIEW_TYPE_TEXT:
-                return new TextViewHolder(
-                        LayoutInflater.from(parent.getContext()).inflate(R.layout.item_postdetail_text, parent, false));
+                return new TextViewHolder(LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_postdetail_text, parent, false));
             case VIEW_TYPE_IMAGE:
-                return new ImageViewHolder(
-                        LayoutInflater.from(parent.getContext()).inflate(R.layout.item_postdetail_image, parent, false));
+                return new ImageViewHolder(LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_postdetail_image, parent, false));
             case VIEW_TYPE_MAP:
-                return new MapViewHolder(
-                        LayoutInflater.from(parent.getContext()).inflate(R.layout.item_postdetail_map, parent, false));
+                return new MapViewHolder(LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_postdetail_map, parent, false));
             case VIEW_TYPE_VIDEO:
             default:
-                return new TextViewHolder(
-                        LayoutInflater.from(parent.getContext()).inflate(R.layout.item_postdetail_text, parent, false));
+                return new TextViewHolder(LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_postdetail_text, parent, false));
         }
     }
 
@@ -122,7 +122,7 @@ public class PostSectionAdapter extends FirestoreRecyclerAdapter<PostSection, Ba
 
     public interface Callback {
 
-        //void onStarIconClick(PostComment postComment);
+        void onZoomIconClick(PostSection postSection);
     }
 
     public class TextViewHolder extends BaseViewHolder {
@@ -130,7 +130,7 @@ public class PostSectionAdapter extends FirestoreRecyclerAdapter<PostSection, Ba
         @BindView(R.id.tv_postdetailitem_posttext)
         TextView mPostTextTv;
 
-        public TextViewHolder(View itemView) {
+        TextViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
@@ -168,18 +168,21 @@ public class PostSectionAdapter extends FirestoreRecyclerAdapter<PostSection, Ba
         @BindView(R.id.iv_postdetail_zoomimage)
         ImageView mZoomIconIv;
 
-        public ImageViewHolder(View itemView) {
+        PostSection mPostSection;
+
+        ImageViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
         protected void clear() {
             mPostImageIv.setImageDrawable(null);
-            mZoomIconIv.setImageDrawable(null);
         }
 
         public void onBind(int position, PostSection model) {
             super.onBind(position, model);
+
+            mPostSection =model;
 
             if (model.getPostImageUrl() != null) {
                 GlideApp.with(itemView.getContext())
@@ -189,6 +192,12 @@ public class PostSectionAdapter extends FirestoreRecyclerAdapter<PostSection, Ba
                         .into(mPostImageIv);
             }
         }
+
+        @OnClick(R.id.iv_postdetail_zoomimage)
+        void setZoomIconClick(){
+            if(mCallback != null)
+                mCallback.onZoomIconClick(mPostSection);
+        }
     }
 
     public class MapViewHolder extends BaseViewHolder {
@@ -196,7 +205,7 @@ public class PostSectionAdapter extends FirestoreRecyclerAdapter<PostSection, Ba
         @BindView(R.id.mv_postdetailitem_map)
         com.google.android.gms.maps.MapView mMapView;
 
-        public MapViewHolder(View itemView) {
+        MapViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

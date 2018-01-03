@@ -28,19 +28,28 @@ public class PostComment {
     private String mPostCommentUserImageUrl;
     private String mPostCommentUserName;
     private String mPostCommentCreationDate;
+    private String mPostCommentTimestamp;
     private String mPostCommentText;
     private String mPostCommentStars;
 
     public PostComment() {
     }
 
-    public PostComment(String postCommentPostId, String postCommentUserId, String postCommentUserImageUrl, String postCommentUserName, String postCommentCreationDate, String postCommentText, String postCommentStars) {
+    public PostComment(String postCommentPostId,
+                       String postCommentUserId,
+                       String postCommentUserImageUrl,
+                       String postCommentUserName,
+                       String postCommentCreationDate,
+                       String postCommentTimestamp,
+                       String postCommentText,
+                       String postCommentStars) {
         mPostCommentId = UUID.randomUUID().toString();
         mPostCommentPostId = postCommentPostId;
         mPostCommentUserId = postCommentUserId;
         mPostCommentUserImageUrl = postCommentUserImageUrl;
         mPostCommentUserName = postCommentUserName;
         mPostCommentCreationDate = postCommentCreationDate;
+        mPostCommentTimestamp = postCommentTimestamp;
         mPostCommentText = postCommentText;
         mPostCommentStars = postCommentStars;
     }
@@ -91,6 +100,14 @@ public class PostComment {
 
     public void setPostCommentCreationDate(String postCommentCreationDate) {
         mPostCommentCreationDate = postCommentCreationDate;
+    }
+
+    public String getPostCommentTimestamp() {
+        return mPostCommentTimestamp;
+    }
+
+    public void setPostCommentTimestamp(String postCommentTimestamp) {
+        mPostCommentTimestamp = postCommentTimestamp;
     }
 
     public String getPostCommentText() {

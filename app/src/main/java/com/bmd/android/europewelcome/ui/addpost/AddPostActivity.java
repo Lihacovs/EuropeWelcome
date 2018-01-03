@@ -130,7 +130,7 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
-
+        //TODO: Initialize maps once in App?
         try {
             MapsInitializer.initialize(this.getApplicationContext());
         } catch (Exception e) {
@@ -197,10 +197,6 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
                 postSection.setPostPlaceLng(place.getLatLng().longitude);
 
                 attachPostMapLayout(postSection);
-
-                String toastMsg = String.format("Place: %s", place.getName() + " " + place.getLatLng().toString());
-                Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
-
             }
         }
 

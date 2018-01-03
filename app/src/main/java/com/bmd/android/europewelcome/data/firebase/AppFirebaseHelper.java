@@ -17,12 +17,9 @@ package com.bmd.android.europewelcome.data.firebase;
 
 import android.net.Uri;
 
-import com.bmd.android.europewelcome.data.firebase.model.PostComment;
 import com.bmd.android.europewelcome.data.firebase.model.Post;
-import com.bmd.android.europewelcome.data.firebase.model.PostImage;
-import com.bmd.android.europewelcome.data.firebase.model.PostPlace;
+import com.bmd.android.europewelcome.data.firebase.model.PostComment;
 import com.bmd.android.europewelcome.data.firebase.model.PostSection;
-import com.bmd.android.europewelcome.data.firebase.model.PostText;
 import com.bmd.android.europewelcome.utils.AppConstants;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -35,7 +32,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -166,7 +162,8 @@ public class AppFirebaseHelper implements FirebaseHelper {
         return mFirestore
                 .collection(AppConstants.POSTS_COLLECTION)
                 .document(postId)
-                .collection(AppConstants.COMMENT_COLLECTION);
+                .collection(AppConstants.COMMENT_COLLECTION)
+                .orderBy("postCommentTimestamp", Query.Direction.DESCENDING);
     }
 
     @Override
@@ -181,36 +178,6 @@ public class AppFirebaseHelper implements FirebaseHelper {
     @Override
     public Task<Void> savePost(Post post) {
         return mFirestore.collection("posts").document(post.getPostId()).set(post);
-    }
-
-    @Override
-    public Task<Void> savePostText(String postId, PostText postText) {
-        return mFirestore
-                .collection(AppConstants.POSTS_COLLECTION)
-                .document(postId)
-                .collection(AppConstants.POST_TEXT_COLLECTION)
-                .document(postText.getPostTextId())
-                .set(postText);
-    }
-
-    @Override
-    public Task<Void> savePostImage(String postId, PostImage postImage) {
-        return mFirestore
-                .collection(AppConstants.POSTS_COLLECTION)
-                .document(postId)
-                .collection(AppConstants.POST_IMAGE_COLLECTION)
-                .document(postImage.getPostImageId())
-                .set(postImage);
-    }
-
-    @Override
-    public Task<Void> savePostPlace(String postId, PostPlace postPlace) {
-        return mFirestore
-                .collection(AppConstants.POSTS_COLLECTION)
-                .document(postId)
-                .collection(AppConstants.POST_PLACE_COLLECTION)
-                .document(postPlace.getPostPlaceId())
-                .set(postPlace);
     }
 
     @Override
@@ -246,44 +213,7 @@ public class AppFirebaseHelper implements FirebaseHelper {
         return docRef.get();
     }
 
-    @Override
-    public Task<QuerySnapshot> getPostTextList(String postId) {
-        CollectionReference colRef = mFirestore
-                .collection(AppConstants.POSTS_COLLECTION)
-                .document(postId)
-                .collection(AppConstants.POST_TEXT_COLLECTION);
-        return colRef.get();
-    }
-
-    @Override
-    public Task<QuerySnapshot> getPostImageList(String postId) {
-        CollectionReference colRef = mFirestore
-                .collection(AppConstants.POSTS_COLLECTION)
-                .document(postId)
-                .collection(AppConstants.POST_IMAGE_COLLECTION);
-        return colRef.get();
-    }
-
-    @Override
-    public Task<QuerySnapshot> getPostPlaceList(String postId) {
-        CollectionReference colRef = mFirestore
-                .collection(AppConstants.POSTS_COLLECTION)
-                .document(postId)
-                .collection(AppConstants.POST_PLACE_COLLECTION);
-        return colRef.get();
-    }
-
-    @Override
-    public Task<QuerySnapshot> getPostCommentList(String postId) {
-        CollectionReference colRef = mFirestore
-                .collection(AppConstants.POSTS_COLLECTION)
-                .document(postId)
-                .collection(AppConstants.COMMENT_COLLECTION);
-        return colRef.get();
-    }
-
     //=//=// F I R E B A S E  -  S T O R A G E //=//=//
-
 
     public UploadTask uploadFileToStorage(Uri uri){
         String uuid = UUID.randomUUID().toString();

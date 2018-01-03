@@ -18,27 +18,21 @@ package com.bmd.android.europewelcome.ui.postdetail;
 import android.support.annotation.NonNull;
 
 import com.bmd.android.europewelcome.data.DataManager;
-import com.bmd.android.europewelcome.data.firebase.model.PostComment;
 import com.bmd.android.europewelcome.data.firebase.model.Post;
-import com.bmd.android.europewelcome.data.firebase.model.PostImage;
-import com.bmd.android.europewelcome.data.firebase.model.PostPlace;
-import com.bmd.android.europewelcome.data.firebase.model.PostText;
+import com.bmd.android.europewelcome.data.firebase.model.PostComment;
 import com.bmd.android.europewelcome.ui.base.BasePresenter;
+import com.bmd.android.europewelcome.utils.CommonUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
 /**
- * Created by Konstantins on 12/7/2017.
+ * Post Detail Presenter
  */
 
 public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresenter<V> implements
@@ -48,21 +42,10 @@ public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresen
 
     private String mPostId;
     private Post mPost;
-    private List<PostText> mPostTextList;
-    private List<PostImage> mPostImageList;
-    private List<PostPlace> mPostPlaceList;
-
-    private List<PostComment> mPostCommentList;
-
-    private int mChildLayoutNum;
 
     @Inject
     public PostDetailPresenter(DataManager dataManager) {
         super(dataManager);
-        mPostTextList = new ArrayList<>();
-        mPostImageList = new ArrayList<>();
-        mPostPlaceList = new ArrayList<>();
-        mPostCommentList = new ArrayList<>();
     }
 
 
@@ -77,72 +60,19 @@ public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresen
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 mPost = documentSnapshot.toObject(Post.class);
-                mChildLayoutNum = mPost.getChildLayoutNum();
 
                 getMvpView().setPostUserImage(mPost.getPostAuthorImageUrl());
                 getMvpView().setPostUserName(mPost.getPostAuthorName());
                 getMvpView().setPostCreationDate(mPost.getPostCreationDate());
                 getMvpView().setPostTitle(mPost.getPostTitle());
 
-                getPostTextList(mPost.getPostId());
+                getMvpView().setPostNewCommentUserImage(getDataManager()
+                        .getCurrentUserProfilePicUrl());
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 getMvpView().showMessage("Unable to get Data");
-            }
-        });
-    }
-
-    @Override
-    public void getPostTextList(String postId) {
-        getDataManager().getPostTextList(postId).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                for (DocumentSnapshot document : task.getResult()) {
-                    mPostTextList.add(document.toObject(PostText.class));
-                }
-                getPostImageList(mPost.getPostId());
-            }
-        });
-    }
-
-    @Override
-    public void getPostImageList(String postId) {
-        getDataManager().getPostImageList(postId).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                for (DocumentSnapshot document : task.getResult()) {
-                    mPostImageList.add(document.toObject(PostImage.class));
-                }
-                getPostPlaceList(mPost.getPostId());
-            }
-        });
-    }
-
-    @Override
-    public void getPostPlaceList(String postId) {
-        getDataManager().getPostPlaceList(postId).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                for (DocumentSnapshot document : task.getResult()) {
-                    mPostPlaceList.add(document.toObject(PostPlace.class));
-                }
-                //getPostCommentList(mPost.getPostId());
-                attachContentToLayout();
-            }
-        });
-    }
-
-    @Override
-    public void getPostCommentList(String postId) {
-        getDataManager().getPostCommentList(postId).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                for (DocumentSnapshot document : task.getResult()) {
-                    mPostCommentList.add(document.toObject(PostComment.class));
-                }
-                attachContentToLayout();
             }
         });
     }
@@ -157,41 +87,6 @@ public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresen
         return getDataManager().getPostSectionQuery(mPostId);
     }
 
-    /**
-     * Attaches Post's content {@link PostImage}, {@link PostText} to layout in particular order
-     */
-    //TODO: Error on activity close before loop finish
-    //TODO: Find if it possible to use adapter and ViewHolders to load data to layout
-    @Override
-    public void attachContentToLayout() {
-        for (int i = 0; i <= mChildLayoutNum; i++) {
-            for (PostText postText : mPostTextList) {
-                if (postText.getLayoutOrderNum() == i) {
-                    getMvpView().attachPostTextLayout(postText);
-                    break;
-                }
-            }
-
-            for (PostImage postImage : mPostImageList) {
-                if (postImage.getLayoutOrderNum() == i) {
-                    getMvpView().attachPostImageLayout(postImage);
-                    break;
-                }
-            }
-
-            for (PostPlace postPlace : mPostPlaceList) {
-                if (postPlace.getLayoutOrderNum() == i) {
-                    getMvpView().attachPostPlaceLayout(postPlace);
-                    break;
-                }
-            }
-        }
-
-        /*for (PostComment postComment : mPostCommentList) {
-            getMvpView().attachCommentLayout(postComment);
-        }*/
-    }
-
     @Override
     public void saveComment(String postId, PostComment postComment) {
         getDataManager().saveComment(postId, postComment)
@@ -201,5 +96,19 @@ public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresen
 
                     }
                 });
+    }
+
+    @Override
+    public PostComment newPostComment() {
+        return new PostComment(
+                mPostId,
+                getDataManager().getCurrentUserId(),
+                getDataManager().getCurrentUserProfilePicUrl(),
+                getDataManager().getCurrentUserName(),
+                CommonUtils.getCurrentDate(),
+                CommonUtils.getTimeStamp(),
+                null,
+                "0"
+        );
     }
 }

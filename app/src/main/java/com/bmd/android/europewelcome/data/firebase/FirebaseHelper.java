@@ -17,12 +17,9 @@ package com.bmd.android.europewelcome.data.firebase;
 
 import android.net.Uri;
 
-import com.bmd.android.europewelcome.data.firebase.model.PostComment;
 import com.bmd.android.europewelcome.data.firebase.model.Post;
-import com.bmd.android.europewelcome.data.firebase.model.PostImage;
-import com.bmd.android.europewelcome.data.firebase.model.PostPlace;
+import com.bmd.android.europewelcome.data.firebase.model.PostComment;
 import com.bmd.android.europewelcome.data.firebase.model.PostSection;
-import com.bmd.android.europewelcome.data.firebase.model.PostText;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -30,7 +27,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.UploadTask;
 
 /**
@@ -39,7 +35,9 @@ import com.google.firebase.storage.UploadTask;
  */
 
 public interface FirebaseHelper {
-    //firebase methods wil go here
+
+    //=//=// F I R E B A S E  -  A U T H E N T I C A T I O N //=//=//
+
     Task<AuthResult> createUser(String email, String password);
 
     Task<AuthResult> signInUser(String email, String password);
@@ -64,6 +62,9 @@ public interface FirebaseHelper {
 
     void setUserImageUrl(Uri userImageUrl);
 
+
+    //=//=// F I R E B A S E  -  F I R E S T O R E //=//=//
+
     CollectionReference getPostsColRef();
 
     Query getPostsQueryOrderedByStars();
@@ -78,12 +79,6 @@ public interface FirebaseHelper {
 
     Task<Void> savePost(Post post);
 
-    Task<Void> savePostText(String postId, PostText postText);
-
-    Task<Void> savePostImage(String postId, PostImage postImage);
-
-    Task<Void> savePostPlace(String postId, PostPlace postPlace);
-
     Task<Void> savePostSection(PostSection postSection, String postId);
 
     Task<Void> saveComment(String postId, PostComment postComment);
@@ -92,13 +87,9 @@ public interface FirebaseHelper {
 
     Task<DocumentSnapshot> getPost(String postId);
 
+
+    //=//=// F I R E B A S E  -  S T O R A G E //=//=//
+
     UploadTask uploadFileToStorage(Uri uri);
 
-    Task<QuerySnapshot> getPostTextList(String postId);
-
-    Task<QuerySnapshot> getPostImageList(String postId);
-
-    Task<QuerySnapshot> getPostPlaceList(String postId);
-
-    Task<QuerySnapshot> getPostCommentList(String postId);
 }
