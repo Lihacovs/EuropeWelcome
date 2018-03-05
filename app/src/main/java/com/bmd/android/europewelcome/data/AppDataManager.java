@@ -76,6 +76,16 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public String getEmailUsedForServer() {
+        return mPreferencesHelper.getEmailUsedForServer();
+    }
+
+    @Override
+    public void setEmailUsedForServer(String email) {
+        mPreferencesHelper.setEmailUsedForServer(email);
+    }
+
+    @Override
     public int getCurrentUserLoggedInMode() {
         return mPreferencesHelper.getCurrentUserLoggedInMode();
     }

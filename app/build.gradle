@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        debug {
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+            storeFile file('C:/Users/Konstantins/.android/debug.keystore')
+            storePassword 'android'
+        }
+    }
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
     defaultConfig {
@@ -17,6 +25,7 @@ android {
         debug {
             buildConfigField("String", "BASE_URL", "\"http://www.mocky.io/v2\"")
             buildConfigField("String", "API_KEY", "\"ABCXYZ123TEST\"")
+            signingConfig signingConfigs.debug
         }
         release {
             minifyEnabled true
@@ -35,7 +44,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation 'pub.devrel:easypermissions:1.1.1'
-    compile 'com.android.support:multidex:1.0.1'
+    compile 'com.android.support:multidex:1.0.2'
 
     // android support libraries
     compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
@@ -57,12 +66,11 @@ dependencies {
 
     // Google Sign In SDK (only required for Google Sign In)
     compile 'com.google.android.gms:play-services-auth:11.8.0'
-
     compile 'com.google.android.gms:play-services-maps:11.8.0'
     compile 'com.google.android.gms:play-services-places:11.8.0'
 
     //Facebook Login
-    implementation 'com.facebook.android:facebook-login:[4,5)'
+    implementation 'com.facebook.android:facebook-login:4.30.0'
 
     // font
     compile "uk.co.chrisjenx:calligraphy:$rootProject.calligraphyVersion"
@@ -75,12 +83,15 @@ dependencies {
     annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
 
     // parser
+
     //compile "com.google.code.gson:gson:$rootProject.gsonVersion"
 
     // database
+
     //compile "org.greenrobot:greendao:$rootProject.greenDaoVersion"
 
     // debug database
+
     //debugCompile "com.amitshekhar.android:debug-db:$rootProject.debugDBVersion"
 
     // dependency injection
@@ -90,7 +101,9 @@ dependencies {
     compile 'javax.inject:javax.inject:1'
 
     // reactive
+
     //compile "io.reactivex.rxjava2:rxjava:$rootProject.rxjava2Version"
+
     //compile "io.reactivex.rxjava2:rxandroid:$rootProject.rxandroidVersion"
 
     // code generator for view
@@ -105,14 +118,21 @@ dependencies {
     compile "com.jakewharton.timber:timber:$rootProject.timberVersion"
 
     // dependencies for local unit tests
+
     //testCompile "junit:junit:$rootProject.ext.junitVersion"
+
     //testCompile "org.mockito:mockito-core:$rootProject.mockitoVersion"
+
     //testAnnotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"
 
     // UI Testing
+
     //androidTestCompile "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
+
     //androidTestCompile "com.android.support.test.espresso:espresso-intents:$rootProject.espressoVersion"
+
     //androidTestCompile "org.mockito:mockito-core:$rootProject.mockitoVersion"
+
     //androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"
 }
 

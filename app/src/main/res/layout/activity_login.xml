@@ -14,139 +14,148 @@
   ~ limitations under the License.
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/activity_main"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/bg_design">
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cl_root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <android.support.v7.widget.CardView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="80dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="80dp"
-        app:cardCornerRadius="7dp"
-        app:cardElevation="22dp">
+        android:fillViewport="true">
 
-        <TextView
-            style="@style/TextStyle.Heading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|top"
-            android:layout_marginTop="60dp"
-            android:text="@string/login_dummy"
-            android:textAllCaps="true"
-            android:textSize="20sp"/>
-
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/cl_login_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="20dp"
-            android:orientation="vertical">
+            android:background="@color/cornflower_blue_7"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintBottom_toTopOf="@+id/cl_login_input"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_europe_stars_24px"/>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/cl_login_input"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/gray"
-                app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toTopOf="@+id/btn_login_register"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView">
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/et_email"
-                    style="@style/TextStyle"
-                    android:layout_width="match_parent"
+                <EditText
+                    android:id="@+id/et_login_email"
+                    style="@style/TextStyle.EditText"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:background="@drawable/input_border_bottom"
-                    android:cursorVisible="true"
-                    android:gravity="center|left|bottom"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:ems="10"
                     android:hint="@string/email"
                     android:inputType="textEmailAddress"
-                    android:maxLength="50"
-                    android:paddingBottom="10dp"
-                    android:textColor="@color/black_effective"
-                    android:textSize="18sp"/>
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
 
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/password"
-                android:textColorHint="@color/gray"
-                app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
-                app:passwordToggleEnabled="true">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/et_password"
-                    style="@style/TextStyle"
-                    android:layout_width="match_parent"
+                <EditText
+                    android:id="@+id/et_login_password"
+                    style="@style/TextStyle.EditText"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="30dp"
-                    android:background="@drawable/input_border_bottom"
-                    android:cursorVisible="true"
-                    android:gravity="center|left|bottom"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:ems="10"
+                    android:hint="@string/password"
                     android:inputType="textPassword"
-                    android:maxLength="50"
-                    android:paddingBottom="10dp"
-                    android:textColor="@color/black_effective"
-                    android:textSize="18sp"/>
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/et_login_email"/>
 
-            </android.support.design.widget.TextInputLayout>
+                <com.bmd.android.europewelcome.utils.CustomButton
+                    android:id="@+id/btn_login_server"
+                    style="@style/Button.Primary"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Login"
+                    app:drawableLeftCompat="@drawable/ic_accaunt_24px"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/et_login_password"/>
+
+                <com.bmd.android.europewelcome.utils.CustomButton
+                    android:id="@+id/btn_login_google"
+                    style="@style/Button.Primary"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Sign In with Google"
+                    app:drawableLeftCompat="@drawable/ic_google_24px"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/btn_login_server"/>
+
+                <RelativeLayout
+                    android:id="@+id/rl_login_facebook"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/btn_login_google">
+
+                    <com.facebook.login.widget.LoginButton
+                        android:id="@+id/button_facebook_login"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="invisible"/>
+
+                    <com.bmd.android.europewelcome.utils.CustomButton
+                        android:id="@+id/btn_login_facebook"
+                        style="@style/Button.Primary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Sign In with Facebook"
+                        app:drawableLeftCompat="@drawable/ic_facebook_24px"/>
+                </RelativeLayout>
+
+            </android.support.constraint.ConstraintLayout>
 
             <Button
-                android:id="@+id/btn_server_login"
-                style="@style/Button.Primary"
-                android:layout_width="match_parent"
+                android:id="@+id/btn_login_register"
+                style="@style/Button.Transparent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="15dp"
-                android:padding="10dp"
-                android:text="@string/login"
-                android:textSize="18dp"/>
-        </LinearLayout>
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:text="Don't have an Account? Register"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center"
-            android:layout_marginBottom="40dp"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/ib_google_login"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@color/transparent"
-                android:scaleType="centerCrop"
-                app:srcCompat="@drawable/ic_google_plus"/>
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <com.facebook.login.widget.LoginButton
-                    android:id="@+id/button_facebook_login"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:visibility="invisible"/>
-
-                <ImageButton
-                    android:id="@+id/ib_fb_login"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="24dp"
-                    android:background="@color/transparent"
-                    android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/ic_facebook"/>
-            </RelativeLayout>
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
-
-</RelativeLayout>
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+</android.support.design.widget.CoordinatorLayout>

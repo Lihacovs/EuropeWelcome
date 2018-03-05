@@ -39,6 +39,7 @@ public class AppPreferencesHelper implements PreferencesHelper {
     private static final String PREF_KEY_CURRENT_USER_PROFILE_PIC_URL
             = "PREF_KEY_CURRENT_USER_PROFILE_PIC_URL";
     private static final String PREF_KEY_ACCESS_TOKEN = "PREF_KEY_ACCESS_TOKEN";
+    private static final String PREF_KEY_EMAIL_USED_FOR_SERVER = "PREF_EMAIL_USED_FOR_SERVER";
 
     private final SharedPreferences mPrefs;
 
@@ -107,5 +108,15 @@ public class AppPreferencesHelper implements PreferencesHelper {
     @Override
     public void setAccessToken(String accessToken) {
         mPrefs.edit().putString(PREF_KEY_ACCESS_TOKEN, accessToken).apply();
+    }
+
+    @Override
+    public String getEmailUsedForServer() {
+        return mPrefs.getString(PREF_KEY_EMAIL_USED_FOR_SERVER, null);
+    }
+
+    @Override
+    public void setEmailUsedForServer(String email) {
+        mPrefs.edit().putString(PREF_KEY_EMAIL_USED_FOR_SERVER, email).apply();
     }
 }

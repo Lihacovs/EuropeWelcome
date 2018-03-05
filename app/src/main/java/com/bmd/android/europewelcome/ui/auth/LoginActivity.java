@@ -18,22 +18,23 @@ package com.bmd.android.europewelcome.ui.auth;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
 import com.bmd.android.europewelcome.R;
+import com.bmd.android.europewelcome.ui.auth.register.RegisterFragment;
 import com.bmd.android.europewelcome.ui.base.BaseActivity;
 import com.bmd.android.europewelcome.ui.posts.PostsActivity;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
@@ -44,7 +45,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * Login Activity
+ * Login Activity. There are 3 methods to get user profile: Internal FireBase, Google, Facebook.
+ * <p>
+ * App authentication used overall flow described in:
+ * 1.FireBase Password login docs: https://firebase.google.com/docs/auth/android/password-auth
+ * 2.Google profile login docs: https://firebase.google.com/docs/auth/android/google-signin
+ * 3.Facebook profile login docs: https://firebase.google.com/docs/auth/android/facebook-login
  */
 
 public class LoginActivity extends BaseActivity implements LoginMvpView {
@@ -55,16 +61,14 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
     @Inject
     LoginMvpPresenter<LoginMvpView> mPresenter;
 
-    @BindView(R.id.et_email)
+    @BindView(R.id.et_login_email)
     EditText mEmailEditText;
 
-    @BindView(R.id.et_password)
+    @BindView(R.id.et_login_password)
     EditText mPasswordEditText;
 
     @BindView(R.id.button_facebook_login)
     LoginButton mFacebookLoginButton;
-
-    private GoogleSignInClient mGoogleSignInClient;
 
     private CallbackManager mCallbackManager;
 
@@ -77,8 +81,6 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        FacebookSdk.sdkInitialize(getApplicationContext());
-
         setContentView(R.layout.activity_login);
 
         getActivityComponent().inject(this);
@@ -87,15 +89,13 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
 
         mPresenter.onAttach(LoginActivity.this);
 
-        /*// Configure Google Sign In
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(AppConstants.CLIENT_ID_TOKEN)
-                .requestEmail()
-                .build();
+        setUp();
+    }
 
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);*/
+    @Override
+    protected void setUp() {
+        mEmailEditText.setText(mPresenter.getEmailUsedForServer());
 
-        // [START initialize_fblogin]
         // Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create();
         mFacebookLoginButton.setReadPermissions("email", "public_profile");
@@ -109,42 +109,42 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
             @Override
             public void onCancel() {
                 Log.d(TAG, "facebook:onCancel");
-                // [START_EXCLUDE]
-                //updateUI(null);
-                // [END_EXCLUDE]
+                LoginActivity.this.onError(R.string.action_canceled);
             }
 
             @Override
             public void onError(FacebookException error) {
                 Log.d(TAG, "facebook:onError", error);
-                // [START_EXCLUDE]
-                //updateUI(null);
-                // [END_EXCLUDE]
+                LoginActivity.this.onError(R.string.some_error);
             }
         });
         // [END initialize_fblogin]
     }
 
-
-
-    @OnClick(R.id.btn_server_login)
+    @OnClick(R.id.btn_login_server)
     void onServerLoginClick(View v) {
         mPresenter.onServerLoginClick(mEmailEditText.getText().toString(),
                 mPasswordEditText.getText().toString());
     }
 
-    @OnClick(R.id.ib_google_login)
+    @OnClick(R.id.btn_login_google)
     void onGoogleLoginClick(View v) {
         Intent signInIntent = mPresenter.getGoogleSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
-        //mPresenter.onGoogleLoginClick();
     }
 
-    @OnClick(R.id.ib_fb_login)
+    @OnClick(R.id.btn_login_facebook)
     void onFbLoginClick(View v) {
         mFacebookLoginButton.performClick();
     }
 
+    @OnClick(R.id.btn_login_register)
+    void onRegisterButtonClick(View v) {
+        hideKeyboard();
+        showRegisterFragment();
+    }
+
+    //Gets user data with Facebook and Google login intents
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -161,15 +161,11 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
                 mPresenter.firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
-                Log.w(TAG, "Google sign in failed", e);
-                // [START_EXCLUDE]
-                //updateUI(null);
-                // [END_EXCLUDE]
+                Log.w(TAG, "Google sign in failed" + e.getMessage(), e);
+                LoginActivity.this.onError(R.string.some_error);
             }
         }
     }
-
-
 
     @Override
     public void openMainActivity() {
@@ -178,14 +174,53 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
         finish();
     }
 
+    /**
+     * Detaches {@link RegisterFragment} from this activity
+     * @param tag {@link RegisterFragment}
+     */
     @Override
-    protected void onDestroy() {
-        mPresenter.onDetach();
-        super.onDestroy();
+    public void onFragmentDetached(String tag) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentByTag(tag);
+        if (fragment != null) {
+            fragmentManager
+                    .beginTransaction()
+                    .disallowAddToBackStack()
+                    .setCustomAnimations(R.anim.slide_left, R.anim.slide_right)
+                    .remove(fragment)
+                    .commitNow();
+        }
+    }
+
+    /**
+     * Detaches {@link RegisterFragment} from this activity on phone's back button click
+     */
+    @Override
+    public void onBackPressed() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentByTag(RegisterFragment.TAG);
+        if (fragment == null) {
+            super.onBackPressed();
+        } else {
+            onFragmentDetached(RegisterFragment.TAG);
+        }
     }
 
     @Override
-    protected void setUp() {
+    protected void onDestroy() {
+        super.onDestroy();
+        mPresenter.onDetach();
+    }
 
+    /**
+     * Attaches {@link RegisterFragment} to this activity
+     */
+    private void showRegisterFragment() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .disallowAddToBackStack()
+                .setCustomAnimations(R.anim.slide_left, R.anim.slide_right)
+                .add(R.id.cl_root_view, RegisterFragment.newInstance(), RegisterFragment.TAG)
+                .commit();
     }
 }

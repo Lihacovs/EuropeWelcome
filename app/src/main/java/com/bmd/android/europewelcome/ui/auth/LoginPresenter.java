@@ -67,11 +67,6 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
         signInFirebaseUser(email, password);
     }
 
-    @Override
-    public Intent getGoogleSignInIntent() {
-        return getDataManager().getGoogleSignInIntent();
-    }
-
     private void signInFirebaseUser(final String email, final String password){
         getDataManager().signInUser(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -91,9 +86,10 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
                             DataManager.LoggedInMode.LOGGED_IN_MODE_SERVER,
                             getDataManager().getUserName(),
                             getDataManager().getUserEmail(),
-                            getDataManager().getUserImageUrl().toString()
+                            "gs://europewelcome-bbf53.appspot.com/profileImages/nophoto.png"
                     );
 
+                    getDataManager().setEmailUsedForServer(email);
                     getMvpView().hideLoading();
                     getMvpView().openMainActivity();
                 } else {
@@ -130,6 +126,7 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
                             null
                     );
 
+                    getDataManager().setEmailUsedForServer(email);
                     getMvpView().hideLoading();
                     getMvpView().openMainActivity();
                 } else {
@@ -137,11 +134,16 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
                     if (!isViewAttached()) {
                         return;
                     }
-                    getMvpView().showMessage("user creation failed");
+                    getMvpView().onError("user creation failed");
                     getMvpView().hideLoading();
                 }
             }
         });
+    }
+
+    @Override
+    public Intent getGoogleSignInIntent() {
+        return getDataManager().getGoogleSignInIntent();
     }
 
     @Override
@@ -159,6 +161,10 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+
+                            if (!isViewAttached()) {
+                                return;
+                            }
 
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
@@ -182,10 +188,6 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
                             Log.d(TAG, "CurrentUserEmail:" + getDataManager().getCurrentUserEmail());
                             Log.d(TAG, "CurrentUserPicUrl:" + getDataManager().getCurrentUserProfilePicUrl());
 
-                            if (!isViewAttached()) {
-                                return;
-                            }
-
                             getMvpView().hideLoading();
                             getMvpView().openMainActivity();
                         } else {
@@ -200,10 +202,6 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
                         // [END_EXCLUDE]
                     }
                 });
-
-
-        getMvpView().openMainActivity();
-
     }
 
     @Override
@@ -230,7 +228,7 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
                             getDataManager().updateUserInfo(
                                     null,
                                     getDataManager().getUserId(),
-                                    DataManager.LoggedInMode.LOGGED_IN_MODE_GOOGLE,
+                                    DataManager.LoggedInMode.LOGGED_IN_MODE_FB,
                                     getDataManager().getUserName(),
                                     getDataManager().getUserEmail(),
                                     getDataManager().getUserImageUrl().toString()
@@ -246,7 +244,7 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
                             }
 
                             getMvpView().hideLoading();
-                            //getMvpView().openMainActivity();
+                            getMvpView().openMainActivity();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -260,6 +258,11 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
                         // [END_EXCLUDE]
                     }
                 });
+    }
+
+    @Override
+    public String getEmailUsedForServer() {
+        return getDataManager().getEmailUsedForServer();
     }
 
     @Override

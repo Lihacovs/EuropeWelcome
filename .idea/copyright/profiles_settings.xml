@@ -1,7 +1,7 @@
 <component name="CopyrightManager">
-  <settings default="bmd">
+  <settings default="bit">
     <module2copyright>
-      <element module="All" copyright="bmd" />
+      <element module="All" copyright="bit" />
     </module2copyright>
   </settings>
 </component>

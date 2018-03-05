@@ -17,8 +17,19 @@
     <string name="app_name">EuropeWelcome</string>
 
     <!--Facebook login-->
-    <string name="facebook_app_id">142244099814655</string>
-    <string name="fb_login_protocol_scheme">7e655f23e3117ab007aea719273f0daf</string>
+    <string name="facebook_app_id">1997719713823775</string>
+    <string name="fb_login_protocol_scheme">fb1997719713823775</string>
+
+    <!--Login-->
+    <string name="europe_welcome">Europe Welcome</string>
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+
+    <!--Login Validation-->
+    <string name="empty_email">Please provide a non empty email.</string>
+    <string name="invalid_email">Please provide a valid email.</string>
+    <string name="empty_password">Please provide a non empty password.</string>
 
     <!--Toolbar menus-->
     <string name="clear">Clear</string>
@@ -41,18 +52,8 @@
     <string name="api_retry_error">Please retry!</string>
     <string name="api_default_error">Something wrong happened!</string>
     <string name="some_error">Some Error Occurred!</string>
+    <string name="action_canceled">Action canceled!</string>
     <string name="connection_error">Internet connection lost!</string>
-
-    <!--Login-->
-    <string name="login_dummy">Login Dummy</string>
-    <string name="login">Login</string>
-    <string name="email">Email</string>
-    <string name="password">Password</string>
-
-    <!--Login Validation-->
-    <string name="empty_email">Please provide a non empty email.</string>
-    <string name="invalid_email">Please provide a valid email.</string>
-    <string name="empty_password">Please provide a non empty password.</string>
 
     <!--about fragment-->
     <string name="project_info">This sample app implements MVP architecture using Dagger2, GreenDao, RxJava, FastAndroidNetworking and PlaceholderView</string>

@@ -38,6 +38,7 @@ public class AppNetworkHelper implements NetworkHelper {
     @Inject
     public AppNetworkHelper(@ApplicationContext Context context) {
 
+        //Creates GoogleSignInClient once per app run
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(AppConstants.CLIENT_ID_TOKEN)
                 .requestEmail()

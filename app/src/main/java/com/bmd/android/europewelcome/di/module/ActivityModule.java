@@ -30,6 +30,9 @@ import com.bmd.android.europewelcome.ui.addpost.AddPostPresenter;
 import com.bmd.android.europewelcome.ui.auth.LoginMvpPresenter;
 import com.bmd.android.europewelcome.ui.auth.LoginMvpView;
 import com.bmd.android.europewelcome.ui.auth.LoginPresenter;
+import com.bmd.android.europewelcome.ui.auth.register.RegisterMvpPresenter;
+import com.bmd.android.europewelcome.ui.auth.register.RegisterMvpView;
+import com.bmd.android.europewelcome.ui.auth.register.RegisterPresenter;
 import com.bmd.android.europewelcome.ui.postdetail.PostDetailMvpPresenter;
 import com.bmd.android.europewelcome.ui.postdetail.PostDetailMvpView;
 import com.bmd.android.europewelcome.ui.postdetail.PostDetailPresenter;
@@ -87,6 +90,12 @@ public class ActivityModule {
     @Provides
     AboutMvpPresenter<AboutMvpView> provideAboutPresenter(
             AboutPresenter<AboutMvpView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    RegisterMvpPresenter<RegisterMvpView> provideRegisterPresenter(
+            RegisterPresenter<RegisterMvpView> presenter) {
         return presenter;
     }
 

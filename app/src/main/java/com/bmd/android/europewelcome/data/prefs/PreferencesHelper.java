@@ -48,4 +48,8 @@ public interface PreferencesHelper {
 
     void setAccessToken(String accessToken);
 
+    String getEmailUsedForServer();
+
+    void setEmailUsedForServer(String email);
+
 }

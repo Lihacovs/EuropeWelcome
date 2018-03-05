@@ -37,4 +37,6 @@ public interface LoginMvpPresenter <V extends LoginMvpView> extends MvpPresenter
 
     void onFacebookLoginClick();
 
+    String getEmailUsedForServer();
+
 }
