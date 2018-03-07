@@ -17,7 +17,6 @@ package com.bmd.android.europewelcome.ui.auth;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.bmd.android.europewelcome.R;
 import com.bmd.android.europewelcome.data.DataManager;
@@ -25,11 +24,14 @@ import com.bmd.android.europewelcome.ui.base.BasePresenter;
 import com.bmd.android.europewelcome.utils.CommonUtils;
 import com.facebook.AccessToken;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 import javax.inject.Inject;
@@ -39,7 +41,7 @@ import javax.inject.Inject;
  */
 
 public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
-        implements LoginMvpPresenter<V>{
+        implements LoginMvpPresenter<V> {
 
     private static final String TAG = "LoginPresenter";
 
@@ -52,91 +54,69 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
     public void onServerLoginClick(String email, String password) {
         //validate email and password
         if (email == null || email.isEmpty()) {
-            getMvpView().onError(R.string.empty_email);
+            getMvpView().onError(R.string.login_empty_email);
             return;
         }
         if (!CommonUtils.isEmailValid(email)) {
-            getMvpView().onError(R.string.invalid_email);
+            getMvpView().onError(R.string.login_invalid_email);
             return;
         }
         if (password == null || password.isEmpty()) {
-            getMvpView().onError(R.string.empty_password);
+            getMvpView().onError(R.string.login_empty_password);
             return;
         }
-        getMvpView().showLoading();
+
         signInFirebaseUser(email, password);
     }
 
-    private void signInFirebaseUser(final String email, final String password){
-        getDataManager().signInUser(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+    private void signInFirebaseUser(final String email, final String password) {
+        getMvpView().showLoading();
+        getDataManager().signInFirebaseUser(email, password)
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+                        if (!isViewAttached()) {
+                            return;
+                        }
+
+                        getDataManager().updateUserInfo(
+                                null,
+                                getDataManager().getFirebaseUserId(),
+                                DataManager.LoggedInMode.LOGGED_IN_MODE_SERVER,
+                                getDataManager().getFirebaseUserName(),
+                                getDataManager().getFirebaseUserEmail(),
+                                getDataManager().getFirebaseUserImageUrl()
+                        );
+
+                        getDataManager().setLastUsedEmail(email);
+                        getMvpView().hideLoading();
+                        getMvpView().openMainActivity();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
             @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-
-                    if (!isViewAttached()) {
-                        return;
-                    }
-
-                    // Sign in success, update UI with the signed-in user's information
-                    getMvpView().showMessage("user signedIn");
-
-                    getDataManager().updateUserInfo(
-                            null,
-                            getDataManager().getUserId(),
-                            DataManager.LoggedInMode.LOGGED_IN_MODE_SERVER,
-                            getDataManager().getUserName(),
-                            getDataManager().getUserEmail(),
-                            "gs://europewelcome-bbf53.appspot.com/profileImages/nophoto.png"
-                    );
-
-                    getDataManager().setEmailUsedForServer(email);
-                    getMvpView().hideLoading();
-                    getMvpView().openMainActivity();
-                } else {
-                    if (!isViewAttached()) {
-                        return;
-                    }
-                    // If sign in fails, create user.
-                    createFirebaseUser(email, password);
-                    getMvpView().hideLoading();
+            public void onFailure(@NonNull Exception e) {
+                if (!isViewAttached()) {
+                    return;
                 }
-            }
-        });
-    }
-
-    private void createFirebaseUser(String email, String password){
-        getDataManager().createUser(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-
-                    if (!isViewAttached()) {
+                getMvpView().hideLoading();
+                if (e instanceof FirebaseAuthInvalidUserException) {
+                    if (((FirebaseAuthInvalidUserException) e)
+                            .getErrorCode().equals("ERROR_USER_NOT_FOUND")) {
+                        getMvpView().onError(R.string.login_email_not_exist);
                         return;
                     }
-
-                    // Sign in success, update UI with the signed-in user's information
-                    getMvpView().showMessage("user created");
-
-                    getDataManager().updateUserInfo(
-                            null,
-                            getDataManager().getUserId(),
-                            DataManager.LoggedInMode.LOGGED_IN_MODE_SERVER,
-                            getDataManager().getUserName(),
-                            getDataManager().getUserEmail(),
-                            null
-                    );
-
-                    getDataManager().setEmailUsedForServer(email);
-                    getMvpView().hideLoading();
-                    getMvpView().openMainActivity();
-                } else {
-                    // If sign in fails, display a message to the user.
-                    if (!isViewAttached()) {
-                        return;
-                    }
-                    getMvpView().onError("user creation failed");
-                    getMvpView().hideLoading();
+                    getMvpView().onError(e.getMessage());
+                    return;
                 }
+                if (e instanceof FirebaseAuthInvalidCredentialsException) {
+                    getMvpView().onError(R.string.login_invalid_password);
+                    return;
+                }
+                if (e instanceof FirebaseAuthUserCollisionException) {
+                    getMvpView().onError(R.string.login_email_already_used);
+                    return;
+                }
+                getMvpView().onError(R.string.login_some_error);
             }
         });
     }
@@ -148,129 +128,87 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
 
     @Override
     public void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        // instruct LoginActivity to initiate google login
-        //TODO: implement firebase login with Google in AppDataManager class
-        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
-        // [START_EXCLUDE silent]
         getMvpView().showLoading();
-        // [END_EXCLUDE]
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        getDataManager().signInWithCredential(credential)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        getDataManager().signInFirebaseWithCredential(credential)
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-
-                            if (!isViewAttached()) {
-                                return;
-                            }
-
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
-                            Log.d(TAG, "UserName:" + getDataManager().getUserName());
-                            Log.d(TAG, "UserEmail:" + getDataManager().getUserEmail());
-                            Log.d(TAG, "UserPicUrl:" + getDataManager().getUserImageUrl());
-
-
-
-                            getDataManager().updateUserInfo(
-                                    null,
-                                    getDataManager().getUserId(),
-                                    DataManager.LoggedInMode.LOGGED_IN_MODE_GOOGLE,
-                                    getDataManager().getUserName(),
-                                    getDataManager().getUserEmail(),
-                                    getDataManager().getUserImageUrl().toString()
-                            );
-
-                            Log.d(TAG, "signInWithCredential: current User: ");
-                            Log.d(TAG, "CurrentUserName:" + getDataManager().getCurrentUserName());
-                            Log.d(TAG, "CurrentUserEmail:" + getDataManager().getCurrentUserEmail());
-                            Log.d(TAG, "CurrentUserPicUrl:" + getDataManager().getCurrentUserProfilePicUrl());
-
-                            getMvpView().hideLoading();
-                            getMvpView().openMainActivity();
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            /*Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
-                            updateUI(null);*/
+                    public void onSuccess(AuthResult authResult) {
+                        if (!isViewAttached()) {
+                            return;
                         }
 
-                        // [START_EXCLUDE]
+                        getDataManager().updateUserInfo(
+                                null,
+                                getDataManager().getFirebaseUserId(),
+                                DataManager.LoggedInMode.LOGGED_IN_MODE_GOOGLE,
+                                getDataManager().getFirebaseUserName(),
+                                getDataManager().getFirebaseUserEmail(),
+                                getDataManager().getFirebaseUserImageUrl()
+                        );
+
                         getMvpView().hideLoading();
-                        // [END_EXCLUDE]
+                        getMvpView().openMainActivity();
                     }
-                });
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                if (!isViewAttached()) {
+                    return;
+                }
+                getMvpView().hideLoading();
+                if (e instanceof FirebaseAuthUserCollisionException) {
+                    getMvpView().onError(R.string.login_email_already_used);
+                    return;
+                }
+                getMvpView().onError(R.string.login_some_error);
+            }
+        });
     }
 
     @Override
     public void firebaseAuthWithFacebook(AccessToken token) {
-        Log.d(TAG, "handleFacebookAccessToken:" + token);
-        // [START_EXCLUDE silent]
         getMvpView().showLoading();
-        // [END_EXCLUDE]
-
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
-        getDataManager().signInWithCredential(credential)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        getDataManager().signInFirebaseWithCredential(credential)
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
-                            Log.d(TAG, "UserName:" + getDataManager().getUserName());
-                            Log.d(TAG, "UserEmail:" + getDataManager().getUserEmail());
-                            Log.d(TAG, "UserPicUrl:" + getDataManager().getUserImageUrl());
-
-
-
-                            getDataManager().updateUserInfo(
-                                    null,
-                                    getDataManager().getUserId(),
-                                    DataManager.LoggedInMode.LOGGED_IN_MODE_FB,
-                                    getDataManager().getUserName(),
-                                    getDataManager().getUserEmail(),
-                                    getDataManager().getUserImageUrl().toString()
-                            );
-
-                            Log.d(TAG, "signInWithCredential: current User: ");
-                            Log.d(TAG, "CurrentUserName:" + getDataManager().getCurrentUserName());
-                            Log.d(TAG, "CurrentUserEmail:" + getDataManager().getCurrentUserEmail());
-                            Log.d(TAG, "CurrentUserPicUrl:" + getDataManager().getCurrentUserProfilePicUrl());
-
-                            if (!isViewAttached()) {
-                                return;
-                            }
-
-                            getMvpView().hideLoading();
-                            getMvpView().openMainActivity();
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            /*Toast.makeText(FacebookLoginActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                            updateUI(null);*/
+                    public void onSuccess(AuthResult authResult) {
+                        if (!isViewAttached()) {
+                            return;
                         }
 
-                        // [START_EXCLUDE]
+                        getDataManager().updateUserInfo(
+                                null,
+                                getDataManager().getFirebaseUserId(),
+                                DataManager.LoggedInMode.LOGGED_IN_MODE_FB,
+                                getDataManager().getFirebaseUserName(),
+                                getDataManager().getFirebaseUserEmail(),
+                                getDataManager().getFirebaseUserImageUrl()
+                        );
+
                         getMvpView().hideLoading();
-                        // [END_EXCLUDE]
+                        getMvpView().openMainActivity();
                     }
-                });
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                if (!isViewAttached()) {
+                    return;
+                }
+                getMvpView().hideLoading();
+                if (e instanceof FirebaseAuthUserCollisionException) {
+                    getMvpView().onError(R.string.login_email_already_used);
+                    return;
+                }
+                getMvpView().onError(R.string.login_some_error);
+            }
+        });
     }
 
     @Override
-    public String getEmailUsedForServer() {
-        return getDataManager().getEmailUsedForServer();
-    }
-
-    @Override
-    public void onFacebookLoginClick() {
-        // instruct LoginActivity to initiate facebook login
-        getMvpView().showLoading();
-        //TODO: implement firebase login with FB in AppDataManager class
-        getMvpView().hideLoading();
-        getMvpView().openMainActivity();
+    public String getLastUsedEmail() {
+        return getDataManager().getLastUsedEmail();
     }
 }

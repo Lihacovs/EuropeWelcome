@@ -64,7 +64,7 @@ public class ProfilePresenter<V extends ProfileMvpView> extends BasePresenter<V>
     @Override
     public void newUserName(String userName) {
         if(!userName.equals(getDataManager().getCurrentUserName())) {
-            getDataManager().setUserName(userName);
+            getDataManager().setFirebaseUserName(userName);
             getDataManager().setCurrentUserName(userName);
         }
     }
@@ -72,7 +72,7 @@ public class ProfilePresenter<V extends ProfileMvpView> extends BasePresenter<V>
     @Override
     public void newUserEmail(String userEmail) {
         if(!userEmail.equals(getDataManager().getCurrentUserEmail())) {
-            getDataManager().setUserEmail(userEmail);
+            getDataManager().setFirebaseUserEmail(userEmail);
             getDataManager().setCurrentUserEmail(userEmail);
         }
     }
@@ -90,7 +90,7 @@ public class ProfilePresenter<V extends ProfileMvpView> extends BasePresenter<V>
                         Uri downloadUri = taskSnapshot.getDownloadUrl();
                         String downloadUrlString = downloadUri.toString();
                         getDataManager().setCurrentUserProfilePicUrl(downloadUrlString);
-                        getDataManager().setUserImageUrl(downloadUri);
+                        getDataManager().setFirebaseUserImageUrl(downloadUrlString);
                         getMvpView().loadUserImageUrl(downloadUrlString);
 
                         getMvpView().showMessage("Image uploaded");

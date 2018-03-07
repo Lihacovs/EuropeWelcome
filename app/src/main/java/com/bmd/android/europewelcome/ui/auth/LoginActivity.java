@@ -94,7 +94,7 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
 
     @Override
     protected void setUp() {
-        mEmailEditText.setText(mPresenter.getEmailUsedForServer());
+        mEmailEditText.setText(mPresenter.getLastUsedEmail());
 
         // Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create();
@@ -109,13 +109,12 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
             @Override
             public void onCancel() {
                 Log.d(TAG, "facebook:onCancel");
-                LoginActivity.this.onError(R.string.action_canceled);
             }
 
             @Override
             public void onError(FacebookException error) {
                 Log.d(TAG, "facebook:onError", error);
-                LoginActivity.this.onError(R.string.some_error);
+                LoginActivity.this.onError(R.string.login_some_error);
             }
         });
         // [END initialize_fblogin]
@@ -160,9 +159,9 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 mPresenter.firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
+                //TODO: add user message on fail
                 // Google Sign In failed, update UI appropriately
                 Log.w(TAG, "Google sign in failed" + e.getMessage(), e);
-                LoginActivity.this.onError(R.string.some_error);
             }
         }
     }
@@ -176,6 +175,7 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
 
     /**
      * Detaches {@link RegisterFragment} from this activity
+     *
      * @param tag {@link RegisterFragment}
      */
     @Override

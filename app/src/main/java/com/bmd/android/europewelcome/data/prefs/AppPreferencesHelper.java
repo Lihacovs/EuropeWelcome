@@ -111,12 +111,12 @@ public class AppPreferencesHelper implements PreferencesHelper {
     }
 
     @Override
-    public String getEmailUsedForServer() {
+    public String getLastUsedEmail() {
         return mPrefs.getString(PREF_KEY_EMAIL_USED_FOR_SERVER, null);
     }
 
     @Override
-    public void setEmailUsedForServer(String email) {
+    public void setLastUsedEmail(String email) {
         mPrefs.edit().putString(PREF_KEY_EMAIL_USED_FOR_SERVER, email).apply();
     }
 }

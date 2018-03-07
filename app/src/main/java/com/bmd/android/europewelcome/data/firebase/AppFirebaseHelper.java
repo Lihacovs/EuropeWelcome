@@ -61,72 +61,86 @@ public class AppFirebaseHelper implements FirebaseHelper {
     //=//=// F I R E B A S E  -  A U T H E N T I C A T I O N //=//=//
 
     @Override
-    public Task<AuthResult> createUser(String email, String password) {
+    public Task<AuthResult> createFirebaseUser(String email, String password) {
         return mAuth.createUserWithEmailAndPassword(email, password);
     }
 
     @Override
-    public Task<AuthResult> signInUser(String email, String password) {
+    public Task<AuthResult> signInFirebaseUser(String email, String password) {
         return mAuth.signInWithEmailAndPassword(email, password);
     }
 
     @Override
-    public Task<AuthResult> signInWithCredential(AuthCredential credential) {
+    public Task<AuthResult> signInFirebaseWithCredential(AuthCredential credential) {
         return mAuth.signInWithCredential(credential);
     }
 
     @Override
-    public void signOutUser() {
+    public void signOutFirebaseUser() {
         mAuth.signOut();
     }
 
     @Override
-    public FirebaseUser getCurrentUser() {
+    public FirebaseUser getFirebaseUser() {
         return mAuth.getCurrentUser();
     }
 
     @Override
-    public String getUserId(){
+    public String getFirebaseUserId(){
         return mAuth.getCurrentUser().getUid();
     }
 
     @Override
-    public String getUserName(){
+    public String getFirebaseUserName(){
         return mAuth.getCurrentUser().getDisplayName();
     }
 
     @Override
-    public String getUserEmail(){
+    public String getFirebaseUserEmail(){
         return mAuth.getCurrentUser().getEmail();
     }
 
+    //TODO: check lint's nullPointerExceptions
     @Override
-    public Uri getUserImageUrl() {
-        return mAuth.getCurrentUser().getPhotoUrl();
+    public String getFirebaseUserImageUrl() {
+        return mAuth.getCurrentUser().getPhotoUrl().toString();
     }
 
     @Override
-    public void setUserName(String userName) {
+    public void setFirebaseUserName(String userName) {
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setDisplayName(userName).build();
-        if(getCurrentUser()!=null){
-            getCurrentUser().updateProfile(profileUpdates);
+        if(getFirebaseUser()!=null){
+            getFirebaseUser().updateProfile(profileUpdates);
         }
     }
 
     @Override
-    public void setUserEmail(String userEmail) {
-        if(getCurrentUser()!=null) {
-            getCurrentUser().updateEmail(userEmail);
+    public void setFirebaseUserEmail(String userEmail) {
+        if(getFirebaseUser()!=null) {
+            getFirebaseUser().updateEmail(userEmail);
         }
     }
 
     @Override
-    public void setUserImageUrl(Uri userImageUrl) {
+    public void setFirebaseUserImageUrl(String userImageUrl) {
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                .setPhotoUri(userImageUrl).build();
-        if(getCurrentUser()!=null){
-            getCurrentUser().updateProfile(profileUpdates);
+                .setPhotoUri(Uri.parse(userImageUrl)).build();
+        if(getFirebaseUser()!=null){
+            getFirebaseUser().updateProfile(profileUpdates);
+        }
+    }
+
+    @Override
+    public Task<Void> setFirebaseUserProfile(String userName, String userPhotoUrl) {
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                .setDisplayName(userName)
+                .setPhotoUri(Uri.parse(userPhotoUrl))
+                .build();
+        if(getFirebaseUser()!=null){
+            return getFirebaseUser().updateProfile(profileUpdates);
+        } else {
+            return null;
         }
     }
 

@@ -53,7 +53,7 @@ public class PostsPresenter <V extends PostsMvpView> extends BasePresenter<V>
         }
 
         getDataManager().setUserAsLoggedOut();
-        getDataManager().signOutUser();
+        getDataManager().signOutFirebaseUser();
         getDataManager().accountGoogleSignOut();
         getMvpView().hideLoading();
         getMvpView().openLoginActivity();

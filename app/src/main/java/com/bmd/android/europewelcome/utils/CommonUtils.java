@@ -97,4 +97,6 @@ public final class CommonUtils {
         return new SimpleDateFormat(AppConstants.DATE_FORMAT, Locale.US)
                 .format(Calendar.getInstance().getTime());
     }
+
+
 }

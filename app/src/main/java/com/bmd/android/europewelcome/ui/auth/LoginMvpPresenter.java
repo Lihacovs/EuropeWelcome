@@ -35,8 +35,6 @@ public interface LoginMvpPresenter <V extends LoginMvpView> extends MvpPresenter
 
     void firebaseAuthWithFacebook(AccessToken token);
 
-    void onFacebookLoginClick();
-
-    String getEmailUsedForServer();
+    String getLastUsedEmail();
 
 }

@@ -76,13 +76,13 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public String getEmailUsedForServer() {
-        return mPreferencesHelper.getEmailUsedForServer();
+    public String getLastUsedEmail() {
+        return mPreferencesHelper.getLastUsedEmail();
     }
 
     @Override
-    public void setEmailUsedForServer(String email) {
-        mPreferencesHelper.setEmailUsedForServer(email);
+    public void setLastUsedEmail(String email) {
+        mPreferencesHelper.setLastUsedEmail(email);
     }
 
     @Override
@@ -164,63 +164,68 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Task<AuthResult> createUser(String email, String password) {
-        return mFirebaseHelper.createUser(email, password);
+    public Task<AuthResult> createFirebaseUser(String email, String password) {
+        return mFirebaseHelper.createFirebaseUser(email, password);
     }
 
     @Override
-    public Task<AuthResult> signInUser(String email, String password) {
-        return mFirebaseHelper.signInUser(email, password);
+    public Task<AuthResult> signInFirebaseUser(String email, String password) {
+        return mFirebaseHelper.signInFirebaseUser(email, password);
     }
 
     @Override
-    public Task<AuthResult> signInWithCredential(AuthCredential credential) {
-        return mFirebaseHelper.signInWithCredential(credential);
+    public Task<AuthResult> signInFirebaseWithCredential(AuthCredential credential) {
+        return mFirebaseHelper.signInFirebaseWithCredential(credential);
     }
 
     @Override
-    public void signOutUser() {
-        mFirebaseHelper.signOutUser();
+    public void signOutFirebaseUser() {
+        mFirebaseHelper.signOutFirebaseUser();
     }
 
     @Override
-    public FirebaseUser getCurrentUser() {
-        return mFirebaseHelper.getCurrentUser();
+    public FirebaseUser getFirebaseUser() {
+        return mFirebaseHelper.getFirebaseUser();
     }
 
     @Override
-    public String getUserId() {
-        return mFirebaseHelper.getUserId();
+    public String getFirebaseUserId() {
+        return mFirebaseHelper.getFirebaseUserId();
     }
 
     @Override
-    public String getUserName() {
-        return mFirebaseHelper.getUserName();
+    public String getFirebaseUserName() {
+        return mFirebaseHelper.getFirebaseUserName();
     }
 
     @Override
-    public String getUserEmail() {
-        return mFirebaseHelper.getUserEmail();
+    public String getFirebaseUserEmail() {
+        return mFirebaseHelper.getFirebaseUserEmail();
     }
 
     @Override
-    public Uri getUserImageUrl() {
-        return mFirebaseHelper.getUserImageUrl();
+    public String getFirebaseUserImageUrl() {
+        return mFirebaseHelper.getFirebaseUserImageUrl();
     }
 
     @Override
-    public void setUserName(String userName) {
-        mFirebaseHelper.setUserName(userName);
+    public void setFirebaseUserName(String userName) {
+        mFirebaseHelper.setFirebaseUserName(userName);
     }
 
     @Override
-    public void setUserEmail(String userEmail) {
-        mFirebaseHelper.setUserEmail(userEmail);
+    public void setFirebaseUserEmail(String userEmail) {
+        mFirebaseHelper.setFirebaseUserEmail(userEmail);
     }
 
     @Override
-    public void setUserImageUrl(Uri userImageUrl) {
-        mFirebaseHelper.setUserImageUrl(userImageUrl);
+    public void setFirebaseUserImageUrl(String userImageUrl) {
+        mFirebaseHelper.setFirebaseUserImageUrl(userImageUrl);
+    }
+
+    @Override
+    public Task<Void> setFirebaseUserProfile(String userName, String userPhotoUrl) {
+        return mFirebaseHelper.setFirebaseUserProfile(userName, userPhotoUrl);
     }
 
     @Override

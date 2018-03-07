@@ -20,6 +20,34 @@
     <string name="facebook_app_id">1997719713823775</string>
     <string name="fb_login_protocol_scheme">fb1997719713823775</string>
 
+    <!--auth.register.RegisterPresenter-->
+    <string name="register_empty_email">Please enter your Email</string>
+    <string name="register_invalid_email">Please enter a valid Email</string>
+    <string name="register_empty_password">Please enter your Password</string>
+    <string name="register_short_password">Please enter at lest 6 characters Password</string>
+    <string name="register_no_photo">Please add your Photo</string>
+    <string name="register_empty_name">Please enter your Name</string>
+    <string name="register_short_name">Please enter at lest 2 characters Name</string>
+    <string name="register_empty_surname">Please enter your Surname</string>
+    <string name="register_short_surname">Please enter at lest 2 characters Surname</string>
+    <string name="register_empty_birth_date">Please enter your Date of Birth</string>
+    <string name="register_upload_error">Upload failed. Please try again</string>
+    <string name="register_email_already_used">Email address is already used</string>
+    <string name="register_try_again">Please try again</string>
+    <string name="register_some_error">Some error occurred. Try again</string>
+
+    <!--auth.LoginPresenter-->
+    <string name="login_empty_email">Please enter your Email</string>
+    <string name="login_invalid_email">Please enter a valid Email</string>
+    <string name="login_empty_password">Please enter your Password</string>
+    <string name="login_email_not_exist">Provided Email is not registered</string>
+    <string name="login_invalid_password">The Password is invalid</string>
+    <string name="login_email_already_used">Email address is already used</string>
+    <string name="login_try_again">Please try again</string>
+    <string name="login_some_error">Some error occurred. Try again</string>
+
+    <!--auth.LoginActivity-->
+
     <!--Login-->
     <string name="europe_welcome">Europe Welcome</string>
     <string name="login">Login</string>

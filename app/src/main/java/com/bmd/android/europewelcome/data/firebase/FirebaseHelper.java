@@ -38,29 +38,31 @@ public interface FirebaseHelper {
 
     //=//=// F I R E B A S E  -  A U T H E N T I C A T I O N //=//=//
 
-    Task<AuthResult> createUser(String email, String password);
+    Task<AuthResult> createFirebaseUser(String email, String password);
 
-    Task<AuthResult> signInUser(String email, String password);
+    Task<AuthResult> signInFirebaseUser(String email, String password);
 
-    Task<AuthResult> signInWithCredential(AuthCredential credential);
+    Task<AuthResult> signInFirebaseWithCredential(AuthCredential credential);
 
-    void signOutUser();
+    void signOutFirebaseUser();
 
-    FirebaseUser getCurrentUser();
+    FirebaseUser getFirebaseUser();
 
-    String getUserId();
+    String getFirebaseUserId();
 
-    String getUserName();
+    String getFirebaseUserName();
 
-    String getUserEmail();
+    String getFirebaseUserEmail();
 
-    Uri getUserImageUrl();
+    String getFirebaseUserImageUrl();
 
-    void setUserName(String userName);
+    void setFirebaseUserName(String userName);
 
-    void setUserEmail(String userEmail);
+    void setFirebaseUserEmail(String userEmail);
 
-    void setUserImageUrl(Uri userImageUrl);
+    void setFirebaseUserImageUrl(String userImageUrl);
+
+    Task<Void> setFirebaseUserProfile(String userName, String userPhotoUrl);
 
 
     //=//=// F I R E B A S E  -  F I R E S T O R E //=//=//
