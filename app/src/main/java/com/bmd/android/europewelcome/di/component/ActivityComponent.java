@@ -21,6 +21,7 @@ import com.bmd.android.europewelcome.ui.about.AboutFragment;
 import com.bmd.android.europewelcome.ui.addpost.AddPostActivity;
 import com.bmd.android.europewelcome.ui.auth.LoginActivity;
 import com.bmd.android.europewelcome.ui.auth.register.RegisterFragment;
+import com.bmd.android.europewelcome.ui.newpost.NewPostActivity;
 import com.bmd.android.europewelcome.ui.postdetail.PostDetailActivity;
 import com.bmd.android.europewelcome.ui.posts.PostsActivity;
 import com.bmd.android.europewelcome.ui.posts.free.FreePostsFragment;
@@ -45,6 +46,8 @@ public interface ActivityComponent {
     void inject(PostDetailActivity activity);
 
     void inject(AddPostActivity activity);
+
+    void inject(NewPostActivity activity);
 
     void inject(ProfileActivity activity);
 

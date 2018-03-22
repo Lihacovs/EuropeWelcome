@@ -40,8 +40,8 @@ public class MyApp extends MultiDexApplication {
     @Inject
     DataManager mDataManager;
 
-    @Inject
-    CalligraphyConfig mCalligraphyConfig;
+    /*@Inject
+    CalligraphyConfig mCalligraphyConfig;*/
 
     private ApplicationComponent mApplicationComponent;
 
@@ -65,7 +65,7 @@ public class MyApp extends MultiDexApplication {
             AndroidNetworking.enableLogging(Level.BODY);
         }
 
-        CalligraphyConfig.initDefault(mCalligraphyConfig);
+        //CalligraphyConfig.initDefault(mCalligraphyConfig);
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
 

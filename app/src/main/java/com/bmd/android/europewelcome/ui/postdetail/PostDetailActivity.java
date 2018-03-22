@@ -34,6 +34,7 @@ import com.bmd.android.europewelcome.data.firebase.model.PostComment;
 import com.bmd.android.europewelcome.data.firebase.model.PostSection;
 import com.bmd.android.europewelcome.di.module.GlideApp;
 import com.bmd.android.europewelcome.ui.base.BaseActivity;
+import com.bmd.android.europewelcome.ui.profile.ProfileActivity;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -218,6 +219,11 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
         if (postTitle != null) {
             mPostTitle.setText(postTitle);
         }
+    }
+
+    @OnClick(R.id.iv_postdetail_userimage)
+    void onUserImageIvClick(){
+        startActivity(ProfileActivity.getStartIntent(getBaseContext(), mPresenter.getPostAuthorId()));
     }
 
     @Override

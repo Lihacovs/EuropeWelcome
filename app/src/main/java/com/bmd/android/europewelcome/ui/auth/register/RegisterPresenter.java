@@ -21,6 +21,7 @@ import android.support.annotation.NonNull;
 
 import com.bmd.android.europewelcome.R;
 import com.bmd.android.europewelcome.data.DataManager;
+import com.bmd.android.europewelcome.data.firebase.model.User;
 import com.bmd.android.europewelcome.ui.base.BasePresenter;
 import com.bmd.android.europewelcome.ui.custom.ImageCompress;
 import com.bmd.android.europewelcome.utils.CommonUtils;
@@ -37,7 +38,12 @@ import java.io.File;
 import javax.inject.Inject;
 
 /**
- * Register Presenter. Creates Firebase user.
+ * Register Presenter. When login with Email and Password
+ * {@link #createFireBaseUser(String, String, String, String, String, String, String)}
+ * data is stored in 3 places:
+ * 1. Firebase Authentication system - for user authentication.
+ * 2. Firestore DB - general {@link User} profile storage place.
+ * 3. SharedPreferences - for user profile quick access and session.
  */
 
 public class RegisterPresenter<V extends RegisterMvpView> extends BasePresenter<V>
@@ -102,7 +108,7 @@ public class RegisterPresenter<V extends RegisterMvpView> extends BasePresenter<
             return;
         }
 
-        createFireBaseUser(email, password, photoUrl, name, surname);
+        createFireBaseUser(email, password, photoUrl, name, surname, gender, birthDate);
     }
 
     //Uploads resized and compressed user Photo to FireBase storage
@@ -111,7 +117,7 @@ public class RegisterPresenter<V extends RegisterMvpView> extends BasePresenter<
         String compressedFile = new ImageCompress(context).compressImage(
                 uri.toString(), 544.0f, 408.0f);
 
-        getDataManager().uploadFileToStorage(Uri.fromFile(new File(compressedFile)))
+        getDataManager().uploadFileToStorage(Uri.fromFile(new File(compressedFile)), "userPhotos/")
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -140,7 +146,9 @@ public class RegisterPresenter<V extends RegisterMvpView> extends BasePresenter<
                                     String password,
                                     String photoUrl,
                                     String name,
-                                    String surname) {
+                                    String surname,
+                                    String gender,
+                                    String birthDate) {
         getMvpView().showLoading();
 
         getDataManager().createFirebaseUser(email, password)
@@ -151,13 +159,28 @@ public class RegisterPresenter<V extends RegisterMvpView> extends BasePresenter<
                             return;
                         }
 
-                        //update user profile for Firebase authentication
+                        //updates user profile for Firebase authentication
                         getDataManager()
                                 .setFirebaseUserProfile(name + " " + surname, photoUrl)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-                                        //update user profile in SharedPrefs
+
+                                        //saves user profile in Firestore database
+                                        User newUser = new User(
+                                                getDataManager().getFirebaseUserId(),
+                                                email,
+                                                password,
+                                                name + " " + surname,
+                                                photoUrl,
+                                                gender,
+                                                birthDate,
+                                                CommonUtils.getCurrentDate()
+
+                                        );
+                                        getDataManager().saveUser(newUser);
+
+                                        //updates user profile in SharedPrefs
                                         getDataManager().updateUserInfo(
                                                 null,
                                                 getDataManager().getFirebaseUserId(),

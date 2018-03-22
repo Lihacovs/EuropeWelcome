@@ -98,12 +98,12 @@ public class ApplicationModule {
         return appNetworkHelper;
     }
 
-    @Provides
+    /*@Provides
     @Singleton
     CalligraphyConfig provideCalligraphyDefaultConfig() {
         return new CalligraphyConfig.Builder()
                 .setDefaultFontPath("fonts/source-sans-pro/SourceSansPro-Regular.ttf")
                 .setFontAttrId(R.attr.fontPath)
                 .build();
-    }
+    }*/
 }

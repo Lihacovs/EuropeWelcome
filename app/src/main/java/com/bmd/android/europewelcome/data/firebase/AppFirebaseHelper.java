@@ -20,6 +20,7 @@ import android.net.Uri;
 import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.data.firebase.model.PostComment;
 import com.bmd.android.europewelcome.data.firebase.model.PostSection;
+import com.bmd.android.europewelcome.data.firebase.model.User;
 import com.bmd.android.europewelcome.utils.AppConstants;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -32,6 +33,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -86,17 +88,17 @@ public class AppFirebaseHelper implements FirebaseHelper {
     }
 
     @Override
-    public String getFirebaseUserId(){
+    public String getFirebaseUserId() {
         return mAuth.getCurrentUser().getUid();
     }
 
     @Override
-    public String getFirebaseUserName(){
+    public String getFirebaseUserName() {
         return mAuth.getCurrentUser().getDisplayName();
     }
 
     @Override
-    public String getFirebaseUserEmail(){
+    public String getFirebaseUserEmail() {
         return mAuth.getCurrentUser().getEmail();
     }
 
@@ -110,14 +112,14 @@ public class AppFirebaseHelper implements FirebaseHelper {
     public void setFirebaseUserName(String userName) {
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setDisplayName(userName).build();
-        if(getFirebaseUser()!=null){
+        if (getFirebaseUser() != null) {
             getFirebaseUser().updateProfile(profileUpdates);
         }
     }
 
     @Override
     public void setFirebaseUserEmail(String userEmail) {
-        if(getFirebaseUser()!=null) {
+        if (getFirebaseUser() != null) {
             getFirebaseUser().updateEmail(userEmail);
         }
     }
@@ -126,7 +128,7 @@ public class AppFirebaseHelper implements FirebaseHelper {
     public void setFirebaseUserImageUrl(String userImageUrl) {
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setPhotoUri(Uri.parse(userImageUrl)).build();
-        if(getFirebaseUser()!=null){
+        if (getFirebaseUser() != null) {
             getFirebaseUser().updateProfile(profileUpdates);
         }
     }
@@ -137,7 +139,7 @@ public class AppFirebaseHelper implements FirebaseHelper {
                 .setDisplayName(userName)
                 .setPhotoUri(Uri.parse(userPhotoUrl))
                 .build();
-        if(getFirebaseUser()!=null){
+        if (getFirebaseUser() != null) {
             return getFirebaseUser().updateProfile(profileUpdates);
         } else {
             return null;
@@ -186,7 +188,7 @@ public class AppFirebaseHelper implements FirebaseHelper {
                 .collection(AppConstants.POSTS_COLLECTION)
                 .document(postId)
                 .collection(AppConstants.POST_SECTION_COLLECTION)
-                .orderBy("layoutOrderNum", Query.Direction.ASCENDING);
+                .orderBy("timeStamp", Query.Direction.ASCENDING);
     }
 
     @Override
@@ -216,8 +218,35 @@ public class AppFirebaseHelper implements FirebaseHelper {
 
     @Override
     public Task<Void> updatePost(Post post) {
-            return mFirestore.collection(AppConstants.POSTS_COLLECTION).document(post.getPostId())
-                    .set(post, SetOptions.merge());
+        return mFirestore.collection(AppConstants.POSTS_COLLECTION)
+                .document(post.getPostId())
+                .set(post, SetOptions.merge());
+    }
+
+
+    @Override
+    public Task<Void> updatePostSection(String postId, PostSection postSection) {
+        return mFirestore.collection(AppConstants.POSTS_COLLECTION)
+                .document(postId)
+                .collection(AppConstants.POST_SECTION_COLLECTION)
+                .document(postSection.getPostSectionId())
+                .set(postSection, SetOptions.merge());
+    }
+
+    @Override
+    public Task<Void> deletePost(Post post) {
+        return mFirestore.collection(AppConstants.POSTS_COLLECTION)
+                .document(post.getPostId())
+                .delete();
+    }
+
+    @Override
+    public Task<Void> deletePostSection(String postId, PostSection postSection) {
+        return mFirestore.collection(AppConstants.POSTS_COLLECTION)
+                .document(postId)
+                .collection(AppConstants.POST_SECTION_COLLECTION)
+                .document(postSection.getPostSectionId())
+                .delete();
     }
 
     @Override
@@ -227,11 +256,37 @@ public class AppFirebaseHelper implements FirebaseHelper {
         return docRef.get();
     }
 
+    @Override
+    public Task<QuerySnapshot> getFirstPostSection(String postId, String sectionViewType) {
+        return mFirestore
+                .collection(AppConstants.POSTS_COLLECTION)
+                .document(postId)
+                .collection(AppConstants.POST_SECTION_COLLECTION)
+                .whereEqualTo("postSectionViewType", sectionViewType)
+                .orderBy("timeStamp", Query.Direction.ASCENDING)
+                .limit(1)
+                .get();
+    }
+
+    @Override
+    public Task<Void> saveUser(User user) {
+        return mFirestore.collection(AppConstants.USERS_COLLECTION)
+                .document(user.getUserId())
+                .set(user);
+    }
+
+    @Override
+    public Task<DocumentSnapshot> getUser(String userId) {
+        DocumentReference docRef
+                = mFirestore.collection(AppConstants.USERS_COLLECTION).document(userId);
+        return docRef.get();
+    }
+
     //=//=// F I R E B A S E  -  S T O R A G E //=//=//
 
-    public UploadTask uploadFileToStorage(Uri uri){
+    public UploadTask uploadFileToStorage(Uri uri, String path) {
         String uuid = UUID.randomUUID().toString();
-        StorageReference imageRef = mStorage.getReference().child("images/" + uuid);
+        StorageReference imageRef = mStorage.getReference().child(path + uuid);
         return imageRef.putFile(uri);
     }
 }

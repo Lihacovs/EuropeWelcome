@@ -43,9 +43,9 @@ import com.bmd.android.europewelcome.BuildConfig;
 import com.bmd.android.europewelcome.R;
 import com.bmd.android.europewelcome.di.module.GlideApp;
 import com.bmd.android.europewelcome.ui.about.AboutFragment;
-import com.bmd.android.europewelcome.ui.addpost.AddPostActivity;
 import com.bmd.android.europewelcome.ui.auth.LoginActivity;
 import com.bmd.android.europewelcome.ui.base.BaseActivity;
+import com.bmd.android.europewelcome.ui.newpost.NewPostActivity;
 import com.bmd.android.europewelcome.ui.posts.rating.RateUsDialog;
 import com.bmd.android.europewelcome.ui.profile.ProfileActivity;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
@@ -130,7 +130,7 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
 
     @OnClick(R.id.fab)
     void onFabClick(View v) {
-        openAddPostActivity();
+        mPresenter.onFabClick();
     }
 
     @Override
@@ -269,6 +269,7 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
+                    //TODO: cant sort strings correctly, need to use int
                     case R.id.filter_posts_by_stars:
                         if (mCallback != null)
                             mCallback.onFilterPostsByStarsClick();
@@ -321,8 +322,7 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
         mViewPager.setAdapter(mPagerAdapter);
 
         mTabLayout.addTab(mTabLayout.newTab().setText(getString(R.string.blog)));
-        mTabLayout.addTab(mTabLayout.newTab().setText(getString(R.string.open_source)));
-
+        mTabLayout.addTab(mTabLayout.newTab().setText("Premium"));
         mViewPager.setOffscreenPageLimit(mTabLayout.getTabCount());
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
@@ -349,14 +349,14 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
 
     void setupNavMenu() {
         View headerLayout = mNavigationView.getHeaderView(0);
-        mUserImageIv = headerLayout.findViewById(R.id.iv_drawerheader_userimage);
-        mNameTextView = headerLayout.findViewById(R.id.tv_name);
-        mEmailTextView = headerLayout.findViewById(R.id.tv_email);
+        mUserImageIv = headerLayout.findViewById(R.id.iv_drawer_header_user_photo);
+        mNameTextView = headerLayout.findViewById(R.id.tv_drawer_header_user_name);
+        mEmailTextView = headerLayout.findViewById(R.id.tv_drawer_header_user_email);
 
         headerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(ProfileActivity.getStartIntent(getBaseContext()));
+                mPresenter.onDrawerOptionProfileClick();
             }
         });
 
@@ -366,14 +366,23 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         mDrawer.closeDrawer(GravityCompat.START);
                         switch (item.getItemId()) {
+                            case R.id.nav_item_profile:
+                                mPresenter.onDrawerOptionProfileClick();
+                                return true;
+                            case R.id.nav_item_bookmarks:
+                                mPresenter.onDrawerOptionBookmarksClick();
+                                return true;
+                            case R.id.nav_item_drafts:
+                                mPresenter.onDrawerOptionDraftsClick();
+                                return true;
+                            case R.id.nav_item_premium:
+                                mPresenter.onDrawerOptionPremiumClick();
+                                return true;
                             case R.id.nav_item_about:
                                 mPresenter.onDrawerOptionAboutClick();
                                 return true;
                             case R.id.nav_item_rate_us:
                                 mPresenter.onDrawerRateUsClick();
-                                return true;
-                            case R.id.nav_item_feed:
-                                mPresenter.onDrawerMyFeedClick();
                                 return true;
                             case R.id.nav_item_logout:
                                 mPresenter.onDrawerOptionLogoutClick();
@@ -388,7 +397,6 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
     @Override
     public void openLoginActivity() {
         startActivity(LoginActivity.getStartIntent(this));
-        this.finish();
     }
 
     @Override
@@ -398,7 +406,17 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
 
     @Override
     public void openAddPostActivity() {
-        startActivity(AddPostActivity.getStartIntent(this));
+        startActivity(NewPostActivity.getStartIntent(this, null));
+    }
+
+    @Override
+    public void openNewPostActivity() {
+        startActivity(NewPostActivity.getStartIntent(this, null));
+    }
+
+    @Override
+    public void openProfileActivity() {
+        startActivity(ProfileActivity.getStartIntent(getBaseContext(), mPresenter.getCurrentUserId()));
     }
 
     @Override

@@ -40,10 +40,12 @@
 
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
-                    style="@style/Toolbar"
-                    app:subtitleTextColor="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                     app:title="@string/app_name"
-                    app:titleTextAppearance="@style/Toolbar.TitleText"
+                    app:subtitleTextColor="@color/white"
                     app:titleTextColor="@color/white" />
 
                 <!--<View
@@ -56,7 +58,7 @@
                     style="@style/AppTab"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/colorPrimary"
+                    android:background="@color/cornflower_blue_12"
                     app:tabGravity="fill"
                     app:tabIndicatorColor="@color/white" />
 
@@ -66,7 +68,7 @@
                 android:id="@+id/feed_view_pager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
+                android:background="@color/cornflower_blue_9"
                 android:clipToPadding="false" />
 
         </LinearLayout>
@@ -94,7 +96,7 @@
         android:background="@color/white"
         app:headerLayout="@layout/drawer_header"
         app:itemBackground="@color/white"
-        app:itemIconTint="@color/black_effective"
+        app:itemIconTint="@color/cornflower_blue_13"
         app:itemTextColor="@color/black_effective"
         app:menu="@menu/drawer">
 

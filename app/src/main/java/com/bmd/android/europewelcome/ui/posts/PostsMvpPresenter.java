@@ -23,15 +23,25 @@ import com.bmd.android.europewelcome.ui.base.MvpPresenter;
 
 public interface PostsMvpPresenter <V extends PostsMvpView> extends MvpPresenter<V> {
 
-    void onDrawerOptionAboutClick();
+    void onDrawerOptionProfileClick();
 
-    void onDrawerOptionLogoutClick();
+    void onDrawerOptionBookmarksClick();
+
+    void onDrawerOptionDraftsClick();
+
+    void onDrawerOptionPremiumClick();
+
+    void onDrawerOptionAboutClick();
 
     void onDrawerRateUsClick();
 
-    void onDrawerMyFeedClick();
+    void onDrawerOptionLogoutClick();
+
+    void onFabClick();
 
     void onViewInitialized();
 
     void onNavMenuCreated();
+
+    String getCurrentUserId();
 }

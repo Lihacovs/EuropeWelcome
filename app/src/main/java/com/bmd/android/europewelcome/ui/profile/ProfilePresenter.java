@@ -20,9 +20,11 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.bmd.android.europewelcome.data.DataManager;
+import com.bmd.android.europewelcome.data.firebase.model.User;
 import com.bmd.android.europewelcome.ui.base.BasePresenter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.storage.UploadTask;
 
 import javax.inject.Inject;
@@ -36,6 +38,9 @@ public class ProfilePresenter<V extends ProfileMvpView> extends BasePresenter<V>
 
     private static final String TAG = "ProfilePresenter";
 
+    private String mUserId;
+    private User mUser;
+
     @Inject
     public ProfilePresenter(DataManager dataManager) {
         super(dataManager);
@@ -45,20 +50,48 @@ public class ProfilePresenter<V extends ProfileMvpView> extends BasePresenter<V>
     @Override
     public void loadUserProfile() {
 
-        final String currentUserName = getDataManager().getCurrentUserName();
-        if (currentUserName != null && !currentUserName.isEmpty()) {
-            getMvpView().loadUserName(currentUserName);
+        if(mUserId.equals(getDataManager().getCurrentUserId())) {
+            final String currentUserPhotoUrl = getDataManager().getCurrentUserProfilePicUrl();
+            if (currentUserPhotoUrl != null && !currentUserPhotoUrl.isEmpty()) {
+                getMvpView().loadUserImageUrl(currentUserPhotoUrl);
+            }
+
+            final String currentUserName = getDataManager().getCurrentUserName();
+            if (currentUserName != null && !currentUserName.isEmpty()) {
+                getMvpView().loadUserName(currentUserName);
+            }
+
+            final String currentUserEmail = getDataManager().getCurrentUserEmail();
+            if (currentUserEmail != null && !currentUserEmail.isEmpty()) {
+                getMvpView().loadUserEmail(currentUserEmail);
+            }
+
+            final String profileUserBirthDate = "d MMM yyyy";
+            if (profileUserBirthDate != null && !profileUserBirthDate.isEmpty()) {
+                getMvpView().loadUserBirthDate(profileUserBirthDate);
+            }
+            return;
         }
 
-        final String currentUserEmail = getDataManager().getCurrentUserEmail();
-        if (currentUserEmail != null && !currentUserEmail.isEmpty()) {
-            getMvpView().loadUserEmail(currentUserEmail);
-        }
+        getDataManager().getUser(mUserId).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                mUser = documentSnapshot.toObject(User.class);
 
-        final String profilePicUrl = getDataManager().getCurrentUserProfilePicUrl();
-        if (profilePicUrl != null && !profilePicUrl.isEmpty()) {
-            getMvpView().loadUserImageUrl(profilePicUrl);
-        }
+                getMvpView().loadUserImageUrl(mUser.getUserPhotoUrl());
+                getMvpView().loadUserName(mUser.getUserName());
+                getMvpView().loadUserEmail(mUser.getUserEmail());
+                getMvpView().loadUserBirthDate(mUser.getUserBirthDate());
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
+
     }
 
     @Override
@@ -80,7 +113,7 @@ public class ProfilePresenter<V extends ProfileMvpView> extends BasePresenter<V>
     @Override
     public void uploadUserImageToStorage(Uri uri) {
         getMvpView().showMessage("Uploading...");
-        getDataManager().uploadFileToStorage(uri)
+        getDataManager().uploadFileToStorage(uri,"userPhotos/")
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -102,5 +135,10 @@ public class ProfilePresenter<V extends ProfileMvpView> extends BasePresenter<V>
                 getMvpView().showMessage("Upload failed");
             }
         });
+    }
+
+    @Override
+    public void setUserId(String userId) {
+        mUserId = userId;
     }
 }

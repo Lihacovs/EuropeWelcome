@@ -28,11 +28,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bmd.android.europewelcome.R;
 import com.bmd.android.europewelcome.di.module.GlideApp;
 import com.bmd.android.europewelcome.ui.base.BaseActivity;
+import com.bmd.android.europewelcome.ui.custom.CustomImageView;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 
@@ -54,6 +56,8 @@ public class ProfileActivity extends BaseActivity implements ProfileMvpView {
     private static final int RC_CHOOSE_PHOTO = 101;
     private static final int RC_IMAGE_PERMS = 102;
     private static final String PERMS = Manifest.permission.READ_EXTERNAL_STORAGE;
+    private static final String EXTRA_USER_ID =
+            "com.bmd.android.europewelcome.postdetail.user_id";
 
     @Inject
     ProfileMvpPresenter<ProfileMvpView> mPresenter;
@@ -61,17 +65,21 @@ public class ProfileActivity extends BaseActivity implements ProfileMvpView {
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    @BindView(R.id.iv_profileactivity_userimage)
+    @BindView(R.id.iv_profile_user_photo)
     ImageView mUserImageIv;
 
-    @BindView(R.id.et_profileactivity_username)
-    EditText mUserNameEt;
+    @BindView(R.id.tv_profile_user_name)
+    TextView mUserNameIv;
 
-    @BindView(R.id.et_profileactivity_useremail)
-    EditText mUserEmailEt;
+    @BindView(R.id.tv_profile_user_email)
+    TextView mUserEmailIv;
 
-    public static Intent getStartIntent(Context context) {
+    @BindView(R.id.tv_profile_user_birth_date)
+    TextView mUserBirthDateIv;
+
+    public static Intent getStartIntent(Context context, String userId) {
         Intent intent = new Intent(context, ProfileActivity.class);
+        intent.putExtra(EXTRA_USER_ID, userId);
         return intent;
     }
 
@@ -83,6 +91,8 @@ public class ProfileActivity extends BaseActivity implements ProfileMvpView {
         getActivityComponent().inject(this);
 
         setUnBinder(ButterKnife.bind(this));
+
+        mPresenter.setUserId((String) getIntent().getSerializableExtra(EXTRA_USER_ID));
 
         mPresenter.onAttach(this);
 
@@ -97,13 +107,19 @@ public class ProfileActivity extends BaseActivity implements ProfileMvpView {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
+
         mPresenter.loadUserProfile();
+    }
+
+    @OnClick(R.id.tv_profile_change_profile)
+    void onChangeProfileTvClick(){
+        onError("profile snackbar test");
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.addpost_menu, menu);
+        getMenuInflater().inflate(R.menu.profile_menu, menu);
         return true;
     }
 
@@ -128,15 +144,11 @@ public class ProfileActivity extends BaseActivity implements ProfileMvpView {
                     NavUtils.navigateUpTo(this, upIntent);
                 }
                 return true;
-            case R.id.save_post:
-                mPresenter.newUserName(mUserNameEt.getText().toString());
-                mPresenter.newUserEmail(mUserEmailEt.getText().toString());
-                this.finish();
         }
         return super.onOptionsItemSelected(item);
     }
 
-    @OnClick(R.id.iv_profileactivity_userimage)
+    /*@OnClick(R.id.iv_profileactivity_userimage)
     @AfterPermissionGranted(RC_IMAGE_PERMS)
     void onProfileImageClick(){
         if (!EasyPermissions.hasPermissions(this, PERMS)) {
@@ -147,9 +159,9 @@ public class ProfileActivity extends BaseActivity implements ProfileMvpView {
 
         Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(i, RC_CHOOSE_PHOTO);
-    }
+    }*/
 
-    @Override
+    /*@Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -165,22 +177,12 @@ public class ProfileActivity extends BaseActivity implements ProfileMvpView {
                 && EasyPermissions.hasPermissions(this, PERMS)) {
             onProfileImageClick();
         }
-    }
+    }*/
 
     @Override
     protected void onDestroy() {
         mPresenter.onDetach();
         super.onDestroy();
-    }
-
-    @Override
-    public void loadUserName(String userName) {
-        mUserNameEt.setText(userName);
-    }
-
-    @Override
-    public void loadUserEmail(String userEmail) {
-        mUserEmailEt.setText(userEmail);
     }
 
     @Override
@@ -192,5 +194,20 @@ public class ProfileActivity extends BaseActivity implements ProfileMvpView {
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(mUserImageIv);
         }
+    }
+
+    @Override
+    public void loadUserName(String userName) {
+        mUserNameIv.setText(userName);
+    }
+
+    @Override
+    public void loadUserEmail(String userEmail) {
+        mUserEmailIv.setText(userEmail);
+    }
+
+    @Override
+    public void loadUserBirthDate(String userBirthDate) {
+        mUserBirthDateIv.setText(userBirthDate);
     }
 }

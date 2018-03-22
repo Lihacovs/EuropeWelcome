@@ -15,6 +15,7 @@
 
 package com.bmd.android.europewelcome.data.firebase.model;
 
+import java.util.HashMap;
 import java.util.UUID;
 
 /**
@@ -29,8 +30,8 @@ public class Post {
     private String mPostAuthorImageUrl;
     private String mPostTitle;
     private String mPostText;
-    private String mPostStars;
-    private String mPostWatches;
+    private int mPostStars;
+    private int mPostWatches;
     private String mPostImageUrl;
     private String mPostCreationDate;
     private int mChildLayoutNum;
@@ -43,8 +44,8 @@ public class Post {
                 String postAuthorImageUrl,
                 String postTitle,
                 String postText,
-                String postStars,
-                String postWatches,
+                int postStars,
+                int postWatches,
                 String postImageUrl,
                 String postCreationDate,
                 int childLayoutNum) {
@@ -109,19 +110,19 @@ public class Post {
         mPostText = postText;
     }
 
-    public String getPostStars() {
+    public int getPostStars() {
         return mPostStars;
     }
 
-    public void setPostStars(String postStars) {
+    public void setPostStars(int postStars) {
         mPostStars = postStars;
     }
 
-    public String getPostWatches() {
+    public int getPostWatches() {
         return mPostWatches;
     }
 
-    public void setPostWatches(String postWatches) {
+    public void setPostWatches(int postWatches) {
         mPostWatches = postWatches;
     }
 

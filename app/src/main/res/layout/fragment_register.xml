@@ -41,7 +41,7 @@
                 android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:background="@color/cornflower_blue_7"
+                android:background="@color/cornflower_blue_13"
                 android:gravity="center|start"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -54,30 +54,34 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginStart="16dp"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:background="@color/transparent"
                     android:tint="@color/white"
-                    app:srcCompat="@drawable/ic_keyboard_backspace_24px"/>
+                    app:srcCompat="@drawable/ic_keyboard_backspace_24px"
+                    android:contentDescription="@string/fragment_register_back_btn" />
 
                 <TextView
                     style="@style/TextStyle.Heading"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:text="Register"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/fragment_register_register_screen"
                     android:textColor="@color/white"
                     android:textSize="20sp"/>
             </LinearLayout>
 
             <EditText
                 android:id="@+id/et_register_email"
+                style="@style/MyTextStyle.EditText.Blue"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:ems="10"
-                android:hint="@string/email"
+                android:hint="@string/fragment_register_email"
                 android:inputType="textEmailAddress"
                 android:singleLine="true"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -86,12 +90,13 @@
 
             <EditText
                 android:id="@+id/et_register_password"
+                style="@style/MyTextStyle.EditText.Blue"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:ems="10"
-                android:hint="@string/password"
+                android:hint="@string/fragment_register_password"
                 android:inputType="textVisiblePassword"
                 android:singleLine="true"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -103,20 +108,23 @@
                 android:layout_width="72dp"
                 android:layout_height="72dp"
                 android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_register_password"
-                app:srcCompat="@drawable/ic_add_photo_24px" />
+                app:srcCompat="@drawable/ic_add_photo_24px"
+                android:contentDescription="@string/fragment_register_add_photo" />
 
             <EditText
                 android:id="@+id/et_register_name"
+                style="@style/MyTextStyle.EditText.Blue"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:ems="10"
-                android:hint="Name"
+                android:hint="@string/fragment_register_name"
                 android:inputType="textCapWords|textPersonName"
                 android:singleLine="true"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -125,12 +133,13 @@
 
             <EditText
                 android:id="@+id/et_register_surname"
+                style="@style/MyTextStyle.EditText.Blue"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:ems="10"
-                android:hint="Surname"
+                android:hint="@string/fragment_register_surname"
                 android:inputType="textCapWords|textPersonName"
                 android:singleLine="true"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -141,9 +150,10 @@
                 android:id="@+id/tv_register_gender"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="Your gender:"
+                android:text="@string/fragment_register_gender"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_register_surname"/>
 
@@ -164,7 +174,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Male"
+                    android:text="@string/fragment_register_male"
                     tools:layout_editor_absoluteX="16dp"
                     tools:layout_editor_absoluteY="201dp" />
 
@@ -173,7 +183,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Female"
+                    android:text="@string/fragment_register_female"
                     tools:layout_editor_absoluteY="201dp" />
 
                 <RadioButton
@@ -182,7 +192,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:checked="true"
-                    android:text="Not specified"
+                    android:text="@string/fragment_register_not_specified"
                     tools:layout_editor_absoluteX="273dp"
                     tools:layout_editor_absoluteY="201dp" />
             </RadioGroup>
@@ -192,13 +202,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
-                android:text="Date of birth:"
+                android:text="@string/fragment_register_date_of_birth"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rg_register_radio_group"/>
 
             <EditText
                 android:id="@+id/et_register_birth_date"
+                style="@style/MyTextStyle.EditText.Blue"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
@@ -207,7 +219,7 @@
                 android:clickable="true"
                 android:ems="10"
                 android:focusable="false"
-                android:hint="Day Mounth Year"
+                android:hint="@string/fragment_register_d_m_y"
                 android:inputType="date"
                 android:longClickable="false"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -231,7 +243,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="16dp"
-                    android:text="Proceeding register you agree with Terms and Conditions"
+                    android:text="@string/fragment_register_terms"
                     android:textAlignment="center"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -245,7 +257,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:text="Register"
+                    android:text="@string/fragment_register_register"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_register_terms"/>

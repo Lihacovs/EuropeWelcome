@@ -20,7 +20,17 @@
     <string name="facebook_app_id">1997719713823775</string>
     <string name="fb_login_protocol_scheme">fb1997719713823775</string>
 
-    <!--auth.register.RegisterPresenter-->
+    <!--ui.auth.LoginPresenter-->
+    <string name="login_empty_email">Please enter your Email</string>
+    <string name="login_invalid_email">Please enter a valid Email</string>
+    <string name="login_empty_password">Please enter your Password</string>
+    <string name="login_email_not_exist">Provided Email is not registered</string>
+    <string name="login_invalid_password">The Password is invalid</string>
+    <string name="login_email_already_used">Email address is already used</string>
+    <string name="login_try_again">Please try again</string>
+    <string name="login_some_error">Some error occurred. Try again</string>
+
+    <!--ui.auth.register.RegisterPresenter-->
     <string name="register_empty_email">Please enter your Email</string>
     <string name="register_invalid_email">Please enter a valid Email</string>
     <string name="register_empty_password">Please enter your Password</string>
@@ -36,17 +46,67 @@
     <string name="register_try_again">Please try again</string>
     <string name="register_some_error">Some error occurred. Try again</string>
 
-    <!--auth.LoginPresenter-->
-    <string name="login_empty_email">Please enter your Email</string>
-    <string name="login_invalid_email">Please enter a valid Email</string>
-    <string name="login_empty_password">Please enter your Password</string>
-    <string name="login_email_not_exist">Provided Email is not registered</string>
-    <string name="login_invalid_password">The Password is invalid</string>
-    <string name="login_email_already_used">Email address is already used</string>
-    <string name="login_try_again">Please try again</string>
-    <string name="login_some_error">Some error occurred. Try again</string>
 
-    <!--auth.LoginActivity-->
+
+    <!--res.layout.activity_login-->
+    <string name="activity_login_app_logo">EuropeWelcome</string>
+    <string name="activity_login_email">Email</string>
+    <string name="activity_login_password">Password</string>
+    <string name="activity_login_signin">Sign In</string>
+    <string name="activity_login_google_signin">Sign In with Google</string>
+    <string name="activity_login_facebook_signin">Sign In with Facebook</string>
+    <string name="activity_login_register">Don\'t have an Account? Register</string>
+
+    <!--res.layout.fragment_register-->
+    <string name="fragment_register_register_screen">Register</string>
+    <string name="fragment_register_back_btn">Back</string>
+    <string name="fragment_register_email">Email</string>
+    <string name="fragment_register_password">Password</string>
+    <string name="fragment_register_add_photo">Add Photo</string>
+    <string name="fragment_register_name">Name</string>
+    <string name="fragment_register_surname">Surname</string>
+    <string name="fragment_register_gender">Your gender:</string>
+    <string name="fragment_register_male">Male</string>
+    <string name="fragment_register_female">Female</string>
+    <string name="fragment_register_not_specified">Not specified</string>
+    <string name="fragment_register_date_of_birth">Date of Birth:</string>
+    <string name="fragment_register_d_m_y">Day Month Year</string>
+    <string name="fragment_register_terms">Proceeding register you agree with Terms and Conditions</string>
+    <string name="fragment_register_register">Register</string>
+
+    <!--res.layout.drawer_header-->
+    <string name="drawer_header_bg_image">Background image</string>
+    <string name="drawer_header_user_photo">User photo</string>
+    <string name="drawer_header_user_name">EuropeWelcome</string>
+    <string name="drawer_header_user_email">I am the way and the truth and the life</string>
+
+    <!--res.menu.drawer-->
+    <string name="drawer_menu_profile">Profile</string>
+    <string name="drawer_menu_bookmarks">Bookmarks</string>
+    <string name="drawer_menu_drafts">Drafts</string>
+    <string name="drawer_menu_premium">Premium</string>
+    <string name="drawer_menu_about">About</string>
+    <string name="drawer_menu_rate">Rate Us</string>
+    <string name="drawer_menu_logout">Logout</string>
+
+    <!--res.layout.item_post_view-->
+    <string name="post_item_author_photo">Post author photo</string>
+    <string name="post_item_author_name">Post author name</string>
+    <string name="post_item_post_date">Post date</string>
+    <string name="post_item_post_image">Post image</string>
+    <string name="post_item_post_title">Post title</string>
+    <string name="post_item_post_text">Post text</string>
+    <string name="post_item_star_icon">Star icon</string>
+    <string name="post_item_eye_icon">Eye icon</string>
+    <string name="post_item_comment_icon">Comment icon</string>
+    <string name="post_item_bookmark_icon">Bookmark icon</string>
+    <string name="post_item_default_count">0</string>
+
+
+
+
+
+
 
     <!--Login-->
     <string name="europe_welcome">Europe Welcome</string>

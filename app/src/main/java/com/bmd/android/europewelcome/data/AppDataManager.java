@@ -24,6 +24,7 @@ import com.bmd.android.europewelcome.data.firebase.FirebaseHelper;
 import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.data.firebase.model.PostComment;
 import com.bmd.android.europewelcome.data.firebase.model.PostSection;
+import com.bmd.android.europewelcome.data.firebase.model.User;
 import com.bmd.android.europewelcome.data.network.NetworkHelper;
 import com.bmd.android.europewelcome.data.prefs.PreferencesHelper;
 import com.bmd.android.europewelcome.di.ApplicationContext;
@@ -34,6 +35,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.UploadTask;
 
 import javax.inject.Inject;
@@ -279,13 +281,43 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Task<Void> updatePostSection(String postId, PostSection postSection) {
+        return mFirebaseHelper.updatePostSection(postId, postSection);
+    }
+
+    @Override
+    public Task<Void> deletePost(Post post) {
+        return mFirebaseHelper.deletePost(post);
+    }
+
+    @Override
+    public Task<Void> deletePostSection(String postId, PostSection postSection) {
+        return mFirebaseHelper.deletePostSection(postId, postSection);
+    }
+
+    @Override
     public Task<DocumentSnapshot> getPost(String postId) {
         return mFirebaseHelper.getPost(postId);
     }
 
     @Override
-    public UploadTask uploadFileToStorage(Uri uri) {
-        return mFirebaseHelper.uploadFileToStorage(uri);
+    public Task<QuerySnapshot> getFirstPostSection(String postId, String sectionViewType) {
+        return mFirebaseHelper.getFirstPostSection(postId, sectionViewType);
+    }
+
+    @Override
+    public Task<Void> saveUser(User user) {
+        return mFirebaseHelper.saveUser(user);
+    }
+
+    @Override
+    public Task<DocumentSnapshot> getUser(String userId) {
+        return mFirebaseHelper.getUser(userId);
+    }
+
+    @Override
+    public UploadTask uploadFileToStorage(Uri uri, String path) {
+        return mFirebaseHelper.uploadFileToStorage(uri, path);
     }
 
     @Override

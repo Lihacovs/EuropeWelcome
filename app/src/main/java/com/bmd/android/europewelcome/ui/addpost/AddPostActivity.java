@@ -33,6 +33,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -55,9 +56,14 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerFragment;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
@@ -102,6 +108,8 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
     @BindView(R.id.sv_addpost_postcontent)
     ScrollView mScrollView;
 
+    String mYouTubeUrl;
+
     public static Intent getStartIntent(Context context) {
         Intent intent = new Intent(context, AddPostActivity.class);
         return intent;
@@ -117,6 +125,13 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
         setUnBinder(ButterKnife.bind(this));
 
         mPresenter.onAttach(this);
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null){
+            mYouTubeUrl = extras.getString(Intent.EXTRA_TEXT);
+        }else {
+            mYouTubeUrl = "https://www.youtube.com/watch?v=PEGccV-NOm8";
+        }
 
         setUp();
     }
@@ -276,7 +291,7 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
         mPresenter.addPostSectionToList(postSection);
 
         View imageView = LayoutInflater.from(this)
-                .inflate(R.layout.item_addpost_image, mPostContentLl, false);
+                .inflate(R.layout.item_new_post_image, mPostContentLl, false);
         mPostContentLl.addView(imageView);
 
         imageIv = imageView.findViewById(R.id.iv_addpostitem_image);
@@ -310,7 +325,7 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
         mPresenter.addPostSectionToList(postSection);
 
         final View textLayout = LayoutInflater.from(this)
-                .inflate(R.layout.item_addpost_text, mPostContentLl, false);
+                .inflate(R.layout.item_new_post_text, mPostContentLl, false);
         mPostContentLl.addView(textLayout);
 
         //Removes PostText from list and from layout
@@ -467,7 +482,33 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
 
     @Override
     public void attachPostVideoLayout() {
+        showMessage(extractYTId(mYouTubeUrl));
 
+
+
+        final View videoLayout = LayoutInflater.from(this)
+                .inflate(R.layout.item_addpost_video, mPostContentLl, false);
+        mPostContentLl.addView(videoLayout);
+
+        YouTubePlayerFragment youTubePlayerFragment = (YouTubePlayerFragment) getFragmentManager().findFragmentById(R.id.v1);
+        YouTubePlayer.OnInitializedListener onInitializedListener;
+
+        onInitializedListener = new YouTubePlayer.OnInitializedListener() {
+            @Override
+            public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+                youTubePlayer.loadVideo(extractYTId(mYouTubeUrl));
+            }
+
+            @Override
+            public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+
+            }
+        };
+
+        Button playBtn = videoLayout.findViewById(R.id.btn_addpostitem_playvideo);
+        playBtn.setOnClickListener(v -> {
+            youTubePlayerFragment.initialize("AIzaSyByraF4EaclX12v43bAKldVHZfMjazz9y8",onInitializedListener);
+        });
     }
 
     @Override
@@ -489,6 +530,18 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
                 Collections.singletonList(PERMS))) {
             new AppSettingsDialog.Builder(this).build().show();
         }
+    }
+
+    public static String extractYTId(String ytUrl) {
+        String vId = null;
+        Pattern pattern = Pattern.compile(
+                "^https?://.*(?:youtu.be/|v/|u/\\w/|embed/|watch?v=)([^#&?]*).*$",
+                Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(ytUrl);
+        if (matcher.matches()){
+            vId = matcher.group(1);
+        }
+        return vId;
     }
 
 }

@@ -15,6 +15,7 @@
 
 package com.bmd.android.europewelcome.ui.base;
 
+import android.content.DialogInterface;
 import android.support.annotation.StringRes;
 
 /**
@@ -41,5 +42,4 @@ public interface MvpView {
     boolean isNetworkConnected();
 
     void hideKeyboard();
-
 }

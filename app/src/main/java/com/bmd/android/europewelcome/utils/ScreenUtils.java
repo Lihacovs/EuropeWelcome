@@ -16,7 +16,10 @@
 package com.bmd.android.europewelcome.utils;
 
 import android.content.Context;
+import android.support.v4.widget.NestedScrollView;
 import android.util.DisplayMetrics;
+import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 
 /**
@@ -53,5 +56,23 @@ public class ScreenUtils {
             result = context.getResources().getDimensionPixelSize(resourceId);
         }
         return result;
+    }
+
+    public static void scrollToBottom(NestedScrollView scrollView){
+        scrollView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                final int scrollViewHeight = scrollView.getHeight();
+                if (scrollViewHeight > 0) {
+                    scrollView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+                    final View lastView = scrollView.getChildAt(scrollView.getChildCount() - 1);
+                    final int lastViewBottom = lastView.getBottom() + scrollView.getPaddingBottom();
+                    final int deltaScrollY = lastViewBottom - scrollViewHeight - scrollView.getScrollY();
+                    /* If you want to see the scroll animation, call this. */
+                    scrollView.smoothScrollBy(0, deltaScrollY);
+                }
+            }
+        });
     }
 }

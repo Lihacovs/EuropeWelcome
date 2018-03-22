@@ -72,6 +72,11 @@
             android:launchMode="singleTop"
             android:parentActivityName=".ui.posts.PostsActivity"
             android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:host="www.youtube.com" android:mimeType="*/*" />
+            </intent-filter>
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
@@ -80,6 +85,17 @@
         </activity>
         <activity
             android:name="com.bmd.android.europewelcome.ui.profile.ProfileActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".ui.posts.PostsActivity"
+            android:screenOrientation="portrait">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.posts.PostsActivity"/>
+        </activity>
+        <activity
+            android:name="com.bmd.android.europewelcome.ui.newpost.NewPostActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".ui.posts.PostsActivity"
             android:screenOrientation="portrait">

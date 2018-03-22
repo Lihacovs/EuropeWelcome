@@ -20,6 +20,7 @@ import android.net.Uri;
 import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.data.firebase.model.PostComment;
 import com.bmd.android.europewelcome.data.firebase.model.PostSection;
+import com.bmd.android.europewelcome.data.firebase.model.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -27,6 +28,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.UploadTask;
 
 /**
@@ -87,11 +89,22 @@ public interface FirebaseHelper {
 
     Task<Void> updatePost(Post post);
 
+    Task<Void> updatePostSection(String postId ,PostSection postSection);
+
+    Task<Void> deletePost(Post post);
+
+    Task<Void> deletePostSection(String postId ,PostSection postSection);
+
     Task<DocumentSnapshot> getPost(String postId);
 
+    Task<QuerySnapshot> getFirstPostSection(String postId, String sectionViewType);
+
+    Task<Void> saveUser(User user);
+
+    Task<DocumentSnapshot> getUser(String userId);
 
     //=//=// F I R E B A S E  -  S T O R A G E //=//=//
 
-    UploadTask uploadFileToStorage(Uri uri);
+    UploadTask uploadFileToStorage(Uri uri, String path);
 
 }

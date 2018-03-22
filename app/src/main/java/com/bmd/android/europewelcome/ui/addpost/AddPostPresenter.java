@@ -122,7 +122,7 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
     @Override
     public void uploadFileToStorage(Uri uri) {
         getMvpView().showMessage("Uploading...");
-        getDataManager().uploadFileToStorage(uri)
+        getDataManager().uploadFileToStorage(uri, "postImages/")
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -155,8 +155,8 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
                 , getDataManager().getCurrentUserProfilePicUrl()
                 , null
                 , null
-                , "1"
-                , "1"
+                , 0
+                , 1
                 , null
                 , CommonUtils.getCurrentDate()
                 , 0
@@ -168,6 +168,7 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
         return new PostSection(null,
                 CommonUtils.getCurrentDate(),
                 CommonUtils.getTimeStamp(),
+                CommonUtils.getTimeStampInt(),
                 mLayoutOrderNum++,
                 null,
                 14,
@@ -178,7 +179,8 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
                 null,
                 null,
                 0,
-                0);
+                0,
+                null);
     }
 }
 

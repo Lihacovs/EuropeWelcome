@@ -134,6 +134,7 @@ dependencies {
     //androidTestCompile "org.mockito:mockito-core:$rootProject.mockitoVersion"
 
     //androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"
+    implementation files('libs/YouTubeAndroidPlayerApi.jar')
 }
 
 configurations.all {

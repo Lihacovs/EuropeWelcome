@@ -39,6 +39,10 @@ public interface PostsMvpView extends MvpView {
 
     void openAddPostActivity();
 
+    void openNewPostActivity();
+
+    void openProfileActivity();
+
     void closeNavigationDrawer();
 
     void lockDrawer();

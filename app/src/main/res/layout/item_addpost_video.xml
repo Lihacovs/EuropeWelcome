@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2017. Baltic Mobile Development
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,40 +14,52 @@
   -->
 
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                             xmlns:app="http://schemas.android.com/apk/res-auto"
-                                             xmlns:tools="http://schemas.android.com/tools"
-                                             android:id="@+id/cl_addpostitem_layout"
-                                             android:layout_width="match_parent"
-                                             android:layout_height="wrap_content"
-                                             android:layout_marginBottom="4dp"
-                                             android:layout_marginEnd="8dp"
-                                             android:layout_marginLeft="8dp"
-                                             android:layout_marginRight="8dp"
-                                             android:layout_marginStart="8dp"
-                                             android:layout_marginTop="4dp"
-                                             android:background="@android:color/darker_gray"
-                                             android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_addpostitem_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="4dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="4dp"
+    android:background="@android:color/darker_gray"
+    android:orientation="vertical">
 
-    <VideoView
-        android:id="@+id/vv_addpostitem_video"
+    <fragment
+        android:id="@+id/v1"
+        android:name="com.google.android.youtube.player.YouTubePlayerFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="H,16:9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent">
+    </fragment>
 
     <ImageView
         android:id="@+id/iv_addpostitem_deletevideo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="1dp"
         android:adjustViewBounds="false"
         android:background="@color/translucent_white"
         android:padding="7dp"
-        android:layout_margin="1dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_delete_black_24dp"/>
+        app:srcCompat="@drawable/ic_delete_black_24dp" />
+
+    <Button
+        android:id="@+id/btn_addpostitem_playvideo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Play"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/v1" />
 
 </android.support.constraint.ConstraintLayout>

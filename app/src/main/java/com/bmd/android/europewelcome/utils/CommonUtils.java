@@ -93,10 +93,16 @@ public final class CommonUtils {
                 .format(Calendar.getInstance().getTime());
     }
 
+    public static int getTimeStampInt() {
+        return (int) System.currentTimeMillis() / 1000;
+    }
+
     public static String getCurrentDate() {
         return new SimpleDateFormat(AppConstants.DATE_FORMAT, Locale.US)
                 .format(Calendar.getInstance().getTime());
     }
 
-
+    public static int getIntTimeStamp(){
+        return 1;
+    }
 }

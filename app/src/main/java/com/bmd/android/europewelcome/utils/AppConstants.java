@@ -45,6 +45,7 @@ public final class AppConstants {
     public static final String POST_PLACE_COLLECTION = "postPlace";
     public static final String COMMENT_COLLECTION = "postComment";
     public static final String POST_SECTION_COLLECTION = "postSection";
+    public static final String USERS_COLLECTION = "users";
 
 
     private AppConstants() {

@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright (C) 2017. Baltic Mobile Development
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) 2018 Baltic Information Technologies
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at
@@ -14,34 +13,71 @@
   ~ limitations under the License.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="200dp"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:background="@drawable/bg_design"
-              android:orientation="vertical"
-              android:padding="16dp">
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_design">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_drawer_header_bg_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.bmd.android.europewelcome.ui.custom.CustomImageView
+            android:id="@+id/iv_drawer_header_bg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/drawer_header_bg_image"
+            app:srcCompat="@drawable/ic_europe_welcome_bg3" />
+    </android.support.constraint.ConstraintLayout>
 
     <ImageView
-        android:id="@+id/iv_drawerheader_userimage"
+        android:id="@+id/iv_drawer_header_user_photo"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:layout_marginTop="40dp"
-        app:srcCompat="@drawable/ic_account_circle_black_24dp"/>
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:adjustViewBounds="false"
+        android:contentDescription="@string/drawer_header_user_photo"
+        android:cropToPadding="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_europe_stars_24px" />
 
     <TextView
-        android:id="@+id/tv_name"
-        style="@style/TextStyle.Title"
-        android:layout_width="wrap_content"
+        android:id="@+id/tv_drawer_header_user_name"
+        style="@style/MyTextStyle.DrawerName"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Name" />
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:singleLine="true"
+        android:text="@string/drawer_header_user_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_drawer_header_user_photo" />
 
     <TextView
-        android:id="@+id/tv_email"
-        style="@style/TextStyle.Title.Sub"
-        android:layout_width="wrap_content"
+        android:id="@+id/tv_drawer_header_user_email"
+        style="@style/MyTextStyle.DrawerEmail"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Email" />
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:singleLine="true"
+        android:text="@string/drawer_header_user_email"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_drawer_header_user_name" />
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

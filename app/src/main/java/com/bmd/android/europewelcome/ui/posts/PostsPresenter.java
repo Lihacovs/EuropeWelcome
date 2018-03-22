@@ -37,6 +37,32 @@ public class PostsPresenter <V extends PostsMvpView> extends BasePresenter<V>
     }
 
     @Override
+    public void onDrawerOptionProfileClick() {
+        if(getDataManager().getCurrentUserId() == null || getDataManager().getCurrentUserId().isEmpty()){
+            getMvpView().closeNavigationDrawer();
+            getMvpView().openLoginActivity();
+        }else{
+            getMvpView().closeNavigationDrawer();
+            getMvpView().openProfileActivity();
+        }
+    }
+
+    @Override
+    public void onDrawerOptionBookmarksClick() {
+
+    }
+
+    @Override
+    public void onDrawerOptionDraftsClick() {
+
+    }
+
+    @Override
+    public void onDrawerOptionPremiumClick() {
+
+    }
+
+    @Override
     public void onDrawerOptionAboutClick() {
         getMvpView().closeNavigationDrawer();
         getMvpView().showAboutFragment();
@@ -58,6 +84,15 @@ public class PostsPresenter <V extends PostsMvpView> extends BasePresenter<V>
         getMvpView().hideLoading();
         getMvpView().openLoginActivity();
 
+    }
+
+    @Override
+    public void onFabClick() {
+        if(getDataManager().getCurrentUserId() == null || getDataManager().getCurrentUserId().isEmpty()){
+            getMvpView().openLoginActivity();
+        }else{
+            getMvpView().openNewPostActivity();
+        }
     }
 
     @Override
@@ -92,14 +127,13 @@ public class PostsPresenter <V extends PostsMvpView> extends BasePresenter<V>
     }
 
     @Override
-    public void onDrawerRateUsClick() {
-        getMvpView().closeNavigationDrawer();
-        getMvpView().showRateUsDialog();
+    public String getCurrentUserId() {
+        return getDataManager().getCurrentUserId();
     }
 
     @Override
-    public void onDrawerMyFeedClick() {
+    public void onDrawerRateUsClick() {
         getMvpView().closeNavigationDrawer();
-        getMvpView().openAddPostActivity();
+        getMvpView().showRateUsDialog();
     }
 }

@@ -15,6 +15,6 @@
   -->
 
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-        android:color="@color/cornflower_blue_8">
-    <item android:drawable="@color/cornflower_blue_6" />
+        android:color="@color/cornflower_blue_15">
+    <item android:drawable="@color/cornflower_blue_11" />
 </ripple>

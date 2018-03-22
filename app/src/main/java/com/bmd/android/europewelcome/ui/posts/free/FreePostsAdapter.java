@@ -15,8 +15,6 @@
 
 package com.bmd.android.europewelcome.ui.posts.free;
 
-import android.graphics.drawable.Animatable;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +26,7 @@ import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.di.module.GlideApp;
 import com.bmd.android.europewelcome.ui.base.BaseViewHolder;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -89,35 +88,45 @@ public class FreePostsAdapter extends FirestoreRecyclerAdapter<Post, FreePostsAd
     }
 
     public class ViewHolder extends BaseViewHolder {
-        @BindView(R.id.iv_addpostitem_postimage)
-        ImageView mPostImageIv;
 
-        @BindView(R.id.tv_postitem_posttitle)
-        TextView mPostTitleTv;
+        @BindView(R.id.iv_post_item_author_photo)
+        ImageView mUserPhotoIv;
 
-        @BindView(R.id.tv_postitem_postauthor)
+        @BindView(R.id.tv_post_item_author_name)
         TextView mPostAuthorTv;
 
-        @BindView(R.id.tv_postitem_postcreationdate)
+        @BindView(R.id.tv_post_item_post_date)
         TextView mPostCreationDateTv;
 
-        @BindView(R.id.tv_postitem_posttext)
+        @BindView(R.id.iv_post_item_post_image)
+        ImageView mPostImageIv;
+
+        @BindView(R.id.tv_post_item_post_title)
+        TextView mPostTitleTv;
+
+        @BindView(R.id.tv_post_item_post_text)
         TextView mPostTextTv;
 
-        @BindView(R.id.tv_postitem_starcount)
+        @BindView(R.id.tv_post_item_stars_count)
         TextView mPostStarsTv;
 
-        @BindView(R.id.tv_postitem_watchcount)
+        @BindView(R.id.tv_post_item_eye_count)
         TextView mPostWatchesTv;
 
-        @BindView(R.id.iv_postitem_starimage)
+        @BindView(R.id.tv_post_item_comment_count)
+        TextView mCommentsCountTv;
+
+        @BindView(R.id.iv_post_item_star_image)
         ImageView mStarIv;
 
-        @BindView(R.id.iv_postitem_eyeimage)
+        @BindView(R.id.iv_post_item_eye_image)
         ImageView mEyeIv;
 
-        @BindView(R.id.iv_postitem_shareimage)
-        ImageView mShareIv;
+        @BindView(R.id.iv_post_item_comment_image)
+        ImageView mCommentIv;
+
+        @BindView(R.id.iv_post_item_bookmark_image)
+        ImageView mBookmarkIv;
 
         private Post mPost;
 
@@ -138,12 +147,22 @@ public class FreePostsAdapter extends FirestoreRecyclerAdapter<Post, FreePostsAd
 
             mPost = post;
 
+            if (post.getPostAuthorImageUrl() != null) {
+                GlideApp.with(itemView.getContext())
+                        .load(post.getPostAuthorImageUrl())
+                        .apply(RequestOptions.circleCropTransform())
+                        .transition(DrawableTransitionOptions.withCrossFade())
+                        .into(mUserPhotoIv);
+            }
+
             if (post.getPostImageUrl() != null) {
                 GlideApp.with(itemView.getContext())
                         .load(post.getPostImageUrl())
                         .centerCrop()
                         .transition(DrawableTransitionOptions.withCrossFade())
                         .into(mPostImageIv);
+            } else {
+                mPostImageIv.setVisibility(View.GONE);
             }
 
             if (post.getPostTitle() != null) {
@@ -162,15 +181,12 @@ public class FreePostsAdapter extends FirestoreRecyclerAdapter<Post, FreePostsAd
                 mPostTextTv.setText(post.getPostText());
             }
 
-            if (post.getPostStars() != null) {
-                mPostStarsTv.setText(post.getPostStars());
-            }
+            mPostStarsTv.setText(String.valueOf(post.getPostStars()));
 
-            if (post.getPostWatches() != null) {
-                mPostWatchesTv.setText(post.getPostWatches());
-            }
+            mPostWatchesTv.setText(String.valueOf(post.getPostWatches()));
 
-            mShareIv.setOnClickListener(new View.OnClickListener() {
+
+            /*mShareIv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Drawable drawable = mShareIv.getDrawable();
@@ -178,13 +194,13 @@ public class FreePostsAdapter extends FirestoreRecyclerAdapter<Post, FreePostsAd
                         ((Animatable) drawable).start();
                     }
                 }
-            });
+            });*/
 
             mStarIv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int newStarCount = Integer.parseInt(post.getPostStars()) + 1;
-                    mPost.setPostStars(Integer.toString(newStarCount));
+                    int newStarCount = post.getPostStars() + 1;
+                    mPost.setPostStars(newStarCount);
                     if(mCallback != null)
                         mCallback.onStarIconClick(mPost);
                 }
@@ -193,8 +209,8 @@ public class FreePostsAdapter extends FirestoreRecyclerAdapter<Post, FreePostsAd
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int newWatches = Integer.parseInt(post.getPostWatches()) + 1;
-                    mPost.setPostWatches(Integer.toString(newWatches));
+                    int newWatches = post.getPostWatches() + 1;
+                    mPost.setPostWatches(newWatches);
                     if (mCallback != null)
                         mCallback.onPostItemViewClick(mPost);
                 }

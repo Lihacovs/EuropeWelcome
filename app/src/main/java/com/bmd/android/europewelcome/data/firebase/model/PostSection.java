@@ -15,6 +15,10 @@
 
 package com.bmd.android.europewelcome.data.firebase.model;
 
+
+import com.google.firebase.firestore.ServerTimestamp;
+
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -26,6 +30,7 @@ public class PostSection {
     private String mPostSectionViewType;
     private String mPostSectionCreationDate;
     private String mPostSectionTimestamp;
+    private int mTimeStamp;
     private int mLayoutOrderNum;
 
     //Text fields
@@ -44,6 +49,9 @@ public class PostSection {
     private double mPostPlaceLat;
     private double mPostPlaceLng;
 
+    //Video fields
+    private String mYouTubeVideoCode;
+
     //Empty constructor required for Firebase queries
     public PostSection() {
     }
@@ -52,6 +60,7 @@ public class PostSection {
             String postSectionViewType,
             String postSectionCreationDate,
             String postSectionTimestamp,
+            int timeStamp,
             int layoutOrderNum,
             String postText,
             float postTextSize,
@@ -62,11 +71,13 @@ public class PostSection {
             String postPlaceAddress,
             String postPlaceName,
             double postPlaceLat,
-            double postPlaceLng) {
+            double postPlaceLng,
+            String youTubeVideoCode) {
         mPostSectionId = UUID.randomUUID().toString();
         mPostSectionViewType = postSectionViewType;
         mPostSectionCreationDate = postSectionCreationDate;
         mPostSectionTimestamp = postSectionTimestamp;
+        mTimeStamp = timeStamp;
         mLayoutOrderNum = layoutOrderNum;
         mPostText = postText;
         mPostTextSize = postTextSize;
@@ -78,6 +89,7 @@ public class PostSection {
         mPostPlaceName = postPlaceName;
         mPostPlaceLat = postPlaceLat;
         mPostPlaceLng = postPlaceLng;
+        mYouTubeVideoCode = youTubeVideoCode;
     }
 
     public String getPostSectionId() {
@@ -198,5 +210,21 @@ public class PostSection {
 
     public void setPostPlaceLng(double postPlaceLng) {
         mPostPlaceLng = postPlaceLng;
+    }
+
+    public String getYouTubeVideoCode() {
+        return mYouTubeVideoCode;
+    }
+
+    public void setYouTubeVideoCode(String youTubeVideoCode) {
+        mYouTubeVideoCode = youTubeVideoCode;
+    }
+
+    public int getTimeStamp() {
+        return mTimeStamp;
+    }
+
+    public void setTimeStamp(int timeStamp) {
+        mTimeStamp = timeStamp;
     }
 }

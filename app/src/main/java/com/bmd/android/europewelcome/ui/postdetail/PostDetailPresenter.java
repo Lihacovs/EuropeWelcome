@@ -111,4 +111,9 @@ public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresen
                 "0"
         );
     }
+
+    @Override
+    public String getPostAuthorId() {
+        return mPost.getPostAuthorId();
+    }
 }

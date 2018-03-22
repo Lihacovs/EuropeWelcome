@@ -37,4 +37,6 @@ public interface PostDetailMvpPresenter<V extends MvpView> extends MvpPresenter<
     void saveComment(String postId, PostComment postComment);
 
     PostComment newPostComment();
+
+    String getPostAuthorId();
 }

@@ -30,7 +30,7 @@
             android:id="@+id/cl_login_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/cornflower_blue_7"
+            android:background="@color/cornflower_blue_13"
             android:focusable="true"
             android:focusableInTouchMode="true">
 
@@ -46,7 +46,8 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_europe_stars_24px"/>
+                app:srcCompat="@drawable/ic_europe_stars_24px"
+                android:contentDescription="@string/activity_login_app_logo" />
 
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/cl_login_input"
@@ -61,13 +62,13 @@
 
                 <EditText
                     android:id="@+id/et_login_email"
-                    style="@style/TextStyle.EditText"
+                    style="@style/MyTextStyle.EditText.White"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="16dp"
                     android:ems="10"
-                    android:hint="@string/email"
+                    android:hint="@string/activity_login_email"
                     android:inputType="textEmailAddress"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -75,42 +76,42 @@
 
                 <EditText
                     android:id="@+id/et_login_password"
-                    style="@style/TextStyle.EditText"
+                    style="@style/MyTextStyle.EditText.White"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="16dp"
                     android:ems="10"
-                    android:hint="@string/password"
+                    android:hint="@string/activity_login_password"
                     android:inputType="textPassword"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/et_login_email"/>
 
-                <com.bmd.android.europewelcome.utils.CustomButton
+                <com.bmd.android.europewelcome.ui.custom.CustomButton
                     android:id="@+id/btn_login_server"
-                    style="@style/Button.Primary"
+                    style="@style/Button.Blue"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:text="Login"
-                    app:drawableLeftCompat="@drawable/ic_accaunt_24px"
+                    android:text="@string/activity_login_signin"
+                    app:drawableLeftCompat="@drawable/ic_square_accaunt_24px"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/et_login_password"/>
 
-                <com.bmd.android.europewelcome.utils.CustomButton
+                <com.bmd.android.europewelcome.ui.custom.CustomButton
                     android:id="@+id/btn_login_google"
-                    style="@style/Button.Primary"
+                    style="@style/Button.Blue"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:text="Sign In with Google"
-                    app:drawableLeftCompat="@drawable/ic_google_24px"
+                    android:text="@string/activity_login_google_signin"
+                    app:drawableLeftCompat="@drawable/ic_square_google_24px"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/btn_login_server"/>
@@ -132,13 +133,13 @@
                         android:layout_height="wrap_content"
                         android:visibility="invisible"/>
 
-                    <com.bmd.android.europewelcome.utils.CustomButton
+                    <com.bmd.android.europewelcome.ui.custom.CustomButton
                         android:id="@+id/btn_login_facebook"
-                        style="@style/Button.Primary"
+                        style="@style/Button.Blue"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Sign In with Facebook"
-                        app:drawableLeftCompat="@drawable/ic_facebook_24px"/>
+                        android:text="@string/activity_login_facebook_signin"
+                        app:drawableLeftCompat="@drawable/ic_square_facebook_24px"/>
                 </RelativeLayout>
 
             </android.support.constraint.ConstraintLayout>
@@ -151,7 +152,7 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
-                android:text="Don't have an Account? Register"
+                android:text="@string/activity_login_register"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>

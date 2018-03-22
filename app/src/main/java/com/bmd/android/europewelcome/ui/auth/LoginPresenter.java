@@ -20,12 +20,15 @@ import android.support.annotation.NonNull;
 
 import com.bmd.android.europewelcome.R;
 import com.bmd.android.europewelcome.data.DataManager;
+import com.bmd.android.europewelcome.data.firebase.model.User;
 import com.bmd.android.europewelcome.ui.base.BasePresenter;
 import com.bmd.android.europewelcome.utils.CommonUtils;
 import com.facebook.AccessToken;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
@@ -33,11 +36,17 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import javax.inject.Inject;
 
 /**
- * Login Presenter
+ * Login Presenter.
+ * When login with Google{@link #firebaseAuthWithGoogle(GoogleSignInAccount)}
+ * or Facebook{@link #firebaseAuthWithFacebook(AccessToken)} user data is stored in 3 places:
+ * 1. Firebase Authentication system - for user authentication.
+ * 2. Firestore DB - general {@link User} profile storage place.
+ * 3. SharedPreferences - for user profile quick access and session.
  */
 
 public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
@@ -139,6 +148,10 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
                             return;
                         }
 
+                        //saves user profile in Firestore database
+                        createNewFirestoreUser();
+
+                        //updates user profile in SharedPrefs
                         getDataManager().updateUserInfo(
                                 null,
                                 getDataManager().getFirebaseUserId(),
@@ -179,6 +192,10 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
                             return;
                         }
 
+                        //saves user profile in Firestore database
+                        createNewFirestoreUser();
+
+                        //updates user profile in SharedPrefs
                         getDataManager().updateUserInfo(
                                 null,
                                 getDataManager().getFirebaseUserId(),
@@ -210,5 +227,31 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
     @Override
     public String getLastUsedEmail() {
         return getDataManager().getLastUsedEmail();
+    }
+
+    private void createNewFirestoreUser() {
+        getDataManager().getUser(getDataManager().getFirebaseUserId())
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document == null || !document.exists()) {
+                                User newUser = new User(
+                                        getDataManager().getFirebaseUserId(),
+                                        getDataManager().getFirebaseUserEmail(),
+                                        null,
+                                        getDataManager().getFirebaseUserName(),
+                                        getDataManager().getFirebaseUserImageUrl(),
+                                        null,
+                                        null,
+                                        CommonUtils.getCurrentDate()
+
+                                );
+                                getDataManager().saveUser(newUser);
+                            }
+                        }
+                    }
+                });
     }
 }

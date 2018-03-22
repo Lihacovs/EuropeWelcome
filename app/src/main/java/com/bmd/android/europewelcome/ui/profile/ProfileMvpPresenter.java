@@ -32,4 +32,6 @@ public interface ProfileMvpPresenter<V extends ProfileMvpView> extends MvpPresen
     void newUserEmail(String userEmail);
 
     void uploadUserImageToStorage(Uri uri);
+
+    void setUserId(String userId);
 }

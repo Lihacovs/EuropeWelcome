@@ -28,4 +28,6 @@ public interface ProfileMvpView extends MvpView {
     void loadUserEmail(String userEmail);
 
     void loadUserImageUrl(String userName);
+
+    void loadUserBirthDate(String userBirthDate);
 }
