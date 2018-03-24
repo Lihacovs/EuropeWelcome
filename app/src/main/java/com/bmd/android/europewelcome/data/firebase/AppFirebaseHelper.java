@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017. Baltic Mobile Development
+ * Copyright (C) 2018 Baltic Information Technologies
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -150,8 +150,10 @@ public class AppFirebaseHelper implements FirebaseHelper {
     //=//=// F I R E B A S E  -  F I R E S T O R E //=//=//
 
     @Override
-    public CollectionReference getPostsColRef() {
-        return mFirestore.collection("posts");
+    public Query getPostsQuery() {
+        return mFirestore.collection("posts")
+                .whereEqualTo("postPublished", true)
+                .orderBy("postCreationTimestamp", Query.Direction.DESCENDING);
     }
 
     @Override

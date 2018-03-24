@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017. Baltic Mobile Development
+ * Copyright (C) 2018 Baltic Information Technologies
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -32,8 +32,11 @@ public class Post {
     private String mPostText;
     private int mPostStars;
     private int mPostWatches;
+    private int mPostCreationTimestamp;
     private String mPostImageUrl;
     private String mPostCreationDate;
+    private boolean mPostAsDraft;
+    private boolean mPostPublished;
     private int mChildLayoutNum;
 
     public Post() {
@@ -46,9 +49,12 @@ public class Post {
                 String postText,
                 int postStars,
                 int postWatches,
+                int postCreationTimestamp,
                 String postImageUrl,
                 String postCreationDate,
-                int childLayoutNum) {
+                int childLayoutNum,
+                boolean postAsDraft,
+                boolean postPublished) {
         mPostId = UUID.randomUUID().toString();
         mPostAuthorId = postAuthorId;
         mPostAuthorName = postAuthorName;
@@ -57,8 +63,11 @@ public class Post {
         mPostText = postText;
         mPostStars = postStars;
         mPostWatches = postWatches;
+        mPostCreationTimestamp = postCreationTimestamp;
         mPostImageUrl = postImageUrl;
         mPostCreationDate = postCreationDate;
+        mPostAsDraft = postAsDraft;
+        mPostPublished = postPublished;
         mChildLayoutNum = childLayoutNum;
     }
 
@@ -126,6 +135,14 @@ public class Post {
         mPostWatches = postWatches;
     }
 
+    public int getPostCreationTimestamp() {
+        return mPostCreationTimestamp;
+    }
+
+    public void setPostCreationTimestamp(int postCreationTimestamp) {
+        mPostCreationTimestamp = postCreationTimestamp;
+    }
+
     public String getPostImageUrl() {
         return mPostImageUrl;
     }
@@ -140,6 +157,22 @@ public class Post {
 
     public void setPostCreationDate(String postCreationDate) {
         mPostCreationDate = postCreationDate;
+    }
+
+    public boolean isPostAsDraft() {
+        return mPostAsDraft;
+    }
+
+    public void setPostAsDraft(boolean postAsDraft) {
+        mPostAsDraft = postAsDraft;
+    }
+
+    public boolean isPostPublished() {
+        return mPostPublished;
+    }
+
+    public void setPostPublished(boolean postPublished) {
+        mPostPublished = postPublished;
     }
 
     public int getChildLayoutNum() {

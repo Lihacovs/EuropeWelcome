@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017. Baltic Mobile Development
+ * Copyright (C) 2018 Baltic Information Technologies
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -32,7 +32,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -231,8 +230,8 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public CollectionReference getPostsColRef() {
-        return mFirebaseHelper.getPostsColRef();
+    public Query getPostsQuery() {
+        return mFirebaseHelper.getPostsQuery();
     }
 
     @Override

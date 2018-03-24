@@ -26,4 +26,6 @@ public interface NewPostMvpView extends MvpView {
     String getPostTitle();
 
     void finishActivity();
+
+    void scrollViewToBottom();
 }

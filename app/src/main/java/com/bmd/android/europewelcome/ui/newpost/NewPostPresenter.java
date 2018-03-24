@@ -33,7 +33,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 
@@ -98,99 +97,113 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
 
     @Override
     public void newTextPostSection() {
+        getMvpView().showLoading();
         PostSection postSection = newPostSection();
         postSection.setPostSectionViewType("Text");
-        postSection.setPostText("New Section to test!!!!");
-        getDataManager().savePostSection(postSection, mPost.getPostId());
-    }
-
-    @Override
-    public void newMapPostSection(Place place) {
-        PostSection postSection = newPostSection();
-        postSection.setPostSectionViewType("Map");
-        postSection.setPostPlaceAddress(place.getAddress().toString());
-        postSection.setPostPlaceName(place.getName().toString());
-        postSection.setPostPlaceLat(place.getLatLng().latitude);
-        postSection.setPostPlaceLng(place.getLatLng().longitude);
-        getDataManager().savePostSection(postSection, mPost.getPostId());
-    }
-
-    @Override
-    public void newVideoPostSection(String videoCode) {
-        PostSection postSection = newPostSection();
-        postSection.setPostSectionViewType("Video");
-        postSection.setYouTubeVideoCode(videoCode);
-        getDataManager().savePostSection(postSection, mPost.getPostId());
+        getDataManager().savePostSection(postSection, mPost.getPostId())
+                .addOnSuccessListener(aVoid -> {
+                    getMvpView().hideLoading();
+                    getMvpView().scrollViewToBottom();
+                })
+                .addOnFailureListener(e -> {
+                    getMvpView().hideLoading();
+                    Log.d(TAG, "newTextPostSection: Failure");
+                });
     }
 
     private void newImagePostSection(String postImageUrl) {
         PostSection postSection = newPostSection();
         postSection.setPostSectionViewType("Image");
         postSection.setPostImageUrl(postImageUrl);
-        getDataManager().savePostSection(postSection, mPost.getPostId());
+        getDataManager().savePostSection(postSection, mPost.getPostId())
+                .addOnSuccessListener(aVoid -> {
+                    getMvpView().hideLoading();
+                    getMvpView().scrollViewToBottom();
+                })
+                .addOnFailureListener(e -> {
+                    getMvpView().hideLoading();
+                    Log.d(TAG, "onFailure: ");
+                });
+    }
+
+    @Override
+    public void newMapPostSection(Place place) {
+        getMvpView().showLoading();
+        PostSection postSection = newPostSection();
+        postSection.setPostSectionViewType("Map");
+        postSection.setPostPlaceAddress(place.getAddress().toString());
+        postSection.setPostPlaceName(place.getName().toString());
+        postSection.setPostPlaceLat(place.getLatLng().latitude);
+        postSection.setPostPlaceLng(place.getLatLng().longitude);
+        getDataManager().savePostSection(postSection, mPost.getPostId())
+                .addOnSuccessListener(aVoid -> {
+                    getMvpView().hideLoading();
+                    getMvpView().scrollViewToBottom();
+                }).addOnFailureListener(e -> {
+                    getMvpView().hideLoading();
+                    Log.d(TAG, "onFailure: ");
+                });
+    }
+
+    @Override
+    public void newVideoPostSection(String videoCode) {
+        getMvpView().showLoading();
+        PostSection postSection = newPostSection();
+        postSection.setPostSectionViewType("Video");
+        postSection.setYouTubeVideoCode(videoCode);
+        getDataManager().savePostSection(postSection, mPost.getPostId())
+                .addOnSuccessListener(aVoid -> {
+                    getMvpView().hideLoading();
+                    getMvpView().scrollViewToBottom();
+                })
+                .addOnFailureListener(e -> {
+                    getMvpView().hideLoading();
+                    Log.d(TAG, "onFailure: ");
+                });
     }
 
     @Override
     public void deletePostSection(PostSection postSection) {
+        getMvpView().showLoading();
         getDataManager().deletePostSection(mPostId, postSection)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        getMvpView().onError("Deleted");
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                getMvpView().onError("Some Error on Delete");
-            }
-        });
+                .addOnSuccessListener(aVoid -> getMvpView().hideLoading())
+                .addOnFailureListener(e -> {
+                    getMvpView().hideLoading();
+                    Log.d(TAG, "deletePostSection: ");
+                });
     }
 
     @Override
     public void updatePostSection(PostSection postSection) {
         getDataManager().updatePostSection(mPostId, postSection)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        getMvpView().onError("Updated");
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                getMvpView().onError("Some Error on Update");
-            }
-        });
+                .addOnSuccessListener(aVoid -> Log.d(TAG, "updatePostSection: "))
+                .addOnFailureListener(e -> Log.d(TAG, "onFailure: "));
     }
 
     @Override
     public void uploadImageToStorage(Uri uri, Context context) {
+        getMvpView().showLoading();
         String compressedFile = new ImageCompress(context).compressImage(
                 uri.toString(), 1280.0f, 720.0f);
 
         getDataManager().uploadFileToStorage(Uri.fromFile(new File(compressedFile)), "postImages/")
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        if (taskSnapshot.getDownloadUrl() != null) {
-                            String downloadUrl = taskSnapshot.getDownloadUrl().toString();
-                            newImagePostSection(downloadUrl);
-                        }
+                .addOnSuccessListener(taskSnapshot -> {
+                    if (taskSnapshot.getDownloadUrl() != null) {
+                        String downloadUrl = taskSnapshot.getDownloadUrl().toString();
+                        newImagePostSection(downloadUrl);
                     }
-                }).removeOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                getMvpView().onError(R.string.register_upload_error);
-            }
-        });
+                }).removeOnFailureListener(e -> {
+                    getMvpView().hideLoading();
+                    getMvpView().onError(R.string.register_upload_error);
+                });
     }
 
     @Override
     public void savePostToDraft() {
         getMvpView().hideKeyboard();
         getMvpView().showLoading();
-        //TODO: add field mPostInDraft/(mPostPublished) ????
-        getMvpView().hideLoading();
-        getMvpView().finishActivity();
+        mPost.setPostAsDraft(true);
+        updatePost();
     }
 
     @Override
@@ -201,6 +214,7 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
             getMvpView().hideLoading();
             getMvpView().finishActivity();
         }).addOnFailureListener(e -> {
+            getMvpView().hideLoading();
             Log.d(TAG, "deletePost: " + e.getMessage());
         });
     }
@@ -213,14 +227,15 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
     public void publishPost() {
         getMvpView().hideKeyboard();
         getMvpView().showLoading();
+        mPost.setPostPublished(true);
         setPostTitle();
     }
 
     private void setPostTitle() {
-        if(getMvpView().getPostTitle() == null || getMvpView().getPostTitle().isEmpty()) {
+        if (getMvpView().getPostTitle() == null || getMvpView().getPostTitle().isEmpty()) {
             getMvpView().hideLoading();
-            getMvpView().onError("Please enter Post Title");
-        }else{
+            getMvpView().onError(R.string.newpost_add_title);
+        } else {
             mPost.setPostTitle(getMvpView().getPostTitle());
             setPostText();
         }
@@ -229,10 +244,10 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
     private void setPostText() {
         getDataManager().getFirstPostSection(mPostId, "Text")
                 .addOnSuccessListener(documentSnapshots -> {
-                    if(documentSnapshots.getDocuments().isEmpty()){
+                    if (documentSnapshots.getDocuments().isEmpty()) {
                         getMvpView().hideLoading();
-                        getMvpView().onError("Please add Text");
-                    }else {
+                        getMvpView().onError(R.string.newpost_add_text);
+                    } else {
                         for (DocumentSnapshot doc : documentSnapshots.getDocuments()) {
                             PostSection postSection = doc.toObject(PostSection.class);
                             Log.d(TAG, "onSuccess: " + postSection.getPostText());
@@ -241,18 +256,18 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
                         setPostImage();
                     }
                 }).addOnFailureListener(e -> {
-                    getMvpView().hideLoading();
-                    Log.d(TAG, "onFailure: " + e);
-                });
+            getMvpView().hideLoading();
+            Log.d(TAG, "onFailure: " + e);
+        });
     }
 
     private void setPostImage() {
         getDataManager().getFirstPostSection(mPostId, "Image")
                 .addOnSuccessListener(documentSnapshots -> {
-                    if(documentSnapshots.getDocuments().isEmpty()){
+                    if (documentSnapshots.getDocuments().isEmpty()) {
                         getMvpView().hideLoading();
-                        getMvpView().onError("Please add Image");
-                    }else {
+                        getMvpView().onError(R.string.newpost_add_image);
+                    } else {
                         for (DocumentSnapshot doc : documentSnapshots.getDocuments()) {
                             PostSection postSection = doc.toObject(PostSection.class);
                             Log.d(TAG, "onSuccess: " + postSection.getPostImageUrl());
@@ -261,9 +276,9 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
                         updatePost();
                     }
                 }).addOnFailureListener(e -> {
-                    getMvpView().hideLoading();
-                    Log.d(TAG, "onFailure: " + e.getMessage());
-                });
+            getMvpView().hideLoading();
+            Log.d(TAG, "onFailure: " + e.getMessage());
+        });
     }
 
     private void updatePost() {
@@ -277,16 +292,20 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
     }
 
     private Post newPost() {
-        return new Post(getDataManager().getCurrentUserId()
-                , getDataManager().getCurrentUserName()
-                , getDataManager().getCurrentUserProfilePicUrl()
-                , null
-                , null
-                , 0
-                , 1
-                , null
-                , CommonUtils.getCurrentDate()
-                , 0
+        return new Post(getDataManager().getCurrentUserId(),
+                getDataManager().getCurrentUserName(),
+                getDataManager().getCurrentUserProfilePicUrl(),
+                null,
+                null,
+                0,
+                1,
+                CommonUtils.getIntTimeStamp(),
+                null,
+                CommonUtils.getCurrentDate(),
+                0,
+                false,
+                false
+
         );
     }
 
@@ -297,7 +316,7 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
                 CommonUtils.getTimeStampInt(),
                 mLayoutOrderNum++,
                 null,
-                14,
+                18,
                 false,
                 false,
                 null,

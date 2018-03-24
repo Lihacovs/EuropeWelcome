@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (C) 2017. Baltic Mobile Development
+  ~ Copyright (C) 2018 Baltic Information Technologies
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at
@@ -20,7 +20,7 @@
     <string name="facebook_app_id">1997719713823775</string>
     <string name="fb_login_protocol_scheme">fb1997719713823775</string>
 
-    <!--ui.auth.LoginPresenter-->
+    <!--ui.auth.Login-->
     <string name="login_empty_email">Please enter your Email</string>
     <string name="login_invalid_email">Please enter a valid Email</string>
     <string name="login_empty_password">Please enter your Password</string>
@@ -30,7 +30,7 @@
     <string name="login_try_again">Please try again</string>
     <string name="login_some_error">Some error occurred. Try again</string>
 
-    <!--ui.auth.register.RegisterPresenter-->
+    <!--ui.auth.register.Register-->
     <string name="register_empty_email">Please enter your Email</string>
     <string name="register_invalid_email">Please enter a valid Email</string>
     <string name="register_empty_password">Please enter your Password</string>
@@ -45,6 +45,16 @@
     <string name="register_email_already_used">Email address is already used</string>
     <string name="register_try_again">Please try again</string>
     <string name="register_some_error">Some error occurred. Try again</string>
+
+    <!--ui.newpost.NewPost-->
+    <string name="newpost_save_to_draft">Save Post to Draft?</string>
+    <string name="newpost_save">Save</string>
+    <string name="newpost_delete">Delete</string>
+    <string name="newpost_add_title">Please enter Post Title</string>
+    <string name="newpost_add_text">Please add Text</string>
+    <string name="newpost_add_image">Please add Image</string>
+
+
 
 
 
@@ -102,8 +112,21 @@
     <string name="post_item_bookmark_icon">Bookmark icon</string>
     <string name="post_item_default_count">0</string>
 
+    <!--res.layout.activity_new_post-->
+    <string name="activity_new_post_publish">Publish</string>
+    <string name="activity_new_post_type_title">Type post title here</string>
+    <string name="activity_new_post_add_text_icon">Add text icon</string>
+    <string name="activity_new_post_add_image_icon">Add image icon</string>
+    <string name="activity_new_post_add_map_icon">Add map icon</string>
+    <string name="activity_new_post_add_video_icon">Add video icon</string>
 
-
+    <!--res.layout.item_new_post-->
+    <string name="new_post_item_format_bold_icon">Format bold icon</string>
+    <string name="new_post_item_format_italic_icon">Format italic icon</string>
+    <string name="new_post_item_format_size_icon">Format size icon</string>
+    <string name="new_post_item_delete_icon">Delete icon</string>
+    <string name="new_post_item_type_text">Type your text here</string>
+    <string name="new_post_item_post_image">Post image</string>
 
 
 

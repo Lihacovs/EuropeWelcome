@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017. Baltic Mobile Development
+ * Copyright (C) 2018 Baltic Information Technologies
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -157,9 +157,12 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
                 , null
                 , 0
                 , 1
+                , CommonUtils.getIntTimeStamp()
                 , null
                 , CommonUtils.getCurrentDate()
                 , 0
+                , false
+                , false
         );
     }
 

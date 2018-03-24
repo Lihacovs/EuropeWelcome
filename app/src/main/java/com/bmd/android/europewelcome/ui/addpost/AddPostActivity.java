@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017. Baltic Mobile Development
+ * Copyright (C) 2018 Baltic Information Technologies
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -294,7 +294,7 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
                 .inflate(R.layout.item_new_post_image, mPostContentLl, false);
         mPostContentLl.addView(imageView);
 
-        imageIv = imageView.findViewById(R.id.iv_addpostitem_image);
+        imageIv = imageView.findViewById(R.id.iv_new_post_item_image);
         GlideApp.with(this)
                 .load(postSection.getPostImageUrl())
                 .centerCrop()
@@ -302,7 +302,7 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
                 .into(imageIv);
 
         //Removes PostImage from list and from layout
-        ImageView deleteImageIv = imageView.findViewById(R.id.iv_addpostitem_deleteimage);
+        ImageView deleteImageIv = imageView.findViewById(R.id.iv_new_post_item_delete_image);
         deleteImageIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -329,7 +329,7 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
         mPostContentLl.addView(textLayout);
 
         //Removes PostText from list and from layout
-        ImageView deleteTextIv = textLayout.findViewById(R.id.iv_addpostitem_deletetext);
+        ImageView deleteTextIv = textLayout.findViewById(R.id.iv_new_post_item_delete_text);
         deleteTextIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -339,7 +339,7 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
             }
         });
 
-        textEt = textLayout.findViewById(R.id.et_addpostitem_text);
+        textEt = textLayout.findViewById(R.id.et_new_post_item_text);
         textEt.setTypeface(Typeface.DEFAULT);
         //postText.setPostText(textEt.getText().toString());
 
@@ -357,7 +357,7 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
         });
 
         //TODO: add comment
-        final ImageView formatBoldIv = textLayout.findViewById(R.id.iv_addpostitem_formatbold);
+        final ImageView formatBoldIv = textLayout.findViewById(R.id.iv_new_post_item_format_bold);
         formatBoldIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -388,7 +388,7 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
         });
 
         //TODO: add comment
-        final ImageView formatItalicIv = textLayout.findViewById(R.id.iv_addpostitem_formatitalic);
+        final ImageView formatItalicIv = textLayout.findViewById(R.id.iv_new_post_item_format_italic);
         formatItalicIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -417,7 +417,7 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
             }
         });
 
-        ImageView formatSizeIv = textLayout.findViewById(R.id.iv_addpostitem_formatsize);
+        ImageView formatSizeIv = textLayout.findViewById(R.id.iv_new_post_item_format_size);
         formatSizeIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -444,11 +444,11 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
         MapView mapView;
 
         final View mapLayout = LayoutInflater.from(this)
-                .inflate(R.layout.item_addpost_map, mPostContentLl, false);
+                .inflate(R.layout.item_new_post_map, mPostContentLl, false);
         mPostContentLl.addView(mapLayout);
 
         //Removes PostText from list and from layout
-        ImageView deleteTextIv = mapLayout.findViewById(R.id.iv_addpostitem_deletemap);
+        ImageView deleteTextIv = mapLayout.findViewById(R.id.iv_new_post_item_delete_map);
         deleteTextIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -458,7 +458,7 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
             }
         });
 
-        mapView = mapLayout.findViewById(R.id.mv_addpostitem_map);
+        mapView = mapLayout.findViewById(R.id.mv_new_post_item_map);
         mapView.onCreate(null);
         mapView.onResume();
 
@@ -487,10 +487,10 @@ public class AddPostActivity extends BaseActivity implements AddPostMvpView,
 
 
         final View videoLayout = LayoutInflater.from(this)
-                .inflate(R.layout.item_addpost_video, mPostContentLl, false);
+                .inflate(R.layout.item_new_post_video, mPostContentLl, false);
         mPostContentLl.addView(videoLayout);
 
-        YouTubePlayerFragment youTubePlayerFragment = (YouTubePlayerFragment) getFragmentManager().findFragmentById(R.id.v1);
+        YouTubePlayerFragment youTubePlayerFragment = (YouTubePlayerFragment) getFragmentManager().findFragmentById(R.id.fragment_new_post_item_youtube_video);
         YouTubePlayer.OnInitializedListener onInitializedListener;
 
         onInitializedListener = new YouTubePlayer.OnInitializedListener() {

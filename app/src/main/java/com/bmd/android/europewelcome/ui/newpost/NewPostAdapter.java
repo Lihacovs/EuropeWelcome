@@ -16,8 +16,6 @@
 package com.bmd.android.europewelcome.ui.newpost;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.text.Editable;
@@ -28,7 +26,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.bmd.android.europewelcome.R;
@@ -104,10 +101,10 @@ public class NewPostAdapter extends FirestoreRecyclerAdapter<PostSection, BaseVi
                         .inflate(R.layout.item_new_post_image, parent, false));
             case VIEW_TYPE_MAP:
                 return new NewPostAdapter.MapViewHolder(LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.item_addpost_map, parent, false));
+                        .inflate(R.layout.item_new_post_map, parent, false));
             case VIEW_TYPE_VIDEO:
                 return new NewPostAdapter.VideoViewHolder(LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.item_addpost_video, parent, false));
+                        .inflate(R.layout.item_new_post_video, parent, false));
             default:
                 return new NewPostAdapter.TextViewHolder(LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.item_new_post_text, parent, false));
@@ -151,13 +148,13 @@ public class NewPostAdapter extends FirestoreRecyclerAdapter<PostSection, BaseVi
 
     public class TextViewHolder extends BaseViewHolder {
 
-        @BindView(R.id.et_addpostitem_text)
+        @BindView(R.id.et_new_post_item_text)
         EditText mPostTextEt;
 
-        @BindView(R.id.iv_addpostitem_formatbold)
+        @BindView(R.id.iv_new_post_item_format_bold)
         ImageView mFormatBoldIv;
 
-        @BindView(R.id.iv_addpostitem_formatitalic)
+        @BindView(R.id.iv_new_post_item_format_italic)
         ImageView mFormatItalicIv;
 
         PostSection mPostSection;
@@ -225,9 +222,13 @@ public class NewPostAdapter extends FirestoreRecyclerAdapter<PostSection, BaseVi
                                     new TimerTask() {
                                         @Override
                                         public void run() {
-                                            // TODO: do what you need here (refresh list)
+                                            // TODO: Optimize code below
                                             // you will probably need to use runOnUiThread(Runnable action) for some specific actions
-                                            if (!mPostSection.getPostText().equals(mPostTextEt.getText().toString())) {
+                                            if (mPostSection.getPostText() == null) {
+                                                mPostSection.setPostText(mPostTextEt.getText().toString());
+                                                if (mCallback != null)
+                                                    mCallback.updatePostSection(mPostSection);
+                                            } else if (!mPostSection.getPostText().equals(mPostTextEt.getText().toString())) {
                                                 mPostSection.setPostText(mPostTextEt.getText().toString());
                                                 if (mCallback != null)
                                                     mCallback.updatePostSection(mPostSection);
@@ -241,13 +242,13 @@ public class NewPostAdapter extends FirestoreRecyclerAdapter<PostSection, BaseVi
             );
         }
 
-        @OnClick(R.id.iv_addpostitem_deletetext)
+        @OnClick(R.id.iv_new_post_item_delete_text)
         void sectionDeleteClick() {
             if (mCallback != null)
                 mCallback.deletePostSection(mPostSection);
         }
 
-        @OnClick(R.id.iv_addpostitem_formatbold)
+        @OnClick(R.id.iv_new_post_item_format_bold)
         void formatBoldIconClick(ImageView v) {
             if (mPostTextEt.getTypeface().getStyle() == Typeface.BOLD |
                     mPostTextEt.getTypeface().getStyle() == Typeface.BOLD_ITALIC) {
@@ -259,7 +260,7 @@ public class NewPostAdapter extends FirestoreRecyclerAdapter<PostSection, BaseVi
                 mCallback.updatePostSection(mPostSection);
         }
 
-        @OnClick(R.id.iv_addpostitem_formatitalic)
+        @OnClick(R.id.iv_new_post_item_format_italic)
         void formatItalicIconClick(ImageView v) {
             if (mPostTextEt.getTypeface().getStyle() == Typeface.ITALIC |
                     mPostTextEt.getTypeface().getStyle() == Typeface.BOLD_ITALIC) {
@@ -271,12 +272,12 @@ public class NewPostAdapter extends FirestoreRecyclerAdapter<PostSection, BaseVi
                 mCallback.updatePostSection(mPostSection);
         }
 
-        @OnClick(R.id.iv_addpostitem_formatsize)
+        @OnClick(R.id.iv_new_post_item_format_size)
         void formatSizeIconClick(ImageView v) {
             if (mPostSection.getPostTextSize() < 24) {
                 mPostSection.setPostTextSize(mPostSection.getPostTextSize() + 2);
             } else {
-                mPostSection.setPostTextSize(16);
+                mPostSection.setPostTextSize(18);
             }
             if (mCallback != null)
                 mCallback.updatePostSection(mPostSection);
@@ -285,7 +286,7 @@ public class NewPostAdapter extends FirestoreRecyclerAdapter<PostSection, BaseVi
 
     public class ImageViewHolder extends BaseViewHolder {
 
-        @BindView(R.id.iv_addpostitem_image)
+        @BindView(R.id.iv_new_post_item_image)
         ImageView mPostImageIv;
 
         PostSection mPostSection;
@@ -313,7 +314,7 @@ public class NewPostAdapter extends FirestoreRecyclerAdapter<PostSection, BaseVi
             }
         }
 
-        @OnClick(R.id.iv_addpostitem_deleteimage)
+        @OnClick(R.id.iv_new_post_item_delete_image)
         void onDeleteImageClick() {
             if (mCallback != null)
                 mCallback.deletePostSection(mPostSection);
@@ -322,7 +323,7 @@ public class NewPostAdapter extends FirestoreRecyclerAdapter<PostSection, BaseVi
 
     public class MapViewHolder extends BaseViewHolder {
 
-        @BindView(R.id.mv_addpostitem_map)
+        @BindView(R.id.mv_new_post_item_map)
         com.google.android.gms.maps.MapView mMapView;
 
         PostSection mPostSection;
@@ -362,7 +363,7 @@ public class NewPostAdapter extends FirestoreRecyclerAdapter<PostSection, BaseVi
             });
         }
 
-        @OnClick(R.id.iv_addpostitem_deletemap)
+        @OnClick(R.id.iv_new_post_item_delete_map)
         void onDeleteMapClick() {
             if (mCallback != null)
                 mCallback.deletePostSection(mPostSection);
@@ -372,7 +373,7 @@ public class NewPostAdapter extends FirestoreRecyclerAdapter<PostSection, BaseVi
     public class VideoViewHolder extends BaseViewHolder {
 
         YouTubePlayerFragment mYouTubePlayerFragment =
-                (YouTubePlayerFragment) ((Activity) mContext).getFragmentManager().findFragmentById(R.id.v1);
+                (YouTubePlayerFragment) ((Activity) mContext).getFragmentManager().findFragmentById(R.id.fragment_new_post_item_youtube_video);
         YouTubePlayer.OnInitializedListener onInitializedListener;
 
         PostSection mPostSection;
@@ -406,11 +407,11 @@ public class NewPostAdapter extends FirestoreRecyclerAdapter<PostSection, BaseVi
         }
 
         @OnClick(R.id.btn_addpostitem_playvideo)
-        void onPlayButtonClick(){
+        void onPlayButtonClick() {
             //mYouTubePlayerFragment.initialize("AIzaSyByraF4EaclX12v43bAKldVHZfMjazz9y8", onInitializedListener);
         }
 
-        @OnClick(R.id.iv_addpostitem_deletevideo)
+        @OnClick(R.id.iv_new_post_item_delete_video)
         void onDeleteMapClick() {
             if (mCallback != null)
                 mCallback.deletePostSection(mPostSection);

@@ -15,7 +15,6 @@
 
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -50,7 +49,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginRight="16dp"
                     android:background="@drawable/rounded_background"
-                    android:text="Publish"
+                    android:text="@string/activity_new_post_publish"
                     android:textColor="@color/cornflower_blue_13"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -81,12 +80,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:textColorHint="@color/gray_400"
-                android:hint="Type post title here"
+                android:hint="@string/activity_new_post_type_title"
                 android:inputType="textCapSentences|textMultiLine"
                 android:padding="8dp"
                 android:singleLine="false"
                 android:textAlignment="center"
+                android:textColorHint="@color/gray_400"
                 android:textSize="24sp" />
 
             <android.support.v7.widget.RecyclerView
@@ -118,6 +117,7 @@
             android:id="@+id/iv_new_post_text_icon"
             android:layout_width="44dp"
             android:layout_height="44dp"
+            android:contentDescription="@string/activity_new_post_add_text_icon"
             android:padding="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/iv_new_post_image_icon"
@@ -130,6 +130,7 @@
             android:id="@+id/iv_new_post_image_icon"
             android:layout_width="44dp"
             android:layout_height="44dp"
+            android:contentDescription="@string/activity_new_post_add_image_icon"
             android:padding="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/iv_new_post_location_icon"
@@ -142,6 +143,7 @@
             android:id="@+id/iv_new_post_location_icon"
             android:layout_width="44dp"
             android:layout_height="44dp"
+            android:contentDescription="@string/activity_new_post_add_map_icon"
             android:padding="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/iv_new_post_video_icon"
@@ -154,6 +156,7 @@
             android:id="@+id/iv_new_post_video_icon"
             android:layout_width="44dp"
             android:layout_height="44dp"
+            android:contentDescription="@string/activity_new_post_add_video_icon"
             android:padding="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

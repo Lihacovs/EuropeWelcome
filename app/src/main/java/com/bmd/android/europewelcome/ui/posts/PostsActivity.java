@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017. Baltic Mobile Development
+ * Copyright (C) 2018 Baltic Information Technologies
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -409,6 +409,7 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
         startActivity(NewPostActivity.getStartIntent(this, null));
     }
 
+    //"a502d685-2b42-4fa9-8d28-5eab76383dd9"
     @Override
     public void openNewPostActivity() {
         startActivity(NewPostActivity.getStartIntent(this, null));

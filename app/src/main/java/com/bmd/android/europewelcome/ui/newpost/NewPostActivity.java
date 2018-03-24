@@ -162,7 +162,6 @@ public class NewPostActivity extends BaseActivity implements NewPostMvpView, New
     @OnClick(R.id.iv_new_post_text_icon)
     void onTextIconClick() {
         mPresenter.newTextPostSection();
-        ScreenUtils.scrollToBottom(mScrollView);
     }
 
     @OnClick(R.id.iv_new_post_image_icon)
@@ -236,7 +235,6 @@ public class NewPostActivity extends BaseActivity implements NewPostMvpView, New
         mPresenter.updatePostSection(postSection);
     }
 
-
     @Override
     public String getPostTitle() {
         return mPostTitleEt.getText().toString().trim();
@@ -247,12 +245,16 @@ public class NewPostActivity extends BaseActivity implements NewPostMvpView, New
         this.finish();
     }
 
+    @Override
+    public void scrollViewToBottom() {
+        ScreenUtils.scrollToBottom(mScrollView);
+    }
+
     @OnClick(R.id.tv_new_post_publish)
     void onPublishTvClick() {
         mPresenter.publishPost();
     }
 
-    //TODO: dialog on back to ask save in drafts?
     @Override
     public void onBackPressed() {
         showSavePostToDraftsDialog();
@@ -270,9 +272,9 @@ public class NewPostActivity extends BaseActivity implements NewPostMvpView, New
     }
 
     private void showSavePostToDraftsDialog() {
-        showSimpleDialog("Save Post to Draft?",
-                "Save",
-                "Delete",
+        showSimpleDialog(getString(R.string.newpost_save_to_draft),
+                getString(R.string.newpost_save),
+                getString(R.string.newpost_delete),
                 (dialog, which) -> {
                     switch (which) {
                         case DialogInterface.BUTTON_POSITIVE:

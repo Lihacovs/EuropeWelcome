@@ -1,78 +1,74 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~  Copyright (C) 2017. Baltic Mobile Development
-  ~  Licensed under the Apache License, Version 2.0 (the "License");
-  ~  you may not use this file except in compliance with the License.
-  ~  You may obtain a copy of the License at
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) 2018 Baltic Information Technologies
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
   ~
-  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~       http://www.apache.org/licenses/LICENSE-2.0
   ~
-  ~  Unless required by applicable law or agreed to in writing, software
-  ~  distributed under the License is distributed on an "AS IS" BASIS,
-  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~  See the License for the specific language governing permissions and
-  ~  limitations under the License.
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
   -->
 
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                             xmlns:app="http://schemas.android.com/apk/res-auto"
-                                             xmlns:tools="http://schemas.android.com/tools"
-                                             android:id="@+id/cl_addpostitem_layout"
-                                             android:layout_width="match_parent"
-                                             android:layout_height="wrap_content"
-                                             android:layout_marginBottom="4dp"
-                                             android:layout_marginEnd="8dp"
-                                             android:layout_marginLeft="8dp"
-                                             android:layout_marginRight="8dp"
-                                             android:layout_marginStart="8dp"
-                                             android:layout_marginTop="4dp"
-                                             android:background="@drawable/frame_1dp"
-                                             android:orientation="vertical"
-                                             tools:layout_editor_absoluteX="0dp"
-                                             tools:layout_editor_absoluteY="81dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cl_new_post_item_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="4dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="4dp"
+    android:background="@drawable/frame_1dp"
+    android:orientation="vertical">
 
     <ImageView
-        android:id="@+id/iv_addpostitem_formatbold"
+        android:id="@+id/iv_new_post_item_format_bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="TODO"
+        android:contentDescription="@string/new_post_item_format_bold_icon"
         android:padding="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_format_bold_black_24dp"/>
+        app:srcCompat="@drawable/ic_format_bold_black_24dp" />
 
     <ImageView
-        android:id="@+id/iv_addpostitem_formatitalic"
+        android:id="@+id/iv_new_post_item_format_italic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="TODO"
+        android:contentDescription="@string/new_post_item_format_italic_icon"
         android:padding="8dp"
-        app:layout_constraintStart_toEndOf="@+id/iv_addpostitem_formatbold"
+        app:layout_constraintStart_toEndOf="@+id/iv_new_post_item_format_bold"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_format_italic_black_24dp"/>
+        app:srcCompat="@drawable/ic_format_italic_black_24dp" />
 
     <ImageView
-        android:id="@+id/iv_addpostitem_formatsize"
+        android:id="@+id/iv_new_post_item_format_size"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="TODO"
+        android:contentDescription="@string/new_post_item_format_size_icon"
         android:padding="8dp"
-        app:layout_constraintStart_toEndOf="@+id/iv_addpostitem_formatitalic"
+        app:layout_constraintStart_toEndOf="@+id/iv_new_post_item_format_italic"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_format_size_black_24dp"/>
+        app:srcCompat="@drawable/ic_format_size_black_24dp" />
 
     <ImageView
-        android:id="@+id/iv_addpostitem_deletetext"
+        android:id="@+id/iv_new_post_item_delete_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="TODO"
+        android:contentDescription="@string/new_post_item_delete_icon"
         android:padding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_delete_black_24dp"/>
+        app:srcCompat="@drawable/ic_delete_black_24dp" />
 
     <EditText
-        android:id="@+id/et_addpostitem_text"
+        android:id="@+id/et_new_post_item_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -80,12 +76,13 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@android:color/transparent"
-        android:hint="Type text content here"
+        android:hint="@string/new_post_item_type_text"
         android:inputType="textCapSentences|textMultiLine"
         android:singleLine="false"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_addpostitem_deletetext"/>
+        app:layout_constraintTop_toBottomOf="@+id/iv_new_post_item_delete_text" />
 
 </android.support.constraint.ConstraintLayout>

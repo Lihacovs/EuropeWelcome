@@ -3,6 +3,8 @@
     <words>
       <w>firebase</w>
       <w>firestore</w>
+      <w>newpost</w>
+      <w>signin</w>
     </words>
   </dictionary>
 </component>
