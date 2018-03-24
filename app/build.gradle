@@ -59,7 +59,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation 'pub.devrel:easypermissions:1.1.1'
-    compile 'com.android.support:multidex:1.0.2'
+    compile 'com.android.support:multidex:1.0.3'
 
     // android support libraries
     compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
@@ -69,8 +69,10 @@ dependencies {
     compile "com.android.support:support-vector-drawable:$rootProject.supportLibraryVersion"
     compile "com.android.support:animated-vector-drawable:$rootProject.supportLibraryVersion"
 
+
     // app intro
     compile 'com.github.apl-devs:appintro:v4.2.2'
+
 
     // firebase
     compile 'com.google.firebase:firebase-auth:11.8.0'
@@ -84,7 +86,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-maps:11.8.0'
     compile 'com.google.android.gms:play-services-places:11.8.0'
 
-    //Facebook Login
+    //Facebookdlew Login
     implementation 'com.facebook.android:facebook-login:4.30.0'
 
     // font

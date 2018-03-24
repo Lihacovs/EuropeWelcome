@@ -174,6 +174,7 @@ public class AddPostPresenter<V extends AddPostMvpView> extends BasePresenter<V>
                 CommonUtils.getTimeStampInt(),
                 mLayoutOrderNum++,
                 null,
+                null,
                 14,
                 false,
                 false,

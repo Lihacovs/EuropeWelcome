@@ -19,7 +19,6 @@ import android.content.Context;
 import android.net.Uri;
 
 import com.bmd.android.europewelcome.ui.base.MvpPresenter;
-import com.bmd.android.europewelcome.ui.base.MvpView;
 
 /**
  * Presenter interface for {@link RegisterPresenter}

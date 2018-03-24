@@ -18,7 +18,6 @@ package com.bmd.android.europewelcome.ui.newpost;
 import android.content.Context;
 import android.net.Uri;
 
-import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.data.firebase.model.PostSection;
 import com.bmd.android.europewelcome.ui.base.MvpPresenter;
 import com.google.android.gms.location.places.Place;

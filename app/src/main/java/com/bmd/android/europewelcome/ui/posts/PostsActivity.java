@@ -409,7 +409,6 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
         startActivity(NewPostActivity.getStartIntent(this, null));
     }
 
-    //"a502d685-2b42-4fa9-8d28-5eab76383dd9"
     @Override
     public void openNewPostActivity() {
         startActivity(NewPostActivity.getStartIntent(this, null));

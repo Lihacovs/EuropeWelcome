@@ -27,8 +27,6 @@ import com.bmd.android.europewelcome.utils.AppLogger;
 
 import javax.inject.Inject;
 
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-
 import static com.androidnetworking.interceptors.HttpLoggingInterceptor.Level;
 
 /**

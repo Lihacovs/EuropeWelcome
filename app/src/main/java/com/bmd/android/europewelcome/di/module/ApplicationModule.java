@@ -18,7 +18,6 @@ package com.bmd.android.europewelcome.di.module;
 import android.app.Application;
 import android.content.Context;
 
-import com.bmd.android.europewelcome.R;
 import com.bmd.android.europewelcome.data.AppDataManager;
 import com.bmd.android.europewelcome.data.DataManager;
 import com.bmd.android.europewelcome.data.firebase.AppFirebaseHelper;
@@ -36,7 +35,6 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
  * Provides dependencies expressed in the {@link com.bmd.android.europewelcome.MyApp}

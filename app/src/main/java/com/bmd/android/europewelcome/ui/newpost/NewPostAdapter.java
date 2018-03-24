@@ -59,10 +59,11 @@ import butterknife.OnClick;
 
 public class NewPostAdapter extends FirestoreRecyclerAdapter<PostSection, BaseViewHolder> {
 
-    private static final int VIEW_TYPE_TEXT = 0;
-    private static final int VIEW_TYPE_IMAGE = 1;
-    private static final int VIEW_TYPE_MAP = 2;
-    private static final int VIEW_TYPE_VIDEO = 3;
+    private static final int VIEW_TYPE_TITLE = 0;
+    private static final int VIEW_TYPE_TEXT = 1;
+    private static final int VIEW_TYPE_IMAGE = 2;
+    private static final int VIEW_TYPE_MAP = 3;
+    private static final int VIEW_TYPE_VIDEO = 4;
 
     private static final String TAG = "NewPostAdapter";
 
@@ -93,6 +94,9 @@ public class NewPostAdapter extends FirestoreRecyclerAdapter<PostSection, BaseVi
     @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
+            case VIEW_TYPE_TITLE:
+                return new NewPostAdapter.TitleViewHolder(LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_new_post_title, parent, false));
             case VIEW_TYPE_TEXT:
                 return new NewPostAdapter.TextViewHolder(LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.item_new_post_text, parent, false));
@@ -106,14 +110,16 @@ public class NewPostAdapter extends FirestoreRecyclerAdapter<PostSection, BaseVi
                 return new NewPostAdapter.VideoViewHolder(LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.item_new_post_video, parent, false));
             default:
-                return new NewPostAdapter.TextViewHolder(LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.item_new_post_text, parent, false));
+                return new NewPostAdapter.TitleViewHolder(LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_new_post_title, parent, false));
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (getItem(position).getPostSectionViewType().equals("Text")) {
+        if (getItem(position).getPostSectionViewType().equals("Title")) {
+            return VIEW_TYPE_TITLE;
+        } else if (getItem(position).getPostSectionViewType().equals("Text")) {
             return VIEW_TYPE_TEXT;
         } else if (getItem(position).getPostSectionViewType().equals("Image")) {
             return VIEW_TYPE_IMAGE;
@@ -133,6 +139,8 @@ public class NewPostAdapter extends FirestoreRecyclerAdapter<PostSection, BaseVi
         // ...
     }
 
+
+
     @Override
     public void onError(FirebaseFirestoreException e) {
         super.onError(e);
@@ -144,6 +152,42 @@ public class NewPostAdapter extends FirestoreRecyclerAdapter<PostSection, BaseVi
         void deletePostSection(PostSection postSection);
 
         void updatePostSection(PostSection postSection);
+    }
+
+    public class TitleViewHolder extends BaseViewHolder {
+
+        @BindView(R.id.et_new_post_item_post_title)
+        EditText mPostTitleEt;
+
+        PostSection mPostSection;
+
+        TitleViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+
+        protected void clear() {
+        }
+
+        public void onBind(int position, PostSection model) {
+            super.onBind(position, model);
+
+            mPostSection = model;
+
+            if (model.getPostTitle() != null) {
+                mPostTitleEt.setText(model.getPostTitle());
+                mPostTitleEt.setSelection(mPostTitleEt.getText().length());
+            }
+
+            //Saves text to DB on EditText focus change
+            mPostTitleEt.setOnFocusChangeListener((v, hasFocus) -> {
+                if(!mPostSection.getPostTitle().equals(mPostTitleEt.getText().toString())) {
+                    mPostSection.setPostTitle(mPostTitleEt.getText().toString());
+                    if (mCallback != null)
+                        mCallback.updatePostSection(mPostSection);
+                }
+            });
+        }
     }
 
     public class TextViewHolder extends BaseViewHolder {
@@ -201,45 +245,14 @@ public class NewPostAdapter extends FirestoreRecyclerAdapter<PostSection, BaseVi
                 mFormatItalicIv.setImageResource(R.drawable.ic_format_italic_off_black_24dp);
             }
 
-            mPostTextEt.addTextChangedListener(
-                    new TextWatcher() {
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        }
-
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                        }
-
-                        private Timer timer = new Timer();
-                        private final long DELAY = 1000; // milliseconds
-
-                        @Override
-                        public void afterTextChanged(final Editable s) {
-                            timer.cancel();
-                            timer = new Timer();
-                            timer.schedule(
-                                    new TimerTask() {
-                                        @Override
-                                        public void run() {
-                                            // TODO: Optimize code below
-                                            // you will probably need to use runOnUiThread(Runnable action) for some specific actions
-                                            if (mPostSection.getPostText() == null) {
-                                                mPostSection.setPostText(mPostTextEt.getText().toString());
-                                                if (mCallback != null)
-                                                    mCallback.updatePostSection(mPostSection);
-                                            } else if (!mPostSection.getPostText().equals(mPostTextEt.getText().toString())) {
-                                                mPostSection.setPostText(mPostTextEt.getText().toString());
-                                                if (mCallback != null)
-                                                    mCallback.updatePostSection(mPostSection);
-                                            }
-                                        }
-                                    },
-                                    DELAY
-                            );
-                        }
-                    }
-            );
+            //Saves text to DB on EditText focus change
+            mPostTextEt.setOnFocusChangeListener((v, hasFocus) -> {
+                if(!mPostSection.getPostText().equals(mPostTextEt.getText().toString())) {
+                    mPostSection.setPostText(mPostTextEt.getText().toString());
+                    if (mCallback != null)
+                        mCallback.updatePostSection(mPostSection);
+                }
+            });
         }
 
         @OnClick(R.id.iv_new_post_item_delete_text)

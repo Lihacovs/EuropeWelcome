@@ -58,17 +58,20 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
 
     @Override
     public void setPost(@Nullable String postId) {
+        getMvpView().showLoading();
+        //TODO: CHECK INTERNET CONNECTION
         if (postId == null || postId.isEmpty()) {
             mPost = newPost();
             mPostId = mPost.getPostId();
             getDataManager().savePost(mPost).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
-
+                    newTitlePostSection();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
+                    getMvpView().hideLoading();
                     getMvpView().onError("Unable to get Data");
                 }
             });
@@ -79,11 +82,12 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
                         @Override
                         public void onSuccess(DocumentSnapshot documentSnapshot) {
                             mPost = documentSnapshot.toObject(Post.class);
-
+                            getMvpView().hideLoading();
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
+                    getMvpView().hideLoading();
                     getMvpView().onError("Unable to get Data");
                 }
             });
@@ -93,6 +97,20 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
     @Override
     public Query getPostSectionQuery() {
         return getDataManager().getPostSectionQuery(mPostId);
+    }
+
+    private void newTitlePostSection() {
+        PostSection postSection = newPostSection();
+        postSection.setPostSectionViewType("Title");
+        getDataManager().savePostSection(postSection, mPost.getPostId())
+                .addOnSuccessListener(aVoid -> {
+                    getMvpView().hideLoading();
+                    Log.d(TAG, "newTitlePostSection: ");
+                })
+                .addOnFailureListener(e -> {
+                    getMvpView().hideLoading();
+                    Log.d(TAG, "newTextPostSection: Failure");
+                });
     }
 
     @Override
@@ -140,9 +158,9 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
                     getMvpView().hideLoading();
                     getMvpView().scrollViewToBottom();
                 }).addOnFailureListener(e -> {
-                    getMvpView().hideLoading();
-                    Log.d(TAG, "onFailure: ");
-                });
+            getMvpView().hideLoading();
+            Log.d(TAG, "onFailure: ");
+        });
     }
 
     @Override
@@ -193,9 +211,9 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
                         newImagePostSection(downloadUrl);
                     }
                 }).removeOnFailureListener(e -> {
-                    getMvpView().hideLoading();
-                    getMvpView().onError(R.string.register_upload_error);
-                });
+            getMvpView().hideLoading();
+            getMvpView().onError(R.string.register_upload_error);
+        });
     }
 
     @Override
@@ -232,13 +250,23 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
     }
 
     private void setPostTitle() {
-        if (getMvpView().getPostTitle() == null || getMvpView().getPostTitle().isEmpty()) {
+        getDataManager().getFirstPostSection(mPostId, "Title")
+                .addOnSuccessListener(documentSnapshots -> {
+                    if (documentSnapshots.getDocuments().isEmpty()) {
+                        getMvpView().hideLoading();
+                        getMvpView().onError(R.string.newpost_add_title);
+                    } else {
+                        for (DocumentSnapshot doc : documentSnapshots.getDocuments()) {
+                            PostSection postSection = doc.toObject(PostSection.class);
+                            Log.d(TAG, "onSuccess: " + postSection.getPostText());
+                            mPost.setPostTitle(postSection.getPostTitle());
+                        }
+                        setPostText();
+                    }
+                }).addOnFailureListener(e -> {
             getMvpView().hideLoading();
-            getMvpView().onError(R.string.newpost_add_title);
-        } else {
-            mPost.setPostTitle(getMvpView().getPostTitle());
-            setPostText();
-        }
+            Log.d(TAG, "onFailure: " + e);
+        });
     }
 
     private void setPostText() {
@@ -295,8 +323,8 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
         return new Post(getDataManager().getCurrentUserId(),
                 getDataManager().getCurrentUserName(),
                 getDataManager().getCurrentUserProfilePicUrl(),
-                null,
-                null,
+                "",
+                "",
                 0,
                 1,
                 CommonUtils.getIntTimeStamp(),
@@ -315,7 +343,8 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
                 CommonUtils.getTimeStamp(),
                 CommonUtils.getTimeStampInt(),
                 mLayoutOrderNum++,
-                null,
+                "",
+                "",
                 18,
                 false,
                 false,

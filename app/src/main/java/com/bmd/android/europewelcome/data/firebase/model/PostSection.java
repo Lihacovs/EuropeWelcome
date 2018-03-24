@@ -16,9 +16,6 @@
 package com.bmd.android.europewelcome.data.firebase.model;
 
 
-import com.google.firebase.firestore.ServerTimestamp;
-
-import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -32,6 +29,9 @@ public class PostSection {
     private String mPostSectionTimestamp;
     private int mTimeStamp;
     private int mLayoutOrderNum;
+
+    //Title
+    private String mPostTitle;
 
     //Text fields
     private String mPostText;
@@ -62,6 +62,7 @@ public class PostSection {
             String postSectionTimestamp,
             int timeStamp,
             int layoutOrderNum,
+            String postTitle,
             String postText,
             float postTextSize,
             boolean postTextBold,
@@ -79,6 +80,7 @@ public class PostSection {
         mPostSectionTimestamp = postSectionTimestamp;
         mTimeStamp = timeStamp;
         mLayoutOrderNum = layoutOrderNum;
+        mPostTitle = postTitle;
         mPostText = postText;
         mPostTextSize = postTextSize;
         mPostTextBold = postTextBold;
@@ -130,6 +132,14 @@ public class PostSection {
 
     public void setLayoutOrderNum(int layoutOrderNum) {
         mLayoutOrderNum = layoutOrderNum;
+    }
+
+    public String getPostTitle() {
+        return mPostTitle;
+    }
+
+    public void setPostTitle(String postTitle) {
+        mPostTitle = postTitle;
     }
 
     public String getPostText() {

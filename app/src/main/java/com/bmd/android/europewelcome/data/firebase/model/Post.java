@@ -15,7 +15,6 @@
 
 package com.bmd.android.europewelcome.data.firebase.model;
 
-import java.util.HashMap;
 import java.util.UUID;
 
 /**

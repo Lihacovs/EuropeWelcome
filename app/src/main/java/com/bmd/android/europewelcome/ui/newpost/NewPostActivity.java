@@ -21,14 +21,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 
 import com.bmd.android.europewelcome.R;
@@ -74,17 +75,12 @@ public class NewPostActivity extends BaseActivity implements NewPostMvpView, New
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    @BindView(R.id.et_new_post_post_title)
-    EditText mPostTitleEt;
-
     @BindView(R.id.rv_new_post_container)
     RecyclerView mNewPostRv;
 
-    @BindView(R.id.nsv_new_post_scroll_view)
-    NestedScrollView mScrollView;
-
     NewPostAdapter mNewPostAdapter;
 
+    private Parcelable state;
 
     //TODO: drafts
     //param: postId - null if new post, nonnull if post came for edit/draft
@@ -110,9 +106,9 @@ public class NewPostActivity extends BaseActivity implements NewPostMvpView, New
             e.printStackTrace();
         }
 
-        mPresenter.setPost((String) getIntent().getSerializableExtra(EXTRA_POST_ID));
-
         mPresenter.onAttach(this);
+
+        mPresenter.setPost((String) getIntent().getSerializableExtra(EXTRA_POST_ID));
 
         setUp();
 
@@ -138,6 +134,12 @@ public class NewPostActivity extends BaseActivity implements NewPostMvpView, New
                         .setQuery(mPresenter.getPostSectionQuery(), PostSection.class)
                         .build());
         mNewPostAdapter.setAdapterCallback(this);
+        mNewPostAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                mNewPostRv.smoothScrollToPosition(mNewPostAdapter.getItemCount());
+            }
+        });
         mNewPostRv.setAdapter(mNewPostAdapter);
     }
 
@@ -236,22 +238,18 @@ public class NewPostActivity extends BaseActivity implements NewPostMvpView, New
     }
 
     @Override
-    public String getPostTitle() {
-        return mPostTitleEt.getText().toString().trim();
-    }
-
-    @Override
     public void finishActivity() {
         this.finish();
     }
 
     @Override
     public void scrollViewToBottom() {
-        ScreenUtils.scrollToBottom(mScrollView);
+
     }
 
     @OnClick(R.id.tv_new_post_publish)
     void onPublishTvClick() {
+        clearFocusForTextSave();
         mPresenter.publishPost();
     }
 
@@ -272,6 +270,7 @@ public class NewPostActivity extends BaseActivity implements NewPostMvpView, New
     }
 
     private void showSavePostToDraftsDialog() {
+        clearFocusForTextSave();
         showSimpleDialog(getString(R.string.newpost_save_to_draft),
                 getString(R.string.newpost_save),
                 getString(R.string.newpost_delete),
@@ -285,5 +284,13 @@ public class NewPostActivity extends BaseActivity implements NewPostMvpView, New
                             break;
                     }
                 });
+    }
+
+    /**
+     * Triggers EditText fields in {@link NewPostAdapter} to save text data to DB
+     */
+    private void clearFocusForTextSave(){
+        View current = getCurrentFocus();
+        if (current != null) current.clearFocus();
     }
 }
