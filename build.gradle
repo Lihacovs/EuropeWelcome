@@ -22,7 +22,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'com.android.tools.build:gradle:3.1.0'
         classpath 'com.google.gms:google-services:3.1.0'
         
 
@@ -53,17 +53,20 @@ ext {
     buildToolsVersion = '27.0.3'
 
     // App dependencies
-    supportLibraryVersion = '27.0.2'
+    supportLibraryVersion = '27.1.0'
+    firebasePlayservicesVersion = '11.8.0'
+    firebiseUiVersion = '3.2.2'
+    dagger2Version = '2.8'
+    butterKnifeVersion = '8.8.1'
+    glideVersion = '4.4.0'
+    facebookVersion = '4.31.0'
+
+
     gsonVersion = '2.8.0'
     calligraphyVersion = '2.2.0'
-    glideVersion = '4.4.0'
-
     rx2FastAndroidNetworking = '1.0.0'
-
-    dagger2Version = '2.8'
     rxjava2Version = '2.0.6'
     rxandroidVersion = '2.0.1'
-    butterKnifeVersion = '8.8.1'
     greenDaoVersion = '3.2.0'
     placeholderviewVersion = '0.6.1'
     debugDBVersion = '1.0.0'

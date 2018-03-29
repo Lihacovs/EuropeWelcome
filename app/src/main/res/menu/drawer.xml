@@ -16,7 +16,7 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:id="@+id/menu_top"
-        android:checkableBehavior="none">
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_item_profile"
             android:icon="@drawable/ic_circle_account_white_24dp"

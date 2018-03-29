@@ -24,6 +24,7 @@ import com.bmd.android.europewelcome.di.component.ApplicationComponent;
 import com.bmd.android.europewelcome.di.component.DaggerApplicationComponent;
 import com.bmd.android.europewelcome.di.module.ApplicationModule;
 import com.bmd.android.europewelcome.utils.AppLogger;
+import com.google.android.gms.maps.MapsInitializer;
 
 import javax.inject.Inject;
 
@@ -65,6 +66,12 @@ public class MyApp extends MultiDexApplication {
 
         //CalligraphyConfig.initDefault(mCalligraphyConfig);
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+
+        try {
+            MapsInitializer.initialize(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public ApplicationComponent getComponent() {

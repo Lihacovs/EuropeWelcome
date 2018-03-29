@@ -17,13 +17,12 @@ package com.bmd.android.europewelcome.ui.newpost;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -35,13 +34,12 @@ import android.widget.EditText;
 import com.bmd.android.europewelcome.R;
 import com.bmd.android.europewelcome.data.firebase.model.PostSection;
 import com.bmd.android.europewelcome.ui.base.BaseActivity;
-import com.bmd.android.europewelcome.utils.ScreenUtils;
+import com.bmd.android.europewelcome.utils.CommonUtils;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
-import com.google.android.gms.maps.MapsInitializer;
 
 import javax.inject.Inject;
 
@@ -80,10 +78,7 @@ public class NewPostActivity extends BaseActivity implements NewPostMvpView, New
 
     NewPostAdapter mNewPostAdapter;
 
-    private Parcelable state;
-
-    //TODO: drafts
-    //param: postId - null if new post, nonnull if post came for edit/draft
+    //param: postId - null if new post, nonnull if post came from drafts
     public static Intent getStartIntent(Context context, @Nullable String postId) {
         Intent intent = new Intent(context, NewPostActivity.class);
         intent.putExtra(EXTRA_POST_ID, postId);
@@ -99,16 +94,7 @@ public class NewPostActivity extends BaseActivity implements NewPostMvpView, New
 
         setUnBinder(ButterKnife.bind(this));
 
-        //TODO: Initialize maps once in App?
-        try {
-            MapsInitializer.initialize(this.getApplicationContext());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         mPresenter.onAttach(this);
-
-        mPresenter.setPost((String) getIntent().getSerializableExtra(EXTRA_POST_ID));
 
         setUp();
 
@@ -118,8 +104,11 @@ public class NewPostActivity extends BaseActivity implements NewPostMvpView, New
     @Override
     protected void setUp() {
 
-        setSupportActionBar(mToolbar);
+        showLoading();
 
+        mPresenter.setPost((String) getIntent().getSerializableExtra(EXTRA_POST_ID));
+
+        setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -195,8 +184,8 @@ public class NewPostActivity extends BaseActivity implements NewPostMvpView, New
 
     @OnClick(R.id.iv_new_post_video_icon)
     void onVideoIconClick() {
-        //TODO: make dialog to pick video code
-        mPresenter.newVideoPostSection("aMimeO279YE");
+
+        mPresenter.checkVideoPostSection();
     }
 
     @Override
@@ -226,7 +215,6 @@ public class NewPostActivity extends BaseActivity implements NewPostMvpView, New
      *
      * @param postSection - entity to process
      */
-
     @Override
     public void deletePostSection(PostSection postSection) {
         mPresenter.deletePostSection(postSection);
@@ -235,6 +223,11 @@ public class NewPostActivity extends BaseActivity implements NewPostMvpView, New
     @Override
     public void updatePostSection(PostSection postSection) {
         mPresenter.updatePostSection(postSection);
+    }
+
+    @Override
+    public void hideLoadingSpinner() {
+        hideLoading();
     }
 
     @Override
@@ -247,6 +240,21 @@ public class NewPostActivity extends BaseActivity implements NewPostMvpView, New
 
     }
 
+    @Override
+    public void showYouTubeUrlDialog() {
+        //TODO: make custom dialog with post from clipboard, share from youtube APP
+        //show dialog to post youtube video URL
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        final EditText edittext = new EditText(this);
+        alert.setMessage("Add YouTube video URL from clipboard")
+                .setView(edittext)
+                .setPositiveButton("Okay", (dialog, whichButton) -> {
+                    String YouEditTextValue = edittext.getText().toString();
+                    mPresenter.newVideoPostSection(CommonUtils.extractYTId(YouEditTextValue));
+                }).setNegativeButton("Cancel", (dialog, whichButton) -> {
+        }).show();
+    }
+
     @OnClick(R.id.tv_new_post_publish)
     void onPublishTvClick() {
         clearFocusForTextSave();
@@ -255,35 +263,20 @@ public class NewPostActivity extends BaseActivity implements NewPostMvpView, New
 
     @Override
     public void onBackPressed() {
-        showSavePostToDraftsDialog();
+        clearFocusForTextSave();
+        mPresenter.savePostToDraft();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                showSavePostToDraftsDialog();
+                clearFocusForTextSave();
+                mPresenter.savePostToDraft();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    private void showSavePostToDraftsDialog() {
-        clearFocusForTextSave();
-        showSimpleDialog(getString(R.string.newpost_save_to_draft),
-                getString(R.string.newpost_save),
-                getString(R.string.newpost_delete),
-                (dialog, which) -> {
-                    switch (which) {
-                        case DialogInterface.BUTTON_POSITIVE:
-                            mPresenter.savePostToDraft();
-                            break;
-                        case DialogInterface.BUTTON_NEGATIVE:
-                            mPresenter.deletePost();
-                            break;
-                    }
-                });
     }
 
     /**

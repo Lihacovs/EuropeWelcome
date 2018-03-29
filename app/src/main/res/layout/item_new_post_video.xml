@@ -24,7 +24,7 @@
     android:layout_marginRight="8dp"
     android:layout_marginStart="8dp"
     android:layout_marginTop="4dp"
-    android:background="@android:color/darker_gray"
+    android:background="@drawable/frame_1dp"
     android:orientation="vertical">
 
     <fragment
@@ -36,8 +36,20 @@
         app:layout_constraintDimensionRatio="H,16:9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/iv_new_post_item_delete_video">
     </fragment>
+
+    <ImageView
+        android:id="@+id/iv_new_post_item_youtube"
+        android:layout_width="76dp"
+        android:layout_height="38dp"
+        android:layout_margin="1dp"
+        android:adjustViewBounds="false"
+        android:contentDescription="@string/new_post_item_youtube_icon"
+        android:padding="7dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_youtube" />
 
     <ImageView
         android:id="@+id/iv_new_post_item_delete_video"
@@ -45,22 +57,9 @@
         android:layout_height="wrap_content"
         android:layout_margin="1dp"
         android:adjustViewBounds="false"
-        android:background="@color/translucent_white"
         android:contentDescription="@string/new_post_item_delete_icon"
         android:padding="7dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_delete_black_24dp" />
-
-    <Button
-        android:id="@+id/btn_addpostitem_playvideo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Play"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_new_post_item_youtube_video" />
-
 </android.support.constraint.ConstraintLayout>

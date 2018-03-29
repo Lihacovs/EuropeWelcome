@@ -24,15 +24,18 @@ import com.bmd.android.europewelcome.di.PerActivity;
 import com.bmd.android.europewelcome.ui.about.AboutMvpPresenter;
 import com.bmd.android.europewelcome.ui.about.AboutMvpView;
 import com.bmd.android.europewelcome.ui.about.AboutPresenter;
-import com.bmd.android.europewelcome.ui.addpost.AddPostMvpPresenter;
-import com.bmd.android.europewelcome.ui.addpost.AddPostMvpView;
-import com.bmd.android.europewelcome.ui.addpost.AddPostPresenter;
 import com.bmd.android.europewelcome.ui.auth.LoginMvpPresenter;
 import com.bmd.android.europewelcome.ui.auth.LoginMvpView;
 import com.bmd.android.europewelcome.ui.auth.LoginPresenter;
 import com.bmd.android.europewelcome.ui.auth.register.RegisterMvpPresenter;
 import com.bmd.android.europewelcome.ui.auth.register.RegisterMvpView;
 import com.bmd.android.europewelcome.ui.auth.register.RegisterPresenter;
+import com.bmd.android.europewelcome.ui.bookmarks.BookmarksMvpPresenter;
+import com.bmd.android.europewelcome.ui.bookmarks.BookmarksMvpView;
+import com.bmd.android.europewelcome.ui.bookmarks.BookmarksPresenter;
+import com.bmd.android.europewelcome.ui.drafts.DraftsMvpPresenter;
+import com.bmd.android.europewelcome.ui.drafts.DraftsMvpView;
+import com.bmd.android.europewelcome.ui.drafts.DraftsPresenter;
 import com.bmd.android.europewelcome.ui.newpost.NewPostMvpPresenter;
 import com.bmd.android.europewelcome.ui.newpost.NewPostMvpView;
 import com.bmd.android.europewelcome.ui.newpost.NewPostPresenter;
@@ -147,8 +150,14 @@ public class ActivityModule {
     }
 
     @Provides
-    AddPostMvpPresenter<AddPostMvpView> provideAddPostPresenter(
-            AddPostPresenter<AddPostMvpView> presenter) {
+    DraftsMvpPresenter<DraftsMvpView> provideDraftsPresenter(
+             DraftsPresenter<DraftsMvpView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    BookmarksMvpPresenter<BookmarksMvpView> provideBookmarksPresenter(
+            BookmarksPresenter<BookmarksMvpView> presenter) {
         return presenter;
     }
 

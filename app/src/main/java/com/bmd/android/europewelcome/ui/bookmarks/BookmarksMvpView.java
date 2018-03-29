@@ -13,41 +13,9 @@
  * limitations under the License.
  */
 
-package com.bmd.android.europewelcome.ui.posts;
+package com.bmd.android.europewelcome.ui.bookmarks;
 
 import com.bmd.android.europewelcome.ui.base.MvpView;
 
-/**
- * View interface for {@link PostsActivity}
- */
-
-public interface PostsMvpView extends MvpView {
-
-    void openLoginActivity();
-
-    void showAboutFragment();
-
-    void updateUserName(String currentUserName);
-
-    void updateUserEmail(String currentUserEmail);
-
-    void updateUserProfilePic(String currentUserProfilePicUrl);
-
-    void updateAppVersion();
-
-    void showRateUsDialog();
-
-    void openBookmarksActivity();
-
-    void openDraftsActivity();
-
-    void openNewPostActivity();
-
-    void openProfileActivity();
-
-    void closeNavigationDrawer();
-
-    void lockDrawer();
-
-    void unlockDrawer();
+public interface BookmarksMvpView extends MvpView {
 }

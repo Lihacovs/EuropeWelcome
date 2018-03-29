@@ -13,19 +13,17 @@
  * limitations under the License.
  */
 
-package com.bmd.android.europewelcome.ui.newpost;
+package com.bmd.android.europewelcome.ui.drafts;
 
-import com.bmd.android.europewelcome.ui.base.MvpView;
+import com.bmd.android.europewelcome.data.firebase.model.Post;
+import com.bmd.android.europewelcome.ui.base.MvpPresenter;
+import com.google.firebase.firestore.Query;
 
-/**
- * View interface for {@link NewPostActivity}
- */
+public interface DraftsMvpPresenter<V extends DraftsMvpView> extends MvpPresenter<V> {
 
-public interface NewPostMvpView extends MvpView {
+    Query getPostAsDraftQuery();
 
-    void finishActivity();
+    String getCurrentUserId();
 
-    void scrollViewToBottom();
-
-    void showYouTubeUrlDialog();
+    void deleteDraft(Post post);
 }

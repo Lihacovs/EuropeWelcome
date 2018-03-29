@@ -13,19 +13,11 @@
  * limitations under the License.
  */
 
-package com.bmd.android.europewelcome.ui.newpost;
+package com.bmd.android.europewelcome.ui.bookmarks;
 
-import com.bmd.android.europewelcome.ui.base.MvpView;
+import com.bmd.android.europewelcome.ui.base.MvpPresenter;
+import com.google.firebase.firestore.Query;
 
-/**
- * View interface for {@link NewPostActivity}
- */
-
-public interface NewPostMvpView extends MvpView {
-
-    void finishActivity();
-
-    void scrollViewToBottom();
-
-    void showYouTubeUrlDialog();
+public interface BookmarksMvpPresenter<V extends BookmarksMvpView> extends MvpPresenter<V> {
+    Query getBookmarkedPostsQuery();
 }

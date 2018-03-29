@@ -45,6 +45,8 @@ import com.bmd.android.europewelcome.di.module.GlideApp;
 import com.bmd.android.europewelcome.ui.about.AboutFragment;
 import com.bmd.android.europewelcome.ui.auth.LoginActivity;
 import com.bmd.android.europewelcome.ui.base.BaseActivity;
+import com.bmd.android.europewelcome.ui.bookmarks.BookmarksActivity;
+import com.bmd.android.europewelcome.ui.drafts.DraftsActivity;
 import com.bmd.android.europewelcome.ui.newpost.NewPostActivity;
 import com.bmd.android.europewelcome.ui.posts.rating.RateUsDialog;
 import com.bmd.android.europewelcome.ui.profile.ProfileActivity;
@@ -405,8 +407,13 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
     }
 
     @Override
-    public void openAddPostActivity() {
-        startActivity(NewPostActivity.getStartIntent(this, null));
+    public void openBookmarksActivity() {
+        startActivity(BookmarksActivity.getStartIntent(this));
+    }
+
+    @Override
+    public void openDraftsActivity() {
+        startActivity(DraftsActivity.getStartIntent(this));
     }
 
     @Override

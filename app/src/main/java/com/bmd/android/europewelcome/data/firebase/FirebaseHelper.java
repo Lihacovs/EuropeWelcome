@@ -80,6 +80,8 @@ public interface FirebaseHelper {
 
     Query getPostSectionQuery(String postId);
 
+    Query getPostAsDraftQuery(String userId);
+
     Task<Void> savePost(Post post);
 
     Task<Void> savePostSection(PostSection postSection, String postId);
@@ -95,6 +97,8 @@ public interface FirebaseHelper {
     Task<Void> deletePostSection(String postId ,PostSection postSection);
 
     Task<DocumentSnapshot> getPost(String postId);
+
+    Task<QuerySnapshot> getFirstPostSectionCollection(String postId);
 
     Task<QuerySnapshot> getFirstPostSection(String postId, String sectionViewType);
 

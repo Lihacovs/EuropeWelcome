@@ -26,8 +26,11 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
@@ -42,6 +45,7 @@ import com.bmd.android.europewelcome.ui.auth.LoginActivity;
 import com.bmd.android.europewelcome.utils.CommonUtils;
 import com.bmd.android.europewelcome.utils.NetworkUtils;
 
+import butterknife.BindView;
 import butterknife.Unbinder;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -165,10 +169,10 @@ public abstract class BaseActivity extends AppCompatActivity
         }
     }
 
-    public void showSimpleDialog(String message,
-                                 String positiveButton,
-                                 String negativeButton,
-                                 DialogInterface.OnClickListener listener) {
+    public void showYesNoDialog(String message,
+                                String positiveButton,
+                                String negativeButton,
+                                DialogInterface.OnClickListener listener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(message)
                 .setPositiveButton(positiveButton, listener)

@@ -125,6 +125,7 @@
     <string name="new_post_item_format_italic_icon">Format italic icon</string>
     <string name="new_post_item_format_size_icon">Format size icon</string>
     <string name="new_post_item_delete_icon">Delete icon</string>
+    <string name="new_post_item_youtube_icon">Youtube icon</string>
     <string name="new_post_item_type_text">Type your text here</string>
     <string name="new_post_item_post_image">Post image</string>
 

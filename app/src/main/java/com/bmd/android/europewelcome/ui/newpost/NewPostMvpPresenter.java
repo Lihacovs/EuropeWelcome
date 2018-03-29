@@ -37,6 +37,8 @@ public interface NewPostMvpPresenter<V extends NewPostMvpView> extends MvpPresen
 
     void newMapPostSection(Place place);
 
+    void checkVideoPostSection();
+
     void newVideoPostSection(String videoCode);
 
     void deletePostSection(PostSection postSection);

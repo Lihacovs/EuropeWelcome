@@ -13,22 +13,10 @@
  * limitations under the License.
  */
 
-package com.bmd.android.europewelcome.ui.addpost;
+package com.bmd.android.europewelcome.ui.drafts;
 
-import com.bmd.android.europewelcome.data.firebase.model.PostSection;
 import com.bmd.android.europewelcome.ui.base.MvpView;
 
-/**
- * Created by Konstantins on 12/7/2017.
- */
+public interface DraftsMvpView extends MvpView{
 
-public interface AddPostMvpView extends MvpView {
-
-    void attachPostTextLayout(PostSection postSection);
-
-    void attachPostImageLayout(PostSection postSection);
-
-    void attachPostMapLayout(PostSection postSection);
-
-    void attachPostVideoLayout();
 }

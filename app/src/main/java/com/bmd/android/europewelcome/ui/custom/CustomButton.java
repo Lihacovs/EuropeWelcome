@@ -16,7 +16,7 @@
 package com.bmd.android.europewelcome.ui.custom;
 
 /**
- * Created by Konstantins on 2/28/2018.
+ * Button for {@link com.bmd.android.europewelcome.ui.auth.LoginActivity}
  */
 
 import android.content.Context;

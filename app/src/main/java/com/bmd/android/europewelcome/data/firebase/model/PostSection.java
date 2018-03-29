@@ -57,6 +57,7 @@ public class PostSection {
     }
 
     public PostSection(
+            String postId,
             String postSectionViewType,
             String postSectionCreationDate,
             String postSectionTimestamp,
@@ -237,4 +238,5 @@ public class PostSection {
     public void setTimeStamp(int timeStamp) {
         mTimeStamp = timeStamp;
     }
+
 }

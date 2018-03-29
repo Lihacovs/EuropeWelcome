@@ -193,6 +193,15 @@ public class AppFirebaseHelper implements FirebaseHelper {
     }
 
     @Override
+    public Query getPostAsDraftQuery(String userId) {
+        return mFirestore
+                .collection(AppConstants.POSTS_COLLECTION)
+                .whereEqualTo("postAsDraft", true)
+                .whereEqualTo("postAuthorId", userId)
+                .orderBy("postCreationTimestamp", Query.Direction.DESCENDING);
+    }
+
+    @Override
     public Task<Void> savePost(Post post) {
         return mFirestore.collection("posts").document(post.getPostId()).set(post);
     }
@@ -236,6 +245,8 @@ public class AppFirebaseHelper implements FirebaseHelper {
 
     @Override
     public Task<Void> deletePost(Post post) {
+        //Firstly delete collection under the Post document
+
         return mFirestore.collection(AppConstants.POSTS_COLLECTION)
                 .document(post.getPostId())
                 .delete();
@@ -255,6 +266,15 @@ public class AppFirebaseHelper implements FirebaseHelper {
         DocumentReference docRef
                 = mFirestore.collection(AppConstants.POSTS_COLLECTION).document(postId);
         return docRef.get();
+    }
+
+    @Override
+    public Task<QuerySnapshot> getFirstPostSectionCollection(String postId) {
+        return mFirestore
+                .collection(AppConstants.POSTS_COLLECTION)
+                .document(postId)
+                .collection(AppConstants.POST_SECTION_COLLECTION)
+                .get();
     }
 
     @Override

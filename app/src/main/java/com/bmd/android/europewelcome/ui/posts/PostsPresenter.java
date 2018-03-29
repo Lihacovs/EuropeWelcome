@@ -49,12 +49,24 @@ public class PostsPresenter <V extends PostsMvpView> extends BasePresenter<V>
 
     @Override
     public void onDrawerOptionBookmarksClick() {
-
+        if(getDataManager().getCurrentUserId() == null || getDataManager().getCurrentUserId().isEmpty()){
+            getMvpView().closeNavigationDrawer();
+            getMvpView().openLoginActivity();
+        }else{
+            getMvpView().closeNavigationDrawer();
+            getMvpView().openBookmarksActivity();
+        }
     }
 
     @Override
     public void onDrawerOptionDraftsClick() {
-
+        if(getDataManager().getCurrentUserId() == null || getDataManager().getCurrentUserId().isEmpty()){
+            getMvpView().closeNavigationDrawer();
+            getMvpView().openLoginActivity();
+        }else{
+            getMvpView().closeNavigationDrawer();
+            getMvpView().openDraftsActivity();
+        }
     }
 
     @Override

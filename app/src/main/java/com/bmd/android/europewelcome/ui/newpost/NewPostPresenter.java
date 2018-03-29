@@ -17,7 +17,6 @@ package com.bmd.android.europewelcome.ui.newpost;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -29,8 +28,6 @@ import com.bmd.android.europewelcome.ui.base.BasePresenter;
 import com.bmd.android.europewelcome.ui.custom.ImageCompress;
 import com.bmd.android.europewelcome.utils.CommonUtils;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 
@@ -58,39 +55,25 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
 
     @Override
     public void setPost(@Nullable String postId) {
-        getMvpView().showLoading();
         //TODO: CHECK INTERNET CONNECTION
         if (postId == null || postId.isEmpty()) {
             mPost = newPost();
             mPostId = mPost.getPostId();
-            getDataManager().savePost(mPost).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    newTitlePostSection();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    getMvpView().hideLoading();
-                    getMvpView().onError("Unable to get Data");
-                }
-            });
+            getDataManager().savePost(mPost)
+                    .addOnSuccessListener(aVoid -> newTitlePostSection())
+                    .addOnFailureListener(e -> {
+                        getMvpView().hideLoading();
+                        getMvpView().onError("Unable to get Data");
+                    });
         } else {
             mPostId = postId;
             getDataManager().getPost(postId)
-                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                        @Override
-                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-                            mPost = documentSnapshot.toObject(Post.class);
-                            getMvpView().hideLoading();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    getMvpView().hideLoading();
-                    getMvpView().onError("Unable to get Data");
-                }
-            });
+                    .addOnSuccessListener(documentSnapshot ->
+                            mPost = documentSnapshot.toObject(Post.class))
+                    .addOnFailureListener(e -> {
+                        getMvpView().hideLoading();
+                        getMvpView().onError("Unable to get Data");
+                    });
         }
     }
 
@@ -104,8 +87,6 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
         postSection.setPostSectionViewType("Title");
         getDataManager().savePostSection(postSection, mPost.getPostId())
                 .addOnSuccessListener(aVoid -> {
-                    getMvpView().hideLoading();
-                    Log.d(TAG, "newTitlePostSection: ");
                 })
                 .addOnFailureListener(e -> {
                     getMvpView().hideLoading();
@@ -120,8 +101,6 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
         postSection.setPostSectionViewType("Text");
         getDataManager().savePostSection(postSection, mPost.getPostId())
                 .addOnSuccessListener(aVoid -> {
-                    getMvpView().hideLoading();
-                    getMvpView().scrollViewToBottom();
                 })
                 .addOnFailureListener(e -> {
                     getMvpView().hideLoading();
@@ -135,8 +114,6 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
         postSection.setPostImageUrl(postImageUrl);
         getDataManager().savePostSection(postSection, mPost.getPostId())
                 .addOnSuccessListener(aVoid -> {
-                    getMvpView().hideLoading();
-                    getMvpView().scrollViewToBottom();
                 })
                 .addOnFailureListener(e -> {
                     getMvpView().hideLoading();
@@ -155,11 +132,29 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
         postSection.setPostPlaceLng(place.getLatLng().longitude);
         getDataManager().savePostSection(postSection, mPost.getPostId())
                 .addOnSuccessListener(aVoid -> {
-                    getMvpView().hideLoading();
-                    getMvpView().scrollViewToBottom();
                 }).addOnFailureListener(e -> {
             getMvpView().hideLoading();
             Log.d(TAG, "onFailure: ");
+        });
+    }
+
+    @Override
+    public void checkVideoPostSection() {
+        //Checks for 1 video section. (Only one Youtube player allowed due to performance issues,
+        // to add multiple videos to post, another implementation required...like video reload...)
+        getMvpView().showLoading();
+        getDataManager().getFirstPostSection(mPostId, "Video")
+                .addOnSuccessListener(documentSnapshots -> {
+                    if (documentSnapshots.getDocuments().isEmpty()) {
+                        getMvpView().hideLoading();
+                        getMvpView().showYouTubeUrlDialog();
+                    } else {
+                        getMvpView().hideLoading();
+                        getMvpView().onError("Only one YouTube video allowed");
+                    }
+                }).addOnFailureListener(e -> {
+            getMvpView().hideLoading();
+            Log.d(TAG, "onFailure: " + e);
         });
     }
 
@@ -171,8 +166,6 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
         postSection.setYouTubeVideoCode(videoCode);
         getDataManager().savePostSection(postSection, mPost.getPostId())
                 .addOnSuccessListener(aVoid -> {
-                    getMvpView().hideLoading();
-                    getMvpView().scrollViewToBottom();
                 })
                 .addOnFailureListener(e -> {
                     getMvpView().hideLoading();
@@ -184,7 +177,8 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
     public void deletePostSection(PostSection postSection) {
         getMvpView().showLoading();
         getDataManager().deletePostSection(mPostId, postSection)
-                .addOnSuccessListener(aVoid -> getMvpView().hideLoading())
+                .addOnSuccessListener(aVoid -> {
+                })
                 .addOnFailureListener(e -> {
                     getMvpView().hideLoading();
                     Log.d(TAG, "deletePostSection: ");
@@ -217,25 +211,54 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
     }
 
     @Override
+    public void deletePost() {
+        getMvpView().hideKeyboard();
+        getMvpView().showLoading();
+
+        //First delete PostSection collection with all documents under that post
+        getDataManager().getFirstPostSectionCollection(mPostId).addOnSuccessListener(documentSnapshots -> {
+            for (DocumentSnapshot doc : documentSnapshots.getDocuments()) {
+                PostSection postSection = doc.toObject(PostSection.class);
+                getDataManager().deletePostSection(mPostId, postSection);
+            }
+            //Then delete Post document itself
+            getDataManager().deletePost(mPost).addOnSuccessListener(aVoid -> {
+                getMvpView().hideLoading();
+                getMvpView().finishActivity();
+            }).addOnFailureListener(e -> {
+                getMvpView().hideLoading();
+                Log.d(TAG, "deletePost: " + e.getMessage());
+            });
+        }).addOnFailureListener(e -> {
+            getMvpView().hideLoading();
+            Log.d(TAG, "onFailure: " + e.getMessage());
+        });
+    }
+
+    @Override
     public void savePostToDraft() {
         getMvpView().hideKeyboard();
         getMvpView().showLoading();
         mPost.setPostAsDraft(true);
-        updatePost();
-    }
 
-    @Override
-    public void deletePost() {
-        getMvpView().hideKeyboard();
-        getMvpView().showLoading();
-        getDataManager().deletePost(mPost).addOnSuccessListener(aVoid -> {
+        getDataManager().getFirstPostSection(mPostId, "Title")
+                .addOnSuccessListener(documentSnapshots -> {
+                    if (documentSnapshots.getDocuments().isEmpty()) {
+                        getMvpView().hideLoading();
+                    } else {
+                        for (DocumentSnapshot doc : documentSnapshots.getDocuments()) {
+                            PostSection postSection = doc.toObject(PostSection.class);
+                            mPost.setPostTitle(postSection.getPostTitle());
+                        }
+                        getMvpView().showMessage("Saved to Drafts");
+                        updatePost();
+                    }
+                }).addOnFailureListener(e -> {
             getMvpView().hideLoading();
-            getMvpView().finishActivity();
-        }).addOnFailureListener(e -> {
-            getMvpView().hideLoading();
-            Log.d(TAG, "deletePost: " + e.getMessage());
+            Log.d(TAG, "onFailure: " + e);
         });
     }
+
 
     /**
      * Triggers {@link #setPostTitle()}, {@link #setPostText()}, {@link #setPostImage()} chain
@@ -246,6 +269,7 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
         getMvpView().hideKeyboard();
         getMvpView().showLoading();
         mPost.setPostPublished(true);
+        mPost.setPostAsDraft(false);
         setPostTitle();
     }
 
@@ -338,7 +362,9 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
     }
 
     private PostSection newPostSection() {
-        return new PostSection(null,
+        return new PostSection(
+                mPostId,
+                null,
                 CommonUtils.getCurrentDate(),
                 CommonUtils.getTimeStamp(),
                 CommonUtils.getTimeStampInt(),

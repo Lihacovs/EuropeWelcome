@@ -260,6 +260,11 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Query getPostAsDraftQuery(String userId) {
+        return mFirebaseHelper.getPostAsDraftQuery(userId);
+    }
+
+    @Override
     public Task<Void> savePost(Post post) {
         return mFirebaseHelper.savePost(post);
     }
@@ -297,6 +302,11 @@ public class AppDataManager implements DataManager {
     @Override
     public Task<DocumentSnapshot> getPost(String postId) {
         return mFirebaseHelper.getPost(postId);
+    }
+
+    @Override
+    public Task<QuerySnapshot> getFirstPostSectionCollection(String postId) {
+        return mFirebaseHelper.getFirstPostSectionCollection(postId);
     }
 
     @Override

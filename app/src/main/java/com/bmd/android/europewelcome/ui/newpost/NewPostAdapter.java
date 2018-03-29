@@ -18,8 +18,6 @@ package com.bmd.android.europewelcome.ui.newpost;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -36,8 +34,6 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -45,9 +41,6 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -137,9 +130,9 @@ public class NewPostAdapter extends FirestoreRecyclerAdapter<PostSection, BaseVi
         // Called each time there is a new query snapshot. You may want to use this method
         // to hide a loading spinner or check for the "no documents" state and update your UI.
         // ...
+        if (mCallback != null)
+            mCallback.hideLoadingSpinner();
     }
-
-
 
     @Override
     public void onError(FirebaseFirestoreException e) {
@@ -148,10 +141,12 @@ public class NewPostAdapter extends FirestoreRecyclerAdapter<PostSection, BaseVi
     }
 
     public interface Callback {
-        //void onZoomIconClick(PostSection postSection);
+
         void deletePostSection(PostSection postSection);
 
         void updatePostSection(PostSection postSection);
+
+        void hideLoadingSpinner();
     }
 
     public class TitleViewHolder extends BaseViewHolder {
@@ -181,7 +176,7 @@ public class NewPostAdapter extends FirestoreRecyclerAdapter<PostSection, BaseVi
 
             //Saves text to DB on EditText focus change
             mPostTitleEt.setOnFocusChangeListener((v, hasFocus) -> {
-                if(!mPostSection.getPostTitle().equals(mPostTitleEt.getText().toString())) {
+                if (!mPostSection.getPostTitle().equals(mPostTitleEt.getText().toString())) {
                     mPostSection.setPostTitle(mPostTitleEt.getText().toString());
                     if (mCallback != null)
                         mCallback.updatePostSection(mPostSection);
@@ -247,7 +242,7 @@ public class NewPostAdapter extends FirestoreRecyclerAdapter<PostSection, BaseVi
 
             //Saves text to DB on EditText focus change
             mPostTextEt.setOnFocusChangeListener((v, hasFocus) -> {
-                if(!mPostSection.getPostText().equals(mPostTextEt.getText().toString())) {
+                if (!mPostSection.getPostText().equals(mPostTextEt.getText().toString())) {
                     mPostSection.setPostText(mPostTextEt.getText().toString());
                     if (mCallback != null)
                         mCallback.updatePostSection(mPostSection);
@@ -262,7 +257,7 @@ public class NewPostAdapter extends FirestoreRecyclerAdapter<PostSection, BaseVi
         }
 
         @OnClick(R.id.iv_new_post_item_format_bold)
-        void formatBoldIconClick(ImageView v) {
+        void formatBoldIconClick() {
             if (mPostTextEt.getTypeface().getStyle() == Typeface.BOLD |
                     mPostTextEt.getTypeface().getStyle() == Typeface.BOLD_ITALIC) {
                 mPostSection.setPostTextBold(false);
@@ -274,7 +269,7 @@ public class NewPostAdapter extends FirestoreRecyclerAdapter<PostSection, BaseVi
         }
 
         @OnClick(R.id.iv_new_post_item_format_italic)
-        void formatItalicIconClick(ImageView v) {
+        void formatItalicIconClick() {
             if (mPostTextEt.getTypeface().getStyle() == Typeface.ITALIC |
                     mPostTextEt.getTypeface().getStyle() == Typeface.BOLD_ITALIC) {
                 mPostSection.setPostTextItalic(false);
@@ -286,7 +281,7 @@ public class NewPostAdapter extends FirestoreRecyclerAdapter<PostSection, BaseVi
         }
 
         @OnClick(R.id.iv_new_post_item_format_size)
-        void formatSizeIconClick(ImageView v) {
+        void formatSizeIconClick() {
             if (mPostSection.getPostTextSize() < 24) {
                 mPostSection.setPostTextSize(mPostSection.getPostTextSize() + 2);
             } else {
@@ -354,25 +349,21 @@ public class NewPostAdapter extends FirestoreRecyclerAdapter<PostSection, BaseVi
 
             mPostSection = model;
 
+            //TODO: Check how recycle map object for smooth scroll
             mMapView.onCreate(null);
             mMapView.onResume();
-
-            mMapView.getMapAsync(new OnMapReadyCallback() {
-                @Override
-                public void onMapReady(GoogleMap googleMap) {
-                    LatLng place = new LatLng(model.getPostPlaceLat(), model.getPostPlaceLng());
-
-                    googleMap.addMarker(new MarkerOptions()
-                            .position(place)
-                            .title(model.getPostPlaceName()));
-
-                    // For zooming automatically to the location of the marker
-                    CameraPosition cameraPosition = new CameraPosition.Builder()
-                            .target(place)
-                            .zoom(15)
-                            .build();
-                    googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-                }
+            mMapView.getMapAsync(googleMap -> {
+                LatLng place = new LatLng(model.getPostPlaceLat(), model.getPostPlaceLng());
+                googleMap.getUiSettings().setScrollGesturesEnabled(false);
+                googleMap.addMarker(new MarkerOptions()
+                        .position(place)
+                        .title(model.getPostPlaceName()));
+                // For zooming automatically to the location of the marker
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(place)
+                        .zoom(14)
+                        .build();
+                googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             });
         }
 
@@ -385,9 +376,8 @@ public class NewPostAdapter extends FirestoreRecyclerAdapter<PostSection, BaseVi
 
     public class VideoViewHolder extends BaseViewHolder {
 
-        YouTubePlayerFragment mYouTubePlayerFragment =
-                (YouTubePlayerFragment) ((Activity) mContext).getFragmentManager().findFragmentById(R.id.fragment_new_post_item_youtube_video);
-        YouTubePlayer.OnInitializedListener onInitializedListener;
+        YouTubePlayerFragment mYouTubePlayerFragment = (YouTubePlayerFragment) ((Activity) mContext)
+                .getFragmentManager().findFragmentById(R.id.fragment_new_post_item_youtube_video);
 
         PostSection mPostSection;
 
@@ -404,28 +394,31 @@ public class NewPostAdapter extends FirestoreRecyclerAdapter<PostSection, BaseVi
 
             mPostSection = model;
 
-            mYouTubePlayerFragment.initialize("AIzaSyByraF4EaclX12v43bAKldVHZfMjazz9y8", new YouTubePlayer.OnInitializedListener() {
-                @Override
-                public void onInitializationSuccess(YouTubePlayer.Provider provider, final YouTubePlayer youTubePlayer, boolean b) {
+            mYouTubePlayerFragment.initialize(
+                    //TODO:Add key to strings
+                    "AIzaSyByraF4EaclX12v43bAKldVHZfMjazz9y8",
+                    new YouTubePlayer.OnInitializedListener() {
+                        @Override
+                        public void onInitializationSuccess(
+                                YouTubePlayer.Provider provider,
+                                final YouTubePlayer youTubePlayer, boolean b) {
 
-                    youTubePlayer.cueVideo("PEGccV-NOm8");
-                    youTubePlayer.setShowFullscreenButton(false);
-                }
+                            youTubePlayer.cueVideo(mPostSection.getYouTubeVideoCode());
+                            youTubePlayer.setShowFullscreenButton(false);
+                        }
 
-                @Override
-                public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-                }
-            });
+                        @Override
+                        public void onInitializationFailure(
+                                YouTubePlayer.Provider provider,
+                                YouTubeInitializationResult youTubeInitializationResult) {
+                        }
+                    });
 
-        }
-
-        @OnClick(R.id.btn_addpostitem_playvideo)
-        void onPlayButtonClick() {
-            //mYouTubePlayerFragment.initialize("AIzaSyByraF4EaclX12v43bAKldVHZfMjazz9y8", onInitializedListener);
         }
 
         @OnClick(R.id.iv_new_post_item_delete_video)
         void onDeleteMapClick() {
+            mYouTubePlayerFragment.onDestroy();
             if (mCallback != null)
                 mCallback.deletePostSection(mPostSection);
         }

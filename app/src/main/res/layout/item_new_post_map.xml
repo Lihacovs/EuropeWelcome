@@ -15,6 +15,7 @@
 
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cl_new_post_item_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -35,7 +36,9 @@
         app:layout_constraintDimensionRatio="H,16:9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        map:mapType="normal"
+        map:liteMode="true"/>
 
     <ImageView
         android:id="@+id/iv_new_post_item_delete_map"
