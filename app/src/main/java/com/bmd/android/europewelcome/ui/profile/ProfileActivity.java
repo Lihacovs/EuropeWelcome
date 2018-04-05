@@ -40,9 +40,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * Created by Konstantins on 12/23/2017.
+ * Profile Activity.
  */
-
 public class ProfileActivity extends BaseActivity implements ProfileMvpView {
 
     private static final int RC_CHOOSE_PHOTO = 101;

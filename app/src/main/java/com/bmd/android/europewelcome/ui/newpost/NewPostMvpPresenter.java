@@ -26,7 +26,6 @@ import com.google.firebase.firestore.Query;
 /**
  * Presenter interface for {@link NewPostPresenter}
  */
-
 public interface NewPostMvpPresenter<V extends NewPostMvpView> extends MvpPresenter<V> {
 
     void setPost(String postId);

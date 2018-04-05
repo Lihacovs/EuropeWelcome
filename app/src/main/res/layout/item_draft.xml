@@ -15,7 +15,6 @@
 
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="4dp"
@@ -30,6 +29,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ImageView
+            android:id="@+id/iv_draft_item_edit_icon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_playlist_edit"
+            android:contentDescription="@string/post_item_draft_edit" />
+
         <TextView
             android:id="@+id/tv_draft_item_post_date"
             android:layout_width="wrap_content"
@@ -37,10 +48,10 @@
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Post text"
-            android:textSize="14sp"
+            android:text="@string/post_item_post_date"
             android:textColor="@color/gray_500"
-            app:layout_constraintStart_toStartOf="parent"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@+id/iv_draft_item_edit_icon"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -52,14 +63,13 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="Post title"
+            android:text="@string/post_item_post_title"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/iv_draft_item_delete_icon"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_draft_item_edit_icon"
             app:layout_constraintTop_toBottomOf="@+id/tv_draft_item_post_date" />
 
         <ImageView

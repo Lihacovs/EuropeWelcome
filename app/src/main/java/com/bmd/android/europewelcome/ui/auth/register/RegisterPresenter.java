@@ -17,7 +17,6 @@ package com.bmd.android.europewelcome.ui.auth.register;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 
 import com.bmd.android.europewelcome.R;
 import com.bmd.android.europewelcome.data.DataManager;
@@ -25,13 +24,9 @@ import com.bmd.android.europewelcome.data.firebase.model.User;
 import com.bmd.android.europewelcome.ui.base.BasePresenter;
 import com.bmd.android.europewelcome.ui.custom.ImageCompress;
 import com.bmd.android.europewelcome.utils.CommonUtils;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
-import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 
@@ -52,7 +47,7 @@ public class RegisterPresenter<V extends RegisterMvpView> extends BasePresenter<
     private static final String TAG = "RegisterPresenter";
 
     @Inject
-    public RegisterPresenter(DataManager dataManager) {
+    RegisterPresenter(DataManager dataManager) {
         super(dataManager);
     }
 
@@ -118,23 +113,15 @@ public class RegisterPresenter<V extends RegisterMvpView> extends BasePresenter<
                 uri.toString(), 544.0f, 408.0f);
 
         getDataManager().uploadFileToStorage(Uri.fromFile(new File(compressedFile)), "userPhotos/")
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        if (taskSnapshot.getDownloadUrl() != null) {
-                            String downloadUrl = taskSnapshot.getDownloadUrl().toString();
-                            mPhotoUrl = downloadUrl;
-                            if (getMvpView() != null) {
-                                getMvpView().loadUserPhoto(downloadUrl);
-                            }
+                .addOnSuccessListener(taskSnapshot -> {
+                    if (taskSnapshot.getDownloadUrl() != null) {
+                        String downloadUrl = taskSnapshot.getDownloadUrl().toString();
+                        mPhotoUrl = downloadUrl;
+                        if (getMvpView() != null) {
+                            getMvpView().loadUserPhoto(downloadUrl);
                         }
                     }
-                }).removeOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                getMvpView().onError(R.string.register_upload_error);
-            }
-        });
+                }).removeOnFailureListener(e -> getMvpView().onError(R.string.register_upload_error));
     }
 
     @Override
@@ -152,77 +139,65 @@ public class RegisterPresenter<V extends RegisterMvpView> extends BasePresenter<
         getMvpView().showLoading();
 
         getDataManager().createFirebaseUser(email, password)
-                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
-                        if (!isViewAttached()) {
-                            return;
-                        }
+                .addOnSuccessListener(authResult -> {
+                    if (!isViewAttached()) {
+                        return;
+                    }
 
-                        //updates user profile for Firebase authentication
-                        getDataManager()
-                                .setFirebaseUserProfile(name + " " + surname, photoUrl)
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
+                    //updates user profile for Firebase authentication
+                    getDataManager()
+                            .setFirebaseUserProfile(name + " " + surname, photoUrl)
+                            .addOnSuccessListener(aVoid -> {
 
-                                        //saves user profile in Firestore database
-                                        User newUser = new User(
-                                                getDataManager().getFirebaseUserId(),
-                                                email,
-                                                password,
-                                                name + " " + surname,
-                                                photoUrl,
-                                                gender,
-                                                birthDate,
-                                                CommonUtils.getCurrentDate()
+                                //saves user profile in Firestore database
+                                User newUser = new User(
+                                        getDataManager().getFirebaseUserId(),
+                                        email,
+                                        password,
+                                        name + " " + surname,
+                                        photoUrl,
+                                        gender,
+                                        birthDate,
+                                        CommonUtils.getCurrentDate()
 
-                                        );
-                                        getDataManager().saveUser(newUser);
+                                );
+                                getDataManager().saveUser(newUser);
 
-                                        //updates user profile in SharedPrefs
-                                        getDataManager().updateUserInfo(
-                                                null,
-                                                getDataManager().getFirebaseUserId(),
-                                                DataManager.LoggedInMode.LOGGED_IN_MODE_SERVER,
-                                                getDataManager().getFirebaseUserName(),
-                                                getDataManager().getFirebaseUserEmail(),
-                                                getDataManager().getFirebaseUserImageUrl()
-                                        );
+                                //updates user profile in SharedPrefs
+                                getDataManager().updateUserInfo(
+                                        null,
+                                        getDataManager().getFirebaseUserId(),
+                                        DataManager.LoggedInMode.LOGGED_IN_MODE_SERVER,
+                                        getDataManager().getFirebaseUserName(),
+                                        getDataManager().getFirebaseUserEmail(),
+                                        getDataManager().getFirebaseUserImageUrl()
+                                );
 
-                                        getDataManager().setLastUsedEmail(email);
-                                        getMvpView().hideLoading();
-                                        getMvpView().openMainActivity();
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
+                                getDataManager().setLastUsedEmail(email);
+                                getMvpView().hideLoading();
+                                getMvpView().openMainActivity();
+                            }).addOnFailureListener(e -> {
                                 getMvpView().hideLoading();
                                 getMvpView().onError(R.string.register_some_error);
-                            }
-                        });
+                            });
+                }).addOnFailureListener(e -> {
+                    if (!isViewAttached()) {
+                        return;
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                if (!isViewAttached()) {
-                    return;
-                }
-                getMvpView().hideLoading();
-                if (e instanceof FirebaseAuthUserCollisionException) {
-                    getMvpView().onError(R.string.register_email_already_used);
-                    return;
-                }
-                if (e instanceof FirebaseAuthWeakPasswordException) {
-                    getMvpView().onError(((FirebaseAuthWeakPasswordException) e).getReason());
-                    return;
-                }
-                if (e instanceof FirebaseAuthInvalidCredentialsException) {
-                    getMvpView().onError(e.getMessage());
-                    return;
-                }
-                getMvpView().onError(R.string.register_some_error);
-            }
-        });
+                    getMvpView().hideLoading();
+                    if (e instanceof FirebaseAuthUserCollisionException) {
+                        getMvpView().onError(R.string.register_email_already_used);
+                        return;
+                    }
+                    if (e instanceof FirebaseAuthWeakPasswordException) {
+                        getMvpView().onError(((FirebaseAuthWeakPasswordException) e).getReason());
+                        return;
+                    }
+                    if (e instanceof FirebaseAuthInvalidCredentialsException) {
+                        getMvpView().onError(e.getMessage());
+                        return;
+                    }
+                    getMvpView().onError(R.string.register_some_error);
+                });
     }
 }

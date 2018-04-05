@@ -20,9 +20,8 @@ import com.bmd.android.europewelcome.ui.base.MvpPresenter;
 import com.google.firebase.firestore.Query;
 
 /**
- * Created by Konstantins on 12/6/2017.
+ * Presenter interface for {@link FreePostsPresenter}
  */
-
 public interface FreePostsMvpPresenter<V extends FreePostsMvpView>
         extends MvpPresenter<V> {
 
@@ -36,7 +35,13 @@ public interface FreePostsMvpPresenter<V extends FreePostsMvpView>
 
     Query getPostsQueryOrderedByDate();
 
-    void savePost(Post post);
-
     void updatePost(Post post);
+
+    void addOrRemoveStar(Post post, FreePostsAdapter.ViewHolder holder);
+
+    void saveOrDeleteBookmark(Post post, FreePostsAdapter.ViewHolder holder);
+
+    void checkPostBookmarkedByUser(Post post, FreePostsAdapter.ViewHolder holder);
+
+    void checkPostStarRatedByUser(Post post, FreePostsAdapter.ViewHolder holder);
 }

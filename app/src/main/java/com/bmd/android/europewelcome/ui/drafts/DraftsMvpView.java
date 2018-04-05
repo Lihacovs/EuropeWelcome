@@ -17,6 +17,9 @@ package com.bmd.android.europewelcome.ui.drafts;
 
 import com.bmd.android.europewelcome.ui.base.MvpView;
 
+/**
+ * View interface for {@link DraftsActivity}
+ */
 public interface DraftsMvpView extends MvpView{
 
 }

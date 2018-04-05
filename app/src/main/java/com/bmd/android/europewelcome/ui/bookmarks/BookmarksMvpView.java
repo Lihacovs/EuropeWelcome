@@ -17,5 +17,8 @@ package com.bmd.android.europewelcome.ui.bookmarks;
 
 import com.bmd.android.europewelcome.ui.base.MvpView;
 
+/**
+ * View interface for {@link BookmarksActivity}
+ */
 public interface BookmarksMvpView extends MvpView {
 }

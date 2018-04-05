@@ -15,12 +15,17 @@
 
 package com.bmd.android.europewelcome.ui.bookmarks;
 
+import com.bmd.android.europewelcome.R;
 import com.bmd.android.europewelcome.data.DataManager;
+import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.ui.base.BasePresenter;
 import com.google.firebase.firestore.Query;
 
 import javax.inject.Inject;
 
+/**
+ * Bookmarks Presenter
+ */
 public class BookmarksPresenter<V extends BookmarksMvpView> extends BasePresenter<V> implements
         BookmarksMvpPresenter<V> {
 
@@ -33,6 +38,24 @@ public class BookmarksPresenter<V extends BookmarksMvpView> extends BasePresente
 
     @Override
     public Query getBookmarkedPostsQuery() {
-        return getDataManager().getPostsQuery();
+        return getDataManager().getBookmarkedPostsQuery(getDataManager().getCurrentUserId());
+    }
+
+    @Override
+    public void deleteBookmark(Post post) {
+        getMvpView().showLoading();
+        getDataManager().deleteBookmark(getDataManager().getCurrentUserId(), post)
+                .addOnSuccessListener(aVoid -> getMvpView().onError(R.string.bookmarks_removed))
+                .addOnFailureListener(e -> {
+                    getMvpView().hideLoading();
+                    getMvpView().onError(R.string.bookmarks_some_error);
+                });
+    }
+
+    @Override
+    public void updatePost(Post post) {
+        //TODO: add +1 post watch, then update
+        getDataManager().updatePost(post)
+                .addOnFailureListener(e -> getMvpView().onError(R.string.bookmarks_some_error));
     }
 }

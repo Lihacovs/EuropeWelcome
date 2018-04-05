@@ -18,12 +18,11 @@ package com.bmd.android.europewelcome.ui.postdetail;
 import com.bmd.android.europewelcome.ui.base.MvpView;
 
 /**
- * Created by Konstantins on 12/7/2017.
+ * View Interface for {@link PostDetailActivity}
  */
-
 public interface PostDetailMvpView extends MvpView {
 
-    void setPostTitle(String postTitle);
+    void clearCommentInput();
 
     void setPostUserImage(String userImageUrl);
 
@@ -32,4 +31,16 @@ public interface PostDetailMvpView extends MvpView {
     void setPostCreationDate(String creationDate);
 
     void setPostNewCommentUserImage(String userImageUrl);
+
+    void setBookmarkedIcon();
+
+    void setNotBookmarkedIcon();
+
+    void setStarRatedIcon();
+
+    void setNotStarRatedIcon();
+
+    void setPostStars(String starsCount);
+
+    void setPostComments(String commentsCount);
 }

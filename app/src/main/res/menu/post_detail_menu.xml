@@ -14,8 +14,16 @@
   ~ limitations under the License.
   -->
 
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:color="@color/europe_gold" android:state_pressed="true" /> <!-- pressed -->
-    <item android:color="@color/europe_gold" android:state_focused="true" /> <!-- focused -->
-    <item android:color="@color/cornflower_blue_13" /> <!-- default -->
-</selector>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/about"
+        android:title="About App"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/logout_user"
+        android:title="Logout"
+        app:showAsAction="never"/>
+</menu>

@@ -20,6 +20,7 @@ import android.net.Uri;
 import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.data.firebase.model.PostComment;
 import com.bmd.android.europewelcome.data.firebase.model.PostSection;
+import com.bmd.android.europewelcome.data.firebase.model.Rating;
 import com.bmd.android.europewelcome.data.firebase.model.User;
 import com.bmd.android.europewelcome.utils.AppConstants;
 import com.google.android.gms.tasks.Task;
@@ -159,19 +160,24 @@ public class AppFirebaseHelper implements FirebaseHelper {
     public Query getPostsQueryOrderedByStars() {
         return mFirestore
                 .collection(AppConstants.POSTS_COLLECTION)
-                .orderBy("postStars", Query.Direction.DESCENDING);
+                .whereEqualTo("postPublished", true)
+                .orderBy("postStars", Query.Direction.DESCENDING)
+                .orderBy("postCreationTimestamp", Query.Direction.DESCENDING);
     }
 
     @Override
     public Query getPostsQueryOrderedByViews() {
         return mFirestore
                 .collection(AppConstants.POSTS_COLLECTION)
+                .whereEqualTo("postPublished", true)
                 .orderBy("postWatches", Query.Direction.DESCENDING);
     }
 
     @Override
     public Query getPostsQueryOrderedByDate() {
-        return null;
+        return mFirestore.collection(AppConstants.POSTS_COLLECTION)
+                .whereEqualTo("postPublished", true)
+                .orderBy("postCreationTimestamp", Query.Direction.DESCENDING);
     }
 
     @Override
@@ -202,6 +208,15 @@ public class AppFirebaseHelper implements FirebaseHelper {
     }
 
     @Override
+    public Query getBookmarkedPostsQuery(String userId) {
+        return  mFirestore
+                .collection(AppConstants.USERS_COLLECTION)
+                .document(userId)
+                .collection(AppConstants.BOOKMARKS_COLLECTION)
+                .orderBy("postCreationTimestamp", Query.Direction.DESCENDING);
+    }
+
+    @Override
     public Task<Void> savePost(Post post) {
         return mFirestore.collection("posts").document(post.getPostId()).set(post);
     }
@@ -224,6 +239,31 @@ public class AppFirebaseHelper implements FirebaseHelper {
                 .collection(AppConstants.COMMENT_COLLECTION)
                 .document(postComment.getPostCommentId())
                 .set(postComment);
+    }
+
+    @Override
+    public Task<Void> saveBookmark(String userId, Post post) {
+        return mFirestore.collection(AppConstants.USERS_COLLECTION)
+                .document(userId)
+                .collection(AppConstants.BOOKMARKS_COLLECTION)
+                .document(post.getPostId())
+                .set(post);
+    }
+
+    @Override
+    public Task<Void> saveStar(String userId, Post post) {
+        return mFirestore.collection(AppConstants.USERS_COLLECTION)
+                .document(userId)
+                .collection(AppConstants.STARS_COLLECTION)
+                .document(post.getPostId())
+                .set(post);
+    }
+
+    @Override
+    public Task<Void> saveRating(Rating rating) {
+        return mFirestore.collection(AppConstants.RATINGS_COLLECTION)
+                .document(rating.getRatingId())
+                .set(rating);
     }
 
     @Override
@@ -262,10 +302,46 @@ public class AppFirebaseHelper implements FirebaseHelper {
     }
 
     @Override
+    public Task<Void> deleteBookmark(String userId, Post post) {
+        return mFirestore.collection(AppConstants.USERS_COLLECTION)
+                .document(userId)
+                .collection(AppConstants.BOOKMARKS_COLLECTION)
+                .document(post.getPostId())
+                .delete();
+    }
+
+    @Override
+    public Task<Void> deleteStar(String userId, Post post) {
+        return mFirestore.collection(AppConstants.USERS_COLLECTION)
+                .document(userId)
+                .collection(AppConstants.STARS_COLLECTION)
+                .document(post.getPostId())
+                .delete();
+    }
+
+    @Override
     public Task<DocumentSnapshot> getPost(String postId) {
         DocumentReference docRef
                 = mFirestore.collection(AppConstants.POSTS_COLLECTION).document(postId);
         return docRef.get();
+    }
+
+    @Override
+    public Task<DocumentSnapshot> getBookmark(String userId, String postId) {
+        return mFirestore.collection(AppConstants.USERS_COLLECTION)
+                .document(userId)
+                .collection(AppConstants.BOOKMARKS_COLLECTION)
+                .document(postId)
+                .get();
+    }
+
+    @Override
+    public Task<DocumentSnapshot> getStar(String userId, String postId) {
+        return mFirestore.collection(AppConstants.USERS_COLLECTION)
+                .document(userId)
+                .collection(AppConstants.STARS_COLLECTION)
+                .document(postId)
+                .get();
     }
 
     @Override

@@ -30,9 +30,8 @@ import com.google.firebase.storage.UploadTask;
 import javax.inject.Inject;
 
 /**
- * Created by Konstantins on 12/23/2017.
+ * Profile Presenter
  */
-
 public class ProfilePresenter<V extends ProfileMvpView> extends BasePresenter<V> implements
         ProfileMvpPresenter<V> {
 
@@ -42,7 +41,7 @@ public class ProfilePresenter<V extends ProfileMvpView> extends BasePresenter<V>
     private User mUser;
 
     @Inject
-    public ProfilePresenter(DataManager dataManager) {
+    ProfilePresenter(DataManager dataManager) {
         super(dataManager);
 
     }

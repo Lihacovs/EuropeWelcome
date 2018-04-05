@@ -22,6 +22,7 @@ import com.bmd.android.europewelcome.ui.base.MvpView;
  */
 
 public interface RegisterMvpView extends MvpView{
+
     void openMainActivity();
 
     void loadUserPhoto(String photoUrl);

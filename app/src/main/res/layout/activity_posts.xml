@@ -68,7 +68,7 @@
                 android:id="@+id/feed_view_pager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/cornflower_blue_9"
+                android:background="@color/cornflower_blue_10"
                 android:clipToPadding="false" />
 
         </LinearLayout>

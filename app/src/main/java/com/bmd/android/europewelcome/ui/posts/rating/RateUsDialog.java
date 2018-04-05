@@ -18,6 +18,7 @@ package com.bmd.android.europewelcome.ui.posts.rating;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -73,7 +74,7 @@ public class RateUsDialog extends BaseDialog implements RatingDialogMvpView {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.dialog_rate_us, container, false);
@@ -119,17 +120,15 @@ public class RateUsDialog extends BaseDialog implements RatingDialogMvpView {
 
         LayerDrawable stars = (LayerDrawable) mRatingBar.getProgressDrawable();
         stars.getDrawable(2)
-                .setColorFilter(ContextCompat.getColor(getContext(), R.color.yellow), PorterDuff.Mode.SRC_ATOP);
+                .setColorFilter(ContextCompat.getColor(getContext(), R.color.europe_gold), PorterDuff.Mode.SRC_ATOP);
         stars.getDrawable(0)
                 .setColorFilter(ContextCompat.getColor(getContext(), R.color.shadow), PorterDuff.Mode.SRC_ATOP);
         stars.getDrawable(1)
                 .setColorFilter(ContextCompat.getColor(getContext(), R.color.shadow), PorterDuff.Mode.SRC_ATOP);
 
-        mSubmitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPresenter.onRatingSubmitted(mRatingBar.getRating(), mMessage.getText().toString());
-            }
+        mSubmitButton.setOnClickListener(v -> {
+            hideKeyboard();
+            mPresenter.onRatingSubmitted(mRatingBar.getRating(), mMessage.getText().toString());
         });
 
     }

@@ -20,9 +20,8 @@ import android.net.Uri;
 import com.bmd.android.europewelcome.ui.base.MvpPresenter;
 
 /**
- * Created by Konstantins on 12/23/2017.
+ * Presenter interface for {@link ProfilePresenter}
  */
-
 public interface ProfileMvpPresenter<V extends ProfileMvpView> extends MvpPresenter<V> {
 
     void loadUserProfile();

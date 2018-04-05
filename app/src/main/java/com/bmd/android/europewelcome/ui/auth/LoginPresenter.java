@@ -16,7 +16,6 @@
 package com.bmd.android.europewelcome.ui.auth;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
 
 import com.bmd.android.europewelcome.R;
 import com.bmd.android.europewelcome.data.DataManager;
@@ -25,12 +24,7 @@ import com.bmd.android.europewelcome.ui.base.BasePresenter;
 import com.bmd.android.europewelcome.utils.CommonUtils;
 import com.facebook.AccessToken;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
@@ -55,7 +49,7 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
     private static final String TAG = "LoginPresenter";
 
     @Inject
-    public LoginPresenter(DataManager dataManager) {
+    LoginPresenter(DataManager dataManager) {
         super(dataManager);
     }
 
@@ -81,53 +75,47 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
     private void signInFirebaseUser(final String email, final String password) {
         getMvpView().showLoading();
         getDataManager().signInFirebaseUser(email, password)
-                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
-                        if (!isViewAttached()) {
-                            return;
-                        }
-
-                        getDataManager().updateUserInfo(
-                                null,
-                                getDataManager().getFirebaseUserId(),
-                                DataManager.LoggedInMode.LOGGED_IN_MODE_SERVER,
-                                getDataManager().getFirebaseUserName(),
-                                getDataManager().getFirebaseUserEmail(),
-                                getDataManager().getFirebaseUserImageUrl()
-                        );
-
-                        getDataManager().setLastUsedEmail(email);
-                        getMvpView().hideLoading();
-                        getMvpView().openMainActivity();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                if (!isViewAttached()) {
-                    return;
-                }
-                getMvpView().hideLoading();
-                if (e instanceof FirebaseAuthInvalidUserException) {
-                    if (((FirebaseAuthInvalidUserException) e)
-                            .getErrorCode().equals("ERROR_USER_NOT_FOUND")) {
-                        getMvpView().onError(R.string.login_email_not_exist);
+                .addOnSuccessListener(authResult -> {
+                    if (!isViewAttached()) {
                         return;
                     }
-                    getMvpView().onError(e.getMessage());
-                    return;
-                }
-                if (e instanceof FirebaseAuthInvalidCredentialsException) {
-                    getMvpView().onError(R.string.login_invalid_password);
-                    return;
-                }
-                if (e instanceof FirebaseAuthUserCollisionException) {
-                    getMvpView().onError(R.string.login_email_already_used);
-                    return;
-                }
-                getMvpView().onError(R.string.login_some_error);
-            }
-        });
+
+                    getDataManager().updateUserInfo(
+                            null,
+                            getDataManager().getFirebaseUserId(),
+                            DataManager.LoggedInMode.LOGGED_IN_MODE_SERVER,
+                            getDataManager().getFirebaseUserName(),
+                            getDataManager().getFirebaseUserEmail(),
+                            getDataManager().getFirebaseUserImageUrl()
+                    );
+
+                    getDataManager().setLastUsedEmail(email);
+                    getMvpView().hideLoading();
+                    getMvpView().openMainActivity();
+                }).addOnFailureListener(e -> {
+                    if (!isViewAttached()) {
+                        return;
+                    }
+                    getMvpView().hideLoading();
+                    if (e instanceof FirebaseAuthInvalidUserException) {
+                        if (((FirebaseAuthInvalidUserException) e)
+                                .getErrorCode().equals("ERROR_USER_NOT_FOUND")) {
+                            getMvpView().onError(R.string.login_email_not_exist);
+                            return;
+                        }
+                        getMvpView().onError(e.getMessage());
+                        return;
+                    }
+                    if (e instanceof FirebaseAuthInvalidCredentialsException) {
+                        getMvpView().onError(R.string.login_invalid_password);
+                        return;
+                    }
+                    if (e instanceof FirebaseAuthUserCollisionException) {
+                        getMvpView().onError(R.string.login_email_already_used);
+                        return;
+                    }
+                    getMvpView().onError(R.string.login_some_error);
+                });
     }
 
     @Override
@@ -141,43 +129,37 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         getDataManager().signInFirebaseWithCredential(credential)
-                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
-                        if (!isViewAttached()) {
-                            return;
-                        }
-
-                        //saves user profile in Firestore database
-                        createNewFirestoreUser();
-
-                        //updates user profile in SharedPrefs
-                        getDataManager().updateUserInfo(
-                                null,
-                                getDataManager().getFirebaseUserId(),
-                                DataManager.LoggedInMode.LOGGED_IN_MODE_GOOGLE,
-                                getDataManager().getFirebaseUserName(),
-                                getDataManager().getFirebaseUserEmail(),
-                                getDataManager().getFirebaseUserImageUrl()
-                        );
-
-                        getMvpView().hideLoading();
-                        getMvpView().openMainActivity();
+                .addOnSuccessListener(authResult -> {
+                    if (!isViewAttached()) {
+                        return;
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                if (!isViewAttached()) {
-                    return;
-                }
-                getMvpView().hideLoading();
-                if (e instanceof FirebaseAuthUserCollisionException) {
-                    getMvpView().onError(R.string.login_email_already_used);
-                    return;
-                }
-                getMvpView().onError(R.string.login_some_error);
-            }
-        });
+
+                    //saves user profile in Firestore database
+                    createNewFirestoreUser();
+
+                    //updates user profile in SharedPrefs
+                    getDataManager().updateUserInfo(
+                            null,
+                            getDataManager().getFirebaseUserId(),
+                            DataManager.LoggedInMode.LOGGED_IN_MODE_GOOGLE,
+                            getDataManager().getFirebaseUserName(),
+                            getDataManager().getFirebaseUserEmail(),
+                            getDataManager().getFirebaseUserImageUrl()
+                    );
+
+                    getMvpView().hideLoading();
+                    getMvpView().openMainActivity();
+                }).addOnFailureListener(e -> {
+                    if (!isViewAttached()) {
+                        return;
+                    }
+                    getMvpView().hideLoading();
+                    if (e instanceof FirebaseAuthUserCollisionException) {
+                        getMvpView().onError(R.string.login_email_already_used);
+                        return;
+                    }
+                    getMvpView().onError(R.string.login_some_error);
+                });
     }
 
     @Override
@@ -185,43 +167,37 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
         getMvpView().showLoading();
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         getDataManager().signInFirebaseWithCredential(credential)
-                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
-                        if (!isViewAttached()) {
-                            return;
-                        }
-
-                        //saves user profile in Firestore database
-                        createNewFirestoreUser();
-
-                        //updates user profile in SharedPrefs
-                        getDataManager().updateUserInfo(
-                                null,
-                                getDataManager().getFirebaseUserId(),
-                                DataManager.LoggedInMode.LOGGED_IN_MODE_FB,
-                                getDataManager().getFirebaseUserName(),
-                                getDataManager().getFirebaseUserEmail(),
-                                getDataManager().getFirebaseUserImageUrl()
-                        );
-
-                        getMvpView().hideLoading();
-                        getMvpView().openMainActivity();
+                .addOnSuccessListener(authResult -> {
+                    if (!isViewAttached()) {
+                        return;
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                if (!isViewAttached()) {
-                    return;
-                }
-                getMvpView().hideLoading();
-                if (e instanceof FirebaseAuthUserCollisionException) {
-                    getMvpView().onError(R.string.login_email_already_used);
-                    return;
-                }
-                getMvpView().onError(R.string.login_some_error);
-            }
-        });
+
+                    //saves user profile in Firestore database
+                    createNewFirestoreUser();
+
+                    //updates user profile in SharedPrefs
+                    getDataManager().updateUserInfo(
+                            null,
+                            getDataManager().getFirebaseUserId(),
+                            DataManager.LoggedInMode.LOGGED_IN_MODE_FB,
+                            getDataManager().getFirebaseUserName(),
+                            getDataManager().getFirebaseUserEmail(),
+                            getDataManager().getFirebaseUserImageUrl()
+                    );
+
+                    getMvpView().hideLoading();
+                    getMvpView().openMainActivity();
+                }).addOnFailureListener(e -> {
+                    if (!isViewAttached()) {
+                        return;
+                    }
+                    getMvpView().hideLoading();
+                    if (e instanceof FirebaseAuthUserCollisionException) {
+                        getMvpView().onError(R.string.login_email_already_used);
+                        return;
+                    }
+                    getMvpView().onError(R.string.login_some_error);
+                });
     }
 
     @Override
@@ -231,25 +207,22 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
 
     private void createNewFirestoreUser() {
         getDataManager().getUser(getDataManager().getFirebaseUserId())
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document == null || !document.exists()) {
-                                User newUser = new User(
-                                        getDataManager().getFirebaseUserId(),
-                                        getDataManager().getFirebaseUserEmail(),
-                                        null,
-                                        getDataManager().getFirebaseUserName(),
-                                        getDataManager().getFirebaseUserImageUrl(),
-                                        null,
-                                        null,
-                                        CommonUtils.getCurrentDate()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document == null || !document.exists()) {
+                            User newUser = new User(
+                                    getDataManager().getFirebaseUserId(),
+                                    getDataManager().getFirebaseUserEmail(),
+                                    null,
+                                    getDataManager().getFirebaseUserName(),
+                                    getDataManager().getFirebaseUserImageUrl(),
+                                    null,
+                                    null,
+                                    CommonUtils.getCurrentDate()
 
-                                );
-                                getDataManager().saveUser(newUser);
-                            }
+                            );
+                            getDataManager().saveUser(newUser);
                         }
                     }
                 });

@@ -41,12 +41,14 @@
     <color name="navy_blue">#214258</color>
     <color name="navy_blue_dark">#1C3A4E</color>
     <color name="light_green">#78DC96</color>
+    <color name="dark_green">#447604</color>
     <color name="light_blue">#55C8F0</color>
     <color name="blue_black_dark">#13171d</color>
     <color name="blue_black_light">#516179</color>
     <color name="blue_grey_light">#A5B4C8</color>
     <color name="orange">#ffa500</color>
     <color name="yellow">#fff44f</color>
+
 
     <color name="europe_blue">#003399</color>
     <color name="europe_gold">#FFCC00</color>

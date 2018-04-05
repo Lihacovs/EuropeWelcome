@@ -23,7 +23,6 @@ import com.bmd.android.europewelcome.ui.base.MvpPresenter;
 /**
  * Presenter interface for {@link RegisterPresenter}
  */
-
 public interface RegisterMvpPresenter<V extends RegisterMvpView> extends MvpPresenter<V> {
 
     void onRegisterButtonClick(String email,

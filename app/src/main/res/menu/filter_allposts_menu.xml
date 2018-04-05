@@ -21,10 +21,6 @@
         android:title="Filter by Stars"
         app:showAsAction="never"/>
     <item
-        android:id="@+id/filter_posts_by_views"
-        android:title="Filter by Views"
-        app:showAsAction="never"/>
-    <item
         android:id="@+id/filter_posts_by_date"
         android:title="Filter by Date"
         app:showAsAction="never"/>

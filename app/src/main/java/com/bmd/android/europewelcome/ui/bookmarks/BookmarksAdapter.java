@@ -35,7 +35,11 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
+/**
+ * Drafts Adapted. Data queried from {posts} where postAsDraft flag is true.
+ */
 public class BookmarksAdapter extends FirestoreRecyclerAdapter<Post, BookmarksAdapter.BookmarksViewHolder> {
 
     private static final String TAG = "BookmarksAdapter";
@@ -87,7 +91,12 @@ public class BookmarksAdapter extends FirestoreRecyclerAdapter<Post, BookmarksAd
     }
 
     public interface Callback {
+
         void hideLoadingSpinner();
+
+        void onBookmarkIconClick(Post post);
+
+        void onViewHolderClick(Post post);
     }
 
     public class BookmarksViewHolder extends BaseViewHolder {
@@ -111,6 +120,9 @@ public class BookmarksAdapter extends FirestoreRecyclerAdapter<Post, BookmarksAd
 
         @BindView(R.id.tv_bookmark_item_post_text)
         TextView mPostTextTv;
+
+        @BindView(R.id.iv_bookmark_item_bookmark_image)
+        ImageView mBookmarkIconIv;
 
         BookmarksViewHolder(View itemView) {
             super(itemView);
@@ -157,10 +169,19 @@ public class BookmarksAdapter extends FirestoreRecyclerAdapter<Post, BookmarksAd
                 mPostTextTv.setText(post.getPostText());
             }
 
+            mBookmarkIconIv.setImageResource(R.drawable.ic_fill_bookmark_blue_24px);
+
             itemView.setOnClickListener(v -> {
-                /*if (mCallback != null)
-                    mCallback.openDraft(mPost);*/
+                if (mCallback != null)
+                    mCallback.onViewHolderClick(mPost);
             });
+        }
+
+        @OnClick(R.id.iv_bookmark_item_bookmark_image)
+        void onBookmarkIconClick(){
+            if(mCallback != null){
+                mCallback.onBookmarkIconClick(mPost);
+            }
         }
     }
 }

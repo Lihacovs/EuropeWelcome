@@ -18,12 +18,12 @@ package com.bmd.android.europewelcome.ui.postdetail;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.support.v4.app.TaskStackBuilder;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -48,7 +48,6 @@ import butterknife.OnClick;
 /**
  * Post Detail Activity
  */
-
 public class PostDetailActivity extends BaseActivity implements PostDetailMvpView,
         PostSectionAdapter.Callback, PostCommentsAdapter.Callback {
 
@@ -67,29 +66,41 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    @BindView(R.id.tv_postdetail_posttitle)
-    TextView mPostTitle;
-
-    @BindView(R.id.iv_postdetail_userimage)
+    @BindView(R.id.iv_post_detail_user_image)
     ImageView mPostUserImageIv;
 
-    @BindView(R.id.tv_postdetail_username)
+    @BindView(R.id.tv_post_detail_user_name)
     TextView mPostUserNameTv;
 
-    @BindView(R.id.tv_postdetail_postcreationdate)
+    @BindView(R.id.tv_post_detail_creation_date)
     TextView mPostDateTv;
 
-    @BindView(R.id.iv_postdetail_newcommentuserimage)
+    @BindView(R.id.iv_post_detail_current_user_image)
     ImageView mPostNewCommentUserImageIv;
 
-    @BindView(R.id.et_postdetail_newcommenttext)
+    @BindView(R.id.et_post_detail_new_comment_text)
     EditText mPostNewCommentTextEt;
 
-    @BindView(R.id.rv_postdetail_postsection)
+    @BindView(R.id.rv_post_detail_post_section)
     RecyclerView mPostSectionRv;
 
-    @BindView(R.id.rv_postdetail_comments)
+    @BindView(R.id.rv_post_detail_comments)
     RecyclerView mPostCommentsRv;
+
+    @BindView(R.id.iv_post_detail_star_image)
+    ImageView mStarIv;
+
+    @BindView(R.id.iv_post_detail_bookmark_image)
+    ImageView mBookmarkIv;
+
+    @BindView(R.id.tv_post_detail_stars_count)
+    TextView mPostStarsTv;
+
+    @BindView(R.id.tv_post_detail_comment_count)
+    TextView mPostCommentsTv;
+
+    @BindView(R.id.cl_post_detail_star_container)
+    ConstraintLayout mStarContainerCl;
 
     PostSectionAdapter mPostSectionAdapter;
 
@@ -121,6 +132,7 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
 
     @Override
     protected void setUp() {
+        showLoading();
 
         setSupportActionBar(mToolbar);
 
@@ -171,38 +183,24 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
         mPostCommentsAdapter.stopListening();
     }
 
-
-    @OnClick(R.id.iv_postdetail_newcommentsend)
-    void onCommentSend(){
-        if(!mPostNewCommentTextEt.getText().toString().equals("") &&
-                !mPostNewCommentTextEt.getText().toString().isEmpty()) {
-            PostComment postComment = mPresenter.newPostComment();
-            postComment.setPostCommentText(mPostNewCommentTextEt.getText().toString());
-            mPresenter.saveComment(mPostId, postComment);
-        }
-        mPostNewCommentTextEt.setText(null);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.post_detail_menu, menu);
+        return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
             case android.R.id.home:
-                Intent upIntent = NavUtils.getParentActivityIntent(this);
-                upIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
-                    // This activity is NOT part of this app's task, so create a new task
-                    // when navigating up, with a synthesized back stack.
-                    TaskStackBuilder.create(this)
-                            // Add all of this activity's parents to the back stack
-                            .addNextIntentWithParentStack(upIntent)
-                            // Navigate up to the closest parent
-                            .startActivities();
-                } else {
-                    // This activity is part of this app's task, so simply
-                    // navigate up to the logical parent activity.
-                    NavUtils.navigateUpTo(this, upIntent);
-                }
+                finish();
+                return true;
+            case R.id.about:
+                showMessage("About");
+                return true;
+            case R.id.logout_user:
+                showMessage("Logout user");
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -214,16 +212,27 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
         super.onDestroy();
     }
 
-    @Override
-    public void setPostTitle(String postTitle) {
-        if (postTitle != null) {
-            mPostTitle.setText(postTitle);
+
+
+    @OnClick(R.id.iv_post_detail_user_image)
+    void onUserImageIvClick(){
+        startActivity(ProfileActivity.getStartIntent(getBaseContext(), mPresenter.getPostAuthorId()));
+    }
+
+
+    @OnClick(R.id.iv_post_detail_send_icon)
+    void onCommentSend(){
+        if(!mPostNewCommentTextEt.getText().toString().equals("") &&
+                !mPostNewCommentTextEt.getText().toString().isEmpty()) {
+            mPresenter.createNewComment(mPostNewCommentTextEt.getText().toString());
         }
     }
 
-    @OnClick(R.id.iv_postdetail_userimage)
-    void onUserImageIvClick(){
-        startActivity(ProfileActivity.getStartIntent(getBaseContext(), mPresenter.getPostAuthorId()));
+    @Override
+    public void clearCommentInput() {
+        mPostNewCommentTextEt.setText(null);
+        mPostNewCommentTextEt.clearFocus();
+        hideKeyboard();
     }
 
     @Override
@@ -261,14 +270,64 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
                     .into(mPostNewCommentUserImageIv);
     }
 
+    @OnClick(R.id.cl_post_detail_star_container)
+    void onStarIconClick(){
+        //disable view to protect from double click
+        mStarContainerCl.setEnabled(false);
+        mPresenter.addOrRemoveStar();
+    }
 
-    @Override
-    public void onZoomIconClick(PostSection postSection) {
-        showMessage("Zoom Icon Click");
+    @OnClick(R.id.iv_post_detail_bookmark_image)
+    void onBookmarkIconClick(){
+        //disable view to protect from double click
+        mBookmarkIv.setEnabled(false);
+        mPresenter.saveOrDeleteBookmark();
     }
 
     @Override
-    public void onStarIconClick(PostComment postComment) {
+    public void setBookmarkedIcon() {
+        mBookmarkIv.setImageResource(R.drawable.ic_fill_bookmark_blue_24px);
+        mBookmarkIv.setEnabled(true);
+    }
+
+    @Override
+    public void setNotBookmarkedIcon() {
+        mBookmarkIv.setImageResource(R.drawable.ic_border_bookmark_blue_24px);
+        mBookmarkIv.setEnabled(true);
+    }
+
+    @Override
+    public void setStarRatedIcon() {
+        mStarIv.setImageResource(R.drawable.ic_fill_star_blue_24px);
+        mPostStarsTv.setTextColor(getResources().getColor(R.color.orange));
+        mStarContainerCl.setEnabled(true);
+    }
+
+    @Override
+    public void setNotStarRatedIcon() {
+        mStarIv.setImageResource(R.drawable.ic_border_star_blue_24px);
+        mPostStarsTv.setTextColor(getResources().getColor(R.color.gray_500));
+        mStarContainerCl.setEnabled(true);
+    }
+
+    @Override
+    public void setPostStars(String starsCount) {
+        mPostStarsTv.setText(starsCount);
+    }
+
+    @Override
+    public void setPostComments(String commentsCount) {
+        mPostCommentsTv.setText(commentsCount);
+    }
+
+
+    @Override
+    public void onImageClick(PostSection postSection) {
+        showMessage("Image has been clicked");
+    }
+
+    @Override
+    public void onLikeCommentClick(PostComment postComment) {
         showMessage("Star Icon Click");
     }
 }

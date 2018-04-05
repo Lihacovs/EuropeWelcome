@@ -33,7 +33,11 @@ public interface PostsMvpView extends MvpView {
 
     void updateUserProfilePic(String currentUserProfilePicUrl);
 
+    void setDefaultUserImage();
+
     void updateAppVersion();
+
+    void chooseLoginAction();
 
     void showRateUsDialog();
 

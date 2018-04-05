@@ -17,16 +17,12 @@ package com.bmd.android.europewelcome.ui.postdetail;
 
 import android.support.annotation.NonNull;
 
+import com.bmd.android.europewelcome.R;
 import com.bmd.android.europewelcome.data.DataManager;
 import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.data.firebase.model.PostComment;
 import com.bmd.android.europewelcome.ui.base.BasePresenter;
 import com.bmd.android.europewelcome.utils.CommonUtils;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 
 import javax.inject.Inject;
@@ -34,7 +30,6 @@ import javax.inject.Inject;
 /**
  * Post Detail Presenter
  */
-
 public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresenter<V> implements
         PostDetailMvpPresenter<V> {
 
@@ -44,10 +39,9 @@ public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresen
     private Post mPost;
 
     @Inject
-    public PostDetailPresenter(DataManager dataManager) {
+    PostDetailPresenter(DataManager dataManager) {
         super(dataManager);
     }
-
 
     @Override
     public void setPostId(String postId) {
@@ -56,24 +50,26 @@ public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresen
 
     @Override
     public void getPost(String postId) {
-        getDataManager().getPost(postId).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                mPost = documentSnapshot.toObject(Post.class);
+        getDataManager().getPost(postId).addOnSuccessListener(documentSnapshot -> {
+            mPost = documentSnapshot.toObject(Post.class);
 
-                getMvpView().setPostUserImage(mPost.getPostAuthorImageUrl());
-                getMvpView().setPostUserName(mPost.getPostAuthorName());
-                getMvpView().setPostCreationDate(mPost.getPostCreationDate());
-                getMvpView().setPostTitle(mPost.getPostTitle());
+            getMvpView().setPostUserImage(mPost.getPostAuthorImageUrl());
+            getMvpView().setPostUserName(mPost.getPostAuthorName());
+            getMvpView().setPostCreationDate(mPost.getPostCreationDate());
 
-                getMvpView().setPostNewCommentUserImage(getDataManager()
-                        .getCurrentUserProfilePicUrl());
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                getMvpView().showMessage("Unable to get Data");
-            }
+            getMvpView().setPostNewCommentUserImage(getDataManager()
+                    .getCurrentUserProfilePicUrl());
+
+            getMvpView().setPostStars(String.valueOf(mPost.getPostStars()));
+            getMvpView().setPostComments(String.valueOf(mPost.getPostComments()));
+
+            checkPostBookmarkedByUser(mPost);
+            checkPostStarRatedByUser(mPost);
+
+            getMvpView().hideLoading();
+        }).addOnFailureListener(e -> {
+            getMvpView().hideLoading();
+            getMvpView().showMessage("Unable to get Data");
         });
     }
 
@@ -88,18 +84,123 @@ public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresen
     }
 
     @Override
-    public void saveComment(String postId, PostComment postComment) {
-        getDataManager().saveComment(postId, postComment)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
+    public String getPostAuthorId() {
+        return mPost.getPostAuthorId();
+    }
 
-                    }
-                });
+    //Checks if post bookmarked by current user and updates UI accordingly
+    @Override
+    public void checkPostBookmarkedByUser(Post post) {
+        String currentUserId = getDataManager().getCurrentUserId();
+        if (currentUserId != null) {
+            getDataManager().getBookmark(currentUserId, post.getPostId())
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            getMvpView().setBookmarkedIcon();
+                        } else {
+                            getMvpView().setNotBookmarkedIcon();
+                        }
+                    }).addOnFailureListener(e -> getMvpView().onError("Some Error"));
+        }
+    }
+
+    //Checks if post rated with star by current user and updates UI accordingly
+    @Override
+    public void checkPostStarRatedByUser(Post post) {
+        String currentUserId = getDataManager().getCurrentUserId();
+        if (currentUserId != null) {
+            getDataManager().getStar(currentUserId, post.getPostId())
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            getMvpView().setStarRatedIcon();
+                        } else {
+                            getMvpView().setNotStarRatedIcon();
+                        }
+                    }).addOnFailureListener(e -> getMvpView().onError("Some Error"));
+        }
+    }
+
+    //Checks if user rated post with star and updates UI accordingly
+    @Override
+    public void addOrRemoveStar() {
+        String currentUserId = getDataManager().getCurrentUserId();
+        if (currentUserId != null) {
+            getDataManager().getStar(currentUserId, mPost.getPostId())
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            int newStarCount = mPost.getPostStars() - 1;
+                            mPost.setPostStars(newStarCount);
+                            updatePost(mPost);
+                            getMvpView().setNotStarRatedIcon();
+                            getMvpView().setPostStars(String.valueOf(newStarCount));
+                            getDataManager().deleteStar(currentUserId, mPost)
+                                    .addOnSuccessListener(aVoid -> getMvpView().onError("Star removed"));
+                        } else {
+                            int newStarCount = mPost.getPostStars() + 1;
+                            mPost.setPostStars(newStarCount);
+                            updatePost(mPost);
+                            getMvpView().setStarRatedIcon();
+                            getMvpView().setPostStars(String.valueOf(newStarCount));
+                            getDataManager().saveStar(currentUserId, mPost)
+                                    .addOnSuccessListener(aVoid -> getMvpView().onError("Star added"));
+                        }
+                    }).addOnFailureListener(e -> getMvpView().onError("Some Error"));
+        } else {
+            getMvpView().onError("Please login to rate Post");
+        }
+    }
+
+    //Checks if user bookmarked post and updates UI accordingly
+    @Override
+    public void saveOrDeleteBookmark() {
+        String currentUserId = getDataManager().getCurrentUserId();
+        if (currentUserId != null) {
+            getDataManager().getBookmark(currentUserId, mPost.getPostId())
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            getMvpView().setNotBookmarkedIcon();
+                            getDataManager().deleteBookmark(currentUserId, mPost)
+                                    .addOnSuccessListener(aVoid ->
+                                            getMvpView().onError("Bookmark removed"));
+                        } else {
+                            getMvpView().setBookmarkedIcon();
+                            getDataManager().saveBookmark(currentUserId, mPost)
+                                    .addOnSuccessListener(aVoid ->
+                                            getMvpView().onError("Bookmark saved"));
+                        }
+                    }).addOnFailureListener(e -> getMvpView().onError("Some error"));
+        } else {
+            getMvpView().onError("Please login to bookmark Post");
+        }
     }
 
     @Override
-    public PostComment newPostComment() {
+    public void createNewComment(String comment) {
+        String currentUserId = getDataManager().getCurrentUserId();
+        if (currentUserId != null) {
+            getMvpView().clearCommentInput();
+            PostComment postComment = newPostComment();
+            postComment.setPostCommentText(comment);
+            getDataManager().saveComment(mPostId, postComment)
+                    .addOnSuccessListener(aVoid -> {
+                        int newCommentCount = mPost.getPostComments() + 1;
+                        mPost.setPostComments(newCommentCount);
+                        updatePost(mPost);
+                        getMvpView().setPostComments(String.valueOf(newCommentCount));
+                        getMvpView().onError("Comment added");})
+                    .addOnFailureListener(e -> getMvpView().onError("Some error"));
+        } else {
+            getMvpView().onError("Please login to comment Post");
+        }
+    }
+
+    private void updatePost(Post post) {
+        getDataManager().updatePost(post)
+                .addOnFailureListener(e -> getMvpView().onError("Some Error"));
+    }
+
+    @NonNull
+    private PostComment newPostComment() {
         return new PostComment(
                 mPostId,
                 getDataManager().getCurrentUserId(),
@@ -107,13 +208,8 @@ public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresen
                 getDataManager().getCurrentUserName(),
                 CommonUtils.getCurrentDate(),
                 CommonUtils.getTimeStamp(),
-                null,
+                "",
                 "0"
         );
-    }
-
-    @Override
-    public String getPostAuthorId() {
-        return mPost.getPostAuthorId();
     }
 }

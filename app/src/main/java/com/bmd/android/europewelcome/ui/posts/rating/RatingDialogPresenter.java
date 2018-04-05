@@ -15,9 +15,13 @@
 
 package com.bmd.android.europewelcome.ui.posts.rating;
 
+import android.support.annotation.NonNull;
+
 import com.bmd.android.europewelcome.R;
 import com.bmd.android.europewelcome.data.DataManager;
+import com.bmd.android.europewelcome.data.firebase.model.Rating;
 import com.bmd.android.europewelcome.ui.base.BasePresenter;
+import com.bmd.android.europewelcome.utils.CommonUtils;
 
 import javax.inject.Inject;
 
@@ -25,7 +29,7 @@ import javax.inject.Inject;
  * Rating dialog presenter
  */
 
-public class RatingDialogPresenter <V extends RatingDialogMvpView> extends BasePresenter<V>
+public class RatingDialogPresenter<V extends RatingDialogMvpView> extends BasePresenter<V>
         implements RatingDialogMvpPresenter<V> {
 
     public static final String TAG = "RatingDialogPresenter";
@@ -33,7 +37,7 @@ public class RatingDialogPresenter <V extends RatingDialogMvpView> extends BaseP
     private boolean isRatingSecondaryActionShown = false;
 
     @Inject
-    public RatingDialogPresenter(DataManager dataManager) {
+    RatingDialogPresenter(DataManager dataManager) {
         super(dataManager);
     }
 
@@ -41,7 +45,7 @@ public class RatingDialogPresenter <V extends RatingDialogMvpView> extends BaseP
     public void onRatingSubmitted(final float rating, String message) {
 
         if (rating == 0) {
-            getMvpView().showMessage(R.string.rating_not_provided_error);
+            getMvpView().onError(R.string.rating_not_provided_error);
             return;
         }
 
@@ -50,6 +54,9 @@ public class RatingDialogPresenter <V extends RatingDialogMvpView> extends BaseP
                 getMvpView().showPlayStoreRatingView();
                 getMvpView().hideSubmitButton();
                 getMvpView().disableRatingStars();
+                if (checkUserSigned()) {
+                    sendRatingDataToServerInBackground(5, "5 stars");
+                }
             } else {
                 getMvpView().showRatingMessageView();
             }
@@ -58,15 +65,13 @@ public class RatingDialogPresenter <V extends RatingDialogMvpView> extends BaseP
         }
 
         getMvpView().showLoading();
+        if (checkUserSigned()) {
+            sendRatingDataToServerInBackground(rating, message);
+        }
 
-        //for demo
         getMvpView().hideLoading();
-        getMvpView().showMessage(R.string.rating_thanks);
+        getMvpView().onError(R.string.rating_thanks);
         getMvpView().dismissDialog();
-
-    }
-
-    private void sendRatingDataToServerInBackground(float rating) {
 
     }
 
@@ -83,7 +88,26 @@ public class RatingDialogPresenter <V extends RatingDialogMvpView> extends BaseP
     @Override
     public void onPlayStoreRatingClicked() {
         getMvpView().openPlayStoreForRating();
-        sendRatingDataToServerInBackground(5);
         getMvpView().dismissDialog();
+    }
+
+    private void sendRatingDataToServerInBackground(float rating, String message) {
+        Rating userRating = newRating(rating, message);
+        getDataManager().saveRating(userRating);
+    }
+
+    private boolean checkUserSigned() {
+        return getDataManager().getCurrentUserId() != null && !getDataManager().getCurrentUserId().isEmpty();
+    }
+
+    @NonNull
+    private Rating newRating(float rating, String message){
+        return new Rating(getDataManager().getCurrentUserId(),
+                getDataManager().getCurrentUserName(),
+                getDataManager().getCurrentUserEmail(),
+                rating,
+                message,
+                CommonUtils.getCurrentDate(),
+                CommonUtils.getTimeStampInt());
     }
 }

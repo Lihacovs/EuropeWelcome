@@ -17,6 +17,7 @@ package com.bmd.android.europewelcome.ui.newpost;
 
 import android.content.Context;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -32,13 +33,14 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 /**
- * New Post Presenter
+ * NewPost Presenter
  */
-
 public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V> implements
         NewPostMvpPresenter<V> {
 
@@ -268,8 +270,6 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
     public void publishPost() {
         getMvpView().hideKeyboard();
         getMvpView().showLoading();
-        mPost.setPostPublished(true);
-        mPost.setPostAsDraft(false);
         setPostTitle();
     }
 
@@ -325,6 +325,8 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
                             Log.d(TAG, "onSuccess: " + postSection.getPostImageUrl());
                             mPost.setPostImageUrl(postSection.getPostImageUrl());
                         }
+                        mPost.setPostPublished(true);
+                        mPost.setPostAsDraft(false);
                         updatePost();
                     }
                 }).addOnFailureListener(e -> {
@@ -343,24 +345,26 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
         });
     }
 
+    @NonNull
     private Post newPost() {
         return new Post(getDataManager().getCurrentUserId(),
                 getDataManager().getCurrentUserName(),
                 getDataManager().getCurrentUserProfilePicUrl(),
                 "",
                 "",
-                0,
                 1,
-                CommonUtils.getIntTimeStamp(),
+                1,
+                0,
+                CommonUtils.getTimeStampInt(),
                 null,
                 CommonUtils.getCurrentDate(),
                 0,
                 false,
                 false
-
         );
     }
 
+    @NonNull
     private PostSection newPostSection() {
         return new PostSection(
                 mPostId,

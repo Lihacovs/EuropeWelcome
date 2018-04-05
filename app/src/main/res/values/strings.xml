@@ -54,6 +54,32 @@
     <string name="newpost_add_text">Please add Text</string>
     <string name="newpost_add_image">Please add Image</string>
 
+    <!--ui.bookmarks.Bookmarks-->
+    <string name="bookmarks_remove_bookmark">Are you sure to remove Bookmark?</string>
+    <string name="bookmarks_remove">Remove</string>
+    <string name="bookmarks_cancel">Cancel</string>
+    <string name="bookmarks_removed">Bookmark removed</string>
+    <string name="bookmarks_some_error">Some error occurred. Try again</string>
+
+    <!--ui.drafts.Drafts-->
+    <string name="drafts_delete_draft">Are you sure to Delete this Draft?</string>
+    <string name="drafts_delete">Delete</string>
+    <string name="drafts_cancel">Cancel</string>
+    <string name="drafts_deleted">Draft deleted</string>
+    <string name="drafts_some_error">Some error occurred. Try again</string>
+
+    <!--ui.posts.free.FreePosts-->
+    <string name="free_posts_some_error">Some error occurred. Try again</string>
+    <string name="free_posts_login_to_rate">Please login to rate Post</string>
+    <string name="free_posts_login_to_bookmark">Please login to bookmark Post</string>
+    <string name="free_posts_bookmark_saved">Bookmark saved</string>
+    <string name="free_posts_bookmark_removed">Bookmark removed</string>
+
+    <!--ui.posts.rating.RateUs-->
+    <string name="rating_not_provided_error">Please provide us stars</string>
+    <string name="rating_thanks">Thank you for your feedback</string>
+
+
 
 
 
@@ -98,8 +124,9 @@
     <string name="drawer_menu_about">About</string>
     <string name="drawer_menu_rate">Rate Us</string>
     <string name="drawer_menu_logout">Logout</string>
+    <string name="drawer_menu_sign_in">Sign In</string>
 
-    <!--res.layout.item_post_view-->
+    <!--res.layout.item_post_view, item_bookmark, item_draft-->
     <string name="post_item_author_photo">Post author photo</string>
     <string name="post_item_author_name">Post author name</string>
     <string name="post_item_post_date">Post date</string>
@@ -111,6 +138,7 @@
     <string name="post_item_comment_icon">Comment icon</string>
     <string name="post_item_bookmark_icon">Bookmark icon</string>
     <string name="post_item_default_count">0</string>
+    <string name="post_item_draft_edit">Edit Draft icon</string>
 
     <!--res.layout.activity_new_post-->
     <string name="activity_new_post_publish">Publish</string>
@@ -129,6 +157,13 @@
     <string name="new_post_item_type_text">Type your text here</string>
     <string name="new_post_item_post_image">Post image</string>
 
+    <!--res.layout.dialog_rate_us-->
+    <string name="rating_rate_us">Rate Us</string>
+    <string name="rating_message">Please let us know, how can we improve ourselves?</string>
+    <string name="rating_play_store_redirect_message_line_1">Awesome! Thank you for the 5 stars</string>
+    <string name="rating_play_store_redirect_message_line_2">Please help others to know about this app</string>
+    <string name="rating_play_store_text">Rate us on Play Store</string>
+    <string name="rating_type_suggestion">Type suggestion here</string>
 
 
 
@@ -176,13 +211,7 @@
     <string name="version">"version"</string>
 
     <!--rating dialog-->
-    <string name="rate_us">Rate Us</string>
-    <string name="rating_message">Please let us know, how can we improve ourselves?</string>
-    <string name="rating_play_store_redirect_message_line_1">Awesome! Thank you for the 5 stars.</string>
-    <string name="rating_play_store_redirect_message_line_2">Please help others, in knowing some good things about this app.</string>
-    <string name="rating_play_store_text">Rate us on Play Store</string>
-    <string name="rating_not_provided_error">Please provide us stars.</string>
-    <string name="rating_thanks">Thank you!</string>
+
 
     <!--play store-->
     <string name="app_google_play_store_link">"https://play.google.com/store/apps/details?id="</string>

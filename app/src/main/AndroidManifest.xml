@@ -49,7 +49,6 @@
         </activity>
         <activity
             android:name="com.bmd.android.europewelcome.ui.posts.PostsActivity"
-            android:launchMode="singleTop"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -59,13 +58,8 @@
         <activity
             android:name="com.bmd.android.europewelcome.ui.postdetail.PostDetailActivity"
             android:launchMode="singleTop"
-            android:parentActivityName="com.bmd.android.europewelcome.ui.posts.PostsActivity"
+            android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait">
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.bmd.android.europewelcome.ui.posts.PostsActivity"/>
         </activity>
         <activity
             android:name="com.bmd.android.europewelcome.ui.drafts.DraftsActivity"

@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright (C) 2018 Baltic Information Technologies
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +13,12 @@
   ~ limitations under the License.
   -->
 
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:color="@color/europe_gold" android:state_pressed="true" /> <!-- pressed -->
-    <item android:color="@color/europe_gold" android:state_focused="true" /> <!-- focused -->
-    <item android:color="@color/cornflower_blue_13" /> <!-- default -->
-</selector>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+  <path
+      android:fillColor="#447604"
+      android:pathData="M17,2H7C5.9,2 5,2.9 5,4v16v1.2l7,-4l7,4V20V4C19,2.9 18.1,2 17,2zM6,19.4L6,19.4L6,19.4L6,19.4z"/>
+</vector>

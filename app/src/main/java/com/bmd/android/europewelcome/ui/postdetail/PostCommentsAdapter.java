@@ -15,6 +15,7 @@
 
 package com.bmd.android.europewelcome.ui.postdetail;
 
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,11 +34,11 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Post Comments Adapter
  */
-
 public class PostCommentsAdapter extends FirestoreRecyclerAdapter<PostComment, PostCommentsAdapter.ViewHolder> {
 
     private Callback mCallback;
@@ -57,14 +58,17 @@ public class PostCommentsAdapter extends FirestoreRecyclerAdapter<PostComment, P
     }
 
     @Override
-    protected void onBindViewHolder(ViewHolder holder, int position, PostComment model) {
+    protected void onBindViewHolder(@NonNull ViewHolder holder,
+                                    int position,
+                                    @NonNull PostComment model) {
         holder.bind(model);
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate
-                (R.layout.item_postdetail_comment, parent, false));
+                (R.layout.item_comment, parent, false));
     }
 
     @Override
@@ -75,33 +79,33 @@ public class PostCommentsAdapter extends FirestoreRecyclerAdapter<PostComment, P
     }
 
     @Override
-    public void onError(FirebaseFirestoreException e) {
+    public void onError(@NonNull FirebaseFirestoreException e) {
         super.onError(e);
     }
 
 
     public interface Callback {
 
-        void onStarIconClick(PostComment postComment);
+        void onLikeCommentClick(PostComment postComment);
     }
 
     public class ViewHolder extends BaseViewHolder {
-        @BindView(R.id.iv_postdetailitem_commentuserimage)
+        @BindView(R.id.iv_comment_item_user_image)
         ImageView mPostCommentUserImageIv;
 
-        @BindView(R.id.tv_postdetailitem_commentusername)
+        @BindView(R.id.tv_comment_item_user_name)
         TextView mPostCommentUserNameTv;
 
-        @BindView(R.id.tv_postdetailitem_commentcreationdate)
+        @BindView(R.id.tv_comment_item_creation_date)
         TextView mPostCommentCreationDateTv;
 
-        @BindView(R.id.tv_postdetailitem_comment)
+        @BindView(R.id.tv_comment_item_comment_text)
         TextView mPostCommentTextTv;
 
-        @BindView(R.id.tv_postitem_starcount)
+        @BindView(R.id.tv_comment_item_star_count)
         TextView mPostStarsTv;
 
-        @BindView(R.id.iv_postitem_starimage)
+        @BindView(R.id.iv_comment_item_star_icon)
         ImageView mStarIv;
 
         private PostComment mPostComment;
@@ -147,17 +151,12 @@ public class PostCommentsAdapter extends FirestoreRecyclerAdapter<PostComment, P
                 mPostStarsTv.setText(postComment.getPostCommentStars());
             }
 
+        }
 
-            mStarIv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int newStarCount = Integer.parseInt(postComment.getPostCommentStars()) + 1;
-                    mPostComment.setPostCommentStars(Integer.toString(newStarCount));
-                    if(mCallback != null)
-                        mCallback.onStarIconClick(mPostComment);
-                }
-            });
-
+        @OnClick(R.id.cl_comment_item_like_comment)
+        void onLikeCommentClick(){
+            if(mCallback != null)
+                mCallback.onLikeCommentClick(mPostComment);
         }
     }
 }

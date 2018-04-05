@@ -15,8 +15,7 @@
 
 package com.bmd.android.europewelcome.ui.drafts;
 
-import android.util.Log;
-
+import com.bmd.android.europewelcome.R;
 import com.bmd.android.europewelcome.data.DataManager;
 import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.data.firebase.model.PostSection;
@@ -26,6 +25,9 @@ import com.google.firebase.firestore.Query;
 
 import javax.inject.Inject;
 
+/**
+ * Drafts Presenter
+ */
 public class DraftsPresenter<V extends DraftsMvpView> extends BasePresenter<V> implements
         DraftsMvpPresenter<V> {
 
@@ -46,6 +48,10 @@ public class DraftsPresenter<V extends DraftsMvpView> extends BasePresenter<V> i
         return getDataManager().getCurrentUserId();
     }
 
+    /**
+     * Deletes Post and all PostSections assotiated with it
+     * @param post Post to process
+     */
     @Override
     public void deleteDraft(Post post) {
         getMvpView().showLoading();
@@ -57,14 +63,14 @@ public class DraftsPresenter<V extends DraftsMvpView> extends BasePresenter<V> i
             }
             //Then delete Post document itself
             getDataManager().deletePost(post).addOnSuccessListener(aVoid -> {
-                getMvpView().hideLoading();
+                getMvpView().onError(R.string.drafts_deleted);
             }).addOnFailureListener(e -> {
                 getMvpView().hideLoading();
-                Log.d(TAG, "deletePost: " + e.getMessage());
+                getMvpView().onError(R.string.drafts_some_error);
             });
         }).addOnFailureListener(e -> {
             getMvpView().hideLoading();
-            Log.d(TAG, "onFailure: " + e.getMessage());
+            getMvpView().onError(R.string.drafts_some_error);
         });
     }
 }

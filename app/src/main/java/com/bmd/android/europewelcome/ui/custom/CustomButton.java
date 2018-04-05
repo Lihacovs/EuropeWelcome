@@ -15,10 +15,6 @@
 
 package com.bmd.android.europewelcome.ui.custom;
 
-/**
- * Button for {@link com.bmd.android.europewelcome.ui.auth.LoginActivity}
- */
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
@@ -29,6 +25,9 @@ import android.util.AttributeSet;
 
 import com.bmd.android.europewelcome.R;
 
+/**
+ * Button for {@link com.bmd.android.europewelcome.ui.auth.LoginActivity}
+ */
 public class CustomButton extends AppCompatButton {
     public CustomButton(Context context) {
         super(context);

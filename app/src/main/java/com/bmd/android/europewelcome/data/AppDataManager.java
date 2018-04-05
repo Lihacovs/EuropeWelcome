@@ -24,6 +24,7 @@ import com.bmd.android.europewelcome.data.firebase.FirebaseHelper;
 import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.data.firebase.model.PostComment;
 import com.bmd.android.europewelcome.data.firebase.model.PostSection;
+import com.bmd.android.europewelcome.data.firebase.model.Rating;
 import com.bmd.android.europewelcome.data.firebase.model.User;
 import com.bmd.android.europewelcome.data.network.NetworkHelper;
 import com.bmd.android.europewelcome.data.prefs.PreferencesHelper;
@@ -265,6 +266,11 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Query getBookmarkedPostsQuery(String userId) {
+        return mFirebaseHelper.getBookmarkedPostsQuery(userId);
+    }
+
+    @Override
     public Task<Void> savePost(Post post) {
         return mFirebaseHelper.savePost(post);
     }
@@ -277,6 +283,21 @@ public class AppDataManager implements DataManager {
     @Override
     public Task<Void> saveComment(String postId, PostComment postComment) {
         return mFirebaseHelper.saveComment(postId, postComment);
+    }
+
+    @Override
+    public Task<Void> saveBookmark(String userId, Post post) {
+        return mFirebaseHelper.saveBookmark(userId, post);
+    }
+
+    @Override
+    public Task<Void> saveStar(String userId, Post post) {
+        return mFirebaseHelper.saveStar(userId, post);
+    }
+
+    @Override
+    public Task<Void> saveRating(Rating rating) {
+        return mFirebaseHelper.saveRating(rating);
     }
 
     @Override
@@ -300,8 +321,28 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Task<Void> deleteBookmark(String userId, Post post) {
+        return mFirebaseHelper.deleteBookmark(userId, post);
+    }
+
+    @Override
+    public Task<Void> deleteStar(String userId, Post post) {
+        return mFirebaseHelper.deleteStar(userId, post);
+    }
+
+    @Override
     public Task<DocumentSnapshot> getPost(String postId) {
         return mFirebaseHelper.getPost(postId);
+    }
+
+    @Override
+    public Task<DocumentSnapshot> getBookmark(String userId, String postId) {
+        return mFirebaseHelper.getBookmark(userId, postId);
+    }
+
+    @Override
+    public Task<DocumentSnapshot> getStar(String userId, String postId) {
+        return mFirebaseHelper.getStar(userId, postId);
     }
 
     @Override

@@ -18,9 +18,15 @@ package com.bmd.android.europewelcome.ui.posts.free;
 import com.bmd.android.europewelcome.ui.base.MvpView;
 
 /**
- * Created by Konstantins on 12/6/2017.
+ * View interface for {@link FreePostsFragment}
  */
-
 public interface FreePostsMvpView extends MvpView {
 
+    void setBookmarkedIcon(FreePostsAdapter.ViewHolder holder);
+
+    void removeBookmarkedIcon(FreePostsAdapter.ViewHolder holder);
+
+    void setStarRatedIcon(FreePostsAdapter.ViewHolder holder);
+
+    void removeStarRatedIcon(FreePostsAdapter.ViewHolder holder);
 }

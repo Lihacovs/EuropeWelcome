@@ -40,12 +40,12 @@ public final class AppConstants {
     public static final String DATE_FORMAT = "d MMM yyyy";
 
     public static final String POSTS_COLLECTION = "posts";
-    public static final String POST_TEXT_COLLECTION = "postText";
-    public static final String POST_IMAGE_COLLECTION = "postImage";
-    public static final String POST_PLACE_COLLECTION = "postPlace";
+    public static final String BOOKMARKS_COLLECTION = "bookmarks";
+    public static final String STARS_COLLECTION = "stars";
     public static final String COMMENT_COLLECTION = "postComment";
     public static final String POST_SECTION_COLLECTION = "postSection";
     public static final String USERS_COLLECTION = "users";
+    public static final String RATINGS_COLLECTION = "ratings";
 
 
     private AppConstants() {

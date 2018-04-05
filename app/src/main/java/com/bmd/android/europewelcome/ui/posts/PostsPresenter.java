@@ -32,40 +32,45 @@ public class PostsPresenter <V extends PostsMvpView> extends BasePresenter<V>
     private static final String TAG = "PostsPresenter";
 
     @Inject
-    public PostsPresenter(DataManager dataManager) {
+    PostsPresenter(DataManager dataManager) {
         super(dataManager);
     }
 
     @Override
+    public boolean checkUserSigned() {
+        return getDataManager().getCurrentUserId() != null && !getDataManager().getCurrentUserId().isEmpty();
+    }
+
+    @Override
     public void onDrawerOptionProfileClick() {
-        if(getDataManager().getCurrentUserId() == null || getDataManager().getCurrentUserId().isEmpty()){
-            getMvpView().closeNavigationDrawer();
-            getMvpView().openLoginActivity();
-        }else{
+        if(checkUserSigned()){
             getMvpView().closeNavigationDrawer();
             getMvpView().openProfileActivity();
+        }else{
+            getMvpView().closeNavigationDrawer();
+            getMvpView().openLoginActivity();
         }
     }
 
     @Override
     public void onDrawerOptionBookmarksClick() {
-        if(getDataManager().getCurrentUserId() == null || getDataManager().getCurrentUserId().isEmpty()){
-            getMvpView().closeNavigationDrawer();
-            getMvpView().openLoginActivity();
-        }else{
+        if(checkUserSigned()){
             getMvpView().closeNavigationDrawer();
             getMvpView().openBookmarksActivity();
+        }else{
+            getMvpView().closeNavigationDrawer();
+            getMvpView().openLoginActivity();
         }
     }
 
     @Override
     public void onDrawerOptionDraftsClick() {
-        if(getDataManager().getCurrentUserId() == null || getDataManager().getCurrentUserId().isEmpty()){
-            getMvpView().closeNavigationDrawer();
-            getMvpView().openLoginActivity();
-        }else{
+        if(checkUserSigned()){
             getMvpView().closeNavigationDrawer();
             getMvpView().openDraftsActivity();
+        }else{
+            getMvpView().closeNavigationDrawer();
+            getMvpView().openLoginActivity();
         }
     }
 
@@ -100,10 +105,10 @@ public class PostsPresenter <V extends PostsMvpView> extends BasePresenter<V>
 
     @Override
     public void onFabClick() {
-        if(getDataManager().getCurrentUserId() == null || getDataManager().getCurrentUserId().isEmpty()){
-            getMvpView().openLoginActivity();
-        }else{
+        if(checkUserSigned()){
             getMvpView().openNewPostActivity();
+        }else{
+            getMvpView().openLoginActivity();
         }
     }
 
@@ -122,20 +127,28 @@ public class PostsPresenter <V extends PostsMvpView> extends BasePresenter<V>
         }
         getMvpView().updateAppVersion();
 
-        String currentUserName = getDataManager().getCurrentUserName();
-        if (currentUserName != null && !currentUserName.isEmpty()) {
-            getMvpView().updateUserName(currentUserName);
+        if(checkUserSigned()){
+            String currentUserName = getDataManager().getCurrentUserName();
+            if (currentUserName != null && !currentUserName.isEmpty()) {
+                getMvpView().updateUserName(currentUserName);
+            }
+
+            String currentUserEmail = getDataManager().getCurrentUserEmail();
+            if (currentUserEmail != null && !currentUserEmail.isEmpty()) {
+                getMvpView().updateUserEmail(currentUserEmail);
+            }
+
+            String profilePicUrl = getDataManager().getCurrentUserProfilePicUrl();
+            if (profilePicUrl != null && !profilePicUrl.isEmpty()) {
+                getMvpView().updateUserProfilePic(profilePicUrl);
+            }
+        }else{
+            getMvpView().updateUserName("EuropeWelcome");
+            getMvpView().updateUserEmail("I am the way and the truth and the life");
+            getMvpView().setDefaultUserImage();
         }
 
-        String currentUserEmail = getDataManager().getCurrentUserEmail();
-        if (currentUserEmail != null && !currentUserEmail.isEmpty()) {
-            getMvpView().updateUserEmail(currentUserEmail);
-        }
-
-        String profilePicUrl = getDataManager().getCurrentUserProfilePicUrl();
-        if (profilePicUrl != null && !profilePicUrl.isEmpty()) {
-            getMvpView().updateUserProfilePic(profilePicUrl);
-        }
+        getMvpView().chooseLoginAction();
     }
 
     @Override

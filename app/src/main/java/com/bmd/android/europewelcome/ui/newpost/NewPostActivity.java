@@ -32,6 +32,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.bmd.android.europewelcome.R;
+import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.data.firebase.model.PostSection;
 import com.bmd.android.europewelcome.ui.base.BaseActivity;
 import com.bmd.android.europewelcome.utils.CommonUtils;
@@ -51,9 +52,9 @@ import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 
 /**
- * New Post Activity
+ * NewPost Activity. Every {@link Post} can have {@link PostSection} stored as subcollection in DB.
+ * {@link PostSection} are used for post content as text, image, map, video type;
  */
-
 public class NewPostActivity extends BaseActivity implements NewPostMvpView, NewPostAdapter.Callback {
 
     private static final String TAG = "AddPostActivity";
@@ -118,8 +119,7 @@ public class NewPostActivity extends BaseActivity implements NewPostMvpView, New
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mNewPostRv.setLayoutManager(mLayoutManager);
         mNewPostRv.setItemAnimator(new DefaultItemAnimator());
-        mNewPostAdapter = new NewPostAdapter(this,
-                new FirestoreRecyclerOptions.Builder<PostSection>()
+        mNewPostAdapter = new NewPostAdapter(new FirestoreRecyclerOptions.Builder<PostSection>()
                         .setQuery(mPresenter.getPostSectionQuery(), PostSection.class)
                         .build());
         mNewPostAdapter.setAdapterCallback(this);

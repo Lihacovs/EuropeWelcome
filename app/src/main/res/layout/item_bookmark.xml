@@ -46,13 +46,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:singleLine="true"
             android:text="@string/post_item_author_name"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/iv_bookmark_item_bookmark_image"
             app:layout_constraintStart_toEndOf="@+id/iv_bookmark_item_author_photo"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -134,81 +135,13 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_bookmark_item_post_text" />
 
         <ImageView
-            android:id="@+id/iv_bookmark_item_star_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:contentDescription="@string/post_item_star_icon"
-            android:padding="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sprt_bookmark_item_separator"
-            app:srcCompat="@drawable/ic_border_star_blue_24px" />
-
-        <TextView
-            android:id="@+id/tv_bookmark_item_stars_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/post_item_default_count"
-            android:textColor="@color/gray_500"
-            app:layout_constraintStart_toEndOf="@+id/iv_bookmark_item_star_image"
-            app:layout_constraintTop_toBottomOf="@+id/sprt_bookmark_item_separator" />
-
-        <ImageView
-            android:id="@+id/iv_bookmark_item_eye_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="16dp"
-            android:contentDescription="@string/post_item_eye_icon"
-            android:padding="8dp"
-            app:layout_constraintStart_toEndOf="@+id/tv_bookmark_item_stars_count"
-            app:layout_constraintTop_toBottomOf="@+id/sprt_bookmark_item_separator"
-            app:srcCompat="@drawable/ic_border_eye_blue_24px" />
-
-        <TextView
-            android:id="@+id/tv_bookmark_item_eye_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/post_item_default_count"
-            android:textColor="@color/gray_500"
-            app:layout_constraintStart_toEndOf="@+id/iv_bookmark_item_eye_image"
-            app:layout_constraintTop_toBottomOf="@+id/sprt_bookmark_item_separator" />
-
-        <ImageView
-            android:id="@+id/iv_bookmark_item_comment_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="16dp"
-            android:contentDescription="@string/post_item_comment_icon"
-            android:padding="8dp"
-            app:layout_constraintStart_toEndOf="@+id/tv_bookmark_item_eye_count"
-            app:layout_constraintTop_toBottomOf="@+id/sprt_bookmark_item_separator"
-            app:srcCompat="@drawable/ic_border_comment_blue_24px" />
-
-        <TextView
-            android:id="@+id/tv_bookmark_item_comment_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/post_item_default_count"
-            android:textColor="@color/gray_500"
-            app:layout_constraintStart_toEndOf="@+id/iv_bookmark_item_comment_image"
-            app:layout_constraintTop_toBottomOf="@+id/sprt_bookmark_item_separator" />
-
-        <ImageView
             android:id="@+id/iv_bookmark_item_bookmark_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:contentDescription="@string/post_item_bookmark_icon"
             android:padding="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sprt_bookmark_item_separator"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_border_bookmark_blue_24px" />
 
     </android.support.constraint.ConstraintLayout>

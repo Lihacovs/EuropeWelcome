@@ -15,6 +15,7 @@
 
 package com.bmd.android.europewelcome.data.firebase.model;
 
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -31,12 +32,14 @@ public class Post {
     private String mPostText;
     private int mPostStars;
     private int mPostWatches;
+    private int mPostComments;
     private int mPostCreationTimestamp;
     private String mPostImageUrl;
     private String mPostCreationDate;
+    private int mChildLayoutNum;
     private boolean mPostAsDraft;
     private boolean mPostPublished;
-    private int mChildLayoutNum;
+
 
     public Post() {
     }
@@ -48,6 +51,7 @@ public class Post {
                 String postText,
                 int postStars,
                 int postWatches,
+                int postComments,
                 int postCreationTimestamp,
                 String postImageUrl,
                 String postCreationDate,
@@ -62,12 +66,13 @@ public class Post {
         mPostText = postText;
         mPostStars = postStars;
         mPostWatches = postWatches;
+        mPostComments = postComments;
         mPostCreationTimestamp = postCreationTimestamp;
         mPostImageUrl = postImageUrl;
         mPostCreationDate = postCreationDate;
+        mChildLayoutNum = childLayoutNum;
         mPostAsDraft = postAsDraft;
         mPostPublished = postPublished;
-        mChildLayoutNum = childLayoutNum;
     }
 
     public String getPostId() {
@@ -136,6 +141,14 @@ public class Post {
 
     public int getPostCreationTimestamp() {
         return mPostCreationTimestamp;
+    }
+
+    public int getPostComments() {
+        return mPostComments;
+    }
+
+    public void setPostComments(int postComments) {
+        mPostComments = postComments;
     }
 
     public void setPostCreationTimestamp(int postCreationTimestamp) {

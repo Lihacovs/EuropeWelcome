@@ -15,6 +15,8 @@
 
 package com.bmd.android.europewelcome.ui.posts.free;
 
+import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,24 +35,26 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
- * Created by Konstantins on 12/6/2017.
+ * FreePosts Adapter.
  */
-
 public class FreePostsAdapter extends FirestoreRecyclerAdapter<Post, FreePostsAdapter.ViewHolder> {
 
+    private static final String TAG = "FreePostsAdapter";
     private Callback mCallback;
-    private FirestoreRecyclerOptions<Post> mOptions;
+    private FreePostsFragment mFragment;
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See
      * {@link FirestoreRecyclerOptions} for configuration options.
      *
-     * @param options
+     * @param options - data to query from DB
      */
-    public FreePostsAdapter(FirestoreRecyclerOptions<Post> options) {
+    FreePostsAdapter(FirestoreRecyclerOptions<Post> options, FreePostsFragment fragment) {
         super(options);
+        mFragment = fragment;
     }
 
     public void setAdapterCallback(Callback callback) {
@@ -58,12 +62,13 @@ public class FreePostsAdapter extends FirestoreRecyclerAdapter<Post, FreePostsAd
     }
 
     @Override
-    protected void onBindViewHolder(ViewHolder holder, int position, Post model) {
+    protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Post model) {
         holder.bind(model);
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate
                         (R.layout.item_post_view, parent, false));
     }
@@ -73,21 +78,32 @@ public class FreePostsAdapter extends FirestoreRecyclerAdapter<Post, FreePostsAd
         // Called each time there is a new query snapshot. You may want to use this method
         // to hide a loading spinner or check for the "no documents" state and update your UI.
         // ...
+        if (mCallback != null)
+            mCallback.hideLoadingSpinner();
     }
 
     @Override
-    public void onError(FirebaseFirestoreException e) {
+    public void onError(@NonNull FirebaseFirestoreException e) {
         super.onError(e);
     }
 
 
     public interface Callback {
+
+        void hideLoadingSpinner();
+
         void onPostItemViewClick(Post post);
 
-        void onStarIconClick(Post post);
+        void onStarIconClick(Post post, ViewHolder holder);
+
+        void onBookmarkIconClick(Post post, ViewHolder holder);
+
+        void checkPostBookmarkedByUser(Post post, ViewHolder holder);
+
+        void checkPostStarRatedByUser(Post post, ViewHolder holder);
     }
 
-    public class ViewHolder extends BaseViewHolder {
+    public class ViewHolder extends BaseViewHolder implements FreePostsFragment.Callback{
 
         @BindView(R.id.iv_post_item_author_photo)
         ImageView mUserPhotoIv;
@@ -110,17 +126,11 @@ public class FreePostsAdapter extends FirestoreRecyclerAdapter<Post, FreePostsAd
         @BindView(R.id.tv_post_item_stars_count)
         TextView mPostStarsTv;
 
-        @BindView(R.id.tv_post_item_eye_count)
-        TextView mPostWatchesTv;
-
         @BindView(R.id.tv_post_item_comment_count)
         TextView mCommentsCountTv;
 
         @BindView(R.id.iv_post_item_star_image)
         ImageView mStarIv;
-
-        @BindView(R.id.iv_post_item_eye_image)
-        ImageView mEyeIv;
 
         @BindView(R.id.iv_post_item_comment_image)
         ImageView mCommentIv;
@@ -128,15 +138,18 @@ public class FreePostsAdapter extends FirestoreRecyclerAdapter<Post, FreePostsAd
         @BindView(R.id.iv_post_item_bookmark_image)
         ImageView mBookmarkIv;
 
+        @BindView(R.id.cl_post_item_star_container)
+        ConstraintLayout mStarContainerCl;
+
         private Post mPost;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            mFragment.setFreePostFragmentCallback(this);
         }
 
         protected void clear() {
-            //coverImageView.setImageDrawable(null);
             mPostTitleTv.setText("");
             mPostTextTv.setText("");
             mPostAuthorTv.setText("");
@@ -180,39 +193,79 @@ public class FreePostsAdapter extends FirestoreRecyclerAdapter<Post, FreePostsAd
             }
 
             mPostStarsTv.setText(String.valueOf(post.getPostStars()));
+            mCommentsCountTv.setText(String.valueOf(post.getPostComments()));
 
-            mPostWatchesTv.setText(String.valueOf(post.getPostWatches()));
+            //updates UI for current user
+            if(mCallback != null) {
+                mCallback.checkPostBookmarkedByUser(mPost, this);
+                mCallback.checkPostStarRatedByUser(mPost, this);
+            }
 
-
-            /*mShareIv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Drawable drawable = mShareIv.getDrawable();
-                    if (drawable instanceof Animatable) {
-                        ((Animatable) drawable).start();
-                    }
-                }
-            });*/
-
-            mStarIv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int newStarCount = post.getPostStars() + 1;
-                    mPost.setPostStars(newStarCount);
-                    if(mCallback != null)
-                        mCallback.onStarIconClick(mPost);
-                }
+            itemView.setOnClickListener(v -> {
+                if (mCallback != null)
+                    mCallback.onPostItemViewClick(mPost);
             });
+        }
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int newWatches = post.getPostWatches() + 1;
-                    mPost.setPostWatches(newWatches);
-                    if (mCallback != null)
-                        mCallback.onPostItemViewClick(mPost);
-                }
-            });
+        @OnClick(R.id.cl_post_item_star_container)
+        void onStarIconClick(){
+            if(mCallback != null){
+                mStarContainerCl.setEnabled(false);
+                mCallback.onStarIconClick(mPost, this);
+            }
+
+        }
+
+        @OnClick(R.id.iv_post_item_bookmark_image)
+        void onBookmarkIconClick(){
+            if(mCallback != null){
+                mBookmarkIv.setEnabled(false);
+                mCallback.onBookmarkIconClick(mPost, this);
+            }
+        }
+
+        /**
+         * Callback method launched from {@link FreePostsFragment#setBookmarkedIcon(ViewHolder)}
+         * @param holder - appropriate holder to update
+         */
+        @Override
+        public void setBookmarkedIcon(ViewHolder holder) {
+            holder.mBookmarkIv.setImageResource(R.drawable.ic_fill_bookmark_blue_24px);
+            holder.mBookmarkIv.setEnabled(true);
+        }
+
+        /**
+         * Callback method launched from {@link FreePostsFragment#removeBookmarkedIcon(ViewHolder)}
+         * @param holder - appropriate holder to update
+         */
+        @Override
+        public void removeBookmarkedIcon(ViewHolder holder) {
+            holder.mBookmarkIv.setImageResource(R.drawable.ic_border_bookmark_blue_24px);
+            holder.mBookmarkIv.setEnabled(true);
+        }
+
+        /**
+         * Callback method launched from {@link FreePostsFragment#setStarRatedIcon(ViewHolder)}
+         * @param holder - appropriate holder to update
+         */
+        @Override
+        public void setStarRatedIcon(ViewHolder holder) {
+            holder.mStarIv.setImageResource(R.drawable.ic_fill_star_blue_24px);
+            holder.mPostStarsTv.setTextColor(itemView
+                    .getContext().getResources().getColor(R.color.orange));
+            holder.mStarContainerCl.setEnabled(true);
+        }
+
+        /**
+         * Callback method launched from {@link FreePostsFragment#removeStarRatedIcon(ViewHolder)}
+         * @param holder - appropriate holder to update
+         */
+        @Override
+        public void removeStarRatedIcon(ViewHolder holder) {
+            holder.mStarIv.setImageResource(R.drawable.ic_border_star_blue_24px);
+            holder.mPostStarsTv.setTextColor(itemView
+                    .getContext().getResources().getColor(R.color.gray_500));
+            holder.mStarContainerCl.setEnabled(true);
         }
     }
 }

@@ -20,7 +20,6 @@ import com.bmd.android.europewelcome.ui.base.MvpView;
 /**
  * View interface for {@link NewPostActivity}
  */
-
 public interface NewPostMvpView extends MvpView {
 
     void finishActivity();

@@ -18,9 +18,8 @@ package com.bmd.android.europewelcome.data.firebase.model;
 import java.util.UUID;
 
 /**
- * Created by Konstantins on 1/2/2018.
+ * Post Comment POJO
  */
-
 public class PostComment {
     private String mPostCommentId;
     private String mPostCommentPostId;

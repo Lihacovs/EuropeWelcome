@@ -15,9 +15,18 @@
 
 package com.bmd.android.europewelcome.ui.bookmarks;
 
+import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.ui.base.MvpPresenter;
 import com.google.firebase.firestore.Query;
 
+/**
+ * Presenter interface for {@link BookmarksPresenter}
+ */
 public interface BookmarksMvpPresenter<V extends BookmarksMvpView> extends MvpPresenter<V> {
+
     Query getBookmarkedPostsQuery();
+
+    void deleteBookmark(Post post);
+
+    void updatePost(Post post);
 }

@@ -20,7 +20,6 @@ import android.content.Intent;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -101,6 +100,7 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
 
     public static Intent getStartIntent(Context context) {
         Intent intent = new Intent(context, PostsActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         return intent;
     }
 
@@ -131,7 +131,7 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
     }
 
     @OnClick(R.id.fab)
-    void onFabClick(View v) {
+    void onFabClick() {
         mPresenter.onFabClick();
     }
 
@@ -150,6 +150,18 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
     public void updateAppVersion() {
         String version = getString(R.string.version) + " " + BuildConfig.VERSION_NAME;
         mAppVersionTextView.setText(version);
+    }
+
+    @Override
+    public void chooseLoginAction() {
+        Menu navMenu = mNavigationView.getMenu();
+        if(mPresenter.checkUserSigned()){
+            navMenu.findItem(R.id.nav_item_sign_in).setVisible(false);
+            navMenu.findItem(R.id.nav_item_logout).setVisible(true);
+        }else{
+            navMenu.findItem(R.id.nav_item_logout).setVisible(false);
+            navMenu.findItem(R.id.nav_item_sign_in).setVisible(true);
+        }
     }
 
     @Override
@@ -174,8 +186,15 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
     }
 
     @Override
+    public void setDefaultUserImage() {
+        mUserImageIv.setImageResource(R.drawable.ic_europe_stars_24px);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
+        //every time activity goes on top in task's stack - update nav drawer
+        mPresenter.onNavMenuCreated();
         if (mDrawer != null) {
             mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         }
@@ -267,24 +286,18 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
         PopupMenu popup = new PopupMenu(this, v);
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.filter_allposts_menu, popup.getMenu());
-        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    //TODO: cant sort strings correctly, need to use int
-                    case R.id.filter_posts_by_stars:
-                        if (mCallback != null)
-                            mCallback.onFilterPostsByStarsClick();
-                        return true;
-                    case R.id.filter_posts_by_views:
-                        if (mCallback != null)
-                            mCallback.onFilterPostsByViewsClick();
-                        return true;
-                    case R.id.filter_posts_by_date:
-                        return true;
-                    default:
-                        return false;
-                }
+        popup.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.filter_posts_by_stars:
+                    if (mCallback != null)
+                        mCallback.onFilterPostsByStarsClick();
+                    return true;
+                case R.id.filter_posts_by_date:
+                    if (mCallback != null)
+                        mCallback.onFilterPostsByDateClick();
+                    return true;
+                default:
+                    return false;
             }
         });
 
@@ -316,7 +329,7 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
         mDrawer.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
         setupNavMenu();
-        mPresenter.onNavMenuCreated();
+        //mPresenter.onNavMenuCreated();
 
         //Tabs
         mPagerAdapter.setCount(2);
@@ -355,43 +368,38 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
         mNameTextView = headerLayout.findViewById(R.id.tv_drawer_header_user_name);
         mEmailTextView = headerLayout.findViewById(R.id.tv_drawer_header_user_email);
 
-        headerLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mPresenter.onDrawerOptionProfileClick();
-            }
-        });
+        headerLayout.setOnClickListener(view -> mPresenter.onDrawerOptionProfileClick());
 
         mNavigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        mDrawer.closeDrawer(GravityCompat.START);
-                        switch (item.getItemId()) {
-                            case R.id.nav_item_profile:
-                                mPresenter.onDrawerOptionProfileClick();
-                                return true;
-                            case R.id.nav_item_bookmarks:
-                                mPresenter.onDrawerOptionBookmarksClick();
-                                return true;
-                            case R.id.nav_item_drafts:
-                                mPresenter.onDrawerOptionDraftsClick();
-                                return true;
-                            case R.id.nav_item_premium:
-                                mPresenter.onDrawerOptionPremiumClick();
-                                return true;
-                            case R.id.nav_item_about:
-                                mPresenter.onDrawerOptionAboutClick();
-                                return true;
-                            case R.id.nav_item_rate_us:
-                                mPresenter.onDrawerRateUsClick();
-                                return true;
-                            case R.id.nav_item_logout:
-                                mPresenter.onDrawerOptionLogoutClick();
-                                return true;
-                            default:
-                                return false;
-                        }
+                item -> {
+                    mDrawer.closeDrawer(GravityCompat.START);
+                    switch (item.getItemId()) {
+                        case R.id.nav_item_profile:
+                            mPresenter.onDrawerOptionProfileClick();
+                            return true;
+                        case R.id.nav_item_bookmarks:
+                            mPresenter.onDrawerOptionBookmarksClick();
+                            return true;
+                        case R.id.nav_item_drafts:
+                            mPresenter.onDrawerOptionDraftsClick();
+                            return true;
+                        case R.id.nav_item_premium:
+                            mPresenter.onDrawerOptionPremiumClick();
+                            return true;
+                        case R.id.nav_item_about:
+                            mPresenter.onDrawerOptionAboutClick();
+                            return true;
+                        case R.id.nav_item_rate_us:
+                            mPresenter.onDrawerRateUsClick();
+                            return true;
+                        case R.id.nav_item_logout:
+                            mPresenter.onDrawerOptionLogoutClick();
+                            return true;
+                        case R.id.nav_item_sign_in:
+                            mPresenter.onDrawerOptionLogoutClick();
+                            return true;
+                        default:
+                            return false;
                     }
                 });
     }

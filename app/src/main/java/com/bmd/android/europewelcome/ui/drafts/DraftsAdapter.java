@@ -33,6 +33,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+/**
+ * Bookmarks Adapted. Data queried from {users}->{userId}->{bookmarks}->{postId}
+ * If Firestore team release "collection group query" data should be stored and queried from
+ * {posts}->{postId}->{bookmarks}->{userId} to avoid Post entity duplication in DB.
+ */
 public class DraftsAdapter extends FirestoreRecyclerAdapter<Post, DraftsAdapter.DraftViewHolder> {
 
     private static final String TAG = "DraftsAdapter";
@@ -64,7 +69,7 @@ public class DraftsAdapter extends FirestoreRecyclerAdapter<Post, DraftsAdapter.
 
 
     @Override
-    public void onError(FirebaseFirestoreException e) {
+    public void onError(@NonNull FirebaseFirestoreException e) {
         super.onError(e);
         Log.d(TAG, "onError: " + e);
     }

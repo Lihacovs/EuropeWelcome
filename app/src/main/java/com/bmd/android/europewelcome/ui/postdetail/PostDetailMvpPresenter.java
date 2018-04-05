@@ -15,6 +15,7 @@
 
 package com.bmd.android.europewelcome.ui.postdetail;
 
+import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.data.firebase.model.PostComment;
 import com.bmd.android.europewelcome.ui.base.MvpPresenter;
 import com.bmd.android.europewelcome.ui.base.MvpView;
@@ -23,7 +24,6 @@ import com.google.firebase.firestore.Query;
 /**
  * Presenter interface for {@link PostDetailPresenter}
  */
-
 public interface PostDetailMvpPresenter<V extends MvpView> extends MvpPresenter<V> {
 
     void setPostId(String postId);
@@ -34,9 +34,15 @@ public interface PostDetailMvpPresenter<V extends MvpView> extends MvpPresenter<
 
     Query getPostSectionQuery();
 
-    void saveComment(String postId, PostComment postComment);
-
-    PostComment newPostComment();
-
     String getPostAuthorId();
+
+    void checkPostBookmarkedByUser(Post post);
+
+    void checkPostStarRatedByUser(Post post);
+
+    void addOrRemoveStar();
+
+    void saveOrDeleteBookmark();
+
+    void createNewComment(String comment);
 }

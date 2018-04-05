@@ -18,9 +18,8 @@ package com.bmd.android.europewelcome.ui.profile;
 import com.bmd.android.europewelcome.ui.base.MvpView;
 
 /**
- * Created by Konstantins on 12/23/2017.
+ * View interface for {@link ProfileActivity}
  */
-
 public interface ProfileMvpView extends MvpView {
 
     void loadUserName(String userName);

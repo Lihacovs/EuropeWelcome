@@ -23,6 +23,8 @@ import com.bmd.android.europewelcome.ui.base.MvpPresenter;
 
 public interface PostsMvpPresenter <V extends PostsMvpView> extends MvpPresenter<V> {
 
+    boolean checkUserSigned();
+
     void onDrawerOptionProfileClick();
 
     void onDrawerOptionBookmarksClick();

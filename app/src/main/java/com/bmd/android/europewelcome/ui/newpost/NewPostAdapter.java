@@ -16,8 +16,8 @@
 package com.bmd.android.europewelcome.ui.newpost;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Typeface;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -49,7 +49,6 @@ import butterknife.OnClick;
 /**
  * Adapter for {@link NewPostActivity}
  */
-
 public class NewPostAdapter extends FirestoreRecyclerAdapter<PostSection, BaseViewHolder> {
 
     private static final int VIEW_TYPE_TITLE = 0;
@@ -62,17 +61,14 @@ public class NewPostAdapter extends FirestoreRecyclerAdapter<PostSection, BaseVi
 
     private Callback mCallback;
 
-    private Context mContext;
-
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See
      * {@link FirestoreRecyclerOptions} for configuration options.
      *
      * @param options Query in builder
      */
-    NewPostAdapter(Context context, FirestoreRecyclerOptions<PostSection> options) {
+    NewPostAdapter(FirestoreRecyclerOptions<PostSection> options) {
         super(options);
-        mContext = context;
     }
 
     void setAdapterCallback(Callback callback) {
@@ -80,12 +76,15 @@ public class NewPostAdapter extends FirestoreRecyclerAdapter<PostSection, BaseVi
     }
 
     @Override
-    protected void onBindViewHolder(BaseViewHolder holder, int position, PostSection model) {
+    protected void onBindViewHolder(@NonNull BaseViewHolder holder,
+                                    int position,
+                                    @NonNull PostSection model) {
         holder.onBind(position, model);
     }
 
+    @NonNull
     @Override
-    public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         switch (viewType) {
             case VIEW_TYPE_TITLE:
                 return new NewPostAdapter.TitleViewHolder(LayoutInflater.from(parent.getContext())
@@ -110,18 +109,19 @@ public class NewPostAdapter extends FirestoreRecyclerAdapter<PostSection, BaseVi
 
     @Override
     public int getItemViewType(int position) {
-        if (getItem(position).getPostSectionViewType().equals("Title")) {
-            return VIEW_TYPE_TITLE;
-        } else if (getItem(position).getPostSectionViewType().equals("Text")) {
-            return VIEW_TYPE_TEXT;
-        } else if (getItem(position).getPostSectionViewType().equals("Image")) {
-            return VIEW_TYPE_IMAGE;
-        } else if (getItem(position).getPostSectionViewType().equals("Map")) {
-            return VIEW_TYPE_MAP;
-        } else if (getItem(position).getPostSectionViewType().equals("Video")) {
-            return VIEW_TYPE_VIDEO;
-        } else {
-            return -1;
+        switch (getItem(position).getPostSectionViewType()) {
+            case "Title":
+                return VIEW_TYPE_TITLE;
+            case "Text":
+                return VIEW_TYPE_TEXT;
+            case "Image":
+                return VIEW_TYPE_IMAGE;
+            case "Map":
+                return VIEW_TYPE_MAP;
+            case "Video":
+                return VIEW_TYPE_VIDEO;
+            default:
+                return -1;
         }
     }
 
@@ -135,7 +135,7 @@ public class NewPostAdapter extends FirestoreRecyclerAdapter<PostSection, BaseVi
     }
 
     @Override
-    public void onError(FirebaseFirestoreException e) {
+    public void onError(@NonNull FirebaseFirestoreException e) {
         super.onError(e);
         Log.d(TAG, "onError: " + e);
     }
@@ -376,7 +376,8 @@ public class NewPostAdapter extends FirestoreRecyclerAdapter<PostSection, BaseVi
 
     public class VideoViewHolder extends BaseViewHolder {
 
-        YouTubePlayerFragment mYouTubePlayerFragment = (YouTubePlayerFragment) ((Activity) mContext)
+        YouTubePlayerFragment mYouTubePlayerFragment =
+                (YouTubePlayerFragment) ((Activity) itemView.getContext())
                 .getFragmentManager().findFragmentById(R.id.fragment_new_post_item_youtube_video);
 
         PostSection mPostSection;

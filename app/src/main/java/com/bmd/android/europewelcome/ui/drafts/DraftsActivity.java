@@ -19,7 +19,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -41,6 +40,9 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * Drafts Activity. Data queried from {posts} where postAsDraft flag is true.
+ */
 public class DraftsActivity extends BaseActivity implements DraftsMvpView, DraftsAdapter.Callback{
 
     private static final String TAG = "AddPostActivity";
@@ -60,8 +62,7 @@ public class DraftsActivity extends BaseActivity implements DraftsMvpView, Draft
     DraftsAdapter mDraftsAdapter;
 
     public static Intent getStartIntent(Context context) {
-        Intent intent = new Intent(context, DraftsActivity.class);
-        return intent;
+        return new Intent(context, DraftsActivity.class);
     }
 
     @Override
@@ -120,6 +121,7 @@ public class DraftsActivity extends BaseActivity implements DraftsMvpView, Draft
         return true;
     }
 
+    //TODO: implement menu items
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -141,6 +143,8 @@ public class DraftsActivity extends BaseActivity implements DraftsMvpView, Draft
                     NavUtils.navigateUpTo(this, upIntent);
                 }
                 return true;
+            case R.id.delete_all_drafts:
+                showMessage("Delete All Drafts");
         }
         return super.onOptionsItemSelected(item);
     }
@@ -152,9 +156,9 @@ public class DraftsActivity extends BaseActivity implements DraftsMvpView, Draft
      */
     @Override
     public void deleteDraft(Post post) {
-        showYesNoDialog("Are you sure to Delete this Draft?",
-                "Delete",
-                "Cancel",
+        showYesNoDialog(getString(R.string.drafts_delete_draft),
+                getString(R.string.drafts_delete),
+                getString(R.string.drafts_cancel),
                 (dialog, which) -> {
                     switch (which) {
                         case DialogInterface.BUTTON_POSITIVE:

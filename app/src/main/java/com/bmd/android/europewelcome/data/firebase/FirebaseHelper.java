@@ -20,6 +20,7 @@ import android.net.Uri;
 import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.data.firebase.model.PostComment;
 import com.bmd.android.europewelcome.data.firebase.model.PostSection;
+import com.bmd.android.europewelcome.data.firebase.model.Rating;
 import com.bmd.android.europewelcome.data.firebase.model.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -82,11 +83,19 @@ public interface FirebaseHelper {
 
     Query getPostAsDraftQuery(String userId);
 
+    Query getBookmarkedPostsQuery(String userId);
+
     Task<Void> savePost(Post post);
 
     Task<Void> savePostSection(PostSection postSection, String postId);
 
     Task<Void> saveComment(String postId, PostComment postComment);
+
+    Task<Void> saveBookmark(String userId, Post post);
+
+    Task<Void> saveStar(String userId, Post post);
+
+    Task<Void> saveRating(Rating rating);
 
     Task<Void> updatePost(Post post);
 
@@ -96,7 +105,15 @@ public interface FirebaseHelper {
 
     Task<Void> deletePostSection(String postId ,PostSection postSection);
 
+    Task<Void> deleteBookmark(String userId ,Post post);
+
+    Task<Void> deleteStar(String userId ,Post post);
+
     Task<DocumentSnapshot> getPost(String postId);
+
+    Task<DocumentSnapshot> getBookmark(String userId, String postId);
+
+    Task<DocumentSnapshot> getStar(String userId, String postId);
 
     Task<QuerySnapshot> getFirstPostSectionCollection(String postId);
 

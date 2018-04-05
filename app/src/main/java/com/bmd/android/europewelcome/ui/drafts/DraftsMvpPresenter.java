@@ -19,6 +19,9 @@ import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.ui.base.MvpPresenter;
 import com.google.firebase.firestore.Query;
 
+/**
+ * Presenter interface for {@link DraftsPresenter}
+ */
 public interface DraftsMvpPresenter<V extends DraftsMvpView> extends MvpPresenter<V> {
 
     Query getPostAsDraftQuery();
