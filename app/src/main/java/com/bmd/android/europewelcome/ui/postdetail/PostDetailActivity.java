@@ -19,6 +19,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,6 +35,7 @@ import com.bmd.android.europewelcome.R;
 import com.bmd.android.europewelcome.data.firebase.model.PostComment;
 import com.bmd.android.europewelcome.data.firebase.model.PostSection;
 import com.bmd.android.europewelcome.di.module.GlideApp;
+import com.bmd.android.europewelcome.ui.about.AboutFragment;
 import com.bmd.android.europewelcome.ui.base.BaseActivity;
 import com.bmd.android.europewelcome.ui.profile.ProfileActivity;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
@@ -108,6 +111,8 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
 
     private String mPostId;
 
+    private Callback mCallback;
+
     public static Intent getStartIntent(Context context, String postId) {
         Intent intent = new Intent(context, PostDetailActivity.class);
         intent.putExtra(EXTRA_POST_ID, postId);
@@ -160,10 +165,9 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
         mPostCommentsAdapter = new PostCommentsAdapter(
                 new FirestoreRecyclerOptions.Builder<PostComment>()
                         .setQuery(mPresenter.getPostCommentsQuery(), PostComment.class)
-                        .build());
+                        .build(), this);
         mPostCommentsAdapter.setAdapterCallback(this);
         mPostCommentsRv.setAdapter(mPostCommentsAdapter);
-
 
         mPresenter.getPost(mPostId);
 
@@ -172,6 +176,7 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
     @Override
     public void onStart() {
         super.onStart();
+        showLoading();
         mPostSectionAdapter.startListening();
         mPostCommentsAdapter.startListening();
     }
@@ -197,13 +202,51 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
                 finish();
                 return true;
             case R.id.about:
-                showMessage("About");
+                showAboutFragment();
                 return true;
-            case R.id.logout_user:
-                showMessage("Logout user");
+            case R.id.bookmark:
+                onBookmarkIconClick();
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onFragmentAttached() {
+    }
+
+    @Override
+    public void onFragmentDetached(String tag) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentByTag(tag);
+        if (fragment != null) {
+            fragmentManager
+                    .beginTransaction()
+                    .disallowAddToBackStack()
+                    .setCustomAnimations(R.anim.slide_left, R.anim.slide_right)
+                    .remove(fragment)
+                    .commitNow();
+        }
+    }
+
+    private void showAboutFragment() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .disallowAddToBackStack()
+                .setCustomAnimations(R.anim.slide_left, R.anim.slide_right)
+                .add(R.id.cl_root_view, AboutFragment.newInstance(), AboutFragment.TAG)
+                .commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentByTag(AboutFragment.TAG);
+        if (fragment == null) {
+            super.onBackPressed();
+        } else {
+            onFragmentDetached(AboutFragment.TAG);
+        }
     }
 
     @Override
@@ -212,9 +255,7 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
         super.onDestroy();
     }
 
-
-
-    @OnClick(R.id.iv_post_detail_user_image)
+    @OnClick(R.id.cl_post_detail_user_container)
     void onUserImageIvClick(){
         startActivity(ProfileActivity.getStartIntent(getBaseContext(), mPresenter.getPostAuthorId()));
     }
@@ -320,6 +361,20 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
         mPostCommentsTv.setText(commentsCount);
     }
 
+    @Override
+    public void setCommentLikeIcon(PostCommentsAdapter.ViewHolder holder) {
+        if(mCallback!=null){
+            mCallback.setCommentLikeIcon(holder);
+        }
+    }
+
+    @Override
+    public void setNotCommentLikeIcon(PostCommentsAdapter.ViewHolder holder) {
+        if(mCallback!=null){
+            mCallback.removeCommentLikeIcon(holder);
+        }
+    }
+
 
     @Override
     public void onImageClick(PostSection postSection) {
@@ -327,7 +382,36 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
     }
 
     @Override
-    public void onLikeCommentClick(PostComment postComment) {
-        showMessage("Star Icon Click");
+    public void hideLoadingSpinner() {
+        hideLoading();
+    }
+
+    @Override
+    public void onLikeCommentClick(PostComment postComment, PostCommentsAdapter.ViewHolder holder) {
+        mPresenter.addOrRemoveCommentLike(postComment, holder);
+    }
+
+    @Override
+    public void checkCommentLikedByUser(PostComment postComment, PostCommentsAdapter.ViewHolder holder) {
+        mPresenter.checkCommentLikedByUser(postComment, holder);
+    }
+
+    @Override
+    public void onCommentUserImageClick(String userId) {
+        startActivity(ProfileActivity.getStartIntent(getBaseContext(), userId));
+    }
+
+    /**
+     * Callback for {@link PostDetailActivity}
+     */
+    public void setPostDetailActivityCallback(Callback callback) {
+        mCallback = callback;
+    }
+
+    public interface Callback {
+
+        void setCommentLikeIcon(PostCommentsAdapter.ViewHolder holder);
+
+        void removeCommentLikeIcon(PostCommentsAdapter.ViewHolder holder);
     }
 }

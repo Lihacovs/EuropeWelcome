@@ -21,9 +21,8 @@
         android:id="@+id/about"
         android:title="About App"
         app:showAsAction="never"/>
-
     <item
-        android:id="@+id/logout_user"
-        android:title="Logout"
+        android:id="@+id/bookmark"
+        android:title="Bookmark Post"
         app:showAsAction="never"/>
 </menu>

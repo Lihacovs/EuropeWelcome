@@ -94,7 +94,7 @@ public class BookmarksAdapter extends FirestoreRecyclerAdapter<Post, BookmarksAd
 
         void hideLoadingSpinner();
 
-        void onBookmarkIconClick(Post post);
+        void onBookmarkDeleteIconClick(Post post);
 
         void onViewHolderClick(Post post);
     }
@@ -180,7 +180,7 @@ public class BookmarksAdapter extends FirestoreRecyclerAdapter<Post, BookmarksAd
         @OnClick(R.id.iv_bookmark_item_bookmark_image)
         void onBookmarkIconClick(){
             if(mCallback != null){
-                mCallback.onBookmarkIconClick(mPost);
+                mCallback.onBookmarkDeleteIconClick(mPost);
             }
         }
     }

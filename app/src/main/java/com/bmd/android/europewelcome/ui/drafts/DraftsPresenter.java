@@ -15,13 +15,18 @@
 
 package com.bmd.android.europewelcome.ui.drafts;
 
+import android.support.annotation.NonNull;
+
 import com.bmd.android.europewelcome.R;
 import com.bmd.android.europewelcome.data.DataManager;
 import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.data.firebase.model.PostSection;
 import com.bmd.android.europewelcome.ui.base.BasePresenter;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import javax.inject.Inject;
 
@@ -50,25 +55,42 @@ public class DraftsPresenter<V extends DraftsMvpView> extends BasePresenter<V> i
 
     /**
      * Deletes Post and all PostSections assotiated with it
+     *
      * @param post Post to process
      */
     @Override
     public void deleteDraft(Post post) {
         getMvpView().showLoading();
         //First delete PostSection collection with all documents under that post
-        getDataManager().getFirstPostSectionCollection(post.getPostId()).addOnSuccessListener(documentSnapshots -> {
-            for (DocumentSnapshot doc : documentSnapshots.getDocuments()) {
-                PostSection postSection = doc.toObject(PostSection.class);
-                getDataManager().deletePostSection(post.getPostId(), postSection);
-            }
-            //Then delete Post document itself
-            getDataManager().deletePost(post).addOnSuccessListener(aVoid -> {
-                getMvpView().onError(R.string.drafts_deleted);
-            }).addOnFailureListener(e -> {
-                getMvpView().hideLoading();
-                getMvpView().onError(R.string.drafts_some_error);
-            });
-        }).addOnFailureListener(e -> {
+        getDataManager().getFirstPostSectionCollection(post.getPostId())
+                .addOnSuccessListener(documentSnapshots -> {
+                    for (DocumentSnapshot doc : documentSnapshots.getDocuments()) {
+                        PostSection postSection = doc.toObject(PostSection.class);
+                        getDataManager().deletePostSection(post.getPostId(), postSection);
+                    }
+                    //Then delete Post document itself
+                    getDataManager().deletePost(post).addOnSuccessListener(aVoid -> {
+                        //getMvpView().onError(R.string.drafts_deleted);
+                    }).addOnFailureListener(e -> {
+                        getMvpView().hideLoading();
+                        getMvpView().onError(R.string.drafts_some_error);
+                    });
+                }).addOnFailureListener(e -> {
+            getMvpView().hideLoading();
+            getMvpView().onError(R.string.drafts_some_error);
+        });
+    }
+
+    @Override
+    public void deleteAllDrafts() {
+        getMvpView().showLoading();
+        getDataManager().getUserDrafts(getCurrentUserId())
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
+                        Post post = doc.toObject(Post.class);
+                        deleteDraft(post);
+                    }
+                }).addOnFailureListener(e -> {
             getMvpView().hideLoading();
             getMvpView().onError(R.string.drafts_some_error);
         });

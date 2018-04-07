@@ -128,6 +128,8 @@ public class PostSectionAdapter extends FirestoreRecyclerAdapter<PostSection, Ba
         // Called each time there is a new query snapshot. You may want to use this method
         // to hide a loading spinner or check for the "no documents" state and update your UI.
         // ...
+        if (mCallback != null)
+            mCallback.hideLoadingSpinner();
     }
 
     @Override
@@ -139,6 +141,8 @@ public class PostSectionAdapter extends FirestoreRecyclerAdapter<PostSection, Ba
     public interface Callback {
 
         void onImageClick(PostSection postSection);
+
+        void hideLoadingSpinner();
     }
 
     public class TitleViewHolder extends BaseViewHolder {

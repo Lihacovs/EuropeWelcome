@@ -29,4 +29,6 @@ public interface BookmarksMvpPresenter<V extends BookmarksMvpView> extends MvpPr
     void deleteBookmark(Post post);
 
     void updatePost(Post post);
+
+    void deleteAllBookmarks();
 }

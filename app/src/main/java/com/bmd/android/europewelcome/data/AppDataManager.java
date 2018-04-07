@@ -251,6 +251,11 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Query getPostsQueryOrderedByComments() {
+        return mFirebaseHelper.getPostsQueryOrderedByComments();
+    }
+
+    @Override
     public Query getPostCommentsQuery(String postId) {
         return mFirebaseHelper.getPostCommentsQuery(postId);
     }
@@ -296,6 +301,16 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Task<Void> saveCommentLike(String userId, PostComment postComment) {
+        return mFirebaseHelper.saveCommentLike(userId, postComment);
+    }
+
+    @Override
+    public Task<Void> saveUserComment(String userId, PostComment postComment) {
+        return mFirebaseHelper.saveUserComment(userId, postComment);
+    }
+
+    @Override
     public Task<Void> saveRating(Rating rating) {
         return mFirebaseHelper.saveRating(rating);
     }
@@ -308,6 +323,11 @@ public class AppDataManager implements DataManager {
     @Override
     public Task<Void> updatePostSection(String postId, PostSection postSection) {
         return mFirebaseHelper.updatePostSection(postId, postSection);
+    }
+
+    @Override
+    public Task<Void> updatePostComment(String postId, PostComment postComment) {
+        return mFirebaseHelper.updatePostComment(postId, postComment);
     }
 
     @Override
@@ -331,6 +351,11 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Task<Void> deleteCommentLike(String userId, PostComment postComment) {
+        return mFirebaseHelper.deleteCommentLike(userId, postComment);
+    }
+
+    @Override
     public Task<DocumentSnapshot> getPost(String postId) {
         return mFirebaseHelper.getPost(postId);
     }
@@ -346,6 +371,11 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Task<DocumentSnapshot> getCommentLike(String userId, String commentId) {
+        return mFirebaseHelper.getCommentLike(userId,commentId);
+    }
+
+    @Override
     public Task<QuerySnapshot> getFirstPostSectionCollection(String postId) {
         return mFirebaseHelper.getFirstPostSectionCollection(postId);
     }
@@ -353,6 +383,16 @@ public class AppDataManager implements DataManager {
     @Override
     public Task<QuerySnapshot> getFirstPostSection(String postId, String sectionViewType) {
         return mFirebaseHelper.getFirstPostSection(postId, sectionViewType);
+    }
+
+    @Override
+    public Task<QuerySnapshot> getUserDrafts(String userId) {
+        return mFirebaseHelper.getUserDrafts(userId);
+    }
+
+    @Override
+    public Task<QuerySnapshot> getUserBookmarks(String userId) {
+        return mFirebaseHelper.getUserBookmarks(userId);
     }
 
     @Override

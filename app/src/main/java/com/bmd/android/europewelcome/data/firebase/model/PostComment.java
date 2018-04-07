@@ -27,9 +27,9 @@ public class PostComment {
     private String mPostCommentUserImageUrl;
     private String mPostCommentUserName;
     private String mPostCommentCreationDate;
-    private String mPostCommentTimestamp;
+    private int mPostCommentTimestamp;
     private String mPostCommentText;
-    private String mPostCommentStars;
+    private int mPostCommentStars;
 
     public PostComment() {
     }
@@ -39,9 +39,9 @@ public class PostComment {
                        String postCommentUserImageUrl,
                        String postCommentUserName,
                        String postCommentCreationDate,
-                       String postCommentTimestamp,
+                       int postCommentTimestamp,
                        String postCommentText,
-                       String postCommentStars) {
+                       int postCommentStars) {
         mPostCommentId = UUID.randomUUID().toString();
         mPostCommentPostId = postCommentPostId;
         mPostCommentUserId = postCommentUserId;
@@ -101,11 +101,11 @@ public class PostComment {
         mPostCommentCreationDate = postCommentCreationDate;
     }
 
-    public String getPostCommentTimestamp() {
+    public int getPostCommentTimestamp() {
         return mPostCommentTimestamp;
     }
 
-    public void setPostCommentTimestamp(String postCommentTimestamp) {
+    public void setPostCommentTimestamp(int postCommentTimestamp) {
         mPostCommentTimestamp = postCommentTimestamp;
     }
 
@@ -117,11 +117,11 @@ public class PostComment {
         mPostCommentText = postCommentText;
     }
 
-    public String getPostCommentStars() {
+    public int getPostCommentStars() {
         return mPostCommentStars;
     }
 
-    public void setPostCommentStars(String postCommentStars) {
+    public void setPostCommentStars(int postCommentStars) {
         mPostCommentStars = postCommentStars;
     }
 }

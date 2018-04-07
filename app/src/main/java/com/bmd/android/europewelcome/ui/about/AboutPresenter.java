@@ -28,7 +28,7 @@ public class AboutPresenter <V extends AboutMvpView> extends BasePresenter<V>
         implements AboutMvpPresenter<V> {
 
     @Inject
-    public AboutPresenter(DataManager dataManager) {
+    AboutPresenter(DataManager dataManager) {
         super(dataManager);
     }
 }

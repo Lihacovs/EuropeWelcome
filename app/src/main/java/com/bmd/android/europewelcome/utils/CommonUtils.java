@@ -102,10 +102,6 @@ public final class CommonUtils {
                 .format(Calendar.getInstance().getTime());
     }
 
-    public static int getIntTimeStamp(){
-        return 1;
-    }
-
     public static String extractYTId(String ytUrl) {
         String vId = null;
         Pattern pattern = Pattern.compile(

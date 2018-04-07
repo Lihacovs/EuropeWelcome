@@ -56,6 +56,7 @@
 
     <!--ui.bookmarks.Bookmarks-->
     <string name="bookmarks_remove_bookmark">Are you sure to remove Bookmark?</string>
+    <string name="bookmarks_remove_all_bookmarks">Are you sure to remove all Bookmarks?</string>
     <string name="bookmarks_remove">Remove</string>
     <string name="bookmarks_cancel">Cancel</string>
     <string name="bookmarks_removed">Bookmark removed</string>
@@ -63,6 +64,7 @@
 
     <!--ui.drafts.Drafts-->
     <string name="drafts_delete_draft">Are you sure to Delete this Draft?</string>
+    <string name="drafts_delete_all_drafts">Are you sure to Delete all Drafts?</string>
     <string name="drafts_delete">Delete</string>
     <string name="drafts_cancel">Cancel</string>
     <string name="drafts_deleted">Draft deleted</string>
@@ -78,6 +80,20 @@
     <!--ui.posts.rating.RateUs-->
     <string name="rating_not_provided_error">Please provide us stars</string>
     <string name="rating_thanks">Thank you for your feedback</string>
+
+    <!--ui.postdetail.PostDetail-->
+    <string name="post_detail_some_error">Some error occurred. Try again</string>
+    <string name="post_detail_star_removed">Star removed</string>
+    <string name="post_detail_star_rated">Star rated</string>
+    <string name="post_detail_bookmark_removed">Bookmark removed</string>
+    <string name="post_detail_bookmark_saved">Bookmark saved</string>
+    <string name="post_detail_comment_saved">Comment saved</string>
+    <string name="post_detail_login_to_rate">Please login to rate Post</string>
+    <string name="post_detail_login_to_bookmark">Please login to bookmark Post</string>
+    <string name="post_detail_login_to_comment">Please login to comment Post</string>
+    <string name="post_detail_login_to_like_comment">Please login to like Comment</string>
+
+
 
 
 
@@ -164,6 +180,14 @@
     <string name="rating_play_store_redirect_message_line_2">Please help others to know about this app</string>
     <string name="rating_play_store_text">Rate us on Play Store</string>
     <string name="rating_type_suggestion">Type suggestion here</string>
+
+    <!--res.layout.activity_post_detail-->
+    <string name="activity_post_detail_user_image">User image</string>
+    <string name="activity_post_detail_current_user_image">Current User image</string>
+    <string name="activity_post_detail_type_comment">Type comment here</string>
+    <string name="activity_post_detail_send_icon">Send icon</string>
+
+
 
 
 

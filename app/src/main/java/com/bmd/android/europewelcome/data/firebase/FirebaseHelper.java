@@ -77,6 +77,8 @@ public interface FirebaseHelper {
 
     Query getPostsQueryOrderedByDate();
 
+    Query getPostsQueryOrderedByComments();
+
     Query getPostCommentsQuery(String postId);
 
     Query getPostSectionQuery(String postId);
@@ -95,11 +97,17 @@ public interface FirebaseHelper {
 
     Task<Void> saveStar(String userId, Post post);
 
+    Task<Void> saveCommentLike(String userId, PostComment postComment);
+
+    Task<Void> saveUserComment(String userId, PostComment postComment);
+
     Task<Void> saveRating(Rating rating);
 
     Task<Void> updatePost(Post post);
 
     Task<Void> updatePostSection(String postId ,PostSection postSection);
+
+    Task<Void> updatePostComment(String postId ,PostComment postComment);
 
     Task<Void> deletePost(Post post);
 
@@ -109,15 +117,23 @@ public interface FirebaseHelper {
 
     Task<Void> deleteStar(String userId ,Post post);
 
+    Task<Void> deleteCommentLike(String userId ,PostComment postComment);
+
     Task<DocumentSnapshot> getPost(String postId);
 
     Task<DocumentSnapshot> getBookmark(String userId, String postId);
 
     Task<DocumentSnapshot> getStar(String userId, String postId);
 
+    Task<DocumentSnapshot> getCommentLike(String userId, String commentId);
+
     Task<QuerySnapshot> getFirstPostSectionCollection(String postId);
 
     Task<QuerySnapshot> getFirstPostSection(String postId, String sectionViewType);
+
+    Task<QuerySnapshot> getUserDrafts(String userId);
+
+    Task<QuerySnapshot> getUserBookmarks(String userId);
 
     Task<Void> saveUser(User user);
 

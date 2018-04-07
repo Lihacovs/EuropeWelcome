@@ -29,4 +29,6 @@ public interface DraftsMvpPresenter<V extends DraftsMvpView> extends MvpPresente
     String getCurrentUserId();
 
     void deleteDraft(Post post);
+
+    void deleteAllDrafts();
 }

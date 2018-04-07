@@ -54,7 +54,7 @@ public class AppFirebaseHelper implements FirebaseHelper {
     private final FirebaseStorage mStorage;
 
     @Inject
-    public AppFirebaseHelper() {
+    AppFirebaseHelper() {
         mFirestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         mStorage = FirebaseStorage.getInstance();
@@ -181,12 +181,21 @@ public class AppFirebaseHelper implements FirebaseHelper {
     }
 
     @Override
+    public Query getPostsQueryOrderedByComments() {
+        return mFirestore.collection(AppConstants.POSTS_COLLECTION)
+                .whereEqualTo("postPublished", true)
+                .orderBy("postComments", Query.Direction.DESCENDING)
+                .orderBy("postCreationTimestamp", Query.Direction.DESCENDING);
+    }
+
+    @Override
     public Query getPostCommentsQuery(String postId) {
         return mFirestore
                 .collection(AppConstants.POSTS_COLLECTION)
                 .document(postId)
-                .collection(AppConstants.COMMENT_COLLECTION)
-                .orderBy("postCommentTimestamp", Query.Direction.DESCENDING);
+                .collection(AppConstants.POST_COMMENTS_COLLECTION)
+                .orderBy("postCommentStars", Query.Direction.DESCENDING)
+                .orderBy("postCommentTimestamp", Query.Direction.ASCENDING);
     }
 
     @Override
@@ -236,7 +245,7 @@ public class AppFirebaseHelper implements FirebaseHelper {
         return mFirestore
                 .collection(AppConstants.POSTS_COLLECTION)
                 .document(postId)
-                .collection(AppConstants.COMMENT_COLLECTION)
+                .collection(AppConstants.POST_COMMENTS_COLLECTION)
                 .document(postComment.getPostCommentId())
                 .set(postComment);
     }
@@ -257,6 +266,24 @@ public class AppFirebaseHelper implements FirebaseHelper {
                 .collection(AppConstants.STARS_COLLECTION)
                 .document(post.getPostId())
                 .set(post);
+    }
+
+    @Override
+    public Task<Void> saveCommentLike(String userId, PostComment postComment) {
+        return mFirestore.collection(AppConstants.USERS_COLLECTION)
+                .document(userId)
+                .collection(AppConstants.COMMENT_LIKES_COLLECTION)
+                .document(postComment.getPostCommentId())
+                .set(postComment);
+    }
+
+    @Override
+    public Task<Void> saveUserComment(String userId, PostComment postComment) {
+        return mFirestore.collection(AppConstants.USERS_COLLECTION)
+                .document(userId)
+                .collection(AppConstants.USER_COMMENTS_COLLECTION)
+                .document(postComment.getPostCommentId())
+                .set(postComment);
     }
 
     @Override
@@ -281,6 +308,15 @@ public class AppFirebaseHelper implements FirebaseHelper {
                 .collection(AppConstants.POST_SECTION_COLLECTION)
                 .document(postSection.getPostSectionId())
                 .set(postSection, SetOptions.merge());
+    }
+
+    @Override
+    public Task<Void> updatePostComment(String postId, PostComment postComment) {
+        return mFirestore.collection(AppConstants.POSTS_COLLECTION)
+                .document(postId)
+                .collection(AppConstants.POST_COMMENTS_COLLECTION)
+                .document(postComment.getPostCommentId())
+                .set(postComment, SetOptions.merge());
     }
 
     @Override
@@ -320,6 +356,15 @@ public class AppFirebaseHelper implements FirebaseHelper {
     }
 
     @Override
+    public Task<Void> deleteCommentLike(String userId, PostComment postComment) {
+        return mFirestore.collection(AppConstants.USERS_COLLECTION)
+                .document(userId)
+                .collection(AppConstants.COMMENT_LIKES_COLLECTION)
+                .document(postComment.getPostCommentId())
+                .delete();
+    }
+
+    @Override
     public Task<DocumentSnapshot> getPost(String postId) {
         DocumentReference docRef
                 = mFirestore.collection(AppConstants.POSTS_COLLECTION).document(postId);
@@ -345,6 +390,15 @@ public class AppFirebaseHelper implements FirebaseHelper {
     }
 
     @Override
+    public Task<DocumentSnapshot> getCommentLike(String userId, String commentId) {
+        return mFirestore.collection(AppConstants.USERS_COLLECTION)
+                .document(userId)
+                .collection(AppConstants.COMMENT_LIKES_COLLECTION)
+                .document(commentId)
+                .get();
+    }
+
+    @Override
     public Task<QuerySnapshot> getFirstPostSectionCollection(String postId) {
         return mFirestore
                 .collection(AppConstants.POSTS_COLLECTION)
@@ -362,6 +416,24 @@ public class AppFirebaseHelper implements FirebaseHelper {
                 .whereEqualTo("postSectionViewType", sectionViewType)
                 .orderBy("timeStamp", Query.Direction.ASCENDING)
                 .limit(1)
+                .get();
+    }
+
+    @Override
+    public Task<QuerySnapshot> getUserDrafts(String userId) {
+        return mFirestore
+                .collection(AppConstants.POSTS_COLLECTION)
+                .whereEqualTo("postAuthorId", userId)
+                .whereEqualTo("postAsDraft", true)
+                .get();
+    }
+
+    @Override
+    public Task<QuerySnapshot> getUserBookmarks(String userId) {
+        return mFirestore
+                .collection(AppConstants.USERS_COLLECTION)
+                .document(userId)
+                .collection(AppConstants.BOOKMARKS_COLLECTION)
                 .get();
     }
 

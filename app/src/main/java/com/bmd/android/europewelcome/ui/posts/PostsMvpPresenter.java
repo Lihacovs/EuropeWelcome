@@ -39,7 +39,7 @@ public interface PostsMvpPresenter <V extends PostsMvpView> extends MvpPresenter
 
     void onDrawerOptionLogoutClick();
 
-    void onFabClick();
+    void onNewPostClick();
 
     void onViewInitialized();
 

@@ -128,11 +128,13 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
         void onFilterPostsByViewsClick();
 
         void onFilterPostsByDateClick();
+
+        void onFilterPostsByCommentsClick();
     }
 
     @OnClick(R.id.fab)
     void onFabClick() {
-        mPresenter.onFabClick();
+        mPresenter.onNewPostClick();
     }
 
     @Override
@@ -266,12 +268,16 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
                 showFilterPopup(this.findViewById(R.id.filter_posts));
                 return true;
             case R.id.new_post:
+                mPresenter.onNewPostClick();
                 return true;
             case R.id.my_profile:
+                mPresenter.onDrawerOptionProfileClick();
                 return true;
             case R.id.about:
+                mPresenter.onDrawerOptionAboutClick();
                 return true;
             case R.id.logout_user:
+                mPresenter.onDrawerOptionLogoutClick();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -291,6 +297,10 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
                 case R.id.filter_posts_by_stars:
                     if (mCallback != null)
                         mCallback.onFilterPostsByStarsClick();
+                    return true;
+                case R.id.filter_posts_by_comments:
+                    if (mCallback != null)
+                        mCallback.onFilterPostsByCommentsClick();
                     return true;
                 case R.id.filter_posts_by_date:
                     if (mCallback != null)

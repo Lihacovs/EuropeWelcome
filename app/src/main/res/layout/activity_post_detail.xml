@@ -16,6 +16,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:descendantFocusability="beforeDescendants"
@@ -41,6 +42,7 @@
             app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
             <android.support.constraint.ConstraintLayout
+                android:id="@+id/cl_post_detail_user_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -48,7 +50,7 @@
                     android:id="@+id/iv_post_detail_user_image"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:contentDescription="User image"
+                    android:contentDescription="@string/activity_post_detail_user_image"
                     android:scaleType="fitXY"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -238,7 +240,7 @@
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
-            android:contentDescription="TODO"
+            android:contentDescription="@string/activity_post_detail_current_user_image"
             android:scaleType="fitXY"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -253,7 +255,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="2dp"
             android:layout_marginStart="8dp"
-            android:hint="Type comment here"
+            android:hint="@string/activity_post_detail_type_comment"
             android:inputType="textCapSentences|textMultiLine|textFilter"
             android:maxLines="3"
             android:singleLine="false"
@@ -268,7 +270,7 @@
             android:layout_height="48dp"
             android:layout_marginEnd="2dp"
             android:layout_marginRight="2dp"
-            android:contentDescription="TODO"
+            android:contentDescription="@string/activity_post_detail_send_icon"
             android:padding="6dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

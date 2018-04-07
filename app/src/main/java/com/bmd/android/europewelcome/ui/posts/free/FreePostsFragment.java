@@ -155,6 +155,18 @@ public class FreePostsFragment extends BaseFragment implements
     }
 
     @Override
+    public void onFilterPostsByCommentsClick() {
+        mFreePostsAdapter.stopListening();
+        mFreePostsAdapter = new FreePostsAdapter(
+                new FirestoreRecyclerOptions.Builder<Post>()
+                        .setQuery(mPresenter.getPostsQueryOrderedByComments(), Post.class)
+                        .build(), this);
+        mFreePostsAdapter.setAdapterCallback(this);
+        mRecyclerView.setAdapter(mFreePostsAdapter);
+        mFreePostsAdapter.startListening();
+    }
+
+    @Override
     public void hideLoadingSpinner() {
         hideLoading();
     }

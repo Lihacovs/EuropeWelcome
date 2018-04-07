@@ -15,11 +15,17 @@
 
 package com.bmd.android.europewelcome.ui.bookmarks;
 
+import android.support.annotation.NonNull;
+
 import com.bmd.android.europewelcome.R;
 import com.bmd.android.europewelcome.data.DataManager;
 import com.bmd.android.europewelcome.data.firebase.model.Post;
 import com.bmd.android.europewelcome.ui.base.BasePresenter;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import javax.inject.Inject;
 
@@ -54,8 +60,24 @@ public class BookmarksPresenter<V extends BookmarksMvpView> extends BasePresente
 
     @Override
     public void updatePost(Post post) {
-        //TODO: add +1 post watch, then update
         getDataManager().updatePost(post)
                 .addOnFailureListener(e -> getMvpView().onError(R.string.bookmarks_some_error));
+    }
+
+    @Override
+    public void deleteAllBookmarks() {
+        getMvpView().showLoading();
+        getDataManager().getUserBookmarks(getDataManager().getCurrentUserId())
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
+                        Post post = doc.toObject(Post.class);
+                        getDataManager().deleteBookmark(getDataManager().getCurrentUserId(), post);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    getMvpView().hideLoading();
+                    getMvpView().onError(R.string.bookmarks_some_error);
+                });
+        getMvpView().hideLoading();
     }
 }

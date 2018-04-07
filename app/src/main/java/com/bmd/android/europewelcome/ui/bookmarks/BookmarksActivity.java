@@ -20,6 +20,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -31,6 +33,7 @@ import android.view.MenuItem;
 
 import com.bmd.android.europewelcome.R;
 import com.bmd.android.europewelcome.data.firebase.model.Post;
+import com.bmd.android.europewelcome.ui.about.AboutFragment;
 import com.bmd.android.europewelcome.ui.base.BaseActivity;
 import com.bmd.android.europewelcome.ui.postdetail.PostDetailActivity;
 import com.bmd.android.europewelcome.ui.posts.free.FreePostsAdapter;
@@ -118,6 +121,50 @@ public class BookmarksActivity extends BaseActivity implements BookmarksMvpView,
     }
 
     @Override
+    public void onFragmentAttached() {
+    }
+
+    @Override
+    public void onFragmentDetached(String tag) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentByTag(tag);
+        if (fragment != null) {
+            fragmentManager
+                    .beginTransaction()
+                    .disallowAddToBackStack()
+                    .setCustomAnimations(R.anim.slide_left, R.anim.slide_right)
+                    .remove(fragment)
+                    .commitNow();
+        }
+    }
+
+    private void showAboutFragment() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .disallowAddToBackStack()
+                .setCustomAnimations(R.anim.slide_left, R.anim.slide_right)
+                .add(R.id.cl_root_view, AboutFragment.newInstance(), AboutFragment.TAG)
+                .commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentByTag(AboutFragment.TAG);
+        if (fragment == null) {
+            super.onBackPressed();
+        } else {
+            onFragmentDetached(AboutFragment.TAG);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        mPresenter.onDetach();
+        super.onDestroy();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.bookmarks_menu, menu);
@@ -130,24 +177,14 @@ public class BookmarksActivity extends BaseActivity implements BookmarksMvpView,
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
-                Intent upIntent = NavUtils.getParentActivityIntent(this);
-                upIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
-                    // This activity is NOT part of this app's task, so create a new task
-                    // when navigating up, with a synthesized back stack.
-                    TaskStackBuilder.create(this)
-                            // Add all of this activity's parents to the back stack
-                            .addNextIntentWithParentStack(upIntent)
-                            // Navigate up to the closest parent
-                            .startActivities();
-                } else {
-                    // This activity is part of this app's task, so simply
-                    // navigate up to the logical parent activity.
-                    NavUtils.navigateUpTo(this, upIntent);
-                }
+                finish();
                 return true;
             case R.id.delete_all_bookmarks:
-                showMessage("Delete All Bookmarks");
+                deleteAllBookmarks();
+                return true;
+            case R.id.about:
+                showAboutFragment();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -160,7 +197,7 @@ public class BookmarksActivity extends BaseActivity implements BookmarksMvpView,
     //TODO: implement menu
 
     @Override
-    public void onBookmarkIconClick(Post post) {
+    public void onBookmarkDeleteIconClick(Post post) {
         showYesNoDialog(getString(R.string.bookmarks_remove_bookmark),
                 getString(R.string.bookmarks_remove),
                 getString(R.string.bookmarks_cancel),
@@ -179,5 +216,20 @@ public class BookmarksActivity extends BaseActivity implements BookmarksMvpView,
     public void onViewHolderClick(Post post) {
         mPresenter.updatePost(post);
         startActivity(PostDetailActivity.getStartIntent(this, post.getPostId()));
+    }
+
+    private void deleteAllBookmarks(){
+        showYesNoDialog(getString(R.string.bookmarks_remove_all_bookmarks),
+                getString(R.string.bookmarks_remove),
+                getString(R.string.bookmarks_cancel),
+                (dialog, which) -> {
+                    switch (which) {
+                        case DialogInterface.BUTTON_POSITIVE:
+                            mPresenter.deleteAllBookmarks();
+                            break;
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            break;
+                    }
+                });
     }
 }

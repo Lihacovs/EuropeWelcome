@@ -45,4 +45,8 @@ public interface PostDetailMvpPresenter<V extends MvpView> extends MvpPresenter<
     void saveOrDeleteBookmark();
 
     void createNewComment(String comment);
+
+    void addOrRemoveCommentLike(PostComment postComment, PostCommentsAdapter.ViewHolder holder);
+
+    void checkCommentLikedByUser(PostComment postComment, PostCommentsAdapter.ViewHolder holder);
 }

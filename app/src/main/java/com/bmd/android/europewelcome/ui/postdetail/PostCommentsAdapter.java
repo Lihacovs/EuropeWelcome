@@ -16,6 +16,7 @@
 package com.bmd.android.europewelcome.ui.postdetail;
 
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,14 +44,17 @@ public class PostCommentsAdapter extends FirestoreRecyclerAdapter<PostComment, P
 
     private Callback mCallback;
 
+    private PostDetailActivity mActivity;
+
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See
      * {@link FirestoreRecyclerOptions} for configuration options.
      *
      * @param options Query in builder
      */
-    PostCommentsAdapter(FirestoreRecyclerOptions<PostComment> options) {
+    PostCommentsAdapter(FirestoreRecyclerOptions<PostComment> options, PostDetailActivity activity) {
         super(options);
+        mActivity = activity;
     }
 
     public void setAdapterCallback(Callback callback) {
@@ -76,6 +80,8 @@ public class PostCommentsAdapter extends FirestoreRecyclerAdapter<PostComment, P
         // Called each time there is a new query snapshot. You may want to use this method
         // to hide a loading spinner or check for the "no documents" state and update your UI.
         // ...
+        if (mCallback != null)
+            mCallback.hideLoadingSpinner();
     }
 
     @Override
@@ -86,10 +92,16 @@ public class PostCommentsAdapter extends FirestoreRecyclerAdapter<PostComment, P
 
     public interface Callback {
 
-        void onLikeCommentClick(PostComment postComment);
+        void onLikeCommentClick(PostComment postComment, ViewHolder holder);
+
+        void checkCommentLikedByUser(PostComment postComment, ViewHolder holder);
+
+        void onCommentUserImageClick(String userId);
+
+        void hideLoadingSpinner();
     }
 
-    public class ViewHolder extends BaseViewHolder {
+    public class ViewHolder extends BaseViewHolder implements PostDetailActivity.Callback{
         @BindView(R.id.iv_comment_item_user_image)
         ImageView mPostCommentUserImageIv;
 
@@ -108,11 +120,16 @@ public class PostCommentsAdapter extends FirestoreRecyclerAdapter<PostComment, P
         @BindView(R.id.iv_comment_item_star_icon)
         ImageView mStarIv;
 
+        @BindView(R.id.cl_comment_item_star_container)
+        ConstraintLayout mStarContainerCl;
+
         private PostComment mPostComment;
 
         ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            //TODO: should not point to Activity directly
+            mActivity.setPostDetailActivityCallback(this);
         }
 
         protected void clear() {
@@ -147,16 +164,43 @@ public class PostCommentsAdapter extends FirestoreRecyclerAdapter<PostComment, P
                 mPostCommentTextTv.setText(postComment.getPostCommentText());
             }
 
-            if (postComment.getPostCommentStars() != null) {
-                mPostStarsTv.setText(postComment.getPostCommentStars());
+            mPostStarsTv.setText(String.valueOf(postComment.getPostCommentStars()));
+
+            if(mCallback != null) {
+                mCallback.checkCommentLikedByUser(mPostComment, this);
             }
 
         }
 
-        @OnClick(R.id.cl_comment_item_like_comment)
+        @OnClick(R.id.cl_comment_item_star_container)
         void onLikeCommentClick(){
-            if(mCallback != null)
-                mCallback.onLikeCommentClick(mPostComment);
+            if(mCallback != null){
+                mStarContainerCl.setEnabled(false);
+                mCallback.onLikeCommentClick(mPostComment, this);
+            }
+        }
+
+        @OnClick(R.id.iv_comment_item_user_image)
+        void onUserImageClick(){
+            if(mCallback != null){
+                mCallback.onCommentUserImageClick(mPostComment.getPostCommentUserId());
+            }
+        }
+
+        @Override
+        public void setCommentLikeIcon(ViewHolder holder) {
+            holder.mStarIv.setImageResource(R.drawable.ic_fill_star_blue_24px);
+            holder.mPostStarsTv.setTextColor(itemView
+                    .getContext().getResources().getColor(R.color.orange));
+            holder.mStarContainerCl.setEnabled(true);
+        }
+
+        @Override
+        public void removeCommentLikeIcon(ViewHolder holder) {
+            holder.mStarIv.setImageResource(R.drawable.ic_border_star_blue_24px);
+            holder.mPostStarsTv.setTextColor(itemView
+                    .getContext().getResources().getColor(R.color.gray_500));
+            holder.mStarContainerCl.setEnabled(true);
         }
     }
 }

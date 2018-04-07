@@ -62,6 +62,11 @@ public class FreePostsPresenter<V extends FreePostsMvpView> extends BasePresente
     }
 
     @Override
+    public Query getPostsQueryOrderedByComments() {
+        return getDataManager().getPostsQueryOrderedByComments();
+    }
+
+    @Override
     public void updatePost(Post post) {
         getDataManager().updatePost(post)
                 .addOnFailureListener(e -> getMvpView().onError(R.string.free_posts_some_error));

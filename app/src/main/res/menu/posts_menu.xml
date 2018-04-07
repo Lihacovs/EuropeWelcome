@@ -33,7 +33,6 @@
         android:id="@+id/about"
         android:title="About App"
         app:showAsAction="never"/>
-
     <item
         android:id="@+id/logout_user"
         android:title="Logout"

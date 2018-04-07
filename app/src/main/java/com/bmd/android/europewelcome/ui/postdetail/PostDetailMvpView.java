@@ -43,4 +43,8 @@ public interface PostDetailMvpView extends MvpView {
     void setPostStars(String starsCount);
 
     void setPostComments(String commentsCount);
+
+    void setCommentLikeIcon(PostCommentsAdapter.ViewHolder holder);
+
+    void setNotCommentLikeIcon(PostCommentsAdapter.ViewHolder holder);
 }

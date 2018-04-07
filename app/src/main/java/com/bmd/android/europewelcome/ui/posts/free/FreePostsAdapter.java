@@ -146,6 +146,7 @@ public class FreePostsAdapter extends FirestoreRecyclerAdapter<Post, FreePostsAd
         ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            //TODO: should not point to Activity directly
             mFragment.setFreePostFragmentCallback(this);
         }
 

@@ -35,6 +35,8 @@ public interface FreePostsMvpPresenter<V extends FreePostsMvpView>
 
     Query getPostsQueryOrderedByDate();
 
+    Query getPostsQueryOrderedByComments();
+
     void updatePost(Post post);
 
     void addOrRemoveStar(Post post, FreePostsAdapter.ViewHolder holder);

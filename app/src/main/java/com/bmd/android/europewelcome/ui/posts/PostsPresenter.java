@@ -104,7 +104,7 @@ public class PostsPresenter <V extends PostsMvpView> extends BasePresenter<V>
     }
 
     @Override
-    public void onFabClick() {
+    public void onNewPostClick() {
         if(checkUserSigned()){
             getMvpView().openNewPostActivity();
         }else{
