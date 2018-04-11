@@ -93,6 +93,12 @@
     <string name="post_detail_login_to_comment">Please login to comment Post</string>
     <string name="post_detail_login_to_like_comment">Please login to like Comment</string>
 
+    <!--ui.profile.Profile-->
+    <string name="profile_user_posts">User Posts</string>
+    <string name="profile_user_comments">User Comments</string>
+    <string name="profile_some_error">Some error occurred. Try again</string>
+
+
 
 
 

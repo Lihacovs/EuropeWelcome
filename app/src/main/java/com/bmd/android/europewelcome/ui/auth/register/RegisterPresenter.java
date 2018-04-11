@@ -170,7 +170,9 @@ public class RegisterPresenter<V extends RegisterMvpView> extends BasePresenter<
                                         DataManager.LoggedInMode.LOGGED_IN_MODE_SERVER,
                                         getDataManager().getFirebaseUserName(),
                                         getDataManager().getFirebaseUserEmail(),
-                                        getDataManager().getFirebaseUserImageUrl()
+                                        getDataManager().getFirebaseUserImageUrl(),
+                                        newUser.getUserBirthDate(),
+                                        newUser.getUserGender()
                                 );
 
                                 getDataManager().setLastUsedEmail(email);

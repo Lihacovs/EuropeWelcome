@@ -13,22 +13,25 @@
  * limitations under the License.
  */
 
-package com.bmd.android.europewelcome.ui.profile;
+package com.bmd.android.europewelcome.ui.profile.changeprofile;
 
 import com.bmd.android.europewelcome.ui.base.MvpView;
 
 /**
- * View interface for {@link ProfileActivity}
+ * View interface for {@link ChangeProfileFragment}
  */
-public interface ProfileMvpView extends MvpView {
+public interface ChangeProfileMvpView extends MvpView {
 
-    void loadUserName(String userName);
+    void loadUserPhoto(String photoUrl);
 
-    void loadUserImageUrl(String userName);
+    void loadUserName(String name);
 
-    void loadUserBirthDate(String userBirthDate);
+    void loadUserEmail(String email);
 
-    void showChangeProfile();
+    void loadUserBirthDate(String date);
 
-    void hideChangeProfile();
+    void loadUserGender(String gender);
+
+    void detachFragment();
+
 }

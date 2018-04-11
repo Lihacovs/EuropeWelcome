@@ -16,6 +16,7 @@
 package com.bmd.android.europewelcome.ui.auth;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 
 import com.bmd.android.europewelcome.R;
 import com.bmd.android.europewelcome.data.DataManager;
@@ -24,7 +25,10 @@ import com.bmd.android.europewelcome.ui.base.BasePresenter;
 import com.bmd.android.europewelcome.utils.CommonUtils;
 import com.facebook.AccessToken;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
@@ -80,18 +84,28 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
                         return;
                     }
 
-                    getDataManager().updateUserInfo(
-                            null,
-                            getDataManager().getFirebaseUserId(),
-                            DataManager.LoggedInMode.LOGGED_IN_MODE_SERVER,
-                            getDataManager().getFirebaseUserName(),
-                            getDataManager().getFirebaseUserEmail(),
-                            getDataManager().getFirebaseUserImageUrl()
-                    );
+                    getDataManager().getUser(authResult.getUser().getUid())
+                            .addOnSuccessListener(documentSnapshot -> {
+                                User user = documentSnapshot.toObject(User.class);
 
-                    getDataManager().setLastUsedEmail(email);
-                    getMvpView().hideLoading();
-                    getMvpView().openMainActivity();
+                                getDataManager().updateUserInfo(
+                                        null,
+                                        getDataManager().getFirebaseUserId(),
+                                        DataManager.LoggedInMode.LOGGED_IN_MODE_SERVER,
+                                        getDataManager().getFirebaseUserName(),
+                                        getDataManager().getFirebaseUserEmail(),
+                                        getDataManager().getFirebaseUserImageUrl(),
+                                        user.getUserBirthDate(),
+                                        user.getUserGender()
+                                );
+
+                                getDataManager().setLastUsedEmail(email);
+                                getMvpView().hideLoading();
+                                getMvpView().openMainActivity();
+
+                            }).addOnFailureListener(e -> {
+                                getMvpView().onError(R.string.login_some_error);
+                            });
                 }).addOnFailureListener(e -> {
                     if (!isViewAttached()) {
                         return;
@@ -134,21 +148,9 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
                         return;
                     }
 
-                    //saves user profile in Firestore database
-                    createNewFirestoreUser();
+                    //saves user profile in Firestore database if not exist
+                    createNewFirestoreUser(authResult, DataManager.LoggedInMode.LOGGED_IN_MODE_GOOGLE);
 
-                    //updates user profile in SharedPrefs
-                    getDataManager().updateUserInfo(
-                            null,
-                            getDataManager().getFirebaseUserId(),
-                            DataManager.LoggedInMode.LOGGED_IN_MODE_GOOGLE,
-                            getDataManager().getFirebaseUserName(),
-                            getDataManager().getFirebaseUserEmail(),
-                            getDataManager().getFirebaseUserImageUrl()
-                    );
-
-                    getMvpView().hideLoading();
-                    getMvpView().openMainActivity();
                 }).addOnFailureListener(e -> {
                     if (!isViewAttached()) {
                         return;
@@ -172,21 +174,9 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
                         return;
                     }
 
-                    //saves user profile in Firestore database
-                    createNewFirestoreUser();
+                    //saves user profile in Firestore database if not exist
+                    createNewFirestoreUser(authResult, DataManager.LoggedInMode.LOGGED_IN_MODE_FB);
 
-                    //updates user profile in SharedPrefs
-                    getDataManager().updateUserInfo(
-                            null,
-                            getDataManager().getFirebaseUserId(),
-                            DataManager.LoggedInMode.LOGGED_IN_MODE_FB,
-                            getDataManager().getFirebaseUserName(),
-                            getDataManager().getFirebaseUserEmail(),
-                            getDataManager().getFirebaseUserImageUrl()
-                    );
-
-                    getMvpView().hideLoading();
-                    getMvpView().openMainActivity();
                 }).addOnFailureListener(e -> {
                     if (!isViewAttached()) {
                         return;
@@ -205,7 +195,7 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
         return getDataManager().getLastUsedEmail();
     }
 
-    private void createNewFirestoreUser() {
+    private void createNewFirestoreUser(AuthResult authResult, DataManager.LoggedInMode mode) {
         getDataManager().getUser(getDataManager().getFirebaseUserId())
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -217,14 +207,45 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
                                     null,
                                     getDataManager().getFirebaseUserName(),
                                     getDataManager().getFirebaseUserImageUrl(),
-                                    null,
-                                    null,
+                                    "Not specified",
+                                    "Day Month Year",
                                     CommonUtils.getCurrentDate()
 
                             );
-                            getDataManager().saveUser(newUser);
+                            getDataManager().saveUser(newUser).addOnSuccessListener(aVoid -> {
+                                updateUserInfo(authResult, mode);
+                            }).addOnFailureListener(e -> {
+                                getMvpView().onError(R.string.login_some_error);
+                            });
+                        }else{
+                            updateUserInfo(authResult, mode);
                         }
                     }
                 });
+    }
+
+    private void updateUserInfo(AuthResult authResult, DataManager.LoggedInMode mode){
+        getDataManager().getUser(authResult.getUser().getUid())
+                .addOnSuccessListener(documentSnapshot -> {
+                    User user = documentSnapshot.toObject(User.class);
+
+                    //updates user profile in SharedPrefs
+                    getDataManager().updateUserInfo(
+                            null,
+                            getDataManager().getFirebaseUserId(),
+                            mode,
+                            getDataManager().getFirebaseUserName(),
+                            getDataManager().getFirebaseUserEmail(),
+                            getDataManager().getFirebaseUserImageUrl(),
+                            user.getUserBirthDate(),
+                            user.getUserGender()
+                    );
+
+                    getMvpView().hideLoading();
+                    getMvpView().openMainActivity();
+
+                }).addOnFailureListener(e -> {
+            getMvpView().onError(R.string.login_some_error);
+        });
     }
 }

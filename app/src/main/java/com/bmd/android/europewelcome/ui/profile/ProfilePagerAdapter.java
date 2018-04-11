@@ -13,23 +13,18 @@
  * limitations under the License.
  */
 
-package com.bmd.android.europewelcome.ui.posts;
+package com.bmd.android.europewelcome.ui.profile;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.bmd.android.europewelcome.ui.posts.free.FreePostsFragment;
-import com.bmd.android.europewelcome.ui.posts.premium.PremiumPostsFragment;
-
-/**
- * Created by BIT on 12/6/2017.
- */
-public class PostsPagerAdapter extends FragmentStatePagerAdapter {
+public class ProfilePagerAdapter extends FragmentStatePagerAdapter {
 
     private int mTabCount;
+    private Callback mCallback;
 
-    public PostsPagerAdapter(FragmentManager fragmentManager) {
+    public ProfilePagerAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);
         this.mTabCount = 0;
     }
@@ -39,9 +34,9 @@ public class PostsPagerAdapter extends FragmentStatePagerAdapter {
 
         switch (position) {
             case 0:
-                return FreePostsFragment.newInstance();
+                return mCallback.getUserPostsFragment();
             case 1:
-                return PremiumPostsFragment.newInstance();
+                return mCallback.getUserCommentsFragment();
             default:
                 return null;
         }
@@ -54,5 +49,19 @@ public class PostsPagerAdapter extends FragmentStatePagerAdapter {
 
     public void setCount(int count) {
         mTabCount = count;
+    }
+
+    /**
+     * Callback for {@link ProfileActivity}
+     */
+    public void setProfilePagerAdapterCallback(Callback callback) {
+        mCallback = callback;
+    }
+
+    public interface Callback {
+
+        Fragment getUserPostsFragment();
+
+        Fragment getUserCommentsFragment();
     }
 }

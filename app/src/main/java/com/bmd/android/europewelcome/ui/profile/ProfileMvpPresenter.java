@@ -15,8 +15,6 @@
 
 package com.bmd.android.europewelcome.ui.profile;
 
-import android.net.Uri;
-
 import com.bmd.android.europewelcome.ui.base.MvpPresenter;
 
 /**
@@ -25,12 +23,6 @@ import com.bmd.android.europewelcome.ui.base.MvpPresenter;
 public interface ProfileMvpPresenter<V extends ProfileMvpView> extends MvpPresenter<V> {
 
     void loadUserProfile();
-
-    void newUserName(String userName);
-
-    void newUserEmail(String userEmail);
-
-    void uploadUserImageToStorage(Uri uri);
 
     void setUserId(String userId);
 }

@@ -226,6 +226,24 @@ public class AppFirebaseHelper implements FirebaseHelper {
     }
 
     @Override
+    public Query getUserPostsQuery(String userId) {
+        return mFirestore
+                .collection(AppConstants.POSTS_COLLECTION)
+                .whereEqualTo("postAuthorId", userId)
+                .whereEqualTo("postPublished", true)
+                .orderBy("postCreationTimestamp", Query.Direction.DESCENDING);
+    }
+
+    @Override
+    public Query getUserCommentsQuery(String userId) {
+        return mFirestore
+                .collection(AppConstants.USERS_COLLECTION)
+                .document(userId)
+                .collection(AppConstants.USER_COMMENTS_COLLECTION)
+                .orderBy("postCommentTimestamp", Query.Direction.DESCENDING);
+    }
+
+    @Override
     public Task<Void> savePost(Post post) {
         return mFirestore.collection("posts").document(post.getPostId()).set(post);
     }
@@ -449,6 +467,13 @@ public class AppFirebaseHelper implements FirebaseHelper {
         DocumentReference docRef
                 = mFirestore.collection(AppConstants.USERS_COLLECTION).document(userId);
         return docRef.get();
+    }
+
+    @Override
+    public Task<Void> updateUser(User user) {
+        return mFirestore.collection(AppConstants.USERS_COLLECTION)
+                .document(user.getUserId())
+                .set(user, SetOptions.merge());
     }
 
     //=//=// F I R E B A S E  -  S T O R A G E //=//=//

@@ -21,7 +21,7 @@ import com.bmd.android.europewelcome.ui.base.BasePresenter;
 import javax.inject.Inject;
 
 /**
- * Created by Konstantins on 12/6/2017.
+ * Created by BIT on 12/6/2017.
  */
 
 public class PremiumPostsPresenter <V extends PremiumPostsMvpView> extends BasePresenter<V>

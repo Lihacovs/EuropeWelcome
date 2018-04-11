@@ -18,8 +18,7 @@ package com.bmd.android.europewelcome.ui.posts.premium;
 import com.bmd.android.europewelcome.ui.base.MvpView;
 
 /**
- * Created by Konstantins on 12/6/2017.
+ * Created by BIT on 12/6/2017.
  */
-
 public interface PremiumPostsMvpView extends MvpView {
 }

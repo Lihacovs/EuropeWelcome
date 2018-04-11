@@ -15,17 +15,10 @@
 
 package com.bmd.android.europewelcome.ui.profile;
 
-import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.util.Log;
-
+import com.bmd.android.europewelcome.R;
 import com.bmd.android.europewelcome.data.DataManager;
 import com.bmd.android.europewelcome.data.firebase.model.User;
 import com.bmd.android.europewelcome.ui.base.BasePresenter;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.storage.UploadTask;
 
 import javax.inject.Inject;
 
@@ -43,13 +36,14 @@ public class ProfilePresenter<V extends ProfileMvpView> extends BasePresenter<V>
     @Inject
     ProfilePresenter(DataManager dataManager) {
         super(dataManager);
-
     }
 
     @Override
     public void loadUserProfile() {
 
-        if(mUserId.equals(getDataManager().getCurrentUserId())) {
+        if (mUserId.equals(getDataManager().getCurrentUserId())) {
+            getMvpView().showChangeProfile();
+
             final String currentUserPhotoUrl = getDataManager().getCurrentUserProfilePicUrl();
             if (currentUserPhotoUrl != null && !currentUserPhotoUrl.isEmpty()) {
                 getMvpView().loadUserImageUrl(currentUserPhotoUrl);
@@ -60,80 +54,32 @@ public class ProfilePresenter<V extends ProfileMvpView> extends BasePresenter<V>
                 getMvpView().loadUserName(currentUserName);
             }
 
-            final String currentUserEmail = getDataManager().getCurrentUserEmail();
-            if (currentUserEmail != null && !currentUserEmail.isEmpty()) {
-                getMvpView().loadUserEmail(currentUserEmail);
-            }
-
-            final String profileUserBirthDate = "d MMM yyyy";
+            //Just show email for current user or implement current user birth date in Shared Prefs
+            final String profileUserBirthDate = getDataManager().getCurrentUserEmail();
             if (profileUserBirthDate != null && !profileUserBirthDate.isEmpty()) {
                 getMvpView().loadUserBirthDate(profileUserBirthDate);
             }
+
+            getMvpView().hideLoading();
             return;
+        } else {
+            getMvpView().hideChangeProfile();
         }
 
-        getDataManager().getUser(mUserId).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                mUser = documentSnapshot.toObject(User.class);
+        getDataManager().getUser(mUserId).addOnSuccessListener(documentSnapshot -> {
+            mUser = documentSnapshot.toObject(User.class);
 
-                getMvpView().loadUserImageUrl(mUser.getUserPhotoUrl());
-                getMvpView().loadUserName(mUser.getUserName());
-                getMvpView().loadUserEmail(mUser.getUserEmail());
-                getMvpView().loadUserBirthDate(mUser.getUserBirthDate());
+            getMvpView().loadUserImageUrl(mUser.getUserPhotoUrl());
+            getMvpView().loadUserName(mUser.getUserName());
+            getMvpView().loadUserBirthDate(mUser.getUserBirthDate());
 
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-            }
+            getMvpView().hideLoading();
+        }).addOnFailureListener(e -> {
+            getMvpView().hideLoading();
+            getMvpView().onError(R.string.profile_some_error);
         });
 
 
-    }
-
-    @Override
-    public void newUserName(String userName) {
-        if(!userName.equals(getDataManager().getCurrentUserName())) {
-            getDataManager().setFirebaseUserName(userName);
-            getDataManager().setCurrentUserName(userName);
-        }
-    }
-
-    @Override
-    public void newUserEmail(String userEmail) {
-        if(!userEmail.equals(getDataManager().getCurrentUserEmail())) {
-            getDataManager().setFirebaseUserEmail(userEmail);
-            getDataManager().setCurrentUserEmail(userEmail);
-        }
-    }
-
-    @Override
-    public void uploadUserImageToStorage(Uri uri) {
-        getMvpView().showMessage("Uploading...");
-        getDataManager().uploadFileToStorage(uri,"userPhotos/")
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Log.d(TAG, "uploadPhoto:onSuccess:" +
-                                taskSnapshot.getMetadata().getReference().getPath());
-
-                        Uri downloadUri = taskSnapshot.getDownloadUrl();
-                        String downloadUrlString = downloadUri.toString();
-                        getDataManager().setCurrentUserProfilePicUrl(downloadUrlString);
-                        getDataManager().setFirebaseUserImageUrl(downloadUrlString);
-                        getMvpView().loadUserImageUrl(downloadUrlString);
-
-                        getMvpView().showMessage("Image uploaded");
-                    }
-                }).removeOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.w(TAG, "uploadPhoto:onError", e);
-                getMvpView().showMessage("Upload failed");
-            }
-        });
     }
 
     @Override

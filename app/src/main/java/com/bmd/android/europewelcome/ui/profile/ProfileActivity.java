@@ -15,17 +15,17 @@
 
 package com.bmd.android.europewelcome.ui.profile;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.NavUtils;
-import android.support.v4.app.TaskStackBuilder;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -33,6 +33,9 @@ import com.bmd.android.europewelcome.R;
 import com.bmd.android.europewelcome.di.module.GlideApp;
 import com.bmd.android.europewelcome.ui.about.AboutFragment;
 import com.bmd.android.europewelcome.ui.base.BaseActivity;
+import com.bmd.android.europewelcome.ui.profile.changeprofile.ChangeProfileFragment;
+import com.bmd.android.europewelcome.ui.profile.usercomments.UserCommentsFragment;
+import com.bmd.android.europewelcome.ui.profile.userposts.UserPostsFragment;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 
@@ -45,19 +48,26 @@ import butterknife.OnClick;
 /**
  * Profile Activity.
  */
-public class ProfileActivity extends BaseActivity implements ProfileMvpView {
+public class ProfileActivity extends BaseActivity
+        implements ProfileMvpView, ProfilePagerAdapter.Callback, ChangeProfileFragment.Callback{
 
-    private static final int RC_CHOOSE_PHOTO = 101;
-    private static final int RC_IMAGE_PERMS = 102;
-    private static final String PERMS = Manifest.permission.READ_EXTERNAL_STORAGE;
     private static final String EXTRA_USER_ID =
             "com.bmd.android.europewelcome.postdetail.user_id";
 
     @Inject
     ProfileMvpPresenter<ProfileMvpView> mPresenter;
 
+    @Inject
+    ProfilePagerAdapter mPagerAdapter;
+
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+
+    @BindView(R.id.feed_view_pager)
+    ViewPager mViewPager;
+
+    @BindView(R.id.tab_layout)
+    TabLayout mTabLayout;
 
     @BindView(R.id.iv_profile_user_photo)
     ImageView mUserImageIv;
@@ -65,11 +75,13 @@ public class ProfileActivity extends BaseActivity implements ProfileMvpView {
     @BindView(R.id.tv_profile_user_name)
     TextView mUserNameIv;
 
-    @BindView(R.id.tv_profile_user_email)
-    TextView mUserEmailIv;
-
     @BindView(R.id.tv_profile_user_birth_date)
     TextView mUserBirthDateIv;
+
+    @BindView(R.id.tv_profile_change_profile)
+    TextView mChangeProfileTv;
+
+    private String mUserId;
 
     public static Intent getStartIntent(Context context, String userId) {
         Intent intent = new Intent(context, ProfileActivity.class);
@@ -86,7 +98,9 @@ public class ProfileActivity extends BaseActivity implements ProfileMvpView {
 
         setUnBinder(ButterKnife.bind(this));
 
-        mPresenter.setUserId((String) getIntent().getSerializableExtra(EXTRA_USER_ID));
+        mUserId = (String) getIntent().getSerializableExtra(EXTRA_USER_ID);
+
+        mPresenter.setUserId(mUserId);
 
         mPresenter.onAttach(this);
 
@@ -95,6 +109,7 @@ public class ProfileActivity extends BaseActivity implements ProfileMvpView {
 
     @Override
     protected void setUp() {
+        showLoading();
         setSupportActionBar(mToolbar);
 
         if (getSupportActionBar() != null) {
@@ -102,16 +117,46 @@ public class ProfileActivity extends BaseActivity implements ProfileMvpView {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
+        //Tabs
+        mPagerAdapter.setCount(2);
+        mPagerAdapter.setProfilePagerAdapterCallback(this);
+
+        mViewPager.setAdapter(mPagerAdapter);
+
+        mTabLayout.addTab(mTabLayout.newTab().setText(R.string.profile_user_posts));
+        mTabLayout.addTab(mTabLayout.newTab().setText(R.string.profile_user_comments));
+        mViewPager.setOffscreenPageLimit(mTabLayout.getTabCount());
+
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
+
+        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                mViewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
         mPresenter.loadUserProfile();
     }
 
     @OnClick(R.id.tv_profile_change_profile)
-    void onChangeProfileTvClick(){
-        onError("profile snackbar test");
+    void onChangeProfileTvClick() {
+        showChangeProfileFragment();
     }
 
     @Override
     public void onFragmentAttached() {
+
     }
 
     @Override
@@ -137,14 +182,28 @@ public class ProfileActivity extends BaseActivity implements ProfileMvpView {
                 .commit();
     }
 
+    /**
+     * Attaches {@link ChangeProfileFragment} to this activity
+     */
+    private void showChangeProfileFragment() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .disallowAddToBackStack()
+                .setCustomAnimations(R.anim.slide_left, R.anim.slide_right)
+                .add(R.id.cl_root_view, ChangeProfileFragment.newInstance(), ChangeProfileFragment.TAG)
+                .commit();
+    }
+
     @Override
     public void onBackPressed() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentByTag(AboutFragment.TAG);
-        if (fragment == null) {
+        Fragment fragment2 = fragmentManager.findFragmentByTag(ChangeProfileFragment.TAG);
+        if (fragment == null & fragment2 == null) {
             super.onBackPressed();
         } else {
             onFragmentDetached(AboutFragment.TAG);
+            onFragmentDetached(ChangeProfileFragment.TAG);
         }
     }
 
@@ -169,37 +228,6 @@ public class ProfileActivity extends BaseActivity implements ProfileMvpView {
         return super.onOptionsItemSelected(item);
     }
 
-    /*@OnClick(R.id.iv_profileactivity_userimage)
-    @AfterPermissionGranted(RC_IMAGE_PERMS)
-    void onProfileImageClick(){
-        if (!EasyPermissions.hasPermissions(this, PERMS)) {
-            EasyPermissions.requestPermissions(this, getString(R.string.rational_image_perm),
-                    RC_IMAGE_PERMS, PERMS);
-            return;
-        }
-
-        Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(i, RC_CHOOSE_PHOTO);
-    }*/
-
-    /*@Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == RC_CHOOSE_PHOTO) {
-            if (resultCode == RESULT_OK) {
-                Uri selectedImage = data.getData();
-                mPresenter.uploadUserImageToStorage(selectedImage);
-
-            } else {
-                Toast.makeText(this, "No image chosen", Toast.LENGTH_SHORT).show();
-            }
-        } else if (requestCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE
-                && EasyPermissions.hasPermissions(this, PERMS)) {
-            onProfileImageClick();
-        }
-    }*/
-
     @Override
     protected void onDestroy() {
         mPresenter.onDetach();
@@ -223,12 +251,32 @@ public class ProfileActivity extends BaseActivity implements ProfileMvpView {
     }
 
     @Override
-    public void loadUserEmail(String userEmail) {
-        mUserEmailIv.setText(userEmail);
+    public void loadUserBirthDate(String userBirthDate) {
+        mUserBirthDateIv.setText(userBirthDate);
     }
 
     @Override
-    public void loadUserBirthDate(String userBirthDate) {
-        mUserBirthDateIv.setText(userBirthDate);
+    public void showChangeProfile() {
+        mChangeProfileTv.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideChangeProfile() {
+        mChangeProfileTv.setVisibility(View.GONE);
+    }
+
+    @Override
+    public Fragment getUserPostsFragment() {
+        return UserPostsFragment.newInstance(mUserId);
+    }
+
+    @Override
+    public Fragment getUserCommentsFragment() {
+        return UserCommentsFragment.newInstance(mUserId);
+    }
+
+    @Override
+    public void updateUserData() {
+        mPresenter.loadUserProfile();
     }
 }

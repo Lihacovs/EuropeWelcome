@@ -29,6 +29,9 @@ import com.bmd.android.europewelcome.ui.posts.free.FreePostsFragment;
 import com.bmd.android.europewelcome.ui.posts.premium.PremiumPostsFragment;
 import com.bmd.android.europewelcome.ui.posts.rating.RateUsDialog;
 import com.bmd.android.europewelcome.ui.profile.ProfileActivity;
+import com.bmd.android.europewelcome.ui.profile.changeprofile.ChangeProfileFragment;
+import com.bmd.android.europewelcome.ui.profile.usercomments.UserCommentsFragment;
+import com.bmd.android.europewelcome.ui.profile.userposts.UserPostsFragment;
 
 import dagger.Component;
 
@@ -58,7 +61,13 @@ public interface ActivityComponent {
 
     void inject(RegisterFragment fragment);
 
+    void inject(ChangeProfileFragment fragment);
+
     void inject(PremiumPostsFragment fragment);
+
+    void inject(UserPostsFragment fragment);
+
+    void inject(UserCommentsFragment fragment);
 
     void inject(FreePostsFragment fragment);
 

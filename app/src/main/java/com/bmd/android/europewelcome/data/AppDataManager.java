@@ -128,6 +128,26 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public String getCurrentUserBirthDate() {
+        return mPreferencesHelper.getCurrentUserBirthDate();
+    }
+
+    @Override
+    public void setCurrentUserBirthDate(String birthDate) {
+        mPreferencesHelper.setCurrentUserBirthDate(birthDate);
+    }
+
+    @Override
+    public String getCurrentUserGender() {
+        return mPreferencesHelper.getCurrentUserGender();
+    }
+
+    @Override
+    public void setCurrentUserGender(String gender) {
+        mPreferencesHelper.setCurrentUserGender(gender);
+    }
+
+    @Override
     public String getCurrentUserProfilePicUrl() {
         return mPreferencesHelper.getCurrentUserProfilePicUrl();
     }
@@ -144,7 +164,9 @@ public class AppDataManager implements DataManager {
             LoggedInMode loggedInMode,
             String userName,
             String email,
-            String profilePicPath) {
+            String profilePicPath,
+            String userBirthDate,
+            String userGender) {
 
         setAccessToken(accessToken);
         setCurrentUserId(userId);
@@ -152,6 +174,8 @@ public class AppDataManager implements DataManager {
         setCurrentUserName(userName);
         setCurrentUserEmail(email);
         setCurrentUserProfilePicUrl(profilePicPath);
+        setCurrentUserBirthDate(userBirthDate);
+        setCurrentUserGender(userGender);
     }
 
     @Override
@@ -160,6 +184,8 @@ public class AppDataManager implements DataManager {
                 null,
                 null,
                 DataManager.LoggedInMode.LOGGED_IN_MODE_LOGGED_OUT,
+                null,
+                null,
                 null,
                 null,
                 null);
@@ -273,6 +299,16 @@ public class AppDataManager implements DataManager {
     @Override
     public Query getBookmarkedPostsQuery(String userId) {
         return mFirebaseHelper.getBookmarkedPostsQuery(userId);
+    }
+
+    @Override
+    public Query getUserPostsQuery(String userId) {
+        return mFirebaseHelper.getUserPostsQuery(userId);
+    }
+
+    @Override
+    public Query getUserCommentsQuery(String userId) {
+        return mFirebaseHelper.getUserCommentsQuery(userId);
     }
 
     @Override
@@ -403,6 +439,11 @@ public class AppDataManager implements DataManager {
     @Override
     public Task<DocumentSnapshot> getUser(String userId) {
         return mFirebaseHelper.getUser(userId);
+    }
+
+    @Override
+    public Task<Void> updateUser(User user) {
+        return mFirebaseHelper.updateUser(user);
     }
 
     @Override

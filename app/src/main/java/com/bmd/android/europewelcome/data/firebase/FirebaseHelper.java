@@ -87,6 +87,10 @@ public interface FirebaseHelper {
 
     Query getBookmarkedPostsQuery(String userId);
 
+    Query getUserPostsQuery(String userId);
+
+    Query getUserCommentsQuery(String userId);
+
     Task<Void> savePost(Post post);
 
     Task<Void> savePostSection(PostSection postSection, String postId);
@@ -138,6 +142,8 @@ public interface FirebaseHelper {
     Task<Void> saveUser(User user);
 
     Task<DocumentSnapshot> getUser(String userId);
+
+    Task<Void> updateUser(User user);
 
     //=//=// F I R E B A S E  -  S T O R A G E //=//=//
 

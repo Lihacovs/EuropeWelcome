@@ -40,6 +40,14 @@ public interface PreferencesHelper {
 
     void setCurrentUserEmail(String email);
 
+    String getCurrentUserBirthDate();
+
+    void setCurrentUserBirthDate(String birthDate);
+
+    String getCurrentUserGender();
+
+    void setCurrentUserGender(String gender);
+
     String getCurrentUserProfilePicUrl();
 
     void setCurrentUserProfilePicUrl(String profilePicUrl);

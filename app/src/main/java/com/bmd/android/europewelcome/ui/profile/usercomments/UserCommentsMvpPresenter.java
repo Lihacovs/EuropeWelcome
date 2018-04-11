@@ -13,22 +13,13 @@
  * limitations under the License.
  */
 
-package com.bmd.android.europewelcome.ui.profile;
+package com.bmd.android.europewelcome.ui.profile.usercomments;
 
-import com.bmd.android.europewelcome.ui.base.MvpView;
+import com.bmd.android.europewelcome.ui.base.MvpPresenter;
+import com.google.firebase.firestore.Query;
 
-/**
- * View interface for {@link ProfileActivity}
- */
-public interface ProfileMvpView extends MvpView {
+public interface UserCommentsMvpPresenter<V extends UserCommentsMvpView>
+        extends MvpPresenter<V> {
 
-    void loadUserName(String userName);
-
-    void loadUserImageUrl(String userName);
-
-    void loadUserBirthDate(String userBirthDate);
-
-    void showChangeProfile();
-
-    void hideChangeProfile();
+    Query getUserCommentsQuery(String userId);
 }

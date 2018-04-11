@@ -36,6 +36,9 @@ public class AppPreferencesHelper implements PreferencesHelper {
     private static final String PREF_KEY_CURRENT_USER_ID = "PREF_KEY_CURRENT_USER_ID";
     private static final String PREF_KEY_CURRENT_USER_NAME = "PREF_KEY_CURRENT_USER_NAME";
     private static final String PREF_KEY_CURRENT_USER_EMAIL = "PREF_KEY_CURRENT_USER_EMAIL";
+    private static final String PREF_KEY_CURRENT_USER_BIRTH_DATE
+            = "PREF_KEY_CURRENT_USER_EMAIL_BIRTH_DATE";
+    private static final String PREF_KEY_CURRENT_USER_GENDER = "PREF_KEY_CURRENT_USER_EMAIL_GENDER";
     private static final String PREF_KEY_CURRENT_USER_PROFILE_PIC_URL
             = "PREF_KEY_CURRENT_USER_PROFILE_PIC_URL";
     private static final String PREF_KEY_ACCESS_TOKEN = "PREF_KEY_ACCESS_TOKEN";
@@ -77,6 +80,26 @@ public class AppPreferencesHelper implements PreferencesHelper {
     @Override
     public void setCurrentUserEmail(String email) {
         mPrefs.edit().putString(PREF_KEY_CURRENT_USER_EMAIL, email).apply();
+    }
+
+    @Override
+    public String getCurrentUserBirthDate() {
+        return mPrefs.getString(PREF_KEY_CURRENT_USER_BIRTH_DATE, null);
+    }
+
+    @Override
+    public void setCurrentUserBirthDate(String birthDate) {
+        mPrefs.edit().putString(PREF_KEY_CURRENT_USER_BIRTH_DATE, birthDate).apply();
+    }
+
+    @Override
+    public String getCurrentUserGender() {
+        return mPrefs.getString(PREF_KEY_CURRENT_USER_GENDER, null);
+    }
+
+    @Override
+    public void setCurrentUserGender(String gender) {
+        mPrefs.edit().putString(PREF_KEY_CURRENT_USER_GENDER, gender).apply();
     }
 
     @Override

@@ -30,7 +30,7 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 
 /**
- * Created by Konstantins on 12/6/2017.
+ * Created by BIT on 12/6/2017.
  */
 
 public class PremiumPostsFragment extends BaseFragment implements

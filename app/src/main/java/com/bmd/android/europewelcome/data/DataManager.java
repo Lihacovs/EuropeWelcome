@@ -35,7 +35,9 @@ public interface DataManager extends FirebaseHelper, PreferencesHelper, NetworkH
             LoggedInMode loggedInMode,
             String userName,
             String email,
-            String profilePicPath);
+            String profilePicPath,
+            String userBirthDate,
+            String userGender);
 
     enum LoggedInMode {
 

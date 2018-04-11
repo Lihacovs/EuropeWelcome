@@ -57,7 +57,17 @@ import com.bmd.android.europewelcome.ui.posts.rating.RatingDialogMvpView;
 import com.bmd.android.europewelcome.ui.posts.rating.RatingDialogPresenter;
 import com.bmd.android.europewelcome.ui.profile.ProfileMvpPresenter;
 import com.bmd.android.europewelcome.ui.profile.ProfileMvpView;
+import com.bmd.android.europewelcome.ui.profile.ProfilePagerAdapter;
 import com.bmd.android.europewelcome.ui.profile.ProfilePresenter;
+import com.bmd.android.europewelcome.ui.profile.changeprofile.ChangeProfileMvpPresenter;
+import com.bmd.android.europewelcome.ui.profile.changeprofile.ChangeProfileMvpView;
+import com.bmd.android.europewelcome.ui.profile.changeprofile.ChangeProfilePresenter;
+import com.bmd.android.europewelcome.ui.profile.usercomments.UserCommentsMvpPresenter;
+import com.bmd.android.europewelcome.ui.profile.usercomments.UserCommentsMvpView;
+import com.bmd.android.europewelcome.ui.profile.usercomments.UserCommentsPresenter;
+import com.bmd.android.europewelcome.ui.profile.userposts.UserPostsMvpPresenter;
+import com.bmd.android.europewelcome.ui.profile.userposts.UserPostsMvpView;
+import com.bmd.android.europewelcome.ui.profile.userposts.UserPostsPresenter;
 
 import dagger.Module;
 import dagger.Provides;
@@ -100,6 +110,12 @@ public class ActivityModule {
     }
 
     @Provides
+    ChangeProfileMvpPresenter<ChangeProfileMvpView> provideChangeProfilePresenter(
+            ChangeProfilePresenter<ChangeProfileMvpView> presenter) {
+        return presenter;
+    }
+
+    @Provides
     RegisterMvpPresenter<RegisterMvpView> provideRegisterPresenter(
             RegisterPresenter<RegisterMvpView> presenter) {
         return presenter;
@@ -130,6 +146,18 @@ public class ActivityModule {
             FeedPresenter<FeedMvpView> presenter) {
         return presenter;
     }*/
+
+    @Provides
+    UserPostsMvpPresenter<UserPostsMvpView> provideUserPostsPresenter(
+            UserPostsPresenter<UserPostsMvpView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    UserCommentsMvpPresenter<UserCommentsMvpView> provideUserCommentsPresenter(
+            UserCommentsPresenter<UserCommentsMvpView> presenter) {
+        return presenter;
+    }
 
     @Provides
     PremiumPostsMvpPresenter<PremiumPostsMvpView> providePremiumPostsPresenter(
@@ -176,6 +204,11 @@ public class ActivityModule {
     @Provides
     PostsPagerAdapter providePostsPagerAdapter(AppCompatActivity activity) {
         return new PostsPagerAdapter(activity.getSupportFragmentManager());
+    }
+
+    @Provides
+    ProfilePagerAdapter provideProfilePagerAdapter(AppCompatActivity activity) {
+        return new ProfilePagerAdapter(activity.getSupportFragmentManager());
     }
 
     /*@Provides
