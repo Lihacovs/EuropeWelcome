@@ -33,8 +33,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -48,7 +46,6 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
 
     private String mPostId;
     private Post mPost;
-    private int mLayoutOrderNum;
 
     @Inject
     NewPostPresenter(DataManager dataManager) {
@@ -358,7 +355,7 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
                 CommonUtils.getTimeStampInt(),
                 null,
                 CommonUtils.getCurrentDate(),
-                0,
+                false,
                 false,
                 false
         );
@@ -372,7 +369,6 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
                 CommonUtils.getCurrentDate(),
                 CommonUtils.getTimeStamp(),
                 CommonUtils.getTimeStampInt(),
-                mLayoutOrderNum++,
                 "",
                 "",
                 18,

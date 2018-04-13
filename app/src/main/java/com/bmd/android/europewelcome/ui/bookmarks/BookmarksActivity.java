@@ -22,8 +22,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.NavUtils;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -138,7 +136,8 @@ public class BookmarksActivity extends BaseActivity implements BookmarksMvpView,
         }
     }
 
-    private void showAboutFragment() {
+    @Override
+    public void showAboutFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
                 .disallowAddToBackStack()
@@ -171,7 +170,6 @@ public class BookmarksActivity extends BaseActivity implements BookmarksMvpView,
         return true;
     }
 
-    //TODO: implement menu items
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -193,8 +191,6 @@ public class BookmarksActivity extends BaseActivity implements BookmarksMvpView,
     public void hideLoadingSpinner() {
         hideLoading();
     }
-
-    //TODO: implement menu
 
     @Override
     public void onBookmarkDeleteIconClick(Post post) {

@@ -25,6 +25,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.bmd.android.europewelcome.R;
+import com.bmd.android.europewelcome.ui.about.AboutFragment;
 import com.bmd.android.europewelcome.ui.auth.register.RegisterFragment;
 import com.bmd.android.europewelcome.ui.base.BaseActivity;
 import com.bmd.android.europewelcome.ui.posts.PostsActivity;
@@ -199,10 +200,13 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
     public void onBackPressed() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentByTag(RegisterFragment.TAG);
-        if (fragment == null) {
-            super.onBackPressed();
-        } else {
+        Fragment fragment2 = fragmentManager.findFragmentByTag(AboutFragment.TAG);
+        if(fragment2 != null){
+            onFragmentDetached(AboutFragment.TAG);
+        } else if(fragment != null){
             onFragmentDetached(RegisterFragment.TAG);
+        } else{
+            super.onBackPressed();
         }
     }
 
@@ -221,6 +225,19 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
                 .disallowAddToBackStack()
                 .setCustomAnimations(R.anim.slide_left, R.anim.slide_right)
                 .add(R.id.cl_root_view, RegisterFragment.newInstance(), RegisterFragment.TAG)
+                .commit();
+    }
+
+    /**
+     * Attaches {@link AboutFragment} to this activity
+     */
+    @Override
+    public void showAboutFragment() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .disallowAddToBackStack()
+                .setCustomAnimations(R.anim.slide_left, R.anim.slide_right)
+                .add(R.id.cl_root_view, AboutFragment.newInstance(), AboutFragment.TAG)
                 .commit();
     }
 }

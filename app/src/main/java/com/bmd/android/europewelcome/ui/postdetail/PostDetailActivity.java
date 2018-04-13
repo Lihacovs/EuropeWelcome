@@ -229,7 +229,8 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
         }
     }
 
-    private void showAboutFragment() {
+    @Override
+    public void showAboutFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
                 .disallowAddToBackStack()

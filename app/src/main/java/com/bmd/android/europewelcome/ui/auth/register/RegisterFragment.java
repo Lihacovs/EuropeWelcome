@@ -30,6 +30,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.TextView;
 
 import com.bmd.android.europewelcome.R;
 import com.bmd.android.europewelcome.di.component.ActivityComponent;
@@ -143,6 +144,11 @@ public class RegisterFragment extends BaseFragment implements RegisterMvpView {
     @OnClick(R.id.btn_register_back)
     void onButtonBackClick() {
         getBaseActivity().onFragmentDetached(TAG);
+    }
+
+    @OnClick(R.id.tv_register_terms)
+    void onTermsTvClick(){
+        getBaseActivity().showAboutFragment();
     }
 
     @OnClick(R.id.iv_register_add_photo)

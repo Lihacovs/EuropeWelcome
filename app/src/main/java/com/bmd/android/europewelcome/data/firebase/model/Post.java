@@ -36,9 +36,9 @@ public class Post {
     private int mPostCreationTimestamp;
     private String mPostImageUrl;
     private String mPostCreationDate;
-    private int mChildLayoutNum;
     private boolean mPostAsDraft;
     private boolean mPostPublished;
+    private boolean mPostAccepted;
 
 
     public Post() {
@@ -55,9 +55,9 @@ public class Post {
                 int postCreationTimestamp,
                 String postImageUrl,
                 String postCreationDate,
-                int childLayoutNum,
                 boolean postAsDraft,
-                boolean postPublished) {
+                boolean postPublished,
+                boolean postAccepted) {
         mPostId = UUID.randomUUID().toString();
         mPostAuthorId = postAuthorId;
         mPostAuthorName = postAuthorName;
@@ -70,9 +70,9 @@ public class Post {
         mPostCreationTimestamp = postCreationTimestamp;
         mPostImageUrl = postImageUrl;
         mPostCreationDate = postCreationDate;
-        mChildLayoutNum = childLayoutNum;
         mPostAsDraft = postAsDraft;
         mPostPublished = postPublished;
+        mPostAccepted = postAccepted;
     }
 
     public String getPostId() {
@@ -187,12 +187,12 @@ public class Post {
         mPostPublished = postPublished;
     }
 
-    public int getChildLayoutNum() {
-        return mChildLayoutNum;
+    public boolean isPostAccepted() {
+        return mPostAccepted;
     }
 
-    public void setChildLayoutNum(int childLayoutNum) {
-        mChildLayoutNum = childLayoutNum;
+    public void setPostAccepted(boolean postAccepted) {
+        mPostAccepted = postAccepted;
     }
 }
 

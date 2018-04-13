@@ -173,7 +173,8 @@ public class ProfileActivity extends BaseActivity
         }
     }
 
-    private void showAboutFragment() {
+    @Override
+    public void showAboutFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
                 .disallowAddToBackStack()

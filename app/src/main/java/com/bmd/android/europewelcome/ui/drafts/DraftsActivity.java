@@ -133,7 +133,8 @@ public class DraftsActivity extends BaseActivity implements DraftsMvpView, Draft
         }
     }
 
-    private void showAboutFragment() {
+    @Override
+    public void showAboutFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
                 .disallowAddToBackStack()
@@ -166,7 +167,6 @@ public class DraftsActivity extends BaseActivity implements DraftsMvpView, Draft
         return true;
     }
 
-    //TODO: implement menu items
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

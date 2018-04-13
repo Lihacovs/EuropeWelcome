@@ -180,6 +180,10 @@ public abstract class BaseActivity extends AppCompatActivity
                 .create().show();
     }
 
+    public void showAboutFragment(){
+
+    }
+
     @Override
     public void openActivityOnTokenExpire() {
         startActivity(LoginActivity.getStartIntent(this));

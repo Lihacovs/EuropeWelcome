@@ -15,6 +15,9 @@
 
 <resources>
     <string name="app_name">EuropeWelcome</string>
+    <string name="app_email" translatable="false">EuropeWelcome@gmail.com</string>
+    <string name="app_creator" translatable="false">Created by: Baltic Information Technologies - www.balticit.eu</string>
+    <string name="app_version" translatable="false">(Version code)</string>
 
     <!--Facebook login-->
     <string name="facebook_app_id">1997719713823775</string>
@@ -98,6 +101,12 @@
     <string name="profile_user_comments">User Comments</string>
     <string name="profile_some_error">Some error occurred. Try again</string>
 
+    <!--ui.about.About-->
+    <string name="email_subject">Suggestion to improve App</string>
+    <string name="email_body">Enter your message here</string>
+    <string name="email_chooser_title">Send Email</string>
+
+
 
 
 
@@ -129,7 +138,7 @@
     <string name="fragment_register_not_specified">Not specified</string>
     <string name="fragment_register_date_of_birth">Date of Birth:</string>
     <string name="fragment_register_d_m_y">Day Month Year</string>
-    <string name="fragment_register_terms">Proceeding register you agree with Terms and Conditions</string>
+    <string name="fragment_register_terms">Proceeding register you agree with <b>Terms of Service</b></string>
     <string name="fragment_register_register">Register</string>
 
     <!--res.layout.drawer_header-->
@@ -193,37 +202,73 @@
     <string name="activity_post_detail_type_comment">Type comment here</string>
     <string name="activity_post_detail_send_icon">Send icon</string>
 
+    <!--res.layout.activity_profile-->
+    <string name="activity_profile_user_image">User image</string>
+    <string name="activity_profile_change_profile">Change Profile</string>
+
+    <!--res.layout.fragment_change_profile-->
+    <string name="fragment_change_profile_change_profile">Change Profile</string>
+    <string name="fragment_change_profile_add_photo">Add Photo</string>
+    <string name="fragment_change_profile_gender">Your Gender:</string>
+    <string name="fragment_change_profile_male">Male</string>
+    <string name="fragment_change_profile_female">Female</string>
+    <string name="fragment_change_profile_not_specified">Not Specified</string>
+    <string name="fragment_change_profile_date_of_birth">Date of Birth:</string>
+    <string name="fragment_change_profile_save_changes">Saves Changes</string>
+
+    <!--res.layout.item_new_post-->
+    <string name="item_user_comment_user_image">User Image</string>
+
+    <!--res.layout.fragment_about-->
+    <string name="fragment_about_about_text">About</string>
+    <string name="fragment_about_app_functions">Do you want to learn more about app purpose?</string>
+    <string name="fragment_about_have_suggestions">Do you have any questions, suggestions, found bugs, or you want to help test or translate? Write us a message.</string>
+    <string name="fragment_about_enjoyed_app">If you enjoyed this application, please rate it. Thank you.</string>
+    <string name="fragment_about_app_icon">App icon</string>
+    <string name="fragment_about_email_icon">Email icon</string>
+    <string name="fragment_about_google_icon">Google icon</string>
+    <string name="fragment_about_send_icon">Send icon</string>
+    <string name="fragment_about_terms_title">Terms of Service:</string>
+    <string name="fragment_about_terms_text">
+        \tThese Terms of Service (“Terms”) govern your access to and use of our services, including our various websites, SMS, APIs, email notifications, applications, buttons, widgets, ads, commerce services, and our other services that link to these Terms (collectively, the “Services”), and any information, text, links, graphics, photos, videos, or other materials or arrangements of materials uploaded, downloaded or appearing on the Services (collectively referred to as “Content”). By using the Services you agree to be bound by these Terms.
+        \n\n\t<b>1. Who May Use the Services</b>
+        \n\n\tYou may use the Services only if you agree to form a binding contract with EuropeWelcome and are not a person barred from receiving services under the laws of the applicable jurisdiction. If you are accepting these Terms and using the Services on behalf of a company, organization, government, or other legal entity, you represent and warrant that you are authorized to do so.
+        \n\n\t<b>2. Privacy</b>
+        \n\n\tYou understand that through your use of the Services you consent to the collection and use (as set forth in the Privacy Policy below) of this information, including the transfer of this information to the United States, European Union, and/or other countries for storage, processing and use by EuropeWelcome and its affiliates.
+        \n\n\t<b>3. Content on the Services</b>
+        \n\n\tYou are responsible for your use of the Services and for any Content you provide, including compliance with applicable laws, rules, and regulations. You should only provide Content that you are comfortable sharing with others.
+        \n\n\tAny use or reliance on any Content or materials posted via the Services or obtained by you through the Services is at your own risk. We do not endorse, support, represent or guarantee the completeness, truthfulness, accuracy, or reliability of any Content or communications posted via the Services or endorse any opinions expressed via the Services. You understand that by using the Services, you may be exposed to Content that might be offensive, harmful, inaccurate or otherwise inappropriate, or in some cases, postings that have been mislabeled or are otherwise deceptive. All Content is the sole responsibility of the person who originated such Content. We may not monitor or control the Content posted via the Services and, we cannot take responsibility for such Content.
+        \n\n\tWe reserve the right to remove Content at any moment, including for example, copyright or trademark violations, impersonation, unlawful conduct, or harassment.
+        \n\n\t<b>Your Rights</b>
+        \n\n\tYou retain your rights to any Content you submit, post or display on or through the Services. What’s yours is yours — you own your Content (and your photos and videos are part of the Content).
+        \n\n\tBy submitting, posting or displaying Content on or through the Services, you grant us a worldwide, non-exclusive, royalty-free license (with the right to sublicense) to use, copy, reproduce, process, adapt, modify, publish, transmit, display and distribute such Content in any and all media or distribution methods (now known or later developed). This license authorizes us to make your Content available to the rest of the world and to let others do the same. You agree that this license includes the right for EuropeWelcome to provide, promote, and improve the Services and to make Content submitted to or through the Services available to other companies, organizations or individuals for the syndication, broadcast, distribution, promotion or publication of such Content on other media and services, subject to our terms and conditions for such Content use. Such additional uses by EuropeWelcome, or other companies, organizations or individuals, may be made with no compensation paid to you with respect to the Content that you submit, post, transmit or otherwise make available through the Services.
+        \n\n\tYou understand that we may modify or adapt your Content as it is distributed, syndicated, published, or broadcast by us and our partners and/or make changes to your Content in order to adapt the Content to different media. You represent and warrant that you have all the rights, power and authority necessary to grant the rights granted herein to any Content that you submit.
+        \n\n\t<b>4. Using the Services</b>
+        \n\n\tOur Services evolve constantly. As such, the Services may change from time to time, at our discretion. We may stop (permanently or temporarily) providing the Services or any features within the Services to you or to users generally. We also retain the right to create limits on use and storage at our sole discretion at any time. We may also remove or refuse to distribute any Content on the Services, suspend or terminate users, and reclaim usernames without liability to you.
+        \n\n\tIn consideration for EuropeWelcome granting you access to and use of the Services, you agree that EuropeWelcome and its third-party providers and partners may place advertising on the Services or in connection with the display of Content or information from the Services whether submitted by you or others. You also agree not to misuse our Services, for example, by interfering with them or accessing them using a method other than the interface and the instructions that we provide.
+        \n\n\tYou may need to create an account to use some of our Services. You are responsible for safeguarding your account, so use a strong password and limit its use to this account. We cannot and will not be liable for any loss or damage arising from your failure to comply with the above.
+        \n\n\tYou may end your legal agreement with EuropeWelcome at any time by deactivating your accounts and discontinuing your use of the Services.
+        \n\n\t<b>5. Limitations of Liability</b>
+        \n\n\tBy using the Services you agree that EuropeWelcome, its parents, affiliates, related companies, officers, directors, employees, agents representatives, partners and licensors, liability is limited to the maximum extent permissible in your country of residence.
+        \n\n\t<b>6. General</b>
+        \n\n\tWe may revise these Terms from time to time. By continuing to access or use the Services after those revisions become effective, you agree to be bound by the revised Terms.
+        \n\n\tThese Terms are an agreement between you and EuropeWelcome.
+        \n
+    </string>
 
 
 
 
-    <!--Login-->
-    <string name="europe_welcome">Europe Welcome</string>
-    <string name="login">Login</string>
-    <string name="email">Email</string>
-    <string name="password">Password</string>
 
-    <!--Login Validation-->
-    <string name="empty_email">Please provide a non empty email.</string>
-    <string name="invalid_email">Please provide a valid email.</string>
-    <string name="empty_password">Please provide a non empty password.</string>
 
-    <!--Toolbar menus-->
-    <string name="clear">Clear</string>
-    <string name="cut">Cut</string>
-    <string name="copy">Copy</string>
-    <string name="paste">Paste</string>
-    <string name="delete">Delete</string>
-    <string name="share">Share</string>
+
+
+
 
     <!--Drawer-->
     <string name="open_drawer">Drawer Open</string>
     <string name="close_drawer">Drawer Close</string>
 
-    <!--Drawer Menus-->
-    <string name="about">About</string>
-    <string name="logout">Logout</string>
-    <string name="feed">My Feed</string>
 
     <!--App Message-->
     <string name="api_retry_error">Please retry!</string>

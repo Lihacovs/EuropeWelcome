@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:layout_marginStart="16dp"
-                    android:text="Change Profile"
+                    android:text="@string/fragment_change_profile_change_profile"
                     android:textColor="@color/white"
                     android:textSize="20sp"/>
             </LinearLayout>
@@ -77,7 +77,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:contentDescription="@string/fragment_register_add_photo"
+                android:contentDescription="@string/fragment_change_profile_add_photo"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout"
                 app:srcCompat="@drawable/ic_add_photo_24px" />
@@ -117,7 +117,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="@string/fragment_register_gender"
+                android:text="@string/fragment_change_profile_gender"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/iv_change_profile_add_photo" />
 
@@ -138,7 +138,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/fragment_register_male"
+                    android:text="@string/fragment_change_profile_male"
                     tools:layout_editor_absoluteX="16dp"
                     tools:layout_editor_absoluteY="201dp" />
 
@@ -147,7 +147,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/fragment_register_female"
+                    android:text="@string/fragment_change_profile_female"
                     tools:layout_editor_absoluteY="201dp" />
 
                 <RadioButton
@@ -156,7 +156,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:checked="true"
-                    android:text="@string/fragment_register_not_specified"
+                    android:text="@string/fragment_change_profile_not_specified"
                     tools:layout_editor_absoluteX="273dp"
                     tools:layout_editor_absoluteY="201dp" />
             </RadioGroup>
@@ -168,7 +168,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
-                android:text="@string/fragment_register_date_of_birth"
+                android:text="@string/fragment_change_profile_date_of_birth"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rg_change_profile_radio_group"/>
 
@@ -208,12 +208,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="16dp"
-                    android:text="Save Changes"
+                    android:text="@string/fragment_change_profile_save_changes"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </android.support.constraint.ConstraintLayout>
-
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
 </android.support.design.widget.CoordinatorLayout>

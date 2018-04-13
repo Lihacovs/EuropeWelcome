@@ -23,12 +23,12 @@ import java.util.UUID;
  */
 
 public class PostSection {
+    private String mPostId;
     private String mPostSectionId;
     private String mPostSectionViewType;
     private String mPostSectionCreationDate;
     private String mPostSectionTimestamp;
     private int mTimeStamp;
-    private int mLayoutOrderNum;
 
     //Title
     private String mPostTitle;
@@ -62,7 +62,6 @@ public class PostSection {
             String postSectionCreationDate,
             String postSectionTimestamp,
             int timeStamp,
-            int layoutOrderNum,
             String postTitle,
             String postText,
             float postTextSize,
@@ -75,12 +74,12 @@ public class PostSection {
             double postPlaceLat,
             double postPlaceLng,
             String youTubeVideoCode) {
+        mPostId = postId;
         mPostSectionId = UUID.randomUUID().toString();
         mPostSectionViewType = postSectionViewType;
         mPostSectionCreationDate = postSectionCreationDate;
         mPostSectionTimestamp = postSectionTimestamp;
         mTimeStamp = timeStamp;
-        mLayoutOrderNum = layoutOrderNum;
         mPostTitle = postTitle;
         mPostText = postText;
         mPostTextSize = postTextSize;
@@ -93,6 +92,14 @@ public class PostSection {
         mPostPlaceLat = postPlaceLat;
         mPostPlaceLng = postPlaceLng;
         mYouTubeVideoCode = youTubeVideoCode;
+    }
+
+    public String getPostId() {
+        return mPostId;
+    }
+
+    public void setPostId(String postId) {
+        mPostId = postId;
     }
 
     public String getPostSectionId() {
@@ -125,14 +132,6 @@ public class PostSection {
 
     public void setPostSectionTimestamp(String postSectionTimestamp) {
         mPostSectionTimestamp = postSectionTimestamp;
-    }
-
-    public int getLayoutOrderNum() {
-        return mLayoutOrderNum;
-    }
-
-    public void setLayoutOrderNum(int layoutOrderNum) {
-        mLayoutOrderNum = layoutOrderNum;
     }
 
     public String getPostTitle() {

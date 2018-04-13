@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "300998502025",
+    "firebase_url": "https://europewelcome-bbf53.firebaseio.com",
+    "project_id": "europewelcome-bbf53",
+    "storage_bucket": "europewelcome-bbf53.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:300998502025:android:f76b49290046cef5",
+        "android_client_info": {
+          "package_name": "com.bmd.android.europewelcome"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "300998502025-u88i7rcl7dbf2jlmjj22d00fk48fgp7n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-fXVvyTSLZpxaI-Z2r60Aw5eOBoSnX3Q"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

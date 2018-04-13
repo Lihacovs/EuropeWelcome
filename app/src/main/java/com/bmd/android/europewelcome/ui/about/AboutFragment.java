@@ -15,19 +15,25 @@
 
 package com.bmd.android.europewelcome.ui.about;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.bmd.android.europewelcome.BuildConfig;
 import com.bmd.android.europewelcome.R;
 import com.bmd.android.europewelcome.di.component.ActivityComponent;
 import com.bmd.android.europewelcome.ui.base.BaseFragment;
+import com.bmd.android.europewelcome.utils.AppUtils;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -41,6 +47,9 @@ public class AboutFragment extends BaseFragment implements AboutMvpView {
 
     @Inject
     AboutMvpPresenter<AboutMvpView> mPresenter;
+
+    @BindView(R.id.tc_about_app_version)
+    TextView mAppVersionTv;
 
     public static AboutFragment newInstance() {
         Bundle args = new Bundle();
@@ -65,14 +74,36 @@ public class AboutFragment extends BaseFragment implements AboutMvpView {
         return view;
     }
 
+    //Opens app introduction screens
+    @OnClick(R.id.iv_about_link_functions)
+    void onAboutAppClick(){
+        //TODO: show intro screens
+        /*SharedPrefHelper.watchAppIntro(false);
+        Intent intent = new Intent(getActivity(), CloudPassIntro.class);
+        startActivity(intent);*/
+    }
+
+    //Opens email to send to developer
+    @OnClick(R.id.iv_about_send_email)
+    void onSendEmailClick(){
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                "mailto", getString(R.string.app_email), null));
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.email_subject));
+        emailIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.email_body));
+        startActivity(Intent.createChooser(emailIntent,
+                getString(R.string.email_chooser_title)));
+    }
+
+    //Opens GooglePlay to rate app
+    @OnClick(R.id.iv_about_send_rate)
+    void onRateAppClick(){
+        AppUtils.openPlayStoreForApp(getBaseActivity());
+    }
+
     @Override
     protected void setUp(View view) {
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+        String appVersion = "( Version " + BuildConfig.VERSION_NAME + " )";
+        mAppVersionTv.setText(appVersion);
     }
 
     @OnClick(R.id.nav_back_btn)

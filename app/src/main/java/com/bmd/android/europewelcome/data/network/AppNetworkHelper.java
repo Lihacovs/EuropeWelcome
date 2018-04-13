@@ -28,7 +28,7 @@ import com.google.android.gms.tasks.Task;
 import javax.inject.Inject;
 
 /**
- * Created by Konstantins on 12/26/2017.
+ * Created by BIT on 12/26/2017.
  */
 
 public class AppNetworkHelper implements NetworkHelper {

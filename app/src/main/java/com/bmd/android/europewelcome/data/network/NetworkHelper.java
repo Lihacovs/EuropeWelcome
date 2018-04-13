@@ -20,7 +20,7 @@ import android.content.Intent;
 import com.google.android.gms.tasks.Task;
 
 /**
- * Created by Konstantins on 12/26/2017.
+ * Created by BIT on 12/26/2017.
  */
 
 public interface NetworkHelper {
