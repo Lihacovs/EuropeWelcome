@@ -48,7 +48,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/rv_bookmarks_container">
 
-        <com.bmd.android.europewelcome.ui.custom.CustomImageView
+        <eu.balticit.android.europewelcome.ui.custom.CustomImageView
             android:id="@+id/iv_bookmarks_bg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

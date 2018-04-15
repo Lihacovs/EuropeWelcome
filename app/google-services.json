@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "300998502025",
-    "firebase_url": "https://europewelcome-bbf53.firebaseio.com",
-    "project_id": "europewelcome-bbf53",
-    "storage_bucket": "europewelcome-bbf53.appspot.com"
+    "project_number": "42826527257",
+    "firebase_url": "https://europewelcome-1fb1d.firebaseio.com",
+    "project_id": "europewelcome-1fb1d",
+    "storage_bucket": "europewelcome-1fb1d.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:300998502025:android:f76b49290046cef5",
+        "mobilesdk_app_id": "1:42826527257:android:5a0402af329c5d62",
         "android_client_info": {
-          "package_name": "com.bmd.android.europewelcome"
+          "package_name": "eu.balticit.android.europewelcome"
         }
       },
       "oauth_client": [
         {
-          "client_id": "300998502025-u88i7rcl7dbf2jlmjj22d00fk48fgp7n.apps.googleusercontent.com",
+          "client_id": "42826527257-8g2htcveu0n8iebroi1hqj3e8cuonlf0.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD-fXVvyTSLZpxaI-Z2r60Aw5eOBoSnX3Q"
+          "current_key": "AIzaSyCTjIGeCFz8ojOtrRSrt3WU7LvBVVhQQjM"
         }
       ],
       "services": {

@@ -27,7 +27,7 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
     defaultConfig {
-        applicationId "com.bmd.android.europewelcome"
+        applicationId "eu.balticit.android.europewelcome"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -38,15 +38,15 @@ android {
     }
     buildTypes {
         debug {
-            buildConfigField("String", "BASE_URL", "\"http://www.mocky.io/v2\"")
-            buildConfigField("String", "API_KEY", "\"ABCXYZ123TEST\"")
+            resValue("string", "GOOGLE_ANDROID_API_KEY", "\"AIzaSyC2XllDDhvfEyCv5NCFPBXalnFUruG3P6Y\"")
+            resValue("string", "GOOGLE_WEB_CLIENT_ID_TOKEN", "\"42826527257-8g2htcveu0n8iebroi1hqj3e8cuonlf0.apps.googleusercontent.com\"")
             signingConfig signingConfigs.debug
         }
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField("String", "BASE_URL", "\"http://www.mocky.io/v2\"")
-            buildConfigField("String", "API_KEY", "\"ABCXYZ123TEST\"")
+            resValue("string", "GOOGLE_ANDROID_API_KEY", "\"AIzaSyC2XllDDhvfEyCv5NCFPBXalnFUruG3P6Y\"")
+            resValue("string", "GOOGLE_WEB_CLIENT_ID_TOKEN", "\"42826527257-8g2htcveu0n8iebroi1hqj3e8cuonlf0.apps.googleusercontent.com\"")
         }
     }
     compileOptions {

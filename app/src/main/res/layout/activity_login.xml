@@ -88,7 +88,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/et_login_email"/>
 
-                <com.bmd.android.europewelcome.ui.custom.CustomButton
+                <eu.balticit.android.europewelcome.ui.custom.CustomButton
                     android:id="@+id/btn_login_server"
                     style="@style/Button.Blue"
                     android:layout_width="0dp"
@@ -102,7 +102,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/et_login_password"/>
 
-                <com.bmd.android.europewelcome.ui.custom.CustomButton
+                <eu.balticit.android.europewelcome.ui.custom.CustomButton
                     android:id="@+id/btn_login_google"
                     style="@style/Button.Blue"
                     android:layout_width="0dp"
@@ -133,7 +133,7 @@
                         android:layout_height="wrap_content"
                         android:visibility="invisible"/>
 
-                    <com.bmd.android.europewelcome.ui.custom.CustomButton
+                    <eu.balticit.android.europewelcome.ui.custom.CustomButton
                         android:id="@+id/btn_login_facebook"
                         style="@style/Button.Blue"
                         android:layout_width="match_parent"
