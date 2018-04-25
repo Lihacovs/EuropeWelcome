@@ -13,12 +13,20 @@
  * limitations under the License.
  */
 
-package eu.balticit.android.europewelcome.ui.posts.premium;
+package eu.balticit.android.europewelcome.ui.posts.buypremium;
 
-import eu.balticit.android.europewelcome.ui.base.MvpView;
+import javax.inject.Inject;
 
-/**
- * Created by BIT on 12/6/2017.
- */
-public interface PremiumPostsMvpView extends MvpView {
+import eu.balticit.android.europewelcome.data.DataManager;
+import eu.balticit.android.europewelcome.ui.base.BasePresenter;
+
+public class BuyPremiumDialogPresenter<V extends BuyPremiumDialogMvpView> extends BasePresenter<V>
+        implements BuyPremiumDialogMvpPresenter<V> {
+
+    public static final String TAG = "RatingDialogPresenter";
+
+    @Inject
+    BuyPremiumDialogPresenter(DataManager dataManager) {
+        super(dataManager);
+    }
 }

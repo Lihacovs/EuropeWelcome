@@ -13,23 +13,21 @@
  * limitations under the License.
  */
 
-package eu.balticit.android.europewelcome.ui.posts.free;
+package eu.balticit.android.europewelcome.ui.posts.premiumposts;
 
-import eu.balticit.android.europewelcome.data.firebase.model.Post;
-import eu.balticit.android.europewelcome.ui.base.MvpPresenter;
 import com.google.firebase.firestore.Query;
 
 import eu.balticit.android.europewelcome.data.firebase.model.Post;
+import eu.balticit.android.europewelcome.ui.base.MvpPresenter;
 
 /**
- * Presenter interface for {@link FreePostsPresenter}
+ * Created by BIT on 12/6/2017.
  */
-public interface FreePostsMvpPresenter<V extends FreePostsMvpView>
+
+public interface PremiumPostsMvpPresenter<V extends PremiumPostsMvpView>
         extends MvpPresenter<V> {
 
     void onViewPrepared();
-
-    Query getPostsQuery();
 
     Query getPostsQueryOrderedByStars();
 
@@ -41,11 +39,11 @@ public interface FreePostsMvpPresenter<V extends FreePostsMvpView>
 
     void updatePost(Post post);
 
-    void addOrRemoveStar(Post post, FreePostsAdapter.ViewHolder holder);
+    void addOrRemoveStar(Post post, PremiumPostsAdapter.ViewHolder holder);
 
-    void saveOrDeleteBookmark(Post post, FreePostsAdapter.ViewHolder holder);
+    void saveOrDeleteBookmark(Post post, PremiumPostsAdapter.ViewHolder holder);
 
-    void checkPostBookmarkedByUser(Post post, FreePostsAdapter.ViewHolder holder);
+    void checkPostBookmarkedByUser(Post post, PremiumPostsAdapter.ViewHolder holder);
 
-    void checkPostStarRatedByUser(Post post, FreePostsAdapter.ViewHolder holder);
+    void checkPostStarRatedByUser(Post post, PremiumPostsAdapter.ViewHolder holder);
 }

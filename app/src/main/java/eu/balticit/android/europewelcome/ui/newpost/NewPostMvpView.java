@@ -24,6 +24,10 @@ import eu.balticit.android.europewelcome.ui.base.MvpView;
  */
 public interface NewPostMvpView extends MvpView {
 
+    void enableIcons();
+
+    void disableIcons();
+
     void finishActivity();
 
     void scrollViewToBottom();

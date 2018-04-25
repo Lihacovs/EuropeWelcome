@@ -19,8 +19,12 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
+import eu.balticit.android.europewelcome.data.AppDataManager;
+import eu.balticit.android.europewelcome.data.DataManager;
 import eu.balticit.android.europewelcome.di.ActivityContext;
 import eu.balticit.android.europewelcome.di.PerActivity;
 import eu.balticit.android.europewelcome.ui.about.AboutMvpPresenter;
@@ -48,15 +52,21 @@ import eu.balticit.android.europewelcome.ui.posts.PostsMvpPresenter;
 import eu.balticit.android.europewelcome.ui.posts.PostsMvpView;
 import eu.balticit.android.europewelcome.ui.posts.PostsPagerAdapter;
 import eu.balticit.android.europewelcome.ui.posts.PostsPresenter;
-import eu.balticit.android.europewelcome.ui.posts.free.FreePostsMvpPresenter;
-import eu.balticit.android.europewelcome.ui.posts.free.FreePostsMvpView;
-import eu.balticit.android.europewelcome.ui.posts.free.FreePostsPresenter;
-import eu.balticit.android.europewelcome.ui.posts.premium.PremiumPostsMvpPresenter;
-import eu.balticit.android.europewelcome.ui.posts.premium.PremiumPostsMvpView;
-import eu.balticit.android.europewelcome.ui.posts.premium.PremiumPostsPresenter;
+import eu.balticit.android.europewelcome.ui.posts.buypremium.BuyPremiumDialogMvpPresenter;
+import eu.balticit.android.europewelcome.ui.posts.buypremium.BuyPremiumDialogMvpView;
+import eu.balticit.android.europewelcome.ui.posts.buypremium.BuyPremiumDialogPresenter;
+import eu.balticit.android.europewelcome.ui.posts.freeposts.FreePostsMvpPresenter;
+import eu.balticit.android.europewelcome.ui.posts.freeposts.FreePostsMvpView;
+import eu.balticit.android.europewelcome.ui.posts.freeposts.FreePostsPresenter;
+import eu.balticit.android.europewelcome.ui.posts.premiumposts.PremiumPostsMvpPresenter;
+import eu.balticit.android.europewelcome.ui.posts.premiumposts.PremiumPostsMvpView;
+import eu.balticit.android.europewelcome.ui.posts.premiumposts.PremiumPostsPresenter;
 import eu.balticit.android.europewelcome.ui.posts.rating.RatingDialogMvpPresenter;
 import eu.balticit.android.europewelcome.ui.posts.rating.RatingDialogMvpView;
 import eu.balticit.android.europewelcome.ui.posts.rating.RatingDialogPresenter;
+import eu.balticit.android.europewelcome.ui.premium.PremiumMvpPresenter;
+import eu.balticit.android.europewelcome.ui.premium.PremiumMvpView;
+import eu.balticit.android.europewelcome.ui.premium.PremiumPresenter;
 import eu.balticit.android.europewelcome.ui.profile.ProfileMvpPresenter;
 import eu.balticit.android.europewelcome.ui.profile.ProfileMvpView;
 import eu.balticit.android.europewelcome.ui.profile.ProfilePagerAdapter;
@@ -140,6 +150,12 @@ public class ActivityModule {
         return presenter;
     }
 
+    @Provides
+    BuyPremiumDialogMvpPresenter<BuyPremiumDialogMvpView> provideBuyPremiumPresenter(
+            BuyPremiumDialogPresenter<BuyPremiumDialogMvpView> presenter) {
+        return presenter;
+    }
+
     /*@Provides
     FeedMvpPresenter<FeedMvpView> provideFeedPresenter(
             FeedPresenter<FeedMvpView> presenter) {
@@ -179,6 +195,12 @@ public class ActivityModule {
     @Provides
     DraftsMvpPresenter<DraftsMvpView> provideDraftsPresenter(
              DraftsPresenter<DraftsMvpView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    PremiumMvpPresenter<PremiumMvpView> providePremiumPresenter(
+            PremiumPresenter<PremiumMvpView> presenter) {
         return presenter;
     }
 

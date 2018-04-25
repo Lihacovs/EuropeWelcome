@@ -97,7 +97,6 @@ public class RateUsDialog extends BaseDialog implements RatingDialogMvpView {
         super.show(fragmentManager, TAG);
     }
 
-
     @Override
     public void openPlayStoreForRating() {
         AppUtils.openPlayStoreForApp(getContext());

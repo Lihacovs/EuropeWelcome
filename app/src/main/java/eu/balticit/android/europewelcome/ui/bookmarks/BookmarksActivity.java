@@ -34,18 +34,13 @@ import eu.balticit.android.europewelcome.data.firebase.model.Post;
 import eu.balticit.android.europewelcome.ui.about.AboutFragment;
 import eu.balticit.android.europewelcome.ui.base.BaseActivity;
 import eu.balticit.android.europewelcome.ui.postdetail.PostDetailActivity;
-import eu.balticit.android.europewelcome.ui.posts.free.FreePostsAdapter;
+import eu.balticit.android.europewelcome.ui.posts.freeposts.FreePostsAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import eu.balticit.android.europewelcome.data.firebase.model.Post;
-import eu.balticit.android.europewelcome.ui.about.AboutFragment;
-import eu.balticit.android.europewelcome.ui.base.BaseActivity;
-import eu.balticit.android.europewelcome.ui.postdetail.PostDetailActivity;
-import eu.balticit.android.europewelcome.ui.posts.free.FreePostsAdapter;
 
 /**
  * Bookmarks Activity. Data queried and populated to {users}->{userId}->{bookmarks}->{postId} from
@@ -115,6 +110,7 @@ public class BookmarksActivity extends BaseActivity implements BookmarksMvpView,
     public void onStart() {
         super.onStart();
         mBookmarksAdapter.startListening();
+        hideLoading();
     }
 
     @Override
@@ -205,6 +201,7 @@ public class BookmarksActivity extends BaseActivity implements BookmarksMvpView,
                 (dialog, which) -> {
                     switch (which) {
                         case DialogInterface.BUTTON_POSITIVE:
+                            showLoading();
                             mPresenter.deleteBookmark(post);
                             break;
                         case DialogInterface.BUTTON_NEGATIVE:
@@ -215,7 +212,7 @@ public class BookmarksActivity extends BaseActivity implements BookmarksMvpView,
 
     @Override
     public void onViewHolderClick(Post post) {
-        mPresenter.updatePost(post);
+        //mPresenter.updatePost(post);
         startActivity(PostDetailActivity.getStartIntent(this, post.getPostId()));
     }
 
@@ -226,6 +223,7 @@ public class BookmarksActivity extends BaseActivity implements BookmarksMvpView,
                 (dialog, which) -> {
                     switch (which) {
                         case DialogInterface.BUTTON_POSITIVE:
+                            showLoading();
                             mPresenter.deleteAllBookmarks();
                             break;
                         case DialogInterface.BUTTON_NEGATIVE:

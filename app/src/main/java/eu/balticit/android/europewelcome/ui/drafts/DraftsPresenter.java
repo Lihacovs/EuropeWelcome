@@ -22,6 +22,7 @@ import eu.balticit.android.europewelcome.data.DataManager;
 import eu.balticit.android.europewelcome.data.firebase.model.Post;
 import eu.balticit.android.europewelcome.data.firebase.model.PostSection;
 import eu.balticit.android.europewelcome.ui.base.BasePresenter;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -60,7 +61,6 @@ public class DraftsPresenter<V extends DraftsMvpView> extends BasePresenter<V> i
      */
     @Override
     public void deleteDraft(Post post) {
-        getMvpView().showLoading();
         //First delete PostSection collection with all documents under that post
         getDataManager().getFirstPostSectionCollection(post.getPostId())
                 .addOnSuccessListener(documentSnapshots -> {
@@ -71,6 +71,7 @@ public class DraftsPresenter<V extends DraftsMvpView> extends BasePresenter<V> i
                     //Then delete Post document itself
                     getDataManager().deletePost(post).addOnSuccessListener(aVoid -> {
                         //getMvpView().onError(R.string.drafts_deleted);
+                        getMvpView().hideLoading();
                     }).addOnFailureListener(e -> {
                         getMvpView().hideLoading();
                         getMvpView().onError(R.string.drafts_some_error);
@@ -83,7 +84,6 @@ public class DraftsPresenter<V extends DraftsMvpView> extends BasePresenter<V> i
 
     @Override
     public void deleteAllDrafts() {
-        getMvpView().showLoading();
         getDataManager().getUserDrafts(getCurrentUserId())
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {

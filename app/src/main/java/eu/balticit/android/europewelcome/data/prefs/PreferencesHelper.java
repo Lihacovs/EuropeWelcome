@@ -48,6 +48,10 @@ public interface PreferencesHelper {
 
     void setCurrentUserGender(String gender);
 
+    boolean getCurrentUserPremium();
+
+    void setCurrentUserPremium(boolean hasPremium);
+
     String getCurrentUserProfilePicUrl();
 
     void setCurrentUserProfilePicUrl(String profilePicUrl);
@@ -59,5 +63,9 @@ public interface PreferencesHelper {
     String getLastUsedEmail();
 
     void setLastUsedEmail(String email);
+
+    boolean isAppIntroWatched();
+
+    void watchAppIntro(boolean watched);
 
 }

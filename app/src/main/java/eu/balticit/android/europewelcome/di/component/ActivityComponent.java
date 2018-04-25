@@ -23,12 +23,15 @@ import eu.balticit.android.europewelcome.ui.auth.LoginActivity;
 import eu.balticit.android.europewelcome.ui.auth.register.RegisterFragment;
 import eu.balticit.android.europewelcome.ui.bookmarks.BookmarksActivity;
 import eu.balticit.android.europewelcome.ui.drafts.DraftsActivity;
+import eu.balticit.android.europewelcome.ui.intro.IntroActivity;
 import eu.balticit.android.europewelcome.ui.newpost.NewPostActivity;
 import eu.balticit.android.europewelcome.ui.postdetail.PostDetailActivity;
 import eu.balticit.android.europewelcome.ui.posts.PostsActivity;
-import eu.balticit.android.europewelcome.ui.posts.free.FreePostsFragment;
-import eu.balticit.android.europewelcome.ui.posts.premium.PremiumPostsFragment;
+import eu.balticit.android.europewelcome.ui.posts.buypremium.BuyPremiumDialog;
+import eu.balticit.android.europewelcome.ui.posts.freeposts.FreePostsFragment;
+import eu.balticit.android.europewelcome.ui.posts.premiumposts.PremiumPostsFragment;
 import eu.balticit.android.europewelcome.ui.posts.rating.RateUsDialog;
+import eu.balticit.android.europewelcome.ui.premium.PremiumActivity;
 import eu.balticit.android.europewelcome.ui.profile.ProfileActivity;
 import eu.balticit.android.europewelcome.ui.profile.changeprofile.ChangeProfileFragment;
 import eu.balticit.android.europewelcome.ui.profile.usercomments.UserCommentsFragment;
@@ -49,6 +52,8 @@ public interface ActivityComponent {
     void inject(PostDetailActivity activity);
 
     void inject(DraftsActivity activity);
+
+    void inject(PremiumActivity activity);
 
     void inject(BookmarksActivity activity);
 
@@ -71,5 +76,7 @@ public interface ActivityComponent {
     void inject(FreePostsFragment fragment);
 
     void inject(RateUsDialog dialog);
+
+    void inject(BuyPremiumDialog dialog);
 
 }

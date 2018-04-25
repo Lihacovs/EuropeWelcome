@@ -213,8 +213,8 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
                                     getDataManager().getFirebaseUserImageUrl(),
                                     "Not specified",
                                     "Day Month Year",
-                                    CommonUtils.getCurrentDate()
-
+                                    CommonUtils.getCurrentDate(),
+                                    false
                             );
                             getDataManager().saveUser(newUser).addOnSuccessListener(aVoid -> {
                                 updateUserInfo(authResult, mode);

@@ -16,6 +16,7 @@
 package eu.balticit.android.europewelcome.di.module;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Registry;
@@ -34,7 +35,9 @@ import java.io.InputStream;
 public class MyAppGlideModule extends AppGlideModule {
 
     @Override
-    public void registerComponents(Context context, Glide glide, Registry registry) {
+    public void registerComponents(@NonNull Context context,
+                                   @NonNull Glide glide,
+                                   @NonNull Registry registry) {
         // Register FirebaseImageLoader to handle StorageReference
         registry.append(StorageReference.class, InputStream.class,
                 new FirebaseImageLoader.Factory());

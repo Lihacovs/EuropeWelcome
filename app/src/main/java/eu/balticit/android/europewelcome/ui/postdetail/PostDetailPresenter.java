@@ -23,14 +23,11 @@ import eu.balticit.android.europewelcome.data.firebase.model.Post;
 import eu.balticit.android.europewelcome.data.firebase.model.PostComment;
 import eu.balticit.android.europewelcome.ui.base.BasePresenter;
 import eu.balticit.android.europewelcome.utils.CommonUtils;
-import com.google.android.gms.tasks.OnFailureListener;
+
 import com.google.firebase.firestore.Query;
 
 import javax.inject.Inject;
 
-import eu.balticit.android.europewelcome.data.DataManager;
-import eu.balticit.android.europewelcome.data.firebase.model.Post;
-import eu.balticit.android.europewelcome.data.firebase.model.PostComment;
 
 /**
  * Post Detail Presenter
@@ -104,7 +101,10 @@ public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresen
                         } else {
                             getMvpView().setNotBookmarkedIcon();
                         }
-                    }).addOnFailureListener(e -> getMvpView().onError(R.string.post_detail_some_error));
+                    }).addOnFailureListener(e -> {
+                getMvpView().hideLoading();
+                getMvpView().onError(R.string.post_detail_some_error);
+            });
         }
     }
 
@@ -120,13 +120,20 @@ public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresen
                         } else {
                             getMvpView().setNotStarRatedIcon();
                         }
-                    }).addOnFailureListener(e -> getMvpView().onError(R.string.post_detail_some_error));
+                        getMvpView().hideLoading();
+                    }).addOnFailureListener(e -> {
+                getMvpView().hideLoading();
+                getMvpView().onError(R.string.post_detail_some_error);
+            });
+        } else {
+            getMvpView().hideLoading();
         }
     }
 
     //Checks if user rated post with star and updates UI accordingly
     @Override
     public void addOrRemoveStar() {
+        getMvpView().showLoading();
         String currentUserId = getDataManager().getCurrentUserId();
         if (currentUserId != null) {
             getDataManager().getStar(currentUserId, mPost.getPostId())
@@ -138,8 +145,14 @@ public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresen
                             getMvpView().setNotStarRatedIcon();
                             getMvpView().setPostStars(String.valueOf(newStarCount));
                             getDataManager().deleteStar(currentUserId, mPost)
-                                    .addOnSuccessListener(aVoid -> getMvpView()
-                                            .onError(R.string.post_detail_star_removed));
+                                    .addOnSuccessListener(aVoid -> {
+                                        getMvpView().hideLoading();
+                                        getMvpView().onError(R.string.post_detail_star_removed);
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        getMvpView().hideLoading();
+                                        getMvpView().onError(R.string.post_detail_some_error);
+                                    });
                         } else {
                             int newStarCount = mPost.getPostStars() + 1;
                             mPost.setPostStars(newStarCount);
@@ -147,11 +160,22 @@ public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresen
                             getMvpView().setStarRatedIcon();
                             getMvpView().setPostStars(String.valueOf(newStarCount));
                             getDataManager().saveStar(currentUserId, mPost)
-                                    .addOnSuccessListener(aVoid -> getMvpView()
-                                            .onError(R.string.post_detail_star_rated));
+                                    .addOnSuccessListener(aVoid -> {
+                                        getMvpView().hideLoading();
+                                        getMvpView().onError(R.string.post_detail_star_rated);
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        getMvpView().hideLoading();
+                                        getMvpView().onError(R.string.post_detail_some_error);
+                                    });
                         }
-                    }).addOnFailureListener(e -> getMvpView().onError(R.string.post_detail_some_error));
+                    })
+                    .addOnFailureListener(e -> {
+                        getMvpView().hideLoading();
+                        getMvpView().onError(R.string.post_detail_some_error);
+                    });
         } else {
+            getMvpView().hideLoading();
             getMvpView().onError(R.string.post_detail_login_to_rate);
         }
     }
@@ -159,6 +183,7 @@ public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresen
     //Checks if user bookmarked post and updates UI accordingly
     @Override
     public void saveOrDeleteBookmark() {
+        getMvpView().showLoading();
         String currentUserId = getDataManager().getCurrentUserId();
         if (currentUserId != null) {
             getDataManager().getBookmark(currentUserId, mPost.getPostId())
@@ -166,22 +191,40 @@ public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresen
                         if (documentSnapshot.exists()) {
                             getMvpView().setNotBookmarkedIcon();
                             getDataManager().deleteBookmark(currentUserId, mPost)
-                                    .addOnSuccessListener(aVoid ->
-                                            getMvpView().onError(R.string.post_detail_bookmark_removed));
+                                    .addOnSuccessListener(aVoid -> {
+                                        getMvpView().hideLoading();
+                                        getMvpView().onError(R.string.post_detail_bookmark_removed);
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        getMvpView().hideLoading();
+                                        getMvpView().onError(R.string.post_detail_some_error);
+                                    });
                         } else {
                             getMvpView().setBookmarkedIcon();
                             getDataManager().saveBookmark(currentUserId, mPost)
-                                    .addOnSuccessListener(aVoid ->
-                                            getMvpView().onError(R.string.post_detail_bookmark_saved));
+                                    .addOnSuccessListener(aVoid -> {
+                                        getMvpView().hideLoading();
+                                        getMvpView().onError(R.string.post_detail_bookmark_saved);
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        getMvpView().hideLoading();
+                                        getMvpView().onError(R.string.post_detail_some_error);
+                                    });
                         }
-                    }).addOnFailureListener(e -> getMvpView().onError(R.string.post_detail_some_error));
+                    })
+                    .addOnFailureListener(e -> {
+                        getMvpView().hideLoading();
+                        getMvpView().onError(R.string.post_detail_some_error);
+                    });
         } else {
+            getMvpView().hideLoading();
             getMvpView().onError(R.string.post_detail_login_to_bookmark);
         }
     }
 
     @Override
     public void createNewComment(String comment) {
+        getMvpView().showLoading();
         String currentUserId = getDataManager().getCurrentUserId();
         if (currentUserId != null) {
             getMvpView().clearCommentInput();
@@ -193,17 +236,30 @@ public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresen
                         mPost.setPostComments(newCommentCount);
                         updatePost(mPost);
                         getMvpView().setPostComments(String.valueOf(newCommentCount));
-                        getMvpView().onError(R.string.post_detail_comment_saved);})
-                    .addOnFailureListener(e -> getMvpView().onError(R.string.post_detail_some_error));
-            getDataManager().saveUserComment(currentUserId, postComment)
-                    .addOnFailureListener(e -> getMvpView().onError(R.string.post_detail_some_error));
+
+                        getDataManager().saveUserComment(currentUserId, postComment)
+                                .addOnSuccessListener(aVoid1 -> {
+                                    getMvpView().hideLoading();
+                                    getMvpView().onError(R.string.post_detail_comment_saved);
+                                })
+                                .addOnFailureListener(e -> {
+                                    getMvpView().hideLoading();
+                                    getMvpView().onError(R.string.post_detail_some_error);
+                                });
+                    })
+                    .addOnFailureListener(e -> {
+                        getMvpView().hideLoading();
+                        getMvpView().onError(R.string.post_detail_some_error);
+                    });
         } else {
+            getMvpView().hideLoading();
             getMvpView().onError(R.string.post_detail_login_to_comment);
         }
     }
 
     @Override
     public void addOrRemoveCommentLike(PostComment postComment, PostCommentsAdapter.ViewHolder holder) {
+        getMvpView().showLoading();
         String currentUserId = getDataManager().getCurrentUserId();
         if (currentUserId != null) {
             getDataManager().getCommentLike(currentUserId, postComment.getPostCommentId())
@@ -214,8 +270,10 @@ public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresen
                             updatePostComment(postComment);
                             //getMvpView().removeStarRatedIcon(holder);
                             getDataManager().deleteCommentLike(currentUserId, postComment)
-                                    .addOnSuccessListener(aVoid -> {
-
+                                    .addOnSuccessListener(aVoid -> getMvpView().hideLoading())
+                                    .addOnFailureListener(e -> {
+                                        getMvpView().hideLoading();
+                                        getMvpView().onError(R.string.post_detail_some_error);
                                     });
                         } else {
                             int newLikeCount = postComment.getPostCommentStars() + 1;
@@ -223,12 +281,18 @@ public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresen
                             updatePostComment(postComment);
                             //getMvpView().setStarRatedIcon(holder);
                             getDataManager().saveCommentLike(currentUserId, postComment)
-                                    .addOnSuccessListener(aVoid -> {
-
+                                    .addOnSuccessListener(aVoid -> getMvpView().hideLoading())
+                                    .addOnFailureListener(e -> {
+                                        getMvpView().hideLoading();
+                                        getMvpView().onError(R.string.post_detail_some_error);
                                     });
                         }
-                    }).addOnFailureListener(e -> getMvpView().onError(R.string.post_detail_some_error));
+                    }).addOnFailureListener(e -> {
+                getMvpView().hideLoading();
+                getMvpView().onError(R.string.post_detail_some_error);
+            });
         } else {
+            getMvpView().hideLoading();
             getMvpView().onError(R.string.post_detail_login_to_like_comment);
         }
     }
@@ -241,7 +305,7 @@ public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresen
                     .addOnSuccessListener(documentSnapshot -> {
                         if (documentSnapshot.exists()) {
                             getMvpView().setCommentLikeIcon(holder);
-                        }else{
+                        } else {
                             getMvpView().setNotCommentLikeIcon(holder);
                         }
                     }).addOnFailureListener(e -> getMvpView().onError(R.string.post_detail_some_error));

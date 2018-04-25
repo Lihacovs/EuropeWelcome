@@ -39,6 +39,10 @@ public interface PostsMvpView extends MvpView {
 
     void chooseLoginAction();
 
+    void showBuyPremiumDialog();
+
+    void openPremiumActivity();
+
     void showRateUsDialog();
 
     void openBookmarksActivity();
@@ -54,4 +58,12 @@ public interface PostsMvpView extends MvpView {
     void lockDrawer();
 
     void unlockDrawer();
+
+    void showPremiumTab(int tabPosition);
+
+    void reselectTab(int tabPosition);
+
+    void disablePagerScroll();
+
+    void enablePagerScroll();
 }

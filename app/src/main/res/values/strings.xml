@@ -16,7 +16,7 @@
 <resources>
     <string name="app_name">EuropeWelcome</string>
     <string name="app_email" translatable="false">EuropeWelcome@gmail.com</string>
-    <string name="app_creator" translatable="false">Created by: Baltic Information Technologies - www.balticit.eu</string>
+    <string name="app_creator" translatable="false">Created by: Baltic Information Technologies for EuropeWelcome app</string>
     <string name="app_version" translatable="false">(Version code)</string>
 
     <!--Facebook login-->
@@ -256,6 +256,40 @@
         \n
     </string>
 
+    <!--res.layout.activity_premium-->
+    <string name="activity_premium_premium_text">Premium</string>
+    <string name="activity_premium_title_one">Asylum seeker apply form:</string>
+    <string name="activity_premium_text_one">
+        \tPlease notice, your form may be send to the official European institutions, answer all required questions correctly and honestly. Any inconveniences can lead to refugee application failure. Proceeding you confirm, that you are one and only person responsible for provided information.
+    </string>
+    <string name="activity_premium_text_two">
+        \tAfter form submission our team carefully review it and response for future steps.
+    </string>
+    <string name="activity_premium_title_two">Personal assistance:</string>
+    <string name="activity_premium_text_three">
+        \tAsk our international team questions related to asylum seeking in Europe. Please write all details about you current status. If your life is in a danger, immediately provide us a note. Our goal is to help you.
+    </string>
+    <string name="activity_premium_document_icon">Document icon</string>
+    <string name="activity_premium_mail_icon">Mail icon</string>
+
+    <!--res.layout.intro_layout-->
+    <string name="intro_layout_one_image">Welcoming girls image</string>
+    <string name="intro_layout_one_title">EuropeWelcome</string>
+    <string name="intro_layout_one_text">EuropeWelcome is the first application to support people in asylum seeking and relocation to European Union</string>
+    <string name="intro_layout_two_image">Happy african image</string>
+    <string name="intro_layout_two_title">Strong Society</string>
+    <string name="intro_layout_two_text">Become a member of helpful community, where people assist each other</string>
+    <string name="intro_layout_three_image">Man with kid image</string>
+    <string name="intro_layout_three_title">Children\'s rights</string>
+    <string name="intro_layout_three_text">We are in hope of better future for the kids, their education and well-being</string>
+    <string name="intro_layout_four_image">Soccer team image</string>
+    <string name="intro_layout_four_title">Learn Europe</string>
+    <string name="intro_layout_four_text">Learn about the life in Europe, it\'s countries, culture, people and official institutions</string>
+    <string name="intro_layout_five_image">Nigerian girls image</string>
+    <string name="intro_layout_five_title">Equality and Freedom</string>
+    <string name="intro_layout_five_text">Europe is open to everybody, no matter of religion, color or sex</string>
+
+
 
 
 
@@ -278,15 +312,7 @@
     <string name="connection_error">Internet connection lost!</string>
 
     <!--about fragment-->
-    <string name="project_info">This sample app implements MVP architecture using Dagger2, GreenDao, RxJava, FastAndroidNetworking and PlaceholderView</string>
-    <string name="link_mvp_blog">1. https://blog.mindorks.com</string>
-    <string name="link_mvp_repo">2. https://github.com/MindorksOpenSource/android-mvp-architecture</string>
-    <string name="link_mindorks_blog">3. https://blog.mindorks.com</string>
-    <string name="link_mindorks_repo">4. https://github.com/MindorksOpenSource</string>
     <string name="version">"version"</string>
-
-    <!--rating dialog-->
-
 
     <!--play store-->
     <string name="app_google_play_store_link">"https://play.google.com/store/apps/details?id="</string>

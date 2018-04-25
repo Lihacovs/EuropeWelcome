@@ -30,6 +30,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import eu.balticit.android.europewelcome.R;
 import eu.balticit.android.europewelcome.data.firebase.model.Post;
@@ -79,6 +80,18 @@ public class NewPostActivity extends BaseActivity implements NewPostMvpView, New
     @BindView(R.id.rv_new_post_container)
     RecyclerView mNewPostRv;
 
+    @BindView(R.id.iv_new_post_text_icon)
+    ImageView mNewPostTextIv;
+
+    @BindView(R.id.iv_new_post_image_icon)
+    ImageView mNewPostImageIv;
+
+    @BindView(R.id.iv_new_post_location_icon)
+    ImageView mNewPostLocationIv;
+
+    @BindView(R.id.iv_new_post_video_icon)
+    ImageView mNewPostVideoIv;
+
     NewPostAdapter mNewPostAdapter;
 
     //param: postId - null if new post, nonnull if post came from drafts
@@ -108,6 +121,7 @@ public class NewPostActivity extends BaseActivity implements NewPostMvpView, New
     protected void setUp() {
 
         showLoading();
+        disableIcons();
 
         mPresenter.setPost((String) getIntent().getSerializableExtra(EXTRA_POST_ID));
 
@@ -230,6 +244,22 @@ public class NewPostActivity extends BaseActivity implements NewPostMvpView, New
     @Override
     public void hideLoadingSpinner() {
         hideLoading();
+    }
+
+    @Override
+    public void enableIcons() {
+        mNewPostTextIv.setEnabled(true);
+        mNewPostImageIv.setEnabled(true);
+        mNewPostLocationIv.setEnabled(true);
+        mNewPostVideoIv.setEnabled(true);
+    }
+
+    @Override
+    public void disableIcons() {
+        mNewPostTextIv.setEnabled(false);
+        mNewPostImageIv.setEnabled(false);
+        mNewPostLocationIv.setEnabled(false);
+        mNewPostVideoIv.setEnabled(false);
     }
 
     @Override

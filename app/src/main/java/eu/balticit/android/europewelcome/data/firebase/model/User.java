@@ -28,6 +28,7 @@ public class User {
     private String mUserGender;
     private String mUserBirthDate;
     private String mUserCreationDate;
+    private boolean mUserPremium;
 
     public User() {
     }
@@ -39,7 +40,8 @@ public class User {
                 String userPhotoUrl,
                 String userGender,
                 String userBirthDate,
-                String userCreationDate) {
+                String userCreationDate,
+                boolean userPremium) {
         mUserId = userId;
         mUserEmail = userEmail;
         mUserPassword = userPassword;
@@ -48,6 +50,7 @@ public class User {
         mUserGender = userGender;
         mUserBirthDate = userBirthDate;
         mUserCreationDate = userCreationDate;
+        mUserPremium = userPremium;
     }
 
     public String getUserId() {
@@ -112,5 +115,13 @@ public class User {
 
     public void setUserCreationDate(String userCreationDate) {
         mUserCreationDate = userCreationDate;
+    }
+
+    public boolean isUserPremium() {
+        return mUserPremium;
+    }
+
+    public void setUserPremium(boolean userPremium) {
+        mUserPremium = userPremium;
     }
 }

@@ -29,6 +29,7 @@ import eu.balticit.android.europewelcome.BuildConfig;
 import eu.balticit.android.europewelcome.R;
 import eu.balticit.android.europewelcome.di.component.ActivityComponent;
 import eu.balticit.android.europewelcome.ui.base.BaseFragment;
+import eu.balticit.android.europewelcome.ui.intro.IntroActivity;
 import eu.balticit.android.europewelcome.utils.AppUtils;
 
 import javax.inject.Inject;
@@ -78,10 +79,9 @@ public class AboutFragment extends BaseFragment implements AboutMvpView {
     //Opens app introduction screens
     @OnClick(R.id.iv_about_link_functions)
     void onAboutAppClick(){
-        //TODO: show intro screens
-        /*SharedPrefHelper.watchAppIntro(false);
-        Intent intent = new Intent(getActivity(), CloudPassIntro.class);
-        startActivity(intent);*/
+        mPresenter.resetIntroWatch();
+        Intent intent = new Intent(getBaseActivity(), IntroActivity.class);
+        startActivity(intent);
     }
 
     //Opens email to send to developer

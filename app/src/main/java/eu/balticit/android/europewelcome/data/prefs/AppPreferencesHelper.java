@@ -39,10 +39,12 @@ public class AppPreferencesHelper implements PreferencesHelper {
     private static final String PREF_KEY_CURRENT_USER_BIRTH_DATE
             = "PREF_KEY_CURRENT_USER_EMAIL_BIRTH_DATE";
     private static final String PREF_KEY_CURRENT_USER_GENDER = "PREF_KEY_CURRENT_USER_EMAIL_GENDER";
+    private static final String PREF_KEY_CURRENT_USER_PREMIUM = "PREF_KEY_CURRENT_USER_PREMIUM";
     private static final String PREF_KEY_CURRENT_USER_PROFILE_PIC_URL
             = "PREF_KEY_CURRENT_USER_PROFILE_PIC_URL";
     private static final String PREF_KEY_ACCESS_TOKEN = "PREF_KEY_ACCESS_TOKEN";
     private static final String PREF_KEY_EMAIL_USED_FOR_SERVER = "PREF_EMAIL_USED_FOR_SERVER";
+    private static final String PREF_KEY_INTRO_WATCHED = "PREF_KEY_INTRO_WATCHED";
 
     private final SharedPreferences mPrefs;
 
@@ -103,6 +105,16 @@ public class AppPreferencesHelper implements PreferencesHelper {
     }
 
     @Override
+    public boolean getCurrentUserPremium() {
+        return mPrefs.getBoolean(PREF_KEY_CURRENT_USER_PREMIUM, false);
+    }
+
+    @Override
+    public void setCurrentUserPremium(boolean hasPremium) {
+        mPrefs.edit().putBoolean(PREF_KEY_CURRENT_USER_PREMIUM, hasPremium).apply();
+    }
+
+    @Override
     public String getCurrentUserProfilePicUrl() {
         return mPrefs.getString(PREF_KEY_CURRENT_USER_PROFILE_PIC_URL, null);
     }
@@ -141,5 +153,18 @@ public class AppPreferencesHelper implements PreferencesHelper {
     @Override
     public void setLastUsedEmail(String email) {
         mPrefs.edit().putString(PREF_KEY_EMAIL_USED_FOR_SERVER, email).apply();
+    }
+
+    /**
+     * Puts true value if AppIntro was watched
+     */
+    @Override
+    public void watchAppIntro(boolean watched){
+        mPrefs.edit().putBoolean(PREF_KEY_INTRO_WATCHED, watched).apply();
+    }
+
+    @Override
+    public boolean isAppIntroWatched(){
+        return mPrefs.getBoolean(PREF_KEY_INTRO_WATCHED, false);
     }
 }

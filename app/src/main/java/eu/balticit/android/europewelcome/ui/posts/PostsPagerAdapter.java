@@ -19,11 +19,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import eu.balticit.android.europewelcome.ui.posts.free.FreePostsFragment;
-import eu.balticit.android.europewelcome.ui.posts.premium.PremiumPostsFragment;
-
-import eu.balticit.android.europewelcome.ui.posts.free.FreePostsFragment;
-import eu.balticit.android.europewelcome.ui.posts.premium.PremiumPostsFragment;
+import eu.balticit.android.europewelcome.ui.posts.freeposts.FreePostsFragment;
+import eu.balticit.android.europewelcome.ui.posts.premiumposts.PremiumPostsFragment;
 
 /**
  * Created by BIT on 12/6/2017.

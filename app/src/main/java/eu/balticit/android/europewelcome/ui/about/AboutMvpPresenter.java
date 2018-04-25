@@ -22,4 +22,5 @@ import eu.balticit.android.europewelcome.ui.base.MvpPresenter;
  */
 
 public interface AboutMvpPresenter<V extends AboutMvpView> extends MvpPresenter<V> {
+    void resetIntroWatch();
 }

@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package eu.balticit.android.europewelcome.ui.posts.free;
+package eu.balticit.android.europewelcome.ui.posts.freeposts;
 
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -52,7 +52,7 @@ public class FreePostsAdapter extends FirestoreRecyclerAdapter<Post, FreePostsAd
      *
      * @param options - data to query from DB
      */
-    FreePostsAdapter(FirestoreRecyclerOptions<Post> options, FreePostsFragment fragment) {
+    public FreePostsAdapter(FirestoreRecyclerOptions<Post> options, FreePostsFragment fragment) {
         super(options);
         mFragment = fragment;
     }

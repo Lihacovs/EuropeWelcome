@@ -138,6 +138,7 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
 
     @Override
     protected void setUp() {
+
         showLoading();
 
         setSupportActionBar(mToolbar);
@@ -171,22 +172,9 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
         mPostCommentsRv.setAdapter(mPostCommentsAdapter);
 
         mPresenter.getPost(mPostId);
-
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        showLoading();
         mPostSectionAdapter.startListening();
         mPostCommentsAdapter.startListening();
-    }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        mPostSectionAdapter.stopListening();
-        mPostCommentsAdapter.stopListening();
     }
 
     @Override
@@ -254,6 +242,8 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
     @Override
     protected void onDestroy() {
         mPresenter.onDetach();
+        mPostSectionAdapter.stopListening();
+        mPostCommentsAdapter.stopListening();
         super.onDestroy();
     }
 
@@ -273,9 +263,9 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
 
     @Override
     public void clearCommentInput() {
+        hideKeyboard();
         mPostNewCommentTextEt.setText(null);
         mPostNewCommentTextEt.clearFocus();
-        hideKeyboard();
     }
 
     @Override

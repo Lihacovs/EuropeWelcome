@@ -25,7 +25,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.PopupMenu;
@@ -45,26 +44,31 @@ import eu.balticit.android.europewelcome.ui.about.AboutFragment;
 import eu.balticit.android.europewelcome.ui.auth.LoginActivity;
 import eu.balticit.android.europewelcome.ui.base.BaseActivity;
 import eu.balticit.android.europewelcome.ui.bookmarks.BookmarksActivity;
+import eu.balticit.android.europewelcome.ui.custom.CustomViewPager;
 import eu.balticit.android.europewelcome.ui.drafts.DraftsActivity;
 import eu.balticit.android.europewelcome.ui.newpost.NewPostActivity;
+import eu.balticit.android.europewelcome.ui.posts.buypremium.BuyPremiumDialog;
+import eu.balticit.android.europewelcome.ui.posts.freeposts.FreePostsFragment;
 import eu.balticit.android.europewelcome.ui.posts.rating.RateUsDialog;
+import eu.balticit.android.europewelcome.ui.premium.PremiumActivity;
 import eu.balticit.android.europewelcome.ui.profile.ProfileActivity;
+
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
+
+import java.util.Objects;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import eu.balticit.android.europewelcome.ui.posts.rating.RateUsDialog;
-import eu.balticit.android.europewelcome.ui.profile.ProfileActivity;
 
 /**
  * Posts Activity
  */
 
-public class PostsActivity extends BaseActivity implements PostsMvpView{
+public class PostsActivity extends BaseActivity implements PostsMvpView {
 
     @Inject
     PostsMvpPresenter<PostsMvpView> mPresenter;
@@ -76,7 +80,7 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
     Toolbar mToolbar;
 
     @BindView(R.id.feed_view_pager)
-    ViewPager mViewPager;
+    CustomViewPager mViewPager;
 
     @BindView(R.id.tab_layout)
     TabLayout mTabLayout;
@@ -159,10 +163,10 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
     @Override
     public void chooseLoginAction() {
         Menu navMenu = mNavigationView.getMenu();
-        if(mPresenter.checkUserSigned()){
+        if (mPresenter.checkUserSigned()) {
             navMenu.findItem(R.id.nav_item_sign_in).setVisible(false);
             navMenu.findItem(R.id.nav_item_logout).setVisible(true);
-        }else{
+        } else {
             navMenu.findItem(R.id.nav_item_logout).setVisible(false);
             navMenu.findItem(R.id.nav_item_sign_in).setVisible(true);
         }
@@ -198,6 +202,7 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
     protected void onResume() {
         super.onResume();
         //every time activity goes on top in task's stack - update nav drawer
+        //reselectTab(0);
         mPresenter.onNavMenuCreated();
         if (mDrawer != null) {
             mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
@@ -288,6 +293,7 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
 
     /**
      * Popup menu for post's list filter options
+     *
      * @param v popup view anchor
      */
     private void showFilterPopup(View v) {
@@ -348,16 +354,25 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
 
         mViewPager.setAdapter(mPagerAdapter);
 
-        mTabLayout.addTab(mTabLayout.newTab().setText(getString(R.string.blog)));
+        mTabLayout.addTab(mTabLayout.newTab().setText("Free"));
         mTabLayout.addTab(mTabLayout.newTab().setText("Premium"));
         mViewPager.setOffscreenPageLimit(mTabLayout.getTabCount());
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
 
+        mViewPager.disableScroll(true);
+
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                mViewPager.setCurrentItem(tab.getPosition());
+                switch (tab.getPosition()) {
+                    case 0:
+                        mViewPager.setCurrentItem(tab.getPosition());
+                        break;
+                    case 1:
+                        mPresenter.checkUserHasPremium(tab.getPosition());
+                        break;
+                }
             }
 
             @Override
@@ -372,6 +387,26 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
         });
 
         mPresenter.onViewInitialized();
+    }
+
+    @Override
+    public void showPremiumTab(int tabPosition) {
+        mViewPager.setCurrentItem(tabPosition);
+    }
+
+    @Override
+    public void reselectTab(int tabPosition) {
+        Objects.requireNonNull(mTabLayout.getTabAt(tabPosition)).select();
+    }
+
+    @Override
+    public void disablePagerScroll() {
+        mViewPager.disableScroll(true);
+    }
+
+    @Override
+    public void enablePagerScroll() {
+        mViewPager.disableScroll(false);
     }
 
     void setupNavMenu() {
@@ -419,6 +454,16 @@ public class PostsActivity extends BaseActivity implements PostsMvpView{
     @Override
     public void openLoginActivity() {
         startActivity(LoginActivity.getStartIntent(this));
+    }
+
+    @Override
+    public void showBuyPremiumDialog() {
+        BuyPremiumDialog.newInstance().show(getSupportFragmentManager());
+    }
+
+    @Override
+    public void openPremiumActivity() {
+        startActivity(PremiumActivity.getStartIntent(this));
     }
 
     @Override

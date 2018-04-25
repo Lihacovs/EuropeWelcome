@@ -89,6 +89,16 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public boolean isAppIntroWatched() {
+        return mPreferencesHelper.isAppIntroWatched();
+    }
+
+    @Override
+    public void watchAppIntro(boolean watched) {
+        mPreferencesHelper.watchAppIntro(watched);
+    }
+
+    @Override
     public int getCurrentUserLoggedInMode() {
         return mPreferencesHelper.getCurrentUserLoggedInMode();
     }
@@ -146,6 +156,16 @@ public class AppDataManager implements DataManager {
     @Override
     public void setCurrentUserGender(String gender) {
         mPreferencesHelper.setCurrentUserGender(gender);
+    }
+
+    @Override
+    public boolean getCurrentUserPremium() {
+        return mPreferencesHelper.getCurrentUserPremium();
+    }
+
+    @Override
+    public void setCurrentUserPremium(boolean hasPremium) {
+        mPreferencesHelper.setCurrentUserPremium(hasPremium);
     }
 
     @Override

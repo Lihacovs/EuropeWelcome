@@ -46,4 +46,6 @@ public interface PostsMvpPresenter <V extends PostsMvpView> extends MvpPresenter
     void onNavMenuCreated();
 
     String getCurrentUserId();
+
+    void checkUserHasPremium(int tabPosition);
 }

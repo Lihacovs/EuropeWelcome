@@ -13,16 +13,20 @@
  * limitations under the License.
  */
 
-package eu.balticit.android.europewelcome.ui.posts.premium;
+package eu.balticit.android.europewelcome.ui.premium;
 
-import eu.balticit.android.europewelcome.ui.base.MvpPresenter;
+import javax.inject.Inject;
 
-/**
- * Created by BIT on 12/6/2017.
- */
+import eu.balticit.android.europewelcome.data.DataManager;
+import eu.balticit.android.europewelcome.ui.base.BasePresenter;
 
-public interface PremiumPostsMvpPresenter<V extends PremiumPostsMvpView>
-        extends MvpPresenter<V> {
+public class PremiumPresenter<V extends PremiumMvpView> extends BasePresenter<V> implements
+        PremiumMvpPresenter<V> {
 
-    void onViewPrepared();
+    private static final String TAG = "PremiumPresenter";
+
+    @Inject
+    PremiumPresenter(DataManager dataManager) {
+        super(dataManager);
+    }
 }

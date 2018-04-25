@@ -161,6 +161,7 @@ public class AppFirebaseHelper implements FirebaseHelper {
     public Query getFreePostsQueryOrderedByStars() {
         return mFirestore
                 .collection(AppConstants.POSTS_COLLECTION)
+                .whereEqualTo("postAccepted", true)
                 .whereEqualTo("postPublished", true)
                 .whereEqualTo("postPremium", false)
                 .orderBy("postStars", Query.Direction.DESCENDING)
@@ -171,6 +172,7 @@ public class AppFirebaseHelper implements FirebaseHelper {
     public Query getFreePostsQueryOrderedByViews() {
         return mFirestore
                 .collection(AppConstants.POSTS_COLLECTION)
+                .whereEqualTo("postAccepted", true)
                 .whereEqualTo("postPublished", true)
                 .whereEqualTo("postPremium", false)
                 .orderBy("postWatches", Query.Direction.DESCENDING);
@@ -179,6 +181,7 @@ public class AppFirebaseHelper implements FirebaseHelper {
     @Override
     public Query getFreePostsQueryOrderedByDate() {
         return mFirestore.collection(AppConstants.POSTS_COLLECTION)
+                .whereEqualTo("postAccepted", true)
                 .whereEqualTo("postPublished", true)
                 .whereEqualTo("postPremium", false)
                 .orderBy("postCreationTimestamp", Query.Direction.DESCENDING);
@@ -187,6 +190,7 @@ public class AppFirebaseHelper implements FirebaseHelper {
     @Override
     public Query getFreePostsQueryOrderedByComments() {
         return mFirestore.collection(AppConstants.POSTS_COLLECTION)
+                .whereEqualTo("postAccepted", true)
                 .whereEqualTo("postPublished", true)
                 .whereEqualTo("postPremium", false)
                 .orderBy("postComments", Query.Direction.DESCENDING)
@@ -197,6 +201,7 @@ public class AppFirebaseHelper implements FirebaseHelper {
     public Query getPremiumPostsQueryOrderedByStars() {
         return mFirestore
                 .collection(AppConstants.POSTS_COLLECTION)
+                .whereEqualTo("postAccepted", true)
                 .whereEqualTo("postPublished", true)
                 .whereEqualTo("postPremium", true)
                 .orderBy("postStars", Query.Direction.DESCENDING)
@@ -206,6 +211,7 @@ public class AppFirebaseHelper implements FirebaseHelper {
     @Override
     public Query getPremiumPostsQueryOrderedByDate() {
         return mFirestore.collection(AppConstants.POSTS_COLLECTION)
+                .whereEqualTo("postAccepted", true)
                 .whereEqualTo("postPublished", true)
                 .whereEqualTo("postPremium", true)
                 .orderBy("postCreationTimestamp", Query.Direction.DESCENDING);
@@ -214,6 +220,7 @@ public class AppFirebaseHelper implements FirebaseHelper {
     @Override
     public Query getPremiumPostsQueryOrderedByComments() {
         return mFirestore.collection(AppConstants.POSTS_COLLECTION)
+                .whereEqualTo("postAccepted", true)
                 .whereEqualTo("postPublished", true)
                 .whereEqualTo("postPremium", true)
                 .orderBy("postComments", Query.Direction.DESCENDING)

@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package eu.balticit.android.europewelcome.ui.posts.free;
+package eu.balticit.android.europewelcome.ui.posts.freeposts;
 
 import eu.balticit.android.europewelcome.ui.base.MvpView;
 

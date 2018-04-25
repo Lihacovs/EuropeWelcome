@@ -28,6 +28,7 @@ import eu.balticit.android.europewelcome.data.firebase.model.PostSection;
 import eu.balticit.android.europewelcome.ui.base.BasePresenter;
 import eu.balticit.android.europewelcome.ui.custom.ImageCompress;
 import eu.balticit.android.europewelcome.utils.CommonUtils;
+
 import com.google.android.gms.location.places.Place;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
@@ -73,8 +74,11 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
         } else {
             mPostId = postId;
             getDataManager().getPost(postId)
-                    .addOnSuccessListener(documentSnapshot ->
-                            mPost = documentSnapshot.toObject(Post.class))
+                    .addOnSuccessListener(documentSnapshot -> {
+                        mPost = documentSnapshot.toObject(Post.class);
+                        getMvpView().enableIcons();
+                        getMvpView().hideLoading();
+                    })
                     .addOnFailureListener(e -> {
                         getMvpView().hideLoading();
                         getMvpView().onError("Unable to get Data");
@@ -92,35 +96,45 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
         postSection.setPostSectionViewType("Title");
         getDataManager().savePostSection(postSection, mPost.getPostId())
                 .addOnSuccessListener(aVoid -> {
+                    getMvpView().enableIcons();
+                    getMvpView().hideLoading();
                 })
                 .addOnFailureListener(e -> {
                     getMvpView().hideLoading();
-                    Log.d(TAG, "newTextPostSection: Failure");
+                    getMvpView().onError("Some Error. Try again");
                 });
     }
 
     @Override
     public void newTextPostSection() {
         getMvpView().showLoading();
+        getMvpView().disableIcons();
         PostSection postSection = newPostSection();
         postSection.setPostSectionViewType("Text");
         getDataManager().savePostSection(postSection, mPost.getPostId())
                 .addOnSuccessListener(aVoid -> {
+                    getMvpView().enableIcons();
+                    getMvpView().hideLoading();
                 })
                 .addOnFailureListener(e -> {
+                    getMvpView().enableIcons();
                     getMvpView().hideLoading();
                     Log.d(TAG, "newTextPostSection: Failure");
                 });
     }
 
     private void newImagePostSection(String postImageUrl) {
+        getMvpView().disableIcons();
         PostSection postSection = newPostSection();
         postSection.setPostSectionViewType("Image");
         postSection.setPostImageUrl(postImageUrl);
         getDataManager().savePostSection(postSection, mPost.getPostId())
                 .addOnSuccessListener(aVoid -> {
+                    getMvpView().enableIcons();
+                    getMvpView().hideLoading();
                 })
                 .addOnFailureListener(e -> {
+                    getMvpView().enableIcons();
                     getMvpView().hideLoading();
                     Log.d(TAG, "onFailure: ");
                 });
@@ -129,6 +143,7 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
     @Override
     public void newMapPostSection(Place place) {
         getMvpView().showLoading();
+        getMvpView().disableIcons();
         PostSection postSection = newPostSection();
         postSection.setPostSectionViewType("Map");
         postSection.setPostPlaceAddress(place.getAddress().toString());
@@ -137,7 +152,10 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
         postSection.setPostPlaceLng(place.getLatLng().longitude);
         getDataManager().savePostSection(postSection, mPost.getPostId())
                 .addOnSuccessListener(aVoid -> {
+                    getMvpView().enableIcons();
+                    getMvpView().hideLoading();
                 }).addOnFailureListener(e -> {
+            getMvpView().enableIcons();
             getMvpView().hideLoading();
             Log.d(TAG, "onFailure: ");
         });
@@ -166,13 +184,17 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
     @Override
     public void newVideoPostSection(String videoCode) {
         getMvpView().showLoading();
+        getMvpView().disableIcons();
         PostSection postSection = newPostSection();
         postSection.setPostSectionViewType("Video");
         postSection.setYouTubeVideoCode(videoCode);
         getDataManager().savePostSection(postSection, mPost.getPostId())
                 .addOnSuccessListener(aVoid -> {
+                    getMvpView().enableIcons();
+                    getMvpView().hideLoading();
                 })
                 .addOnFailureListener(e -> {
+                    getMvpView().enableIcons();
                     getMvpView().hideLoading();
                     Log.d(TAG, "onFailure: ");
                 });
@@ -183,6 +205,7 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
         getMvpView().showLoading();
         getDataManager().deletePostSection(mPostId, postSection)
                 .addOnSuccessListener(aVoid -> {
+                    getMvpView().hideLoading();
                 })
                 .addOnFailureListener(e -> {
                     getMvpView().hideLoading();

@@ -92,6 +92,8 @@ public class UserPostsFragment extends BaseFragment implements
     @Override
     protected void setUp(View view) {
 
+        showLoading();
+
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -109,6 +111,7 @@ public class UserPostsFragment extends BaseFragment implements
     public void onStart() {
         super.onStart();
         mUserPostsAdapter.startListening();
+        hideLoading();
 
     }
 

@@ -13,26 +13,26 @@
  * limitations under the License.
  */
 
-package eu.balticit.android.europewelcome.ui.posts.free;
+package eu.balticit.android.europewelcome.ui.posts.premiumposts;
+
+import com.google.firebase.firestore.Query;
 
 import eu.balticit.android.europewelcome.R;
 import eu.balticit.android.europewelcome.data.DataManager;
 import eu.balticit.android.europewelcome.data.firebase.model.Post;
 import eu.balticit.android.europewelcome.ui.base.BasePresenter;
-import com.google.firebase.firestore.Query;
 
 import javax.inject.Inject;
 
 /**
- * FreePosts Presenter
+ * Created by BIT on 12/6/2017.
  */
-public class FreePostsPresenter<V extends FreePostsMvpView> extends BasePresenter<V>
-        implements FreePostsMvpPresenter<V> {
 
-    private static final String TAG = "FreePostsPresenter";
+public class PremiumPostsPresenter <V extends PremiumPostsMvpView> extends BasePresenter<V>
+        implements PremiumPostsMvpPresenter<V> {
 
     @Inject
-    FreePostsPresenter(DataManager dataManager) {
+    PremiumPostsPresenter(DataManager dataManager) {
         super(dataManager);
     }
 
@@ -42,28 +42,23 @@ public class FreePostsPresenter<V extends FreePostsMvpView> extends BasePresente
     }
 
     @Override
-    public Query getPostsQuery() {
-        return getDataManager().getPostsQuery();
-    }
-
-    @Override
     public Query getPostsQueryOrderedByStars() {
-        return getDataManager().getFreePostsQueryOrderedByStars();
+        return getDataManager().getPremiumPostsQueryOrderedByStars();
     }
 
     @Override
     public Query getPostsQueryOrderedByViews() {
-        return getDataManager().getFreePostsQueryOrderedByViews();
+        return null;
     }
 
     @Override
     public Query getPostsQueryOrderedByDate() {
-        return getDataManager().getFreePostsQueryOrderedByDate();
+        return getDataManager().getPremiumPostsQueryOrderedByDate();
     }
 
     @Override
     public Query getPostsQueryOrderedByComments() {
-        return getDataManager().getFreePostsQueryOrderedByComments();
+        return getDataManager().getPremiumPostsQueryOrderedByComments();
     }
 
     @Override
@@ -74,12 +69,12 @@ public class FreePostsPresenter<V extends FreePostsMvpView> extends BasePresente
 
     /**
      * Checks if user rated post with star and updates UI accordingly. Launched from
-     * {@link FreePostsAdapter.ViewHolder#onStarIconClick()}
+     * {@link PremiumPostsAdapter.ViewHolder#onStarIconClick()}
      * @param post - Post to check for star
      * @param holder - ViewHolder to update UI
      */
     @Override
-    public void addOrRemoveStar(Post post, FreePostsAdapter.ViewHolder holder) {
+    public void addOrRemoveStar(Post post, PremiumPostsAdapter.ViewHolder holder) {
         String currentUserId = getDataManager().getCurrentUserId();
         if (currentUserId != null) {
             getDataManager().getStar(currentUserId, post.getPostId())
@@ -110,13 +105,13 @@ public class FreePostsPresenter<V extends FreePostsMvpView> extends BasePresente
     }
 
     /**
-     * Checks if user bookmarked post and updates UI accordingly. Launched from
-     * {@link FreePostsAdapter.ViewHolder#onBookmarkIconClick()}
-     * @param post - Post to check for bookmark
+     * Checks if user rated post with star and updates UI accordingly. Launched from
+     * {@link PremiumPostsAdapter.ViewHolder#onStarIconClick()}
+     * @param post - Post to check for star
      * @param holder - ViewHolder to update UI
      */
     @Override
-    public void saveOrDeleteBookmark(Post post, FreePostsAdapter.ViewHolder holder) {
+    public void saveOrDeleteBookmark(Post post, PremiumPostsAdapter.ViewHolder holder) {
         String currentUserId = getDataManager().getCurrentUserId();
         if (currentUserId != null) {
             getDataManager().getBookmark(currentUserId, post.getPostId())
@@ -140,12 +135,12 @@ public class FreePostsPresenter<V extends FreePostsMvpView> extends BasePresente
 
     /**
      * Checks if post bookmarked by current user and updates UI accordingly. Launched from
-     * {@link FreePostsAdapter.ViewHolder#bind(Post)}
+     * {@link PremiumPostsAdapter.ViewHolder#bind(Post)}
      * @param post Post to check
      * @param holder ViewHolder to update UI
      */
     @Override
-    public void checkPostBookmarkedByUser(Post post, FreePostsAdapter.ViewHolder holder) {
+    public void checkPostBookmarkedByUser(Post post, PremiumPostsAdapter.ViewHolder holder) {
         String currentUserId = getDataManager().getCurrentUserId();
         if (currentUserId != null) {
             getDataManager().getBookmark(currentUserId, post.getPostId())
@@ -161,12 +156,12 @@ public class FreePostsPresenter<V extends FreePostsMvpView> extends BasePresente
 
     /**
      * Checks if post star rated by current user and updates UI accordingly. Launched from
-     * {@link FreePostsAdapter.ViewHolder#bind(Post)}
+     * {@link PremiumPostsAdapter.ViewHolder#bind(Post)}
      * @param post Post to check
      * @param holder ViewHolder to update UI
      */
     @Override
-    public void checkPostStarRatedByUser(Post post, FreePostsAdapter.ViewHolder holder) {
+    public void checkPostStarRatedByUser(Post post, PremiumPostsAdapter.ViewHolder holder) {
         String currentUserId = getDataManager().getCurrentUserId();
         if (currentUserId != null) {
             getDataManager().getStar(currentUserId, post.getPostId())

@@ -73,7 +73,8 @@ public class RatingDialogPresenter<V extends RatingDialogMvpView> extends BasePr
         }
 
         getMvpView().hideLoading();
-        getMvpView().onError(R.string.rating_thanks);
+        getMvpView().hideKeyboard();
+        getMvpView().showMessage(R.string.rating_thanks);
         getMvpView().dismissDialog();
 
     }

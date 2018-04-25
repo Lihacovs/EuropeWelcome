@@ -15,9 +15,15 @@
 
 package eu.balticit.android.europewelcome.ui.posts;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+
 import eu.balticit.android.europewelcome.data.DataManager;
+import eu.balticit.android.europewelcome.data.firebase.model.User;
 import eu.balticit.android.europewelcome.ui.base.BasePresenter;
 
 import javax.inject.Inject;
@@ -28,8 +34,8 @@ import eu.balticit.android.europewelcome.data.DataManager;
  * Posts Presenter
  */
 
-public class PostsPresenter <V extends PostsMvpView> extends BasePresenter<V>
-        implements PostsMvpPresenter<V>{
+public class PostsPresenter<V extends PostsMvpView> extends BasePresenter<V>
+        implements PostsMvpPresenter<V> {
 
     private static final String TAG = "PostsPresenter";
 
@@ -45,10 +51,10 @@ public class PostsPresenter <V extends PostsMvpView> extends BasePresenter<V>
 
     @Override
     public void onDrawerOptionProfileClick() {
-        if(checkUserSigned()){
+        if (checkUserSigned()) {
             getMvpView().closeNavigationDrawer();
             getMvpView().openProfileActivity();
-        }else{
+        } else {
             getMvpView().closeNavigationDrawer();
             getMvpView().openLoginActivity();
         }
@@ -56,10 +62,10 @@ public class PostsPresenter <V extends PostsMvpView> extends BasePresenter<V>
 
     @Override
     public void onDrawerOptionBookmarksClick() {
-        if(checkUserSigned()){
+        if (checkUserSigned()) {
             getMvpView().closeNavigationDrawer();
             getMvpView().openBookmarksActivity();
-        }else{
+        } else {
             getMvpView().closeNavigationDrawer();
             getMvpView().openLoginActivity();
         }
@@ -67,10 +73,10 @@ public class PostsPresenter <V extends PostsMvpView> extends BasePresenter<V>
 
     @Override
     public void onDrawerOptionDraftsClick() {
-        if(checkUserSigned()){
+        if (checkUserSigned()) {
             getMvpView().closeNavigationDrawer();
             getMvpView().openDraftsActivity();
-        }else{
+        } else {
             getMvpView().closeNavigationDrawer();
             getMvpView().openLoginActivity();
         }
@@ -78,7 +84,26 @@ public class PostsPresenter <V extends PostsMvpView> extends BasePresenter<V>
 
     @Override
     public void onDrawerOptionPremiumClick() {
-
+        getMvpView().closeNavigationDrawer();
+        getMvpView().showLoading();
+        if (checkUserSigned()) {
+            getDataManager().getUser(getCurrentUserId()).addOnSuccessListener(documentSnapshot -> {
+                User user = documentSnapshot.toObject(User.class);
+                if (user.isUserPremium()) {
+                    getMvpView().hideLoading();
+                    getMvpView().openPremiumActivity();
+                } else {
+                    getMvpView().hideLoading();
+                    getMvpView().showBuyPremiumDialog();
+                }
+            }).addOnFailureListener(e -> {
+                getMvpView().hideLoading();
+                getMvpView().onError("Some error");
+            });
+        } else {
+            getMvpView().hideLoading();
+            getMvpView().showBuyPremiumDialog();
+        }
     }
 
     @Override
@@ -96,20 +121,21 @@ public class PostsPresenter <V extends PostsMvpView> extends BasePresenter<V>
         if (!isViewAttached()) {
             return;
         }
-
         getDataManager().setUserAsLoggedOut();
         getDataManager().signOutFirebaseUser();
         getDataManager().accountGoogleSignOut();
         getMvpView().hideLoading();
+        getMvpView().reselectTab(0);
+        getMvpView().disablePagerScroll();
         getMvpView().openLoginActivity();
 
     }
 
     @Override
     public void onNewPostClick() {
-        if(checkUserSigned()){
+        if (checkUserSigned()) {
             getMvpView().openNewPostActivity();
-        }else{
+        } else {
             getMvpView().openLoginActivity();
         }
     }
@@ -129,7 +155,7 @@ public class PostsPresenter <V extends PostsMvpView> extends BasePresenter<V>
         }
         getMvpView().updateAppVersion();
 
-        if(checkUserSigned()){
+        if (checkUserSigned()) {
             String currentUserName = getDataManager().getCurrentUserName();
             if (currentUserName != null && !currentUserName.isEmpty()) {
                 getMvpView().updateUserName(currentUserName);
@@ -144,7 +170,7 @@ public class PostsPresenter <V extends PostsMvpView> extends BasePresenter<V>
             if (profilePicUrl != null && !profilePicUrl.isEmpty()) {
                 getMvpView().updateUserProfilePic(profilePicUrl);
             }
-        }else{
+        } else {
             getMvpView().updateUserName("EuropeWelcome");
             getMvpView().updateUserEmail("I am the way and the truth and the life");
             getMvpView().setDefaultUserImage();
@@ -156,6 +182,33 @@ public class PostsPresenter <V extends PostsMvpView> extends BasePresenter<V>
     @Override
     public String getCurrentUserId() {
         return getDataManager().getCurrentUserId();
+    }
+
+    @Override
+    public void checkUserHasPremium(int tabPosition) {
+        getMvpView().showLoading();
+        if (checkUserSigned()) {
+            getDataManager().getUser(getCurrentUserId()).addOnSuccessListener(documentSnapshot -> {
+                User user = documentSnapshot.toObject(User.class);
+                if (user.isUserPremium()) {
+                    getMvpView().hideLoading();
+                    getMvpView().showPremiumTab(tabPosition);
+                    getMvpView().enablePagerScroll();
+                } else {
+                    getMvpView().hideLoading();
+                    getMvpView().reselectTab(tabPosition - 1);
+                    getMvpView().showBuyPremiumDialog();
+                }
+            }).addOnFailureListener(e -> {
+                getMvpView().hideLoading();
+                getMvpView().reselectTab(tabPosition - 1);
+                getMvpView().onError("Some error");
+            });
+        } else {
+            getMvpView().hideLoading();
+            getMvpView().reselectTab(tabPosition - 1);
+            getMvpView().showBuyPremiumDialog();
+        }
     }
 
     @Override

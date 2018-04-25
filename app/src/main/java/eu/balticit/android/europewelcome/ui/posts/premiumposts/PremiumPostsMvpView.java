@@ -13,29 +13,20 @@
  * limitations under the License.
  */
 
-package eu.balticit.android.europewelcome.ui.posts.premium;
+package eu.balticit.android.europewelcome.ui.posts.premiumposts;
 
-import eu.balticit.android.europewelcome.data.DataManager;
-import eu.balticit.android.europewelcome.ui.base.BasePresenter;
-
-import javax.inject.Inject;
-
-import eu.balticit.android.europewelcome.data.DataManager;
+import eu.balticit.android.europewelcome.ui.base.MvpView;
 
 /**
  * Created by BIT on 12/6/2017.
  */
+public interface PremiumPostsMvpView extends MvpView {
 
-public class PremiumPostsPresenter <V extends PremiumPostsMvpView> extends BasePresenter<V>
-        implements PremiumPostsMvpPresenter<V> {
+    void setBookmarkedIcon(PremiumPostsAdapter.ViewHolder holder);
 
-    @Inject
-    public PremiumPostsPresenter(DataManager dataManager) {
-        super(dataManager);
-    }
+    void removeBookmarkedIcon(PremiumPostsAdapter.ViewHolder holder);
 
-    @Override
-    public void onViewPrepared() {
+    void setStarRatedIcon(PremiumPostsAdapter.ViewHolder holder);
 
-    }
+    void removeStarRatedIcon(PremiumPostsAdapter.ViewHolder holder);
 }

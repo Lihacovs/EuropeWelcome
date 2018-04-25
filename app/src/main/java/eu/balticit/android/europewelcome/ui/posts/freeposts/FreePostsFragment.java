@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package eu.balticit.android.europewelcome.ui.posts.free;
+package eu.balticit.android.europewelcome.ui.posts.freeposts;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -31,6 +31,7 @@ import eu.balticit.android.europewelcome.di.component.ActivityComponent;
 import eu.balticit.android.europewelcome.ui.base.BaseFragment;
 import eu.balticit.android.europewelcome.ui.postdetail.PostDetailActivity;
 import eu.balticit.android.europewelcome.ui.posts.PostsActivity;
+
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
 import javax.inject.Inject;
@@ -42,9 +43,9 @@ import butterknife.ButterKnife;
  * FreePosts Fragment.
  */
 public class FreePostsFragment extends BaseFragment implements
-        FreePostsMvpView, FreePostsAdapter.Callback, PostsActivity.Callback{
+        FreePostsMvpView, FreePostsAdapter.Callback, PostsActivity.Callback {
 
-    private static final String TAG = "FreePostsFragment";
+    public static final String TAG = "FreePostsFragment";
 
     @Inject
     FreePostsMvpPresenter<FreePostsMvpView> mPresenter;
@@ -79,21 +80,18 @@ public class FreePostsFragment extends BaseFragment implements
             mPresenter.onAttach(this);
         }
 
-        ((PostsActivity) getActivity()).setActivityCallback(this);
+        ((PostsActivity) getBaseActivity()).setActivityCallback(this);
         return view;
     }
 
+    //sets callback for this tab fragment when user see it
     @Override
-    public void onStart() {
-        super.onStart();
-        mFreePostsAdapter.startListening();
-
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        mFreePostsAdapter.stopListening();
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            if (getBaseActivity() != null)
+                ((PostsActivity) getBaseActivity()).setActivityCallback(this);
+        }
     }
 
     @Override
@@ -105,15 +103,18 @@ public class FreePostsFragment extends BaseFragment implements
         mFreePostsAdapter = new FreePostsAdapter(
                 new FirestoreRecyclerOptions.Builder<Post>()
                         .setQuery(mPresenter.getPostsQueryOrderedByDate(), Post.class)
-                        .build(),this);
+                        .build(), this);
         mFreePostsAdapter.setAdapterCallback(this);
         mRecyclerView.setAdapter(mFreePostsAdapter);
         mPresenter.onViewPrepared();
+
+        mFreePostsAdapter.startListening();
     }
 
     @Override
     public void onDestroyView() {
         mPresenter.onDetach();
+        mFreePostsAdapter.stopListening();
         super.onDestroyView();
     }
 
@@ -123,7 +124,7 @@ public class FreePostsFragment extends BaseFragment implements
         mFreePostsAdapter = new FreePostsAdapter(
                 new FirestoreRecyclerOptions.Builder<Post>()
                         .setQuery(mPresenter.getPostsQueryOrderedByStars(), Post.class)
-                        .build(),this);
+                        .build(), this);
         mFreePostsAdapter.setAdapterCallback(this);
         mRecyclerView.setAdapter(mFreePostsAdapter);
         mFreePostsAdapter.startListening();
@@ -136,7 +137,7 @@ public class FreePostsFragment extends BaseFragment implements
         mFreePostsAdapter = new FreePostsAdapter(
                 new FirestoreRecyclerOptions.Builder<Post>()
                         .setQuery(mPresenter.getPostsQueryOrderedByViews(), Post.class)
-                        .build(),this);
+                        .build(), this);
         mFreePostsAdapter.setAdapterCallback(this);
         mRecyclerView.setAdapter(mFreePostsAdapter);
         mFreePostsAdapter.startListening();
@@ -198,28 +199,28 @@ public class FreePostsFragment extends BaseFragment implements
 
     @Override
     public void setBookmarkedIcon(FreePostsAdapter.ViewHolder holder) {
-        if(mCallback!=null){
+        if (mCallback != null) {
             mCallback.setBookmarkedIcon(holder);
         }
     }
 
     @Override
     public void removeBookmarkedIcon(FreePostsAdapter.ViewHolder holder) {
-        if(mCallback!=null){
+        if (mCallback != null) {
             mCallback.removeBookmarkedIcon(holder);
         }
     }
 
     @Override
     public void setStarRatedIcon(FreePostsAdapter.ViewHolder holder) {
-        if(mCallback!=null){
+        if (mCallback != null) {
             mCallback.setStarRatedIcon(holder);
         }
     }
 
     @Override
     public void removeStarRatedIcon(FreePostsAdapter.ViewHolder holder) {
-        if(mCallback!=null){
+        if (mCallback != null) {
             mCallback.removeStarRatedIcon(holder);
         }
     }

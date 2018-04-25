@@ -21,6 +21,7 @@ import eu.balticit.android.europewelcome.R;
 import eu.balticit.android.europewelcome.data.DataManager;
 import eu.balticit.android.europewelcome.data.firebase.model.Post;
 import eu.balticit.android.europewelcome.ui.base.BasePresenter;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -53,9 +54,11 @@ public class BookmarksPresenter<V extends BookmarksMvpView> extends BasePresente
 
     @Override
     public void deleteBookmark(Post post) {
-        getMvpView().showLoading();
         getDataManager().deleteBookmark(getDataManager().getCurrentUserId(), post)
-                .addOnSuccessListener(aVoid -> getMvpView().onError(R.string.bookmarks_removed))
+                .addOnSuccessListener(aVoid -> {
+                    getMvpView().hideLoading();
+                    getMvpView().onError(R.string.bookmarks_removed);
+                })
                 .addOnFailureListener(e -> {
                     getMvpView().hideLoading();
                     getMvpView().onError(R.string.bookmarks_some_error);
@@ -70,18 +73,17 @@ public class BookmarksPresenter<V extends BookmarksMvpView> extends BasePresente
 
     @Override
     public void deleteAllBookmarks() {
-        getMvpView().showLoading();
         getDataManager().getUserBookmarks(getDataManager().getCurrentUserId())
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
                         Post post = doc.toObject(Post.class);
                         getDataManager().deleteBookmark(getDataManager().getCurrentUserId(), post);
                     }
+                    getMvpView().hideLoading();
                 })
                 .addOnFailureListener(e -> {
                     getMvpView().hideLoading();
                     getMvpView().onError(R.string.bookmarks_some_error);
                 });
-        getMvpView().hideLoading();
     }
 }

@@ -31,4 +31,9 @@ public class AboutPresenter <V extends AboutMvpView> extends BasePresenter<V>
     AboutPresenter(DataManager dataManager) {
         super(dataManager);
     }
+
+    @Override
+    public void resetIntroWatch() {
+        getDataManager().watchAppIntro(false);
+    }
 }

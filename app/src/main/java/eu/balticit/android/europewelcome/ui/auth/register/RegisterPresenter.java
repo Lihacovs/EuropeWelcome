@@ -163,7 +163,8 @@ public class RegisterPresenter<V extends RegisterMvpView> extends BasePresenter<
                                         photoUrl,
                                         gender,
                                         birthDate,
-                                        CommonUtils.getCurrentDate()
+                                        CommonUtils.getCurrentDate(),
+                                        false
 
                                 );
                                 getDataManager().saveUser(newUser);

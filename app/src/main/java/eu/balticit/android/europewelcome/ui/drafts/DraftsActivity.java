@@ -109,6 +109,7 @@ public class DraftsActivity extends BaseActivity implements DraftsMvpView, Draft
     public void onStart() {
         super.onStart();
         mDraftsAdapter.startListening();
+        hideLoading();
     }
 
     @Override
@@ -199,6 +200,7 @@ public class DraftsActivity extends BaseActivity implements DraftsMvpView, Draft
                 (dialog, which) -> {
                     switch (which) {
                         case DialogInterface.BUTTON_POSITIVE:
+                            showLoading();
                             mPresenter.deleteDraft(post);
                             break;
                         case DialogInterface.BUTTON_NEGATIVE:
@@ -224,6 +226,7 @@ public class DraftsActivity extends BaseActivity implements DraftsMvpView, Draft
                 (dialog, which) -> {
                     switch (which) {
                         case DialogInterface.BUTTON_POSITIVE:
+                            showLoading();
                             mPresenter.deleteAllDrafts();
                             break;
                         case DialogInterface.BUTTON_NEGATIVE:
