@@ -15,24 +15,16 @@
 
 package eu.balticit.android.europewelcome.ui.bookmarks;
 
-import android.support.annotation.NonNull;
 
 import eu.balticit.android.europewelcome.R;
 import eu.balticit.android.europewelcome.data.DataManager;
 import eu.balticit.android.europewelcome.data.firebase.model.Post;
 import eu.balticit.android.europewelcome.ui.base.BasePresenter;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import javax.inject.Inject;
-
-import eu.balticit.android.europewelcome.data.DataManager;
-import eu.balticit.android.europewelcome.data.firebase.model.Post;
-import eu.balticit.android.europewelcome.ui.base.BasePresenter;
 
 /**
  * Bookmarks Presenter

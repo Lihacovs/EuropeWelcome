@@ -214,6 +214,7 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
                                     "Not specified",
                                     "Day Month Year",
                                     CommonUtils.getCurrentDate(),
+                                    false,
                                     false
                             );
                             getDataManager().saveUser(newUser).addOnSuccessListener(aVoid -> {

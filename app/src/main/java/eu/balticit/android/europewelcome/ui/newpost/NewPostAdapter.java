@@ -27,7 +27,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import eu.balticit.android.europewelcome.BuildConfig;
 import eu.balticit.android.europewelcome.R;
 import eu.balticit.android.europewelcome.data.firebase.model.PostSection;
 import eu.balticit.android.europewelcome.di.module.GlideApp;

@@ -17,8 +17,6 @@ package eu.balticit.android.europewelcome.ui.bookmarks;
 
 import eu.balticit.android.europewelcome.ui.base.MvpView;
 
-import eu.balticit.android.europewelcome.ui.base.MvpView;
-
 /**
  * View interface for {@link BookmarksActivity}
  */

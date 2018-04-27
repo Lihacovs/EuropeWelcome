@@ -22,6 +22,8 @@ import eu.balticit.android.europewelcome.ui.base.MvpView;
  */
 public interface FreePostsMvpView extends MvpView {
 
+    void loadNotAcceptedPosts();
+
     void setBookmarkedIcon(FreePostsAdapter.ViewHolder holder);
 
     void removeBookmarkedIcon(FreePostsAdapter.ViewHolder holder);

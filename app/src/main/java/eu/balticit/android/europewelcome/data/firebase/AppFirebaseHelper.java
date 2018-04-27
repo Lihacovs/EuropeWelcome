@@ -198,6 +198,15 @@ public class AppFirebaseHelper implements FirebaseHelper {
     }
 
     @Override
+    public Query getNotAcceptedPostsQuery() {
+        return mFirestore.collection(AppConstants.POSTS_COLLECTION)
+                .whereEqualTo("postAccepted", false)
+                .whereEqualTo("postPublished", true)
+                .whereEqualTo("postPremium", false)
+                .orderBy("postCreationTimestamp", Query.Direction.DESCENDING);
+    }
+
+    @Override
     public Query getPremiumPostsQueryOrderedByStars() {
         return mFirestore
                 .collection(AppConstants.POSTS_COLLECTION)

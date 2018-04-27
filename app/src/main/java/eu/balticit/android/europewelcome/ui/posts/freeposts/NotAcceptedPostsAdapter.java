@@ -13,20 +13,16 @@
  * limitations under the License.
  */
 
-package eu.balticit.android.europewelcome.ui.bookmarks;
+package eu.balticit.android.europewelcome.ui.posts.freeposts;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
+import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import eu.balticit.android.europewelcome.R;
-import eu.balticit.android.europewelcome.data.firebase.model.Post;
-import eu.balticit.android.europewelcome.di.module.GlideApp;
-import eu.balticit.android.europewelcome.ui.base.BaseViewHolder;
 
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
@@ -37,28 +33,36 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import eu.balticit.android.europewelcome.R;
+import eu.balticit.android.europewelcome.data.firebase.model.Post;
+import eu.balticit.android.europewelcome.di.module.GlideApp;
+import eu.balticit.android.europewelcome.ui.base.BaseViewHolder;
 
-/**
- * Drafts Adapted. Data queried from {posts} where postAsDraft flag is true.
- */
-public class BookmarksAdapter extends FirestoreRecyclerAdapter<Post, BookmarksAdapter.BookmarksViewHolder> {
+public class NotAcceptedPostsAdapter extends FirestoreRecyclerAdapter<Post, NotAcceptedPostsAdapter.ViewHolder> {
 
-    private static final String TAG = "BookmarksAdapter";
-
-    private BookmarksAdapter.Callback mCallback;
+    private static final String TAG = "FreePostsAdapter";
+    private Callback mCallback;
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See
      * {@link FirestoreRecyclerOptions} for configuration options.
      *
-     * @param options Query in builder
+     * @param options - data to query from DB
      */
-    BookmarksAdapter(FirestoreRecyclerOptions<Post> options) {
+    public NotAcceptedPostsAdapter(FirestoreRecyclerOptions<Post> options) {
         super(options);
     }
 
-    void setAdapterCallback(Callback callback) {
-        mCallback = callback;
+    @Override
+    protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Post model) {
+        holder.bind(model);
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate
+                (R.layout.item_not_accepted_post_view, parent, false));
     }
 
     @Override
@@ -66,76 +70,66 @@ public class BookmarksAdapter extends FirestoreRecyclerAdapter<Post, BookmarksAd
         // Called each time there is a new query snapshot. You may want to use this method
         // to hide a loading spinner or check for the "no documents" state and update your UI.
         // ...
-        /*if (mCallback != null)
-            mCallback.hideLoadingSpinner();*/
+        if (mCallback != null)
+            mCallback.hideLoadingSpinner();
     }
-
 
     @Override
     public void onError(@NonNull FirebaseFirestoreException e) {
         super.onError(e);
-        Log.d(TAG, "onError: " + e);
     }
 
-    @Override
-    protected void onBindViewHolder(@NonNull BookmarksViewHolder holder, int position, @NonNull Post model) {
-        holder.bind(model);
-    }
-
-
-    @NonNull
-    @Override
-    public BookmarksViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.d(TAG, "onCreateViewHolder: ");
-        return new BookmarksViewHolder(LayoutInflater.from(parent.getContext()).inflate
-                (R.layout.item_bookmark, parent, false));
+    public void setAdapterCallback(Callback callback) {
+        mCallback = callback;
     }
 
     public interface Callback {
 
         void hideLoadingSpinner();
 
-        void onBookmarkDeleteIconClick(Post post);
+        void onPostItemViewClick(Post post);
 
-        void onViewHolderClick(Post post);
+        void acceptPost(Post post);
+
+        void deletePost(Post post);
     }
 
-    public class BookmarksViewHolder extends BaseViewHolder {
+    public class ViewHolder extends BaseViewHolder{
 
-        Post mPost;
-
-        @BindView(R.id.iv_bookmark_item_author_photo)
+        @BindView(R.id.iv_post_item_author_photo)
         ImageView mUserPhotoIv;
 
-        @BindView(R.id.tv_bookmark_item_author_name)
+        @BindView(R.id.tv_post_item_author_name)
         TextView mPostAuthorTv;
 
-        @BindView(R.id.tv_bookmark_item_post_date)
+        @BindView(R.id.tv_post_item_post_date)
         TextView mPostCreationDateTv;
 
-        @BindView(R.id.iv_bookmark_item_post_image)
+        @BindView(R.id.iv_post_item_post_image)
         ImageView mPostImageIv;
 
-        @BindView(R.id.tv_bookmark_item_post_title)
+        @BindView(R.id.tv_post_item_post_title)
         TextView mPostTitleTv;
 
-        @BindView(R.id.tv_bookmark_item_post_text)
+        @BindView(R.id.tv_post_item_post_text)
         TextView mPostTextTv;
 
-        @BindView(R.id.iv_bookmark_item_bookmark_image)
-        ImageView mBookmarkIconIv;
+        private Post mPost;
 
-        BookmarksViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
-        @Override
         protected void clear() {
-
+            mPostTitleTv.setText("");
+            mPostTextTv.setText("");
+            mPostAuthorTv.setText("");
+            mPostCreationDateTv.setText("");
         }
 
         public void bind(Post post) {
+
             mPost = post;
 
             if (post.getPostAuthorImageUrl() != null) {
@@ -170,18 +164,24 @@ public class BookmarksAdapter extends FirestoreRecyclerAdapter<Post, BookmarksAd
                 mPostTextTv.setText(post.getPostText());
             }
 
-            mBookmarkIconIv.setImageResource(R.drawable.ic_fill_bookmark_blue_24px);
 
             itemView.setOnClickListener(v -> {
                 if (mCallback != null)
-                    mCallback.onViewHolderClick(mPost);
+                    mCallback.onPostItemViewClick(mPost);
             });
         }
 
-        @OnClick(R.id.iv_bookmark_item_bookmark_image)
-        void onBookmarkIconClick() {
-            if (mCallback != null) {
-                mCallback.onBookmarkDeleteIconClick(mPost);
+        @OnClick(R.id.btn_post_item_accept_post)
+        void onAcceptPostBtnClick(){
+            if(mCallback != null){
+                mCallback.acceptPost(mPost);
+            }
+        }
+
+        @OnClick(R.id.btn_post_item_delete_post)
+        void onDeletePostBtnClick(){
+            if(mCallback != null){
+                mCallback.deletePost(mPost);
             }
         }
     }

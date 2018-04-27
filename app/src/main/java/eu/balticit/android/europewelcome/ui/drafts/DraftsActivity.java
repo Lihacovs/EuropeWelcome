@@ -40,8 +40,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import eu.balticit.android.europewelcome.data.firebase.model.Post;
-import eu.balticit.android.europewelcome.ui.about.AboutFragment;
 
 /**
  * Drafts Activity. Data queried from {posts} where postAsDraft flag is true.

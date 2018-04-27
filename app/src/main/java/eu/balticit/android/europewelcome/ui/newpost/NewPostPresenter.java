@@ -37,12 +37,6 @@ import java.io.File;
 
 import javax.inject.Inject;
 
-import eu.balticit.android.europewelcome.data.DataManager;
-import eu.balticit.android.europewelcome.data.firebase.model.Post;
-import eu.balticit.android.europewelcome.ui.base.BasePresenter;
-import eu.balticit.android.europewelcome.ui.custom.ImageCompress;
-import eu.balticit.android.europewelcome.utils.CommonUtils;
-
 /**
  * NewPost Presenter
  */

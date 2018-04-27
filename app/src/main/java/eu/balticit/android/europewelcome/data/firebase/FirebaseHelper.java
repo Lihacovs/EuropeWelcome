@@ -80,6 +80,8 @@ public interface FirebaseHelper {
 
     Query getFreePostsQueryOrderedByComments();
 
+    Query getNotAcceptedPostsQuery();
+
     Query getPremiumPostsQueryOrderedByStars();
 
     Query getPremiumPostsQueryOrderedByDate();

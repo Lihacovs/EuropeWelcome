@@ -21,9 +21,6 @@ import eu.balticit.android.europewelcome.ui.base.MvpPresenter;
 import eu.balticit.android.europewelcome.ui.base.MvpView;
 import com.google.firebase.firestore.Query;
 
-import eu.balticit.android.europewelcome.data.firebase.model.Post;
-import eu.balticit.android.europewelcome.data.firebase.model.PostComment;
-
 /**
  * Presenter interface for {@link PostDetailPresenter}
  */

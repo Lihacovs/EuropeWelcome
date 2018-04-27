@@ -32,11 +32,6 @@ import java.io.File;
 
 import javax.inject.Inject;
 
-import eu.balticit.android.europewelcome.data.DataManager;
-import eu.balticit.android.europewelcome.data.firebase.model.User;
-import eu.balticit.android.europewelcome.ui.base.BasePresenter;
-import eu.balticit.android.europewelcome.ui.custom.ImageCompress;
-
 /**
  * Register Presenter. When login with Email and Password
  * {@link #createFireBaseUser(String, String, String, String, String, String, String)}
@@ -164,6 +159,7 @@ public class RegisterPresenter<V extends RegisterMvpView> extends BasePresenter<
                                         gender,
                                         birthDate,
                                         CommonUtils.getCurrentDate(),
+                                        false,
                                         false
 
                                 );

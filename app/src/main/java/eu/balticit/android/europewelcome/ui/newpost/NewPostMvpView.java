@@ -17,8 +17,6 @@ package eu.balticit.android.europewelcome.ui.newpost;
 
 import eu.balticit.android.europewelcome.ui.base.MvpView;
 
-import eu.balticit.android.europewelcome.ui.base.MvpView;
-
 /**
  * View interface for {@link NewPostActivity}
  */

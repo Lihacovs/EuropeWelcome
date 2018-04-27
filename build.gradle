@@ -53,9 +53,9 @@ ext {
     buildToolsVersion = '27.0.3'
 
     // App dependencies
-    supportLibraryVersion = '27.1.0'
-    firebasePlayservicesVersion = '12.0.1'
-    firebiseUiVersion = '3.3.0'
+    supportLibraryVersion = '27.1.1'
+    firebasePlayservicesVersion = '15.0.0'
+    firebiseUiVersion = '3.3.1'
     dagger2Version = '2.8'
     butterKnifeVersion = '8.8.1'
     glideVersion = '4.4.0'

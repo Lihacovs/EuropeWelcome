@@ -35,6 +35,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import eu.balticit.android.europewelcome.BuildConfig;
@@ -136,6 +137,8 @@ public class PostsActivity extends BaseActivity implements PostsMvpView {
         void onFilterPostsByDateClick();
 
         void onFilterPostsByCommentsClick();
+
+        void onTabLongClick();
     }
 
     @OnClick(R.id.fab)
@@ -385,6 +388,18 @@ public class PostsActivity extends BaseActivity implements PostsMvpView {
 
             }
         });
+
+        //Long click for Admin to see not accepted posts
+        LinearLayout tabStrip = (LinearLayout) mTabLayout.getChildAt(0);
+        tabStrip.getChildAt(0).setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (mCallback != null)
+                    mCallback.onTabLongClick();
+                return false;
+            }
+        });
+
 
         mPresenter.onViewInitialized();
     }

@@ -29,4 +29,18 @@ public class BuyPremiumDialogPresenter<V extends BuyPremiumDialogMvpView> extend
     BuyPremiumDialogPresenter(DataManager dataManager) {
         super(dataManager);
     }
+
+    private boolean checkUserSigned() {
+        return getDataManager().getCurrentUserId() != null && !getDataManager().getCurrentUserId().isEmpty();
+    }
+
+    @Override
+    public void onGetPremiumClick() {
+        if (checkUserSigned()) {
+            getMvpView().showMessage("Get Premium click");
+        } else {
+            getMvpView().openLoginActivity();
+            getMvpView().dismissDialog();
+        }
+    }
 }

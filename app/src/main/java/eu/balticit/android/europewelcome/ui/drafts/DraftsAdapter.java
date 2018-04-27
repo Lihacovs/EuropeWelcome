@@ -32,8 +32,6 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import eu.balticit.android.europewelcome.data.firebase.model.Post;
-import eu.balticit.android.europewelcome.ui.base.BaseViewHolder;
 
 /**
  * Bookmarks Adapted. Data queried from {users}->{userId}->{bookmarks}->{postId}

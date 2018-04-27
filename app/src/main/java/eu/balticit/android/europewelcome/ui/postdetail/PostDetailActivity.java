@@ -47,7 +47,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import eu.balticit.android.europewelcome.data.firebase.model.PostComment;
 
 /**
  * Post Detail Activity
@@ -174,7 +173,6 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
         mPresenter.getPost(mPostId);
         mPostSectionAdapter.startListening();
         mPostCommentsAdapter.startListening();
-
     }
 
     @Override

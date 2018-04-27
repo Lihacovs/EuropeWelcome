@@ -18,4 +18,6 @@ package eu.balticit.android.europewelcome.ui.posts.buypremium;
 import eu.balticit.android.europewelcome.ui.base.MvpPresenter;
 
 public interface BuyPremiumDialogMvpPresenter<V extends BuyPremiumDialogMvpView> extends MvpPresenter<V> {
+
+    void onGetPremiumClick();
 }

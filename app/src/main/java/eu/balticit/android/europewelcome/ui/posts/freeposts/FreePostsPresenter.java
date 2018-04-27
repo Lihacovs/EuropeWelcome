@@ -18,7 +18,11 @@ package eu.balticit.android.europewelcome.ui.posts.freeposts;
 import eu.balticit.android.europewelcome.R;
 import eu.balticit.android.europewelcome.data.DataManager;
 import eu.balticit.android.europewelcome.data.firebase.model.Post;
+import eu.balticit.android.europewelcome.data.firebase.model.PostSection;
+import eu.balticit.android.europewelcome.data.firebase.model.User;
 import eu.balticit.android.europewelcome.ui.base.BasePresenter;
+
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 
 import javax.inject.Inject;
@@ -38,12 +42,27 @@ public class FreePostsPresenter<V extends FreePostsMvpView> extends BasePresente
 
     @Override
     public void onViewPrepared() {
-
+        getMvpView().hideLoading();
     }
 
     @Override
     public Query getPostsQuery() {
         return getDataManager().getPostsQuery();
+    }
+
+    @Override
+    public void checkUser() {
+        String currentUserId = getDataManager().getCurrentUserId();
+        if (currentUserId != null) {
+            getMvpView().showLoading();
+            getDataManager().getUser(currentUserId).addOnSuccessListener(documentSnapshot -> {
+                User user = documentSnapshot.toObject(User.class);
+                if (user != null && user.isUserAdmin()) {
+                    getMvpView().loadNotAcceptedPosts();
+                }
+                getMvpView().hideLoading();
+            }).addOnFailureListener(e -> getMvpView().hideLoading());
+        }
     }
 
     @Override
@@ -67,6 +86,11 @@ public class FreePostsPresenter<V extends FreePostsMvpView> extends BasePresente
     }
 
     @Override
+    public Query getNotAcceptedPostsQuery() {
+        return getDataManager().getNotAcceptedPostsQuery();
+    }
+
+    @Override
     public void updatePost(Post post) {
         getDataManager().updatePost(post)
                 .addOnFailureListener(e -> getMvpView().onError(R.string.free_posts_some_error));
@@ -75,7 +99,8 @@ public class FreePostsPresenter<V extends FreePostsMvpView> extends BasePresente
     /**
      * Checks if user rated post with star and updates UI accordingly. Launched from
      * {@link FreePostsAdapter.ViewHolder#onStarIconClick()}
-     * @param post - Post to check for star
+     *
+     * @param post   - Post to check for star
      * @param holder - ViewHolder to update UI
      */
     @Override
@@ -112,7 +137,8 @@ public class FreePostsPresenter<V extends FreePostsMvpView> extends BasePresente
     /**
      * Checks if user bookmarked post and updates UI accordingly. Launched from
      * {@link FreePostsAdapter.ViewHolder#onBookmarkIconClick()}
-     * @param post - Post to check for bookmark
+     *
+     * @param post   - Post to check for bookmark
      * @param holder - ViewHolder to update UI
      */
     @Override
@@ -141,7 +167,8 @@ public class FreePostsPresenter<V extends FreePostsMvpView> extends BasePresente
     /**
      * Checks if post bookmarked by current user and updates UI accordingly. Launched from
      * {@link FreePostsAdapter.ViewHolder#bind(Post)}
-     * @param post Post to check
+     *
+     * @param post   Post to check
      * @param holder ViewHolder to update UI
      */
     @Override
@@ -152,7 +179,7 @@ public class FreePostsPresenter<V extends FreePostsMvpView> extends BasePresente
                     .addOnSuccessListener(documentSnapshot -> {
                         if (documentSnapshot.exists()) {
                             getMvpView().setBookmarkedIcon(holder);
-                        }else{
+                        } else {
                             getMvpView().removeBookmarkedIcon(holder);
                         }
                     }).addOnFailureListener(e -> getMvpView().onError(R.string.free_posts_some_error));
@@ -162,7 +189,8 @@ public class FreePostsPresenter<V extends FreePostsMvpView> extends BasePresente
     /**
      * Checks if post star rated by current user and updates UI accordingly. Launched from
      * {@link FreePostsAdapter.ViewHolder#bind(Post)}
-     * @param post Post to check
+     *
+     * @param post   Post to check
      * @param holder ViewHolder to update UI
      */
     @Override
@@ -173,10 +201,50 @@ public class FreePostsPresenter<V extends FreePostsMvpView> extends BasePresente
                     .addOnSuccessListener(documentSnapshot -> {
                         if (documentSnapshot.exists()) {
                             getMvpView().setStarRatedIcon(holder);
-                        }else{
+                        } else {
                             getMvpView().removeStarRatedIcon(holder);
                         }
-                    }).addOnFailureListener(e -> getMvpView().onError(R.string.free_posts_some_error));
+                        getMvpView().hideLoading();
+                    })
+                    .addOnFailureListener(e -> {
+                        getMvpView().hideLoading();
+                        getMvpView().onError(R.string.free_posts_some_error);
+                    });
+        } else {
+            getMvpView().hideLoading();
         }
+    }
+
+    @Override
+    public void acceptPost(Post post) {
+        getMvpView().showLoading();
+        post.setPostAccepted(true);
+        updatePost(post);
+        getMvpView().hideLoading();
+    }
+
+    @Override
+    public void deletePost(Post post) {
+        getMvpView().showLoading();
+        //TODO: test this
+        //First delete PostSection collection with all documents under that post
+        getDataManager().getFirstPostSectionCollection(post.getPostId())
+                .addOnSuccessListener(documentSnapshots -> {
+                    for (DocumentSnapshot doc : documentSnapshots.getDocuments()) {
+                        PostSection postSection = doc.toObject(PostSection.class);
+                        getDataManager().deletePostSection(post.getPostId(), postSection);
+                    }
+                    //Then delete Post document itself
+                    getDataManager().deletePost(post).addOnSuccessListener(aVoid -> {
+                        getMvpView().hideLoading();
+                    }).addOnFailureListener(e -> {
+                        getMvpView().hideLoading();
+                        getMvpView().onError(R.string.free_posts_some_error);
+                    });
+                })
+                .addOnFailureListener(e -> {
+                    getMvpView().onError(R.string.free_posts_some_error);
+                    getMvpView().hideLoading();
+                });
     }
 }

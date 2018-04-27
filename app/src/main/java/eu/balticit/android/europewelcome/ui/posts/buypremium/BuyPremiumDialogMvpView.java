@@ -20,4 +20,6 @@ import eu.balticit.android.europewelcome.ui.base.DialogMvpView;
 public interface BuyPremiumDialogMvpView extends DialogMvpView {
 
     void dismissDialog();
+
+    void openLoginActivity();
 }

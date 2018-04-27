@@ -303,6 +303,11 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Query getNotAcceptedPostsQuery() {
+        return mFirebaseHelper.getNotAcceptedPostsQuery();
+    }
+
+    @Override
     public Query getPremiumPostsQueryOrderedByStars() {
         return mFirebaseHelper.getPremiumPostsQueryOrderedByStars();
     }

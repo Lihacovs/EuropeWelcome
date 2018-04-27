@@ -36,7 +36,6 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import eu.balticit.android.europewelcome.data.firebase.model.PostComment;
 
 /**
  * Post Comments Adapter

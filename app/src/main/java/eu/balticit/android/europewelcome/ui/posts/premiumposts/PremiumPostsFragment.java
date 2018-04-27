@@ -171,6 +171,11 @@ public class PremiumPostsFragment extends BaseFragment implements
     }
 
     @Override
+    public void onTabLongClick() {
+
+    }
+
+    @Override
     public void hideLoadingSpinner() {
         hideLoading();
     }

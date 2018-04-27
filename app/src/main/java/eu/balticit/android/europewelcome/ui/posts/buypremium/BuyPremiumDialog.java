@@ -28,6 +28,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import eu.balticit.android.europewelcome.R;
 import eu.balticit.android.europewelcome.di.component.ActivityComponent;
+import eu.balticit.android.europewelcome.ui.auth.LoginActivity;
 import eu.balticit.android.europewelcome.ui.base.BaseDialog;
 
 public class BuyPremiumDialog extends BaseDialog implements BuyPremiumDialogMvpView {
@@ -74,13 +75,18 @@ public class BuyPremiumDialog extends BaseDialog implements BuyPremiumDialogMvpV
 
     @OnClick(R.id.btn_buy_premium_get_premium)
     void onGetPremiumBtnClick(){
-        showMessage("Get Premium click");
+        mPresenter.onGetPremiumClick();
     }
 
     @OnClick(R.id.tv_buy_premium_terms)
     void onTermsTvClick(){
         dismissDialog();
         getBaseActivity().showAboutFragment();
+    }
+
+    @Override
+    public void openLoginActivity() {
+        startActivity(LoginActivity.getStartIntent(getBaseActivity()));
     }
 
     @Override

@@ -29,6 +29,8 @@ public interface FreePostsMvpPresenter<V extends FreePostsMvpView>
 
     Query getPostsQuery();
 
+    void checkUser();
+
     Query getPostsQueryOrderedByStars();
 
     Query getPostsQueryOrderedByViews();
@@ -36,6 +38,8 @@ public interface FreePostsMvpPresenter<V extends FreePostsMvpView>
     Query getPostsQueryOrderedByDate();
 
     Query getPostsQueryOrderedByComments();
+
+    Query getNotAcceptedPostsQuery();
 
     void updatePost(Post post);
 
@@ -46,4 +50,8 @@ public interface FreePostsMvpPresenter<V extends FreePostsMvpView>
     void checkPostBookmarkedByUser(Post post, FreePostsAdapter.ViewHolder holder);
 
     void checkPostStarRatedByUser(Post post, FreePostsAdapter.ViewHolder holder);
+
+    void acceptPost(Post post);
+
+    void deletePost(Post post);
 }

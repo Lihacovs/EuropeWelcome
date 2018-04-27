@@ -43,7 +43,7 @@ import butterknife.ButterKnife;
  * FreePosts Fragment.
  */
 public class FreePostsFragment extends BaseFragment implements
-        FreePostsMvpView, FreePostsAdapter.Callback, PostsActivity.Callback {
+        FreePostsMvpView, FreePostsAdapter.Callback, NotAcceptedPostsAdapter.Callback, PostsActivity.Callback {
 
     public static final String TAG = "FreePostsFragment";
 
@@ -57,6 +57,8 @@ public class FreePostsFragment extends BaseFragment implements
     RecyclerView mRecyclerView;
 
     FreePostsAdapter mFreePostsAdapter;
+
+    NotAcceptedPostsAdapter mNotAcceptedPostsAdapter;
 
     private Callback mCallback;
 
@@ -165,6 +167,34 @@ public class FreePostsFragment extends BaseFragment implements
         mFreePostsAdapter.setAdapterCallback(this);
         mRecyclerView.setAdapter(mFreePostsAdapter);
         mFreePostsAdapter.startListening();
+    }
+
+    @Override
+    public void onTabLongClick() {
+        mPresenter.checkUser();
+    }
+
+    //Loads posts to accept by Admin
+    @Override
+    public void loadNotAcceptedPosts() {
+        mFreePostsAdapter.stopListening();
+        mNotAcceptedPostsAdapter = new NotAcceptedPostsAdapter(
+                new FirestoreRecyclerOptions.Builder<Post>()
+                        .setQuery(mPresenter.getNotAcceptedPostsQuery(), Post.class)
+                        .build());
+        mNotAcceptedPostsAdapter.setAdapterCallback(this);
+        mRecyclerView.setAdapter(mNotAcceptedPostsAdapter);
+        mNotAcceptedPostsAdapter.startListening();
+    }
+
+    @Override
+    public void acceptPost(Post post) {
+        mPresenter.acceptPost(post);
+    }
+
+    @Override
+    public void deletePost(Post post) {
+        mPresenter.deletePost(post);
     }
 
     @Override

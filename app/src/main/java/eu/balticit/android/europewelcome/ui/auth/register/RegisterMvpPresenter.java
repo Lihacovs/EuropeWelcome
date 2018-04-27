@@ -20,8 +20,6 @@ import android.net.Uri;
 
 import eu.balticit.android.europewelcome.ui.base.MvpPresenter;
 
-import eu.balticit.android.europewelcome.ui.base.MvpPresenter;
-
 /**
  * Presenter interface for {@link RegisterPresenter}
  */
