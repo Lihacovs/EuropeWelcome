@@ -23,34 +23,34 @@ import java.util.UUID;
  */
 
 public class PostSection {
-    private String mPostId;
-    private String mPostSectionId;
-    private String mPostSectionViewType;
-    private String mPostSectionCreationDate;
-    private String mPostSectionTimestamp;
-    private int mTimeStamp;
+    public String mPostId;
+    public String mPostSectionId;
+    public String mPostSectionViewType;
+    public String mPostSectionCreationDate;
+    public String mPostSectionTimestamp;
+    public int mTimeStamp;
 
     //Title
-    private String mPostTitle;
+    public String mPostTitle;
 
     //Text fields
-    private String mPostText;
-    private float mPostTextSize;
-    private boolean mPostTextBold;
-    private boolean mPostTextItalic;
+    public String mPostText;
+    public float mPostTextSize;
+    public boolean mPostTextBold;
+    public boolean mPostTextItalic;
 
     //Image fields
-    private String mPostImageUrl;
-    private String mPostImageCaption;
+    public String mPostImageUrl;
+    public String mPostImageCaption;
 
     //Map fields
-    private String mPostPlaceAddress;
-    private String mPostPlaceName;
-    private double mPostPlaceLat;
-    private double mPostPlaceLng;
+    public String mPostPlaceAddress;
+    public String mPostPlaceName;
+    public double mPostPlaceLat;
+    public double mPostPlaceLng;
 
     //Video fields
-    private String mYouTubeVideoCode;
+    public String mYouTubeVideoCode;
 
     //Empty constructor required for Firebase queries
     public PostSection() {

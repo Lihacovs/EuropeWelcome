@@ -30,14 +30,12 @@ import android.os.RemoteException;
 import android.text.TextUtils;
 import android.util.Log;
 
-import eu.android.vending.billing.IInAppBillingService;
+import com.android.vending.billing.IInAppBillingService;
 
 import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import eu.android.vending.billing.IInAppBillingService;
 
 
 /**

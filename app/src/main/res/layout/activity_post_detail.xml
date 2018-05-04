@@ -85,7 +85,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:layout_marginStart="8dp"
-                    android:text="Read Time"
                     android:textColor="@color/translucent_white"
                     android:textSize="14sp"
                     app:layout_constraintStart_toEndOf="@+id/tv_post_detail_creation_date"

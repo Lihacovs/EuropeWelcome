@@ -23,6 +23,12 @@ android {
             storeFile file('D:/Users/Konstantins/.android/debug.keystore')
             storePassword 'android'
         }
+        release {
+            keyAlias 'ReleaseKey'
+            keyPassword 'zt1rk16q'
+            storeFile file('C:/Users/Konstantins/.android/android.jks')
+            storePassword 'rx7po16q'
+        }
     }
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
@@ -30,8 +36,8 @@ android {
         applicationId "eu.balticit.android.europewelcome"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -40,13 +46,14 @@ android {
         debug {
             resValue("string", "GOOGLE_ANDROID_API_KEY", "\"AIzaSyC2XllDDhvfEyCv5NCFPBXalnFUruG3P6Y\"")
             resValue("string", "GOOGLE_WEB_CLIENT_ID_TOKEN", "\"42826527257-8g2htcveu0n8iebroi1hqj3e8cuonlf0.apps.googleusercontent.com\"")
+            resValue("string", "APP_ENCODED_PUBLIC_KEY", "\"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAn6DI+Qta9EuWgqBD0pcgx2KiSW6k7yHiFbZZYi+5KtgGv2BnTFhq/bRi7C3OixcyQym9Cp733TBjg2Nw+pWVEs1JBzu76Otu1WIZxhZckQgaG5iEBu9Bx7olPl8lLmktB42xHdmPXn3XGSFnx7ltPgLLrQm2Dxb6aTklVytFJo2pUb5zkkZ97+FkQ4S3g0dyjEN3jq/ykRMEgbz9IisFlFQcblu26hqotLWJ7Q4Er3Euxi8qX/azEKBDKi+3B0ccxqH0NHDMItDW3hA8UFO6DY6Hy4xxvAjGownl4pZLVjsUCL9y8uCnacoIk0Pwpc5zj+y70WQdQtnudQiric/wbwIDAQAB\"")
             signingConfig signingConfigs.debug
         }
         release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             resValue("string", "GOOGLE_ANDROID_API_KEY", "\"AIzaSyC2XllDDhvfEyCv5NCFPBXalnFUruG3P6Y\"")
             resValue("string", "GOOGLE_WEB_CLIENT_ID_TOKEN", "\"42826527257-8g2htcveu0n8iebroi1hqj3e8cuonlf0.apps.googleusercontent.com\"")
+            resValue("string", "APP_ENCODED_PUBLIC_KEY", "\"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAn6DI+Qta9EuWgqBD0pcgx2KiSW6k7yHiFbZZYi+5KtgGv2BnTFhq/bRi7C3OixcyQym9Cp733TBjg2Nw+pWVEs1JBzu76Otu1WIZxhZckQgaG5iEBu9Bx7olPl8lLmktB42xHdmPXn3XGSFnx7ltPgLLrQm2Dxb6aTklVytFJo2pUb5zkkZ97+FkQ4S3g0dyjEN3jq/ykRMEgbz9IisFlFQcblu26hqotLWJ7Q4Er3Euxi8qX/azEKBDKi+3B0ccxqH0NHDMItDW3hA8UFO6DY6Hy4xxvAjGownl4pZLVjsUCL9y8uCnacoIk0Pwpc5zj+y70WQdQtnudQiric/wbwIDAQAB\"")
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
@@ -72,7 +79,6 @@ dependencies {
     implementation "com.google.firebase:firebase-auth:$rootProject.firebasePlayservicesVersion"
     implementation "com.google.firebase:firebase-firestore:$rootProject.firebasePlayservicesVersion"
     implementation "com.google.firebase:firebase-storage:$rootProject.firebasePlayservicesVersion"
-
     implementation "com.firebaseui:firebase-ui-firestore:$rootProject.firebiseUiVersion"
     implementation "com.firebaseui:firebase-ui-storage:$rootProject.firebiseUiVersion"
 
@@ -155,7 +161,6 @@ dependencies {
     //androidTestCompile "org.mockito:mockito-core:$rootProject.mockitoVersion"
 
     //androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"
-
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
 }
 

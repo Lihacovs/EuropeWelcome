@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package eu.android.vending.billing;
+package com.android.vending.billing;
 
 import android.os.Bundle;
 

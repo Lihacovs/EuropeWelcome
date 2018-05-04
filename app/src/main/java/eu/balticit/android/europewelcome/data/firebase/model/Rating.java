@@ -21,14 +21,14 @@ import java.util.UUID;
  * POJO for Rating
  */
 public class Rating {
-    private String mRatingId;
-    private String mUserId;
-    private String mUserName;
-    private String mUserEmail;
-    private float mRatingStars;
-    private String mRatingMessage;
-    private String mRatingCreationDate;
-    private int mRatingCreationTimestamp;
+    public String mRatingId;
+    public String mUserId;
+    public String mUserName;
+    public String mUserEmail;
+    public float mRatingStars;
+    public String mRatingMessage;
+    public String mRatingCreationDate;
+    public int mRatingCreationTimestamp;
 
     public Rating() {
     }

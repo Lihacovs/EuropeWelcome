@@ -22,4 +22,6 @@ public interface BuyPremiumDialogMvpView extends DialogMvpView {
     void dismissDialog();
 
     void openLoginActivity();
+
+    void purchasePremium();
 }

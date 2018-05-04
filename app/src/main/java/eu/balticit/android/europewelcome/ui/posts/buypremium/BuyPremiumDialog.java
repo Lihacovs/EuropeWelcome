@@ -18,6 +18,7 @@ package eu.balticit.android.europewelcome.ui.posts.buypremium;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
+import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,9 @@ import eu.balticit.android.europewelcome.ui.base.BaseDialog;
 
 public class BuyPremiumDialog extends BaseDialog implements BuyPremiumDialogMvpView {
 
-    private static final String TAG = "BuyPremiumDialog";
+    public static final String TAG = "BuyPremiumDialog";
+
+    private Callback mCallback;
 
     @Inject
     BuyPremiumDialogMvpPresenter<BuyPremiumDialogMvpView> mPresenter;
@@ -64,7 +67,8 @@ public class BuyPremiumDialog extends BaseDialog implements BuyPremiumDialogMvpV
         return view;
     }
 
-    public void show(FragmentManager fragmentManager) {
+    public void show(FragmentManager fragmentManager, Callback callback) {
+        mCallback = callback;
         super.show(fragmentManager, TAG);
     }
 
@@ -90,6 +94,11 @@ public class BuyPremiumDialog extends BaseDialog implements BuyPremiumDialogMvpV
     }
 
     @Override
+    public void purchasePremium() {
+        if(mCallback != null) mCallback.purchasePremiumClick();
+    }
+
+    @Override
     public void dismissDialog() {
         super.dismissDialog(TAG);
     }
@@ -98,5 +107,9 @@ public class BuyPremiumDialog extends BaseDialog implements BuyPremiumDialogMvpV
     public void onDestroyView() {
         mPresenter.onDetach();
         super.onDestroyView();
+    }
+
+    public interface Callback {
+        void purchasePremiumClick();
     }
 }

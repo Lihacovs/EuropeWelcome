@@ -128,6 +128,8 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
     void onServerLoginClick(View v) {
         mPresenter.onServerLoginClick(mEmailEditText.getText().toString(),
                 mPasswordEditText.getText().toString());
+        /*mPresenter.onServerLoginClick(mEmailEditText.getText().toString(),
+                mPasswordEditText.getText().toString());*/
     }
 
     @OnClick(R.id.btn_login_google)

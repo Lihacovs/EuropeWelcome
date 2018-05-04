@@ -37,7 +37,8 @@ public class BuyPremiumDialogPresenter<V extends BuyPremiumDialogMvpView> extend
     @Override
     public void onGetPremiumClick() {
         if (checkUserSigned()) {
-            getMvpView().showMessage("Get Premium click");
+            getMvpView().purchasePremium();
+            getMvpView().dismissDialog();
         } else {
             getMvpView().openLoginActivity();
             getMvpView().dismissDialog();

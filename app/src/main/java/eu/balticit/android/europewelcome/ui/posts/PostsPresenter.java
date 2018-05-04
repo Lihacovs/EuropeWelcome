@@ -212,6 +212,35 @@ public class PostsPresenter<V extends PostsMvpView> extends BasePresenter<V>
     }
 
     @Override
+    public void makeUserPremium() {
+        getMvpView().showLoading();
+        getDataManager().getUser(getCurrentUserId())
+                .addOnSuccessListener(documentSnapshot -> {
+                    User user = documentSnapshot.toObject(User.class);
+                    if (user != null) {
+                        user.setUserPremium(true);
+                        getDataManager().updateUser(user)
+                                .addOnSuccessListener(aVoid -> {
+                                    getMvpView().hideLoading();
+                                    getMvpView().showPremiumTab(1);
+                                    getMvpView().enablePagerScroll();
+                                    getMvpView().showMessage("Thank you for upgrading to premium!");
+                                })
+                                .addOnFailureListener(e -> {
+                                    getMvpView().hideLoading();
+                                    getMvpView().onError("Some error");
+                                });
+                    }else{
+                        getMvpView().hideLoading();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    getMvpView().hideLoading();
+                    getMvpView().onError("Some error");
+                });
+    }
+
+    @Override
     public void onDrawerRateUsClick() {
         getMvpView().closeNavigationDrawer();
         getMvpView().showRateUsDialog();

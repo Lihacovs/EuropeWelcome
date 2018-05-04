@@ -48,4 +48,6 @@ public interface PostsMvpPresenter <V extends PostsMvpView> extends MvpPresenter
     String getCurrentUserId();
 
     void checkUserHasPremium(int tabPosition);
+
+    void makeUserPremium();
 }

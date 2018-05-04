@@ -15,6 +15,8 @@
 
 package eu.balticit.android.europewelcome.ui.posts;
 
+import android.view.View;
+
 import eu.balticit.android.europewelcome.ui.base.MvpView;
 
 /**
