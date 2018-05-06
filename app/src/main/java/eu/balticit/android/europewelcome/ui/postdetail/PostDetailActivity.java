@@ -369,7 +369,7 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
 
     @Override
     public void onImageClick(PostSection postSection) {
-        showMessage("Image has been clicked");
+        //showMessage("Image has been clicked");
     }
 
     @Override

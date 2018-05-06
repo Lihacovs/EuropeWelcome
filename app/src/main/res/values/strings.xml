@@ -98,6 +98,7 @@
     <string name="posts_some_error">Some error occurred. Try again</string>
     <string name="posts_verification_failed">Error purchasing. Authenticity verification failed.</string>
     <string name="posts_thanks_for_premium">Thank you for upgrading to premium!</string>
+    <string name="posts_press_again_to_exit">Please click BACK again to exit</string>
 
     <!--ui.posts.free.FreePosts-->
     <!--ui.posts.free.PremiumPosts-->

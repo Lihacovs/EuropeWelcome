@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -108,6 +109,8 @@ public class PostsActivity extends BaseActivity implements PostsMvpView, BuyPrem
     private TextView mEmailTextView;
 
     private ImageView mUserImageIv;
+
+    boolean doubleBackToExitPressedOnce = false;
 
     private IabHelper mHelper;
     private static final String mPremiumProductSKU = "europe_welcome_premium_1";
@@ -371,7 +374,14 @@ public class PostsActivity extends BaseActivity implements PostsMvpView, BuyPrem
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentByTag(AboutFragment.TAG);
         if (fragment == null) {
-            super.onBackPressed();
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                return;
+            }
+
+            this.doubleBackToExitPressedOnce = true;
+            onError(R.string.posts_press_again_to_exit);
+            new Handler().postDelayed(() -> doubleBackToExitPressedOnce=false, 2000);
         } else {
             onFragmentDetached(AboutFragment.TAG);
         }
