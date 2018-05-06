@@ -26,15 +26,14 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Objects;
 
 import eu.balticit.android.europewelcome.MyApp;
 import eu.balticit.android.europewelcome.R;
@@ -45,11 +44,7 @@ import eu.balticit.android.europewelcome.ui.auth.LoginActivity;
 import eu.balticit.android.europewelcome.utils.CommonUtils;
 import eu.balticit.android.europewelcome.utils.NetworkUtils;
 
-import butterknife.BindView;
 import butterknife.Unbinder;
-import eu.balticit.android.europewelcome.ui.auth.LoginActivity;
-import eu.balticit.android.europewelcome.utils.CommonUtils;
-import eu.balticit.android.europewelcome.utils.NetworkUtils;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
@@ -115,7 +110,7 @@ public abstract class BaseActivity extends AppCompatActivity
         Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
                 message, Snackbar.LENGTH_SHORT);
         View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView
+        TextView textView = sbView
                 .findViewById(android.support.design.R.id.snackbar_text);
         textView.setTextColor(ContextCompat.getColor(this, R.color.white));
         snackbar.show();
@@ -169,7 +164,7 @@ public abstract class BaseActivity extends AppCompatActivity
         if (view != null) {
             InputMethodManager imm = (InputMethodManager)
                     getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            Objects.requireNonNull(imm).hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 
@@ -184,7 +179,7 @@ public abstract class BaseActivity extends AppCompatActivity
                 .create().show();
     }
 
-    public void showAboutFragment(){
+    public void showAboutFragment() {
 
     }
 

@@ -21,36 +21,36 @@ import java.util.UUID;
 /**
  * POJO class to contain post's text, pictures, maps, videos
  */
-
+@SuppressWarnings("ALL")
 public class PostSection {
-    public String mPostId;
-    public String mPostSectionId;
-    public String mPostSectionViewType;
-    public String mPostSectionCreationDate;
-    public String mPostSectionTimestamp;
-    public int mTimeStamp;
+    private String mPostId;
+    private String mPostSectionId;
+    private String mPostSectionViewType;
+    private String mPostSectionCreationDate;
+    private String mPostSectionTimestamp;
+    private int mTimeStamp;
 
     //Title
-    public String mPostTitle;
+    private String mPostTitle;
 
     //Text fields
-    public String mPostText;
-    public float mPostTextSize;
-    public boolean mPostTextBold;
-    public boolean mPostTextItalic;
+    private String mPostText;
+    private float mPostTextSize;
+    private boolean mPostTextBold;
+    private boolean mPostTextItalic;
 
     //Image fields
-    public String mPostImageUrl;
-    public String mPostImageCaption;
+    private String mPostImageUrl;
+    private String mPostImageCaption;
 
     //Map fields
-    public String mPostPlaceAddress;
-    public String mPostPlaceName;
-    public double mPostPlaceLat;
-    public double mPostPlaceLng;
+    private String mPostPlaceAddress;
+    private String mPostPlaceName;
+    private double mPostPlaceLat;
+    private double mPostPlaceLng;
 
     //Video fields
-    public String mYouTubeVideoCode;
+    private String mYouTubeVideoCode;
 
     //Empty constructor required for Firebase queries
     public PostSection() {
@@ -132,6 +132,14 @@ public class PostSection {
 
     public void setPostSectionTimestamp(String postSectionTimestamp) {
         mPostSectionTimestamp = postSectionTimestamp;
+    }
+
+    public int getTimeStamp() {
+        return mTimeStamp;
+    }
+
+    public void setTimeStamp(int timeStamp) {
+        mTimeStamp = timeStamp;
     }
 
     public String getPostTitle() {
@@ -229,13 +237,4 @@ public class PostSection {
     public void setYouTubeVideoCode(String youTubeVideoCode) {
         mYouTubeVideoCode = youTubeVideoCode;
     }
-
-    public int getTimeStamp() {
-        return mTimeStamp;
-    }
-
-    public void setTimeStamp(int timeStamp) {
-        mTimeStamp = timeStamp;
-    }
-
 }

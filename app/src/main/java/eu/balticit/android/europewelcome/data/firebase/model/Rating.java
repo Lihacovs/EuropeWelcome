@@ -20,15 +20,16 @@ import java.util.UUID;
 /**
  * POJO for Rating
  */
+@SuppressWarnings("ALL")
 public class Rating {
-    public String mRatingId;
-    public String mUserId;
-    public String mUserName;
-    public String mUserEmail;
-    public float mRatingStars;
-    public String mRatingMessage;
-    public String mRatingCreationDate;
-    public int mRatingCreationTimestamp;
+    private String mRatingId;
+    private String mUserId;
+    private String mUserName;
+    private String mUserEmail;
+    private float mRatingStars;
+    private String mRatingMessage;
+    private String mRatingCreationDate;
+    private int mRatingCreationTimestamp;
 
     public Rating() {
     }
@@ -52,6 +53,10 @@ public class Rating {
 
     public String getRatingId() {
         return mRatingId;
+    }
+
+    public void setRatingId(String ratingId) {
+        mRatingId = ratingId;
     }
 
     public String getUserId() {

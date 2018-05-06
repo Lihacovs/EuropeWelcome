@@ -21,7 +21,6 @@ import eu.balticit.android.europewelcome.data.DataManager;
  * Interface decouples any specific implementation of the {@link AppPreferencesHelper}
  * and hence makes it as plug and play unit
  */
-
 public interface PreferencesHelper {
 
     int getCurrentUserLoggedInMode();

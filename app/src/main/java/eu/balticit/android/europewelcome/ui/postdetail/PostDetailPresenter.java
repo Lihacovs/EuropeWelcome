@@ -35,6 +35,7 @@ import javax.inject.Inject;
 public class PostDetailPresenter<V extends PostDetailMvpView> extends BasePresenter<V> implements
         PostDetailMvpPresenter<V> {
 
+    @SuppressWarnings("unused")
     private static final String TAG = "PostDetailPresenter";
 
     private String mPostId;

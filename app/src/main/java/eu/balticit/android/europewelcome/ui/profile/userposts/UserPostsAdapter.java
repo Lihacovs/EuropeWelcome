@@ -26,7 +26,7 @@ import eu.balticit.android.europewelcome.R;
 import eu.balticit.android.europewelcome.data.firebase.model.Post;
 import eu.balticit.android.europewelcome.di.module.GlideApp;
 import eu.balticit.android.europewelcome.ui.base.BaseViewHolder;
-import eu.balticit.android.europewelcome.ui.postdetail.PostDetailActivity;
+
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -35,14 +35,13 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import eu.balticit.android.europewelcome.data.firebase.model.Post;
-import eu.balticit.android.europewelcome.ui.base.BaseViewHolder;
 
 /**
  * UserPosts Adapter.
  */
 public class UserPostsAdapter extends FirestoreRecyclerAdapter<Post, UserPostsAdapter.ViewHolder> {
 
+    @SuppressWarnings("unused")
     private static final String TAG = "UserPostsAdapter";
 
     private Callback mCallback;

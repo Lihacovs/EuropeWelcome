@@ -37,6 +37,7 @@ import eu.balticit.android.europewelcome.data.firebase.model.Post;
 import eu.balticit.android.europewelcome.data.firebase.model.PostSection;
 import eu.balticit.android.europewelcome.ui.base.BaseActivity;
 import eu.balticit.android.europewelcome.utils.CommonUtils;
+
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -58,7 +59,9 @@ import pub.devrel.easypermissions.EasyPermissions;
  */
 public class NewPostActivity extends BaseActivity implements NewPostMvpView, NewPostAdapter.Callback {
 
+    @SuppressWarnings("unused")
     private static final String TAG = "AddPostActivity";
+
     private static final int RC_CHOOSE_PHOTO = 100;
     private static final int RC_IMAGE_PERMS = 101;
     private static final int PLACE_PICKER_REQUEST = 102;
@@ -134,8 +137,8 @@ public class NewPostActivity extends BaseActivity implements NewPostMvpView, New
         mNewPostRv.setLayoutManager(mLayoutManager);
         mNewPostRv.setItemAnimator(new DefaultItemAnimator());
         mNewPostAdapter = new NewPostAdapter(new FirestoreRecyclerOptions.Builder<PostSection>()
-                        .setQuery(mPresenter.getPostSectionQuery(), PostSection.class)
-                        .build(), this);
+                .setQuery(mPresenter.getPostSectionQuery(), PostSection.class)
+                .build(), this);
         mNewPostAdapter.setAdapterCallback(this);
         mNewPostAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
@@ -266,11 +269,6 @@ public class NewPostActivity extends BaseActivity implements NewPostMvpView, New
     }
 
     @Override
-    public void scrollViewToBottom() {
-
-    }
-
-    @Override
     public void showYouTubeUrlDialog() {
         //TODO: make custom dialog with post from clipboard, share from youtube APP
         //show dialog to post youtube video URL
@@ -312,7 +310,7 @@ public class NewPostActivity extends BaseActivity implements NewPostMvpView, New
     /**
      * Triggers EditText fields in {@link NewPostAdapter} to save text data to DB
      */
-    private void clearFocusForTextSave(){
+    private void clearFocusForTextSave() {
         View current = getCurrentFocus();
         if (current != null) current.clearFocus();
     }

@@ -20,6 +20,7 @@ import android.net.Uri;
 
 import eu.balticit.android.europewelcome.data.firebase.model.PostSection;
 import eu.balticit.android.europewelcome.ui.base.MvpPresenter;
+
 import com.google.android.gms.location.places.Place;
 import com.google.firebase.firestore.Query;
 

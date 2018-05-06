@@ -18,10 +18,10 @@ package eu.balticit.android.europewelcome.ui.auth;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
-import android.view.View;
 import android.widget.EditText;
 
 import eu.balticit.android.europewelcome.R;
@@ -29,6 +29,7 @@ import eu.balticit.android.europewelcome.ui.about.AboutFragment;
 import eu.balticit.android.europewelcome.ui.auth.register.RegisterFragment;
 import eu.balticit.android.europewelcome.ui.base.BaseActivity;
 import eu.balticit.android.europewelcome.ui.posts.PostsActivity;
+
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -44,9 +45,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import eu.balticit.android.europewelcome.ui.about.AboutFragment;
-import eu.balticit.android.europewelcome.ui.auth.register.RegisterFragment;
-import eu.balticit.android.europewelcome.ui.posts.PostsActivity;
 
 /**
  * Login Activity. There are 3 methods to get user profile: Internal FireBase, Google, Facebook.
@@ -76,9 +74,9 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
 
     private CallbackManager mCallbackManager;
 
+    @NonNull
     public static Intent getStartIntent(Context context) {
-        Intent intent = new Intent(context, LoginActivity.class);
-        return intent;
+        return new Intent(context, LoginActivity.class);
     }
 
     @Override
@@ -125,7 +123,7 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
     }
 
     @OnClick(R.id.btn_login_server)
-    void onServerLoginClick(View v) {
+    void onServerLoginClick() {
         mPresenter.onServerLoginClick(mEmailEditText.getText().toString(),
                 mPasswordEditText.getText().toString());
         /*mPresenter.onServerLoginClick(mEmailEditText.getText().toString(),
@@ -133,18 +131,18 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
     }
 
     @OnClick(R.id.btn_login_google)
-    void onGoogleLoginClick(View v) {
+    void onGoogleLoginClick() {
         Intent signInIntent = mPresenter.getGoogleSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
     @OnClick(R.id.btn_login_facebook)
-    void onFbLoginClick(View v) {
+    void onFbLoginClick() {
         mFacebookLoginButton.performClick();
     }
 
     @OnClick(R.id.btn_login_register)
-    void onRegisterButtonClick(View v) {
+    void onRegisterButtonClick() {
         hideKeyboard();
         showRegisterFragment();
     }
@@ -165,9 +163,7 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 mPresenter.firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
-                //TODO: add user message on fail
                 // Google Sign In failed, update UI appropriately
-                Log.w(TAG, "Google sign in failed" + e.getMessage(), e);
             }
         }
     }
@@ -206,11 +202,11 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentByTag(RegisterFragment.TAG);
         Fragment fragment2 = fragmentManager.findFragmentByTag(AboutFragment.TAG);
-        if(fragment2 != null){
+        if (fragment2 != null) {
             onFragmentDetached(AboutFragment.TAG);
-        } else if(fragment != null){
+        } else if (fragment != null) {
             onFragmentDetached(RegisterFragment.TAG);
-        } else{
+        } else {
             super.onBackPressed();
         }
     }

@@ -21,8 +21,6 @@ import eu.balticit.android.europewelcome.ui.base.MvpPresenter;
 import com.facebook.AccessToken;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
-import eu.balticit.android.europewelcome.ui.base.MvpPresenter;
-
 /**
  * Presenter interface for {@link LoginPresenter}
  */

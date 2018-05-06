@@ -24,7 +24,7 @@ import javax.inject.Inject;
  * About Presenter
  */
 
-public class AboutPresenter <V extends AboutMvpView> extends BasePresenter<V>
+public class AboutPresenter<V extends AboutMvpView> extends BasePresenter<V>
         implements AboutMvpPresenter<V> {
 
     @Inject

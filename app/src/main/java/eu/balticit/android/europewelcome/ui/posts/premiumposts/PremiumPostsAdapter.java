@@ -42,7 +42,9 @@ import eu.balticit.android.europewelcome.ui.base.BaseViewHolder;
  */
 public class PremiumPostsAdapter extends FirestoreRecyclerAdapter<Post, PremiumPostsAdapter.ViewHolder> {
 
+    @SuppressWarnings("unused")
     private static final String TAG = "PremiumPostsAdapter";
+
     private Callback mCallback;
     private PremiumPostsFragment mFragment;
 
@@ -52,7 +54,7 @@ public class PremiumPostsAdapter extends FirestoreRecyclerAdapter<Post, PremiumP
      *
      * @param options - data to query from DB
      */
-    public PremiumPostsAdapter(FirestoreRecyclerOptions<Post> options, PremiumPostsFragment fragment) {
+    PremiumPostsAdapter(FirestoreRecyclerOptions<Post> options, PremiumPostsFragment fragment) {
         super(options);
         mFragment = fragment;
     }
@@ -69,8 +71,8 @@ public class PremiumPostsAdapter extends FirestoreRecyclerAdapter<Post, PremiumP
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate
-                        (R.layout.item_post_view, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate
+                (R.layout.item_post_view, parent, false));
     }
 
     @Override
@@ -103,7 +105,7 @@ public class PremiumPostsAdapter extends FirestoreRecyclerAdapter<Post, PremiumP
         void checkPostStarRatedByUser(Post post, ViewHolder holder);
     }
 
-    public class ViewHolder extends BaseViewHolder implements PremiumPostsFragment.Callback{
+    public class ViewHolder extends BaseViewHolder implements PremiumPostsFragment.Callback {
 
         @BindView(R.id.iv_post_item_author_photo)
         ImageView mUserPhotoIv;
@@ -197,7 +199,7 @@ public class PremiumPostsAdapter extends FirestoreRecyclerAdapter<Post, PremiumP
             mCommentsCountTv.setText(String.valueOf(post.getPostComments()));
 
             //updates UI for current user
-            if(mCallback != null) {
+            if (mCallback != null) {
                 mCallback.checkPostBookmarkedByUser(mPost, this);
                 mCallback.checkPostStarRatedByUser(mPost, this);
             }
@@ -209,8 +211,8 @@ public class PremiumPostsAdapter extends FirestoreRecyclerAdapter<Post, PremiumP
         }
 
         @OnClick(R.id.cl_post_item_star_container)
-        void onStarIconClick(){
-            if(mCallback != null){
+        void onStarIconClick() {
+            if (mCallback != null) {
                 mStarContainerCl.setEnabled(false);
                 mCallback.onStarIconClick(mPost, this);
             }
@@ -218,8 +220,8 @@ public class PremiumPostsAdapter extends FirestoreRecyclerAdapter<Post, PremiumP
         }
 
         @OnClick(R.id.iv_post_item_bookmark_image)
-        void onBookmarkIconClick(){
-            if(mCallback != null){
+        void onBookmarkIconClick() {
+            if (mCallback != null) {
                 mBookmarkIv.setEnabled(false);
                 mCallback.onBookmarkIconClick(mPost, this);
             }
@@ -227,6 +229,7 @@ public class PremiumPostsAdapter extends FirestoreRecyclerAdapter<Post, PremiumP
 
         /**
          * Callback method launched from {@link PremiumPostsFragment#setBookmarkedIcon(ViewHolder)}
+         *
          * @param holder - appropriate holder to update
          */
         @Override
@@ -237,6 +240,7 @@ public class PremiumPostsAdapter extends FirestoreRecyclerAdapter<Post, PremiumP
 
         /**
          * Callback method launched from {@link PremiumPostsFragment#removeBookmarkedIcon(ViewHolder)}
+         *
          * @param holder - appropriate holder to update
          */
         @Override
@@ -247,6 +251,7 @@ public class PremiumPostsAdapter extends FirestoreRecyclerAdapter<Post, PremiumP
 
         /**
          * Callback method launched from {@link PremiumPostsFragment#setStarRatedIcon(ViewHolder)}
+         *
          * @param holder - appropriate holder to update
          */
         @Override
@@ -259,6 +264,7 @@ public class PremiumPostsAdapter extends FirestoreRecyclerAdapter<Post, PremiumP
 
         /**
          * Callback method launched from {@link PremiumPostsFragment#removeStarRatedIcon(ViewHolder)}
+         *
          * @param holder - appropriate holder to update
          */
         @Override

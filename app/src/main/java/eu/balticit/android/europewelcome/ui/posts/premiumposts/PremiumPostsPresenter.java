@@ -28,7 +28,7 @@ import javax.inject.Inject;
  * Created by BIT on 12/6/2017.
  */
 
-public class PremiumPostsPresenter <V extends PremiumPostsMvpView> extends BasePresenter<V>
+public class PremiumPostsPresenter<V extends PremiumPostsMvpView> extends BasePresenter<V>
         implements PremiumPostsMvpPresenter<V> {
 
     @Inject
@@ -70,7 +70,8 @@ public class PremiumPostsPresenter <V extends PremiumPostsMvpView> extends BaseP
     /**
      * Checks if user rated post with star and updates UI accordingly. Launched from
      * {@link PremiumPostsAdapter.ViewHolder#onStarIconClick()}
-     * @param post - Post to check for star
+     *
+     * @param post   - Post to check for star
      * @param holder - ViewHolder to update UI
      */
     @Override
@@ -98,7 +99,8 @@ public class PremiumPostsPresenter <V extends PremiumPostsMvpView> extends BaseP
 
                                     });
                         }
-                    }).addOnFailureListener(e -> getMvpView().onError(R.string.free_posts_some_error));
+                    })
+                    .addOnFailureListener(e -> getMvpView().onError(R.string.free_posts_some_error));
         } else {
             getMvpView().onError(R.string.free_posts_login_to_rate);
         }
@@ -107,7 +109,8 @@ public class PremiumPostsPresenter <V extends PremiumPostsMvpView> extends BaseP
     /**
      * Checks if user rated post with star and updates UI accordingly. Launched from
      * {@link PremiumPostsAdapter.ViewHolder#onStarIconClick()}
-     * @param post - Post to check for star
+     *
+     * @param post   - Post to check for star
      * @param holder - ViewHolder to update UI
      */
     @Override
@@ -127,7 +130,8 @@ public class PremiumPostsPresenter <V extends PremiumPostsMvpView> extends BaseP
                                     .addOnSuccessListener(aVoid ->
                                             getMvpView().onError(R.string.free_posts_bookmark_saved));
                         }
-                    }).addOnFailureListener(e -> getMvpView().onError(R.string.free_posts_some_error));
+                    })
+                    .addOnFailureListener(e -> getMvpView().onError(R.string.free_posts_some_error));
         } else {
             getMvpView().onError(R.string.free_posts_login_to_bookmark);
         }
@@ -136,7 +140,8 @@ public class PremiumPostsPresenter <V extends PremiumPostsMvpView> extends BaseP
     /**
      * Checks if post bookmarked by current user and updates UI accordingly. Launched from
      * {@link PremiumPostsAdapter.ViewHolder#bind(Post)}
-     * @param post Post to check
+     *
+     * @param post   Post to check
      * @param holder ViewHolder to update UI
      */
     @Override
@@ -147,17 +152,19 @@ public class PremiumPostsPresenter <V extends PremiumPostsMvpView> extends BaseP
                     .addOnSuccessListener(documentSnapshot -> {
                         if (documentSnapshot.exists()) {
                             getMvpView().setBookmarkedIcon(holder);
-                        }else{
+                        } else {
                             getMvpView().removeBookmarkedIcon(holder);
                         }
-                    }).addOnFailureListener(e -> getMvpView().onError(R.string.free_posts_some_error));
+                    })
+                    .addOnFailureListener(e -> getMvpView().onError(R.string.free_posts_some_error));
         }
     }
 
     /**
      * Checks if post star rated by current user and updates UI accordingly. Launched from
      * {@link PremiumPostsAdapter.ViewHolder#bind(Post)}
-     * @param post Post to check
+     *
+     * @param post   Post to check
      * @param holder ViewHolder to update UI
      */
     @Override
@@ -168,10 +175,11 @@ public class PremiumPostsPresenter <V extends PremiumPostsMvpView> extends BaseP
                     .addOnSuccessListener(documentSnapshot -> {
                         if (documentSnapshot.exists()) {
                             getMvpView().setStarRatedIcon(holder);
-                        }else{
+                        } else {
                             getMvpView().removeStarRatedIcon(holder);
                         }
-                    }).addOnFailureListener(e -> getMvpView().onError(R.string.free_posts_some_error));
+                    })
+                    .addOnFailureListener(e -> getMvpView().onError(R.string.free_posts_some_error));
         }
     }
 }

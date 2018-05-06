@@ -36,13 +36,13 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import eu.balticit.android.europewelcome.data.firebase.model.Post;
-import eu.balticit.android.europewelcome.ui.postdetail.PostDetailActivity;
 
 public class UserPostsFragment extends BaseFragment implements
         UserPostsMvpView, UserPostsAdapter.Callback {
 
+    @SuppressWarnings("unused")
     private static final String TAG = "UserPostsFragment";
+
     private static final String EXTRA_USER_ID =
             "com.bmd.android.europewelcome.profile.userposts.user_id";
 

@@ -32,6 +32,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.RelativeLayout;
 
+import java.util.Objects;
+
 import eu.balticit.android.europewelcome.di.component.ActivityComponent;
 
 import butterknife.Unbinder;
@@ -99,10 +101,7 @@ public abstract class BaseDialog extends DialogFragment implements DialogMvpView
 
     @Override
     public boolean isNetworkConnected() {
-        if (mActivity != null) {
-            return mActivity.isNetworkConnected();
-        }
-        return false;
+        return mActivity != null && mActivity.isNetworkConnected();
     }
 
     @Override
@@ -152,7 +151,7 @@ public abstract class BaseDialog extends DialogFragment implements DialogMvpView
                 ViewGroup.LayoutParams.WRAP_CONTENT));
 
         // creating the fullscreen dialog
-        final Dialog dialog = new Dialog(getContext());
+        final Dialog dialog = new Dialog(Objects.requireNonNull(getContext()));
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(root);
         if (dialog.getWindow() != null) {
@@ -167,7 +166,7 @@ public abstract class BaseDialog extends DialogFragment implements DialogMvpView
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setUp(view);
     }

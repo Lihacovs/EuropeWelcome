@@ -28,7 +28,5 @@ public interface NewPostMvpView extends MvpView {
 
     void finishActivity();
 
-    void scrollViewToBottom();
-
     void showYouTubeUrlDialog();
 }

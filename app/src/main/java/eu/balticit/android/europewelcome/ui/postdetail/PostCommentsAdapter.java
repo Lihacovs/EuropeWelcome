@@ -27,6 +27,7 @@ import eu.balticit.android.europewelcome.R;
 import eu.balticit.android.europewelcome.data.firebase.model.PostComment;
 import eu.balticit.android.europewelcome.di.module.GlideApp;
 import eu.balticit.android.europewelcome.ui.base.BaseViewHolder;
+
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -101,7 +102,7 @@ public class PostCommentsAdapter extends FirestoreRecyclerAdapter<PostComment, P
         void hideLoadingSpinner();
     }
 
-    public class ViewHolder extends BaseViewHolder implements PostDetailActivity.Callback{
+    public class ViewHolder extends BaseViewHolder implements PostDetailActivity.Callback {
         @BindView(R.id.iv_comment_item_user_image)
         ImageView mPostCommentUserImageIv;
 
@@ -166,23 +167,23 @@ public class PostCommentsAdapter extends FirestoreRecyclerAdapter<PostComment, P
 
             mPostStarsTv.setText(String.valueOf(postComment.getPostCommentStars()));
 
-            if(mCallback != null) {
+            if (mCallback != null) {
                 mCallback.checkCommentLikedByUser(mPostComment, this);
             }
 
         }
 
         @OnClick(R.id.cl_comment_item_star_container)
-        void onLikeCommentClick(){
-            if(mCallback != null){
+        void onLikeCommentClick() {
+            if (mCallback != null) {
                 mStarContainerCl.setEnabled(false);
                 mCallback.onLikeCommentClick(mPostComment, this);
             }
         }
 
         @OnClick(R.id.iv_comment_item_user_image)
-        void onUserImageClick(){
-            if(mCallback != null){
+        void onUserImageClick() {
+            if (mCallback != null) {
                 mCallback.onCommentUserImageClick(mPostComment.getPostCommentUserId());
             }
         }

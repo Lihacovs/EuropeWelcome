@@ -38,6 +38,7 @@ import eu.balticit.android.europewelcome.di.module.GlideApp;
 import eu.balticit.android.europewelcome.ui.about.AboutFragment;
 import eu.balticit.android.europewelcome.ui.base.BaseActivity;
 import eu.balticit.android.europewelcome.ui.profile.ProfileActivity;
+
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -246,14 +247,14 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
     }
 
     @OnClick(R.id.cl_post_detail_user_container)
-    void onUserImageIvClick(){
+    void onUserImageIvClick() {
         startActivity(ProfileActivity.getStartIntent(getBaseContext(), mPresenter.getPostAuthorId()));
     }
 
 
     @OnClick(R.id.iv_post_detail_send_icon)
-    void onCommentSend(){
-        if(!mPostNewCommentTextEt.getText().toString().equals("") &&
+    void onCommentSend() {
+        if (!mPostNewCommentTextEt.getText().toString().equals("") &&
                 !mPostNewCommentTextEt.getText().toString().isEmpty()) {
             mPresenter.createNewComment(mPostNewCommentTextEt.getText().toString());
         }
@@ -268,7 +269,7 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
 
     @Override
     public void setPostUserImage(String userImageUrl) {
-        if(userImageUrl != null){
+        if (userImageUrl != null) {
             GlideApp.with(this)
                     .load(userImageUrl)
                     .apply(RequestOptions.circleCropTransform())
@@ -279,21 +280,21 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
 
     @Override
     public void setPostUserName(String userName) {
-        if(userName != null){
+        if (userName != null) {
             mPostUserNameTv.setText(userName);
         }
     }
 
     @Override
     public void setPostCreationDate(String creationDate) {
-        if(creationDate != null){
+        if (creationDate != null) {
             mPostDateTv.setText(creationDate);
         }
     }
 
     @Override
     public void setPostNewCommentUserImage(String userImageUrl) {
-        if(userImageUrl != null)
+        if (userImageUrl != null)
             GlideApp.with(this)
                     .load(userImageUrl)
                     .apply(RequestOptions.circleCropTransform())
@@ -302,14 +303,14 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
     }
 
     @OnClick(R.id.cl_post_detail_star_container)
-    void onStarIconClick(){
+    void onStarIconClick() {
         //disable view to protect from double click
         mStarContainerCl.setEnabled(false);
         mPresenter.addOrRemoveStar();
     }
 
     @OnClick(R.id.iv_post_detail_bookmark_image)
-    void onBookmarkIconClick(){
+    void onBookmarkIconClick() {
         //disable view to protect from double click
         mBookmarkIv.setEnabled(false);
         mPresenter.saveOrDeleteBookmark();
@@ -353,14 +354,14 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
 
     @Override
     public void setCommentLikeIcon(PostCommentsAdapter.ViewHolder holder) {
-        if(mCallback!=null){
+        if (mCallback != null) {
             mCallback.setCommentLikeIcon(holder);
         }
     }
 
     @Override
     public void setNotCommentLikeIcon(PostCommentsAdapter.ViewHolder holder) {
-        if(mCallback!=null){
+        if (mCallback != null) {
             mCallback.removeCommentLikeIcon(holder);
         }
     }

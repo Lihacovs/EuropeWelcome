@@ -32,6 +32,7 @@ import javax.inject.Inject;
 public class BookmarksPresenter<V extends BookmarksMvpView> extends BasePresenter<V> implements
         BookmarksMvpPresenter<V> {
 
+    @SuppressWarnings("unused")
     private static final String TAG = "DraftsPresenter";
 
     @Inject

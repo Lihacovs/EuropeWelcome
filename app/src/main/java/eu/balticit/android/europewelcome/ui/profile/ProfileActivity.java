@@ -36,6 +36,7 @@ import eu.balticit.android.europewelcome.ui.base.BaseActivity;
 import eu.balticit.android.europewelcome.ui.profile.changeprofile.ChangeProfileFragment;
 import eu.balticit.android.europewelcome.ui.profile.usercomments.UserCommentsFragment;
 import eu.balticit.android.europewelcome.ui.profile.userposts.UserPostsFragment;
+
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 
@@ -44,8 +45,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import eu.balticit.android.europewelcome.ui.profile.changeprofile.ChangeProfileFragment;
-import eu.balticit.android.europewelcome.ui.profile.userposts.UserPostsFragment;
 
 /**
  * Profile Activity.

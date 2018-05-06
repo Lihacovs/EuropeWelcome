@@ -46,7 +46,6 @@ import eu.balticit.android.europewelcome.di.ApplicationContext;
  * It is the one point of contact for any data related operation in the application.
  * Delegates all the operations specific to any Helper.
  */
-
 @Singleton
 public class AppDataManager implements DataManager {
 
@@ -181,7 +180,7 @@ public class AppDataManager implements DataManager {
     @Override
     public void updateUserInfo(
             String accessToken,
-            String  userId,
+            String userId,
             LoggedInMode loggedInMode,
             String userName,
             String email,
@@ -449,7 +448,7 @@ public class AppDataManager implements DataManager {
 
     @Override
     public Task<DocumentSnapshot> getCommentLike(String userId, String commentId) {
-        return mFirebaseHelper.getCommentLike(userId,commentId);
+        return mFirebaseHelper.getCommentLike(userId, commentId);
     }
 
     @Override

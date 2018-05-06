@@ -19,12 +19,8 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
-import eu.balticit.android.europewelcome.data.AppDataManager;
-import eu.balticit.android.europewelcome.data.DataManager;
 import eu.balticit.android.europewelcome.di.ActivityContext;
 import eu.balticit.android.europewelcome.di.PerActivity;
 import eu.balticit.android.europewelcome.ui.about.AboutMvpPresenter;
@@ -105,13 +101,6 @@ public class ActivityModule {
         return mActivity;
     }
 
-    /*@Provides
-    @PerActivity
-    SplashMvpPresenter<SplashMvpView> provideSplashPresenter(
-            SplashPresenter<SplashMvpView> presenter) {
-        return presenter;
-    }*/
-
     @Provides
     AboutMvpPresenter<AboutMvpView> provideAboutPresenter(
             AboutPresenter<AboutMvpView> presenter) {
@@ -155,12 +144,6 @@ public class ActivityModule {
             BuyPremiumDialogPresenter<BuyPremiumDialogMvpView> presenter) {
         return presenter;
     }
-
-    /*@Provides
-    FeedMvpPresenter<FeedMvpView> provideFeedPresenter(
-            FeedPresenter<FeedMvpView> presenter) {
-        return presenter;
-    }*/
 
     @Provides
     UserPostsMvpPresenter<UserPostsMvpView> provideUserPostsPresenter(
@@ -231,16 +214,6 @@ public class ActivityModule {
     ProfilePagerAdapter provideProfilePagerAdapter(AppCompatActivity activity) {
         return new ProfilePagerAdapter(activity.getSupportFragmentManager());
     }
-
-    /*@Provides
-    OpenSourceAdapter provideOpenSourceAdapter() {
-        return new OpenSourceAdapter(new ArrayList<OpenSourceResponse.Repo>());
-    }*/
-
-    /*@Provides
-    FreePostsAdapter provideFreePostsAdapter(FirestoreRecyclerOptions<Post> options) {
-        return new FreePostsAdapter(options);
-    }*/
 
     @Provides
     LinearLayoutManager provideLinearLayoutManager(AppCompatActivity activity) {

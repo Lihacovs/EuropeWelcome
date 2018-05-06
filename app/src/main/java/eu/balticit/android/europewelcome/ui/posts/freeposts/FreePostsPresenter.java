@@ -33,6 +33,7 @@ import javax.inject.Inject;
 public class FreePostsPresenter<V extends FreePostsMvpView> extends BasePresenter<V>
         implements FreePostsMvpPresenter<V> {
 
+    @SuppressWarnings("unused")
     private static final String TAG = "FreePostsPresenter";
 
     @Inject
@@ -226,7 +227,6 @@ public class FreePostsPresenter<V extends FreePostsMvpView> extends BasePresente
     @Override
     public void deletePost(Post post) {
         getMvpView().showLoading();
-        //TODO: test this
         //First delete PostSection collection with all documents under that post
         getDataManager().getFirstPostSectionCollection(post.getPostId())
                 .addOnSuccessListener(documentSnapshots -> {
@@ -235,12 +235,12 @@ public class FreePostsPresenter<V extends FreePostsMvpView> extends BasePresente
                         getDataManager().deletePostSection(post.getPostId(), postSection);
                     }
                     //Then delete Post document itself
-                    getDataManager().deletePost(post).addOnSuccessListener(aVoid -> {
-                        getMvpView().hideLoading();
-                    }).addOnFailureListener(e -> {
-                        getMvpView().hideLoading();
-                        getMvpView().onError(R.string.free_posts_some_error);
-                    });
+                    getDataManager().deletePost(post)
+                            .addOnSuccessListener(aVoid -> getMvpView().hideLoading())
+                            .addOnFailureListener(e -> {
+                                getMvpView().hideLoading();
+                                getMvpView().onError(R.string.free_posts_some_error);
+                            });
                 })
                 .addOnFailureListener(e -> {
                     getMvpView().onError(R.string.free_posts_some_error);

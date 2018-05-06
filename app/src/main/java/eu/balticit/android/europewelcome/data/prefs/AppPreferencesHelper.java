@@ -28,7 +28,6 @@ import eu.balticit.android.europewelcome.di.PreferenceInfo;
 /**
  * Reads and writes the data from android shared preferences.
  */
-
 @Singleton
 public class AppPreferencesHelper implements PreferencesHelper {
 
@@ -49,8 +48,8 @@ public class AppPreferencesHelper implements PreferencesHelper {
     private final SharedPreferences mPrefs;
 
     @Inject
-    public AppPreferencesHelper(@ApplicationContext Context context,
-                                @PreferenceInfo String prefFileName) {
+    AppPreferencesHelper(@ApplicationContext Context context,
+                         @PreferenceInfo String prefFileName) {
         mPrefs = context.getSharedPreferences(prefFileName, Context.MODE_PRIVATE);
     }
 
@@ -159,12 +158,12 @@ public class AppPreferencesHelper implements PreferencesHelper {
      * Puts true value if AppIntro was watched
      */
     @Override
-    public void watchAppIntro(boolean watched){
+    public void watchAppIntro(boolean watched) {
         mPrefs.edit().putBoolean(PREF_KEY_INTRO_WATCHED, watched).apply();
     }
 
     @Override
-    public boolean isAppIntroWatched(){
+    public boolean isAppIntroWatched() {
         return mPrefs.getBoolean(PREF_KEY_INTRO_WATCHED, false);
     }
 }

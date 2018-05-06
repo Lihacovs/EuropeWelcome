@@ -34,6 +34,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 
 import java.io.File;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -113,7 +114,6 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
                 .addOnFailureListener(e -> {
                     getMvpView().enableIcons();
                     getMvpView().hideLoading();
-                    Log.d(TAG, "newTextPostSection: Failure");
                 });
     }
 
@@ -130,7 +130,6 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
                 .addOnFailureListener(e -> {
                     getMvpView().enableIcons();
                     getMvpView().hideLoading();
-                    Log.d(TAG, "onFailure: ");
                 });
     }
 
@@ -140,7 +139,7 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
         getMvpView().disableIcons();
         PostSection postSection = newPostSection();
         postSection.setPostSectionViewType("Map");
-        postSection.setPostPlaceAddress(place.getAddress().toString());
+        postSection.setPostPlaceAddress(Objects.requireNonNull(place.getAddress()).toString());
         postSection.setPostPlaceName(place.getName().toString());
         postSection.setPostPlaceLat(place.getLatLng().latitude);
         postSection.setPostPlaceLng(place.getLatLng().longitude);
@@ -148,11 +147,11 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
                 .addOnSuccessListener(aVoid -> {
                     getMvpView().enableIcons();
                     getMvpView().hideLoading();
-                }).addOnFailureListener(e -> {
-            getMvpView().enableIcons();
-            getMvpView().hideLoading();
-            Log.d(TAG, "onFailure: ");
-        });
+                })
+                .addOnFailureListener(e -> {
+                    getMvpView().enableIcons();
+                    getMvpView().hideLoading();
+                });
     }
 
     @Override
@@ -169,10 +168,8 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
                         getMvpView().hideLoading();
                         getMvpView().onError("Only one YouTube video allowed");
                     }
-                }).addOnFailureListener(e -> {
-            getMvpView().hideLoading();
-            Log.d(TAG, "onFailure: " + e);
-        });
+                })
+                .addOnFailureListener(e -> getMvpView().hideLoading());
     }
 
     @Override
@@ -190,7 +187,6 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
                 .addOnFailureListener(e -> {
                     getMvpView().enableIcons();
                     getMvpView().hideLoading();
-                    Log.d(TAG, "onFailure: ");
                 });
     }
 
@@ -198,13 +194,8 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
     public void deletePostSection(PostSection postSection) {
         getMvpView().showLoading();
         getDataManager().deletePostSection(mPostId, postSection)
-                .addOnSuccessListener(aVoid -> {
-                    getMvpView().hideLoading();
-                })
-                .addOnFailureListener(e -> {
-                    getMvpView().hideLoading();
-                    Log.d(TAG, "deletePostSection: ");
-                });
+                .addOnSuccessListener(aVoid -> getMvpView().hideLoading())
+                .addOnFailureListener(e -> getMvpView().hideLoading());
     }
 
     @Override
@@ -226,10 +217,11 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
                         String downloadUrl = taskSnapshot.getDownloadUrl().toString();
                         newImagePostSection(downloadUrl);
                     }
-                }).removeOnFailureListener(e -> {
-            getMvpView().hideLoading();
-            getMvpView().onError(R.string.register_upload_error);
-        });
+                })
+                .removeOnFailureListener(e -> {
+                    getMvpView().hideLoading();
+                    getMvpView().onError(R.string.register_upload_error);
+                });
     }
 
     @Override
@@ -238,23 +230,21 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
         getMvpView().showLoading();
 
         //First delete PostSection collection with all documents under that post
-        getDataManager().getFirstPostSectionCollection(mPostId).addOnSuccessListener(documentSnapshots -> {
-            for (DocumentSnapshot doc : documentSnapshots.getDocuments()) {
-                PostSection postSection = doc.toObject(PostSection.class);
-                getDataManager().deletePostSection(mPostId, postSection);
-            }
-            //Then delete Post document itself
-            getDataManager().deletePost(mPost).addOnSuccessListener(aVoid -> {
-                getMvpView().hideLoading();
-                getMvpView().finishActivity();
-            }).addOnFailureListener(e -> {
-                getMvpView().hideLoading();
-                Log.d(TAG, "deletePost: " + e.getMessage());
-            });
-        }).addOnFailureListener(e -> {
-            getMvpView().hideLoading();
-            Log.d(TAG, "onFailure: " + e.getMessage());
-        });
+        getDataManager().getFirstPostSectionCollection(mPostId)
+                .addOnSuccessListener(documentSnapshots -> {
+                    for (DocumentSnapshot doc : documentSnapshots.getDocuments()) {
+                        PostSection postSection = doc.toObject(PostSection.class);
+                        getDataManager().deletePostSection(mPostId, postSection);
+                    }
+                    //Then delete Post document itself
+                    getDataManager().deletePost(mPost)
+                            .addOnSuccessListener(aVoid -> {
+                                getMvpView().hideLoading();
+                                getMvpView().finishActivity();
+                            })
+                            .addOnFailureListener(e -> getMvpView().hideLoading());
+                })
+                .addOnFailureListener(e -> getMvpView().hideLoading());
     }
 
     @Override
@@ -270,15 +260,13 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
                     } else {
                         for (DocumentSnapshot doc : documentSnapshots.getDocuments()) {
                             PostSection postSection = doc.toObject(PostSection.class);
-                            mPost.setPostTitle(postSection.getPostTitle());
+                            mPost.setPostTitle(Objects.requireNonNull(postSection).getPostTitle());
                         }
                         getMvpView().showMessage("Saved to Drafts");
                         updatePost();
                     }
-                }).addOnFailureListener(e -> {
-            getMvpView().hideLoading();
-            Log.d(TAG, "onFailure: " + e);
-        });
+                })
+                .addOnFailureListener(e -> getMvpView().hideLoading());
     }
 
 
@@ -302,15 +290,14 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
                     } else {
                         for (DocumentSnapshot doc : documentSnapshots.getDocuments()) {
                             PostSection postSection = doc.toObject(PostSection.class);
-                            Log.d(TAG, "onSuccess: " + postSection.getPostText());
-                            mPost.setPostTitle(postSection.getPostTitle());
+                            if (postSection != null) {
+                                mPost.setPostTitle(postSection.getPostTitle());
+                            }
                         }
                         setPostText();
                     }
-                }).addOnFailureListener(e -> {
-            getMvpView().hideLoading();
-            Log.d(TAG, "onFailure: " + e);
-        });
+                })
+                .addOnFailureListener(e -> getMvpView().hideLoading());
     }
 
     private void setPostText() {
@@ -322,15 +309,14 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
                     } else {
                         for (DocumentSnapshot doc : documentSnapshots.getDocuments()) {
                             PostSection postSection = doc.toObject(PostSection.class);
-                            Log.d(TAG, "onSuccess: " + postSection.getPostText());
-                            mPost.setPostText(postSection.getPostText());
+                            if (postSection != null) {
+                                mPost.setPostText(postSection.getPostText());
+                            }
                         }
                         setPostImage();
                     }
-                }).addOnFailureListener(e -> {
-            getMvpView().hideLoading();
-            Log.d(TAG, "onFailure: " + e);
-        });
+                })
+                .addOnFailureListener(e -> getMvpView().hideLoading());
     }
 
     private void setPostImage() {
@@ -342,27 +328,25 @@ public class NewPostPresenter<V extends NewPostMvpView> extends BasePresenter<V>
                     } else {
                         for (DocumentSnapshot doc : documentSnapshots.getDocuments()) {
                             PostSection postSection = doc.toObject(PostSection.class);
-                            Log.d(TAG, "onSuccess: " + postSection.getPostImageUrl());
-                            mPost.setPostImageUrl(postSection.getPostImageUrl());
+                            if (postSection != null) {
+                                mPost.setPostImageUrl(postSection.getPostImageUrl());
+                            }
                         }
                         mPost.setPostPublished(true);
                         mPost.setPostAsDraft(false);
                         updatePost();
                     }
-                }).addOnFailureListener(e -> {
-            getMvpView().hideLoading();
-            Log.d(TAG, "onFailure: " + e.getMessage());
-        });
+                })
+                .addOnFailureListener(e -> getMvpView().hideLoading());
     }
 
     private void updatePost() {
-        getDataManager().updatePost(mPost).addOnSuccessListener(aVoid -> {
-            getMvpView().hideLoading();
-            getMvpView().finishActivity();
-        }).addOnFailureListener(e -> {
-            getMvpView().hideLoading();
-            Log.d(TAG, "updatePost: failure" + e.getMessage());
-        });
+        getDataManager().updatePost(mPost)
+                .addOnSuccessListener(aVoid -> {
+                    getMvpView().hideLoading();
+                    getMvpView().finishActivity();
+                })
+                .addOnFailureListener(e -> getMvpView().hideLoading());
     }
 
     @NonNull

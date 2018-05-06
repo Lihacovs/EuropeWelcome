@@ -18,7 +18,6 @@ package eu.balticit.android.europewelcome.ui.posts.buypremium;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
-import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,12 +77,12 @@ public class BuyPremiumDialog extends BaseDialog implements BuyPremiumDialogMvpV
     }
 
     @OnClick(R.id.btn_buy_premium_get_premium)
-    void onGetPremiumBtnClick(){
+    void onGetPremiumBtnClick() {
         mPresenter.onGetPremiumClick();
     }
 
     @OnClick(R.id.tv_buy_premium_terms)
-    void onTermsTvClick(){
+    void onTermsTvClick() {
         dismissDialog();
         getBaseActivity().showAboutFragment();
     }
@@ -95,7 +94,7 @@ public class BuyPremiumDialog extends BaseDialog implements BuyPremiumDialogMvpV
 
     @Override
     public void purchasePremium() {
-        if(mCallback != null) mCallback.purchasePremiumClick();
+        if (mCallback != null) mCallback.purchasePremiumClick();
     }
 
     @Override

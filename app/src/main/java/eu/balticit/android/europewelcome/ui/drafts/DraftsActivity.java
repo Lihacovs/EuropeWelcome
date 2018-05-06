@@ -33,6 +33,7 @@ import eu.balticit.android.europewelcome.data.firebase.model.Post;
 import eu.balticit.android.europewelcome.ui.about.AboutFragment;
 import eu.balticit.android.europewelcome.ui.base.BaseActivity;
 import eu.balticit.android.europewelcome.ui.newpost.NewPostActivity;
+
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
 
@@ -46,6 +47,7 @@ import butterknife.ButterKnife;
  */
 public class DraftsActivity extends BaseActivity implements DraftsMvpView, DraftsAdapter.Callback {
 
+    @SuppressWarnings("unused")
     private static final String TAG = "AddPostActivity";
 
     @Inject

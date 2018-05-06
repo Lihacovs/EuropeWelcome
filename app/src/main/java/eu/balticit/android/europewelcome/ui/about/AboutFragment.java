@@ -37,7 +37,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import eu.balticit.android.europewelcome.utils.AppUtils;
 
 /**
  * About Fragment
@@ -78,7 +77,7 @@ public class AboutFragment extends BaseFragment implements AboutMvpView {
 
     //Opens app introduction screens
     @OnClick(R.id.iv_about_link_functions)
-    void onAboutAppClick(){
+    void onAboutAppClick() {
         mPresenter.resetIntroWatch();
         Intent intent = new Intent(getBaseActivity(), IntroActivity.class);
         startActivity(intent);
@@ -86,7 +85,7 @@ public class AboutFragment extends BaseFragment implements AboutMvpView {
 
     //Opens email to send to developer
     @OnClick(R.id.iv_about_send_email)
-    void onSendEmailClick(){
+    void onSendEmailClick() {
         Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
                 "mailto", getString(R.string.app_email), null));
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.email_subject));
@@ -97,7 +96,7 @@ public class AboutFragment extends BaseFragment implements AboutMvpView {
 
     //Opens GooglePlay to rate app
     @OnClick(R.id.iv_about_send_rate)
-    void onRateAppClick(){
+    void onRateAppClick() {
         AppUtils.openPlayStoreForApp(getBaseActivity());
     }
 

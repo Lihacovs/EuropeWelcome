@@ -16,7 +16,6 @@
 package eu.balticit.android.europewelcome.ui.bookmarks;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +42,7 @@ import butterknife.OnClick;
  */
 public class BookmarksAdapter extends FirestoreRecyclerAdapter<Post, BookmarksAdapter.BookmarksViewHolder> {
 
+    @SuppressWarnings("unused")
     private static final String TAG = "BookmarksAdapter";
 
     private BookmarksAdapter.Callback mCallback;
@@ -74,7 +74,6 @@ public class BookmarksAdapter extends FirestoreRecyclerAdapter<Post, BookmarksAd
     @Override
     public void onError(@NonNull FirebaseFirestoreException e) {
         super.onError(e);
-        Log.d(TAG, "onError: " + e);
     }
 
     @Override
@@ -86,7 +85,6 @@ public class BookmarksAdapter extends FirestoreRecyclerAdapter<Post, BookmarksAd
     @NonNull
     @Override
     public BookmarksViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.d(TAG, "onCreateViewHolder: ");
         return new BookmarksViewHolder(LayoutInflater.from(parent.getContext()).inflate
                 (R.layout.item_bookmark, parent, false));
     }

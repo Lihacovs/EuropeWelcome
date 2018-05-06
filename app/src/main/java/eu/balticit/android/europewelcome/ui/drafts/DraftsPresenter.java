@@ -15,8 +15,6 @@
 
 package eu.balticit.android.europewelcome.ui.drafts;
 
-import android.support.annotation.NonNull;
-
 import eu.balticit.android.europewelcome.R;
 import eu.balticit.android.europewelcome.data.DataManager;
 import eu.balticit.android.europewelcome.data.firebase.model.Post;
@@ -34,6 +32,7 @@ import javax.inject.Inject;
 public class DraftsPresenter<V extends DraftsMvpView> extends BasePresenter<V> implements
         DraftsMvpPresenter<V> {
 
+    @SuppressWarnings("unused")
     private static final String TAG = "DraftsPresenter";
 
     @Inject
@@ -66,17 +65,20 @@ public class DraftsPresenter<V extends DraftsMvpView> extends BasePresenter<V> i
                         getDataManager().deletePostSection(post.getPostId(), postSection);
                     }
                     //Then delete Post document itself
-                    getDataManager().deletePost(post).addOnSuccessListener(aVoid -> {
-                        //getMvpView().onError(R.string.drafts_deleted);
-                        getMvpView().hideLoading();
-                    }).addOnFailureListener(e -> {
-                        getMvpView().hideLoading();
-                        getMvpView().onError(R.string.drafts_some_error);
-                    });
-                }).addOnFailureListener(e -> {
-            getMvpView().hideLoading();
-            getMvpView().onError(R.string.drafts_some_error);
-        });
+                    getDataManager().deletePost(post)
+                            .addOnSuccessListener(aVoid -> {
+                                //getMvpView().onError(R.string.drafts_deleted);
+                                getMvpView().hideLoading();
+                            })
+                            .addOnFailureListener(e -> {
+                                getMvpView().hideLoading();
+                                getMvpView().onError(R.string.drafts_some_error);
+                            });
+                })
+                .addOnFailureListener(e -> {
+                    getMvpView().hideLoading();
+                    getMvpView().onError(R.string.drafts_some_error);
+                });
     }
 
     @Override
@@ -87,9 +89,10 @@ public class DraftsPresenter<V extends DraftsMvpView> extends BasePresenter<V> i
                         Post post = doc.toObject(Post.class);
                         deleteDraft(post);
                     }
-                }).addOnFailureListener(e -> {
-            getMvpView().hideLoading();
-            getMvpView().onError(R.string.drafts_some_error);
-        });
+                })
+                .addOnFailureListener(e -> {
+                    getMvpView().hideLoading();
+                    getMvpView().onError(R.string.drafts_some_error);
+                });
     }
 }

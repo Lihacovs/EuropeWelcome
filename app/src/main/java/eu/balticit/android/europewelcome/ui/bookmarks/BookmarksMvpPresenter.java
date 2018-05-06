@@ -17,6 +17,7 @@ package eu.balticit.android.europewelcome.ui.bookmarks;
 
 import eu.balticit.android.europewelcome.data.firebase.model.Post;
 import eu.balticit.android.europewelcome.ui.base.MvpPresenter;
+
 import com.google.firebase.firestore.Query;
 
 /**

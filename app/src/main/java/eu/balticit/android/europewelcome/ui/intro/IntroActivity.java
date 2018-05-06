@@ -44,7 +44,7 @@ public class IntroActivity extends AppIntro2 {
             finish();
         }
 
-        if(getSupportActionBar()!=null) getSupportActionBar().hide();
+        if (getSupportActionBar() != null) getSupportActionBar().hide();
 
         // Note here that we DO NOT use setContentView();
 

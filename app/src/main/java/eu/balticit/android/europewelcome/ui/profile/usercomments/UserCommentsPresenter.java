@@ -17,11 +17,10 @@ package eu.balticit.android.europewelcome.ui.profile.usercomments;
 
 import eu.balticit.android.europewelcome.data.DataManager;
 import eu.balticit.android.europewelcome.ui.base.BasePresenter;
+
 import com.google.firebase.firestore.Query;
 
 import javax.inject.Inject;
-
-import eu.balticit.android.europewelcome.data.DataManager;
 
 public class UserCommentsPresenter<V extends UserCommentsMvpView> extends BasePresenter<V>
         implements UserCommentsMvpPresenter<V> {

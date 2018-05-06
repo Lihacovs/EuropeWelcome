@@ -22,7 +22,6 @@ import com.google.android.gms.tasks.Task;
 /**
  * Created by BIT on 12/26/2017.
  */
-
 public interface NetworkHelper {
 
     Intent getGoogleSignInIntent();

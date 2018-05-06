@@ -25,6 +25,7 @@ public interface RatingDialogMvpPresenter<V extends RatingDialogMvpView> extends
 
     void onRatingSubmitted(float rating, String message);
 
+    @SuppressWarnings("unused")
     void onCancelClicked();
 
     void onLaterClicked();

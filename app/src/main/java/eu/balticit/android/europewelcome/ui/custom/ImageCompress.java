@@ -32,6 +32,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Resize and compress image before server upload
@@ -39,7 +40,8 @@ import java.io.IOException;
 
 public class ImageCompress {
 
-    private static final String TAG = "CommonUtils";
+    @SuppressWarnings("unused")
+    private static final String TAG = "ImageCompress";
 
     private Context mContext;
 
@@ -102,7 +104,7 @@ public class ImageCompress {
 
         }
         try {
-            scaledBitmap = Bitmap.createBitmap(actualWidth, actualHeight,Bitmap.Config.ARGB_8888);
+            scaledBitmap = Bitmap.createBitmap(actualWidth, actualHeight, Bitmap.Config.ARGB_8888);
         } catch (OutOfMemoryError exception) {
             exception.printStackTrace();
         }
@@ -115,7 +117,7 @@ public class ImageCompress {
         Matrix scaleMatrix = new Matrix();
         scaleMatrix.setScale(ratioX, ratioY, middleX, middleY);
 
-        Canvas canvas = new Canvas(scaledBitmap);
+        Canvas canvas = new Canvas(Objects.requireNonNull(scaledBitmap));
         canvas.setMatrix(scaleMatrix);
         canvas.drawBitmap(bmp, middleX - bmp.getWidth() / 2, middleY - bmp.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));
 
@@ -145,7 +147,7 @@ public class ImageCompress {
             e.printStackTrace();
         }
 
-        FileOutputStream out = null;
+        FileOutputStream out;
         String filename = getFilename();
         try {
             out = new FileOutputStream(filename);
@@ -180,7 +182,7 @@ public class ImageCompress {
         int inSampleSize = 1;
 
         if (height > reqHeight || width > reqWidth) {
-            final int heightRatio = Math.round((float) height/ (float) reqHeight);
+            final int heightRatio = Math.round((float) height / (float) reqHeight);
             final int widthRatio = Math.round((float) width / (float) reqWidth);
             inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
         }
@@ -199,7 +201,6 @@ public class ImageCompress {
         if (!file.exists()) {
             file.mkdirs();
         }
-        String uriSting = (file.getAbsolutePath() + "/" + System.currentTimeMillis() + ".jpg");
-        return uriSting;
+        return (file.getAbsolutePath() + "/" + System.currentTimeMillis() + ".jpg");
     }
 }

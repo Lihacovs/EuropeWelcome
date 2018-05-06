@@ -34,10 +34,12 @@ public class CustomButton extends AppCompatButton {
     public CustomButton(Context context) {
         super(context);
     }
+
     public CustomButton(Context context, AttributeSet attrs) {
         super(context, attrs);
         initAttrs(context, attrs);
     }
+
     public CustomButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initAttrs(context, attrs);

@@ -30,19 +30,20 @@ import eu.balticit.android.europewelcome.data.firebase.model.PostComment;
 import eu.balticit.android.europewelcome.di.component.ActivityComponent;
 import eu.balticit.android.europewelcome.ui.base.BaseFragment;
 import eu.balticit.android.europewelcome.ui.postdetail.PostDetailActivity;
+
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import eu.balticit.android.europewelcome.data.firebase.model.PostComment;
-import eu.balticit.android.europewelcome.ui.postdetail.PostDetailActivity;
 
 public class UserCommentsFragment extends BaseFragment implements
-        UserCommentsMvpView, UserCommentsAdapter.Callback{
+        UserCommentsMvpView, UserCommentsAdapter.Callback {
 
+    @SuppressWarnings("unused")
     private static final String TAG = "UserPostsFragment";
+
     private static final String EXTRA_USER_ID =
             "com.bmd.android.europewelcome.profile.usercomments.user_id";
 

@@ -24,6 +24,7 @@ import eu.balticit.android.europewelcome.data.firebase.model.User;
 import eu.balticit.android.europewelcome.ui.base.BasePresenter;
 import eu.balticit.android.europewelcome.ui.custom.ImageCompress;
 import eu.balticit.android.europewelcome.utils.CommonUtils;
+
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
@@ -44,6 +45,7 @@ import javax.inject.Inject;
 public class RegisterPresenter<V extends RegisterMvpView> extends BasePresenter<V>
         implements RegisterMvpPresenter<V> {
 
+    @SuppressWarnings("unused")
     private static final String TAG = "RegisterPresenter";
 
     @Inject
@@ -181,27 +183,27 @@ public class RegisterPresenter<V extends RegisterMvpView> extends BasePresenter<
                                 getMvpView().hideLoading();
                                 getMvpView().openMainActivity();
                             }).addOnFailureListener(e -> {
-                                getMvpView().hideLoading();
-                                getMvpView().onError(R.string.register_some_error);
-                            });
+                        getMvpView().hideLoading();
+                        getMvpView().onError(R.string.register_some_error);
+                    });
                 }).addOnFailureListener(e -> {
-                    if (!isViewAttached()) {
-                        return;
-                    }
-                    getMvpView().hideLoading();
-                    if (e instanceof FirebaseAuthUserCollisionException) {
-                        getMvpView().onError(R.string.register_email_already_used);
-                        return;
-                    }
-                    if (e instanceof FirebaseAuthWeakPasswordException) {
-                        getMvpView().onError(((FirebaseAuthWeakPasswordException) e).getReason());
-                        return;
-                    }
-                    if (e instanceof FirebaseAuthInvalidCredentialsException) {
-                        getMvpView().onError(e.getMessage());
-                        return;
-                    }
-                    getMvpView().onError(R.string.register_some_error);
-                });
+            if (!isViewAttached()) {
+                return;
+            }
+            getMvpView().hideLoading();
+            if (e instanceof FirebaseAuthUserCollisionException) {
+                getMvpView().onError(R.string.register_email_already_used);
+                return;
+            }
+            if (e instanceof FirebaseAuthWeakPasswordException) {
+                getMvpView().onError(((FirebaseAuthWeakPasswordException) e).getReason());
+                return;
+            }
+            if (e instanceof FirebaseAuthInvalidCredentialsException) {
+                getMvpView().onError(e.getMessage());
+                return;
+            }
+            getMvpView().onError(R.string.register_some_error);
+        });
     }
 }

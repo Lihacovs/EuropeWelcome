@@ -28,6 +28,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
 
+import java.util.Objects;
+
 import eu.balticit.android.europewelcome.R;
 import eu.balticit.android.europewelcome.di.component.ActivityComponent;
 import eu.balticit.android.europewelcome.ui.base.BaseDialog;
@@ -38,7 +40,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import eu.balticit.android.europewelcome.utils.AppUtils;
 
 /**
  * Rating dialog
@@ -99,7 +100,7 @@ public class RateUsDialog extends BaseDialog implements RatingDialogMvpView {
 
     @Override
     public void openPlayStoreForRating() {
-        AppUtils.openPlayStoreForApp(getContext());
+        AppUtils.openPlayStoreForApp(getBaseActivity());
     }
 
     @Override
@@ -120,7 +121,7 @@ public class RateUsDialog extends BaseDialog implements RatingDialogMvpView {
 
         LayerDrawable stars = (LayerDrawable) mRatingBar.getProgressDrawable();
         stars.getDrawable(2)
-                .setColorFilter(ContextCompat.getColor(getContext(), R.color.europe_gold), PorterDuff.Mode.SRC_ATOP);
+                .setColorFilter(ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.europe_gold), PorterDuff.Mode.SRC_ATOP);
         stars.getDrawable(0)
                 .setColorFilter(ContextCompat.getColor(getContext(), R.color.shadow), PorterDuff.Mode.SRC_ATOP);
         stars.getDrawable(1)

@@ -31,6 +31,7 @@ import eu.balticit.android.europewelcome.R;
 import eu.balticit.android.europewelcome.data.firebase.model.PostSection;
 import eu.balticit.android.europewelcome.di.module.GlideApp;
 import eu.balticit.android.europewelcome.ui.base.BaseViewHolder;
+
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -46,7 +47,6 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import eu.balticit.android.europewelcome.ui.base.BaseViewHolder;
 
 /**
  * Adapter for {@link NewPostActivity}
@@ -383,7 +383,7 @@ public class NewPostAdapter extends FirestoreRecyclerAdapter<PostSection, BaseVi
 
         YouTubePlayerFragment mYouTubePlayerFragment =
                 (YouTubePlayerFragment) ((Activity) itemView.getContext())
-                .getFragmentManager().findFragmentById(R.id.fragment_new_post_item_youtube_video);
+                        .getFragmentManager().findFragmentById(R.id.fragment_new_post_item_youtube_video);
 
         PostSection mPostSection;
 
@@ -401,7 +401,6 @@ public class NewPostAdapter extends FirestoreRecyclerAdapter<PostSection, BaseVi
             mPostSection = model;
 
             mYouTubePlayerFragment.initialize(
-                    //TODO:Add key to strings
                     mContext.getString(R.string.GOOGLE_ANDROID_API_KEY),
                     new YouTubePlayer.OnInitializedListener() {
                         @Override

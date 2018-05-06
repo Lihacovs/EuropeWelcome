@@ -23,7 +23,6 @@ import eu.balticit.android.europewelcome.data.prefs.PreferencesHelper;
  * Interface that is implemented by the {@link AppDataManager}.
  * Contains methods, exposed for all the data handling operations.
  */
-
 public interface DataManager extends FirebaseHelper, PreferencesHelper, NetworkHelper {
 
     void setUserAsLoggedOut();

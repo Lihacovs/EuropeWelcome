@@ -21,7 +21,7 @@ import eu.balticit.android.europewelcome.ui.base.MvpPresenter;
  * Presenter interface for {@link PostsPresenter}
  */
 
-public interface PostsMvpPresenter <V extends PostsMvpView> extends MvpPresenter<V> {
+public interface PostsMvpPresenter<V extends PostsMvpView> extends MvpPresenter<V> {
 
     boolean checkUserSigned();
 

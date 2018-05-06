@@ -18,18 +18,18 @@ package eu.balticit.android.europewelcome.data.firebase.model;
 /**
  * POJO for User
  */
-
+@SuppressWarnings("ALL")
 public class User {
-    public String mUserId;
-    public String mUserEmail;
-    public String mUserPassword;
-    public String mUserName;
-    public String mUserPhotoUrl;
-    public String mUserGender;
-    public String mUserBirthDate;
-    public String mUserCreationDate;
-    public boolean mUserPremium;
-    public boolean mUserAdmin;
+    private String mUserId;
+    private String mUserEmail;
+    private String mUserPassword;
+    private String mUserName;
+    private String mUserPhotoUrl;
+    private String mUserGender;
+    private String mUserBirthDate;
+    private String mUserCreationDate;
+    private boolean mUserPremium;
+    private boolean mUserAdmin;
 
     public User() {
     }

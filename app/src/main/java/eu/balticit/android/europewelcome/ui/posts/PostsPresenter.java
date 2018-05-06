@@ -15,20 +15,12 @@
 
 package eu.balticit.android.europewelcome.ui.posts;
 
-import android.support.annotation.NonNull;
-import android.util.Log;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentSnapshot;
-
+import eu.balticit.android.europewelcome.R;
 import eu.balticit.android.europewelcome.data.DataManager;
 import eu.balticit.android.europewelcome.data.firebase.model.User;
 import eu.balticit.android.europewelcome.ui.base.BasePresenter;
 
 import javax.inject.Inject;
-
-import eu.balticit.android.europewelcome.data.DataManager;
 
 /**
  * Posts Presenter
@@ -37,6 +29,7 @@ import eu.balticit.android.europewelcome.data.DataManager;
 public class PostsPresenter<V extends PostsMvpView> extends BasePresenter<V>
         implements PostsMvpPresenter<V> {
 
+    @SuppressWarnings("unused")
     private static final String TAG = "PostsPresenter";
 
     @Inject
@@ -87,19 +80,25 @@ public class PostsPresenter<V extends PostsMvpView> extends BasePresenter<V>
         getMvpView().closeNavigationDrawer();
         getMvpView().showLoading();
         if (checkUserSigned()) {
-            getDataManager().getUser(getCurrentUserId()).addOnSuccessListener(documentSnapshot -> {
-                User user = documentSnapshot.toObject(User.class);
-                if (user.isUserPremium()) {
-                    getMvpView().hideLoading();
-                    getMvpView().openPremiumActivity();
-                } else {
-                    getMvpView().hideLoading();
-                    getMvpView().showBuyPremiumDialog();
-                }
-            }).addOnFailureListener(e -> {
-                getMvpView().hideLoading();
-                getMvpView().onError("Some error");
-            });
+            getDataManager().getUser(getCurrentUserId())
+                    .addOnSuccessListener(documentSnapshot -> {
+                        User user = documentSnapshot.toObject(User.class);
+                        if (user != null) {
+                            if (user.isUserPremium()) {
+                                getMvpView().hideLoading();
+                                getMvpView().openPremiumActivity();
+                            } else {
+                                getMvpView().hideLoading();
+                                getMvpView().showBuyPremiumDialog();
+                            }
+                        } else {
+                            getMvpView().hideLoading();
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        getMvpView().hideLoading();
+                        getMvpView().onError(R.string.posts_some_error);
+                    });
         } else {
             getMvpView().hideLoading();
             getMvpView().showBuyPremiumDialog();
@@ -143,9 +142,6 @@ public class PostsPresenter<V extends PostsMvpView> extends BasePresenter<V>
     @Override
     public void onViewInitialized() {
         //get all posts here
-        Log.d(TAG, "UserName:" + getDataManager().getCurrentUserName());
-        Log.d(TAG, "UserEmail:" + getDataManager().getCurrentUserEmail());
-        Log.d(TAG, "UserPicUrl:" + getDataManager().getCurrentUserProfilePicUrl());
     }
 
     @Override
@@ -172,7 +168,7 @@ public class PostsPresenter<V extends PostsMvpView> extends BasePresenter<V>
             }
         } else {
             getMvpView().updateUserName("EuropeWelcome");
-            getMvpView().updateUserEmail("I am the way and the truth and the life");
+            getMvpView().updateUserEmail("Your way to Europe");
             getMvpView().setDefaultUserImage();
         }
 
@@ -188,22 +184,28 @@ public class PostsPresenter<V extends PostsMvpView> extends BasePresenter<V>
     public void checkUserHasPremium(int tabPosition) {
         getMvpView().showLoading();
         if (checkUserSigned()) {
-            getDataManager().getUser(getCurrentUserId()).addOnSuccessListener(documentSnapshot -> {
-                User user = documentSnapshot.toObject(User.class);
-                if (user.isUserPremium()) {
-                    getMvpView().hideLoading();
-                    getMvpView().showPremiumTab(tabPosition);
-                    getMvpView().enablePagerScroll();
-                } else {
-                    getMvpView().hideLoading();
-                    getMvpView().reselectTab(tabPosition - 1);
-                    getMvpView().showBuyPremiumDialog();
-                }
-            }).addOnFailureListener(e -> {
-                getMvpView().hideLoading();
-                getMvpView().reselectTab(tabPosition - 1);
-                getMvpView().onError("Some error");
-            });
+            getDataManager().getUser(getCurrentUserId())
+                    .addOnSuccessListener(documentSnapshot -> {
+                        User user = documentSnapshot.toObject(User.class);
+                        if (user != null) {
+                            if (user.isUserPremium()) {
+                                getMvpView().hideLoading();
+                                getMvpView().showPremiumTab(tabPosition);
+                                getMvpView().enablePagerScroll();
+                            } else {
+                                getMvpView().hideLoading();
+                                getMvpView().reselectTab(tabPosition - 1);
+                                getMvpView().showBuyPremiumDialog();
+                            }
+                        } else {
+                            getMvpView().hideLoading();
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        getMvpView().hideLoading();
+                        getMvpView().reselectTab(tabPosition - 1);
+                        getMvpView().onError(R.string.posts_some_error);
+                    });
         } else {
             getMvpView().hideLoading();
             getMvpView().reselectTab(tabPosition - 1);
@@ -224,19 +226,19 @@ public class PostsPresenter<V extends PostsMvpView> extends BasePresenter<V>
                                     getMvpView().hideLoading();
                                     getMvpView().showPremiumTab(1);
                                     getMvpView().enablePagerScroll();
-                                    getMvpView().showMessage("Thank you for upgrading to premium!");
+                                    getMvpView().showMessage(R.string.posts_thanks_for_premium);
                                 })
                                 .addOnFailureListener(e -> {
                                     getMvpView().hideLoading();
-                                    getMvpView().onError("Some error");
+                                    getMvpView().onError(R.string.posts_some_error);
                                 });
-                    }else{
+                    } else {
                         getMvpView().hideLoading();
                     }
                 })
                 .addOnFailureListener(e -> {
                     getMvpView().hideLoading();
-                    getMvpView().onError("Some error");
+                    getMvpView().onError(R.string.posts_some_error);
                 });
     }
 

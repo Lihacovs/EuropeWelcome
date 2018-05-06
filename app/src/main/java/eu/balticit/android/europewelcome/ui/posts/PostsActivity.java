@@ -16,7 +16,6 @@
 package eu.balticit.android.europewelcome.ui.posts;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
@@ -30,7 +29,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -52,7 +50,6 @@ import eu.balticit.android.europewelcome.ui.custom.CustomViewPager;
 import eu.balticit.android.europewelcome.ui.drafts.DraftsActivity;
 import eu.balticit.android.europewelcome.ui.newpost.NewPostActivity;
 import eu.balticit.android.europewelcome.ui.posts.buypremium.BuyPremiumDialog;
-import eu.balticit.android.europewelcome.ui.posts.freeposts.FreePostsFragment;
 import eu.balticit.android.europewelcome.ui.posts.rating.RateUsDialog;
 import eu.balticit.android.europewelcome.ui.premium.PremiumActivity;
 import eu.balticit.android.europewelcome.ui.profile.ProfileActivity;
@@ -60,8 +57,6 @@ import eu.balticit.android.europewelcome.ui.profile.ProfileActivity;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import javax.inject.Inject;
@@ -114,8 +109,6 @@ public class PostsActivity extends BaseActivity implements PostsMvpView, BuyPrem
 
     private ImageView mUserImageIv;
 
-    private ActionBarDrawerToggle mDrawerToggle;
-
     private IabHelper mHelper;
     private static final String mPremiumProductSKU = "europe_welcome_premium_1";
     // Does the user have the premium upgrade?
@@ -159,7 +152,7 @@ public class PostsActivity extends BaseActivity implements PostsMvpView, BuyPrem
         mHelper.startSetup(result -> {
             if (!result.isSuccess()) {
                 // Oh no, there was a problem.
-                onError("Some error occurred. Please try again");
+                onError(R.string.posts_some_error);
                 Log.d(TAG, "Problem setting up In-app Billing: " + result);
                 return;
             }
@@ -209,7 +202,7 @@ public class PostsActivity extends BaseActivity implements PostsMvpView, BuyPrem
 
             // Do we have the premium upgrade?
             Purchase premiumPurchase = inventory.getPurchase(mPremiumProductSKU);
-            if(premiumPurchase != null && verifyDeveloperPayload(premiumPurchase)){
+            if (premiumPurchase != null && verifyDeveloperPayload(premiumPurchase)) {
                 try {
                     mHelper.consumeAsync(premiumPurchase, mConsumeFinishedListener);
                 } catch (IabHelper.IabAsyncInProgressException e) {
@@ -252,7 +245,7 @@ public class PostsActivity extends BaseActivity implements PostsMvpView, BuyPrem
                 return;
             }
             if (!verifyDeveloperPayload(purchase)) {
-                onError("Some error occurred. Please try again");
+                onError(R.string.posts_verification_failed);
                 Log.d(TAG, "onIabPurchaseFinished: Error purchasing. Authenticity verification failed.");
                 return;
             }
@@ -262,9 +255,8 @@ public class PostsActivity extends BaseActivity implements PostsMvpView, BuyPrem
             if (purchase.getSku().equals(mPremiumProductSKU)) {
                 // bought the premium upgrade!
                 Log.d(TAG, "Purchase is premium upgrade. Congratulating user.");
-                mPresenter.makeUserPremium();
 
-                //showMessage("Thank you for upgrading to premium!");
+                mPresenter.makeUserPremium();
 
                 try {
                     mHelper.consumeAsync(purchase, mConsumeFinishedListener);
@@ -359,6 +351,7 @@ public class PostsActivity extends BaseActivity implements PostsMvpView, BuyPrem
     public interface Callback {
         void onFilterPostsByStarsClick();
 
+        @SuppressWarnings("unused")
         void onFilterPostsByViewsClick();
 
         void onFilterPostsByDateClick();
@@ -566,7 +559,7 @@ public class PostsActivity extends BaseActivity implements PostsMvpView, BuyPrem
         setSupportActionBar(mToolbar);
 
         //Navigation drawer
-        mDrawerToggle = new ActionBarDrawerToggle(
+        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(
                 this,
                 mDrawer,
                 mToolbar,
@@ -583,8 +576,8 @@ public class PostsActivity extends BaseActivity implements PostsMvpView, BuyPrem
                 super.onDrawerClosed(drawerView);
             }
         };
-        mDrawer.addDrawerListener(mDrawerToggle);
-        mDrawerToggle.syncState();
+        mDrawer.addDrawerListener(drawerToggle);
+        drawerToggle.syncState();
         setupNavMenu();
         //mPresenter.onNavMenuCreated();
 
@@ -593,8 +586,8 @@ public class PostsActivity extends BaseActivity implements PostsMvpView, BuyPrem
 
         mViewPager.setAdapter(mPagerAdapter);
 
-        mTabLayout.addTab(mTabLayout.newTab().setText("Free"));
-        mTabLayout.addTab(mTabLayout.newTab().setText("Premium"));
+        mTabLayout.addTab(mTabLayout.newTab().setText(R.string.posts_free_posts));
+        mTabLayout.addTab(mTabLayout.newTab().setText(R.string.posts_premium_posts));
         mViewPager.setOffscreenPageLimit(mTabLayout.getTabCount());
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
@@ -627,13 +620,10 @@ public class PostsActivity extends BaseActivity implements PostsMvpView, BuyPrem
 
         //Long click for Admin to see not accepted posts
         LinearLayout tabStrip = (LinearLayout) mTabLayout.getChildAt(0);
-        tabStrip.getChildAt(0).setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if (mCallback != null)
-                    mCallback.onTabLongClick();
-                return false;
-            }
+        tabStrip.getChildAt(0).setOnLongClickListener(v -> {
+            if (mCallback != null)
+                mCallback.onTabLongClick();
+            return false;
         });
 
 

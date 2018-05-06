@@ -36,7 +36,6 @@ import eu.balticit.android.europewelcome.data.firebase.model.User;
  * Interface decouples any specific implementation of the {@link AppFirebaseHelper}
  * and hence makes it as plug and play unit
  */
-
 public interface FirebaseHelper {
 
     //=//=// F I R E B A S E  -  A U T H E N T I C A T I O N //=//=//

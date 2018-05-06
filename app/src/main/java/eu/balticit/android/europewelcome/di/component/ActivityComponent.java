@@ -23,7 +23,6 @@ import eu.balticit.android.europewelcome.ui.auth.LoginActivity;
 import eu.balticit.android.europewelcome.ui.auth.register.RegisterFragment;
 import eu.balticit.android.europewelcome.ui.bookmarks.BookmarksActivity;
 import eu.balticit.android.europewelcome.ui.drafts.DraftsActivity;
-import eu.balticit.android.europewelcome.ui.intro.IntroActivity;
 import eu.balticit.android.europewelcome.ui.newpost.NewPostActivity;
 import eu.balticit.android.europewelcome.ui.postdetail.PostDetailActivity;
 import eu.balticit.android.europewelcome.ui.posts.PostsActivity;

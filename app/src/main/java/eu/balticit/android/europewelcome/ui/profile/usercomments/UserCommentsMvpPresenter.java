@@ -16,6 +16,7 @@
 package eu.balticit.android.europewelcome.ui.profile.usercomments;
 
 import eu.balticit.android.europewelcome.ui.base.MvpPresenter;
+
 import com.google.firebase.firestore.Query;
 
 public interface UserCommentsMvpPresenter<V extends UserCommentsMvpView>

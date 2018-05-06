@@ -20,25 +20,25 @@ import java.util.UUID;
 /**
  * POJO for Post
  */
-
+@SuppressWarnings("ALL")
 public class Post {
 
-    public String mPostId;
-    public String mPostAuthorId;
-    public String mPostAuthorName;
-    public String mPostAuthorImageUrl;
-    public String mPostTitle;
-    public String mPostText;
-    public int mPostStars;
-    public int mPostWatches;
-    public int mPostComments;
-    public int mPostCreationTimestamp;
-    public String mPostImageUrl;
-    public String mPostCreationDate;
-    public boolean mPostAsDraft;
-    public boolean mPostPublished;
-    public boolean mPostAccepted;
-    public boolean mPostPremium;
+    private String mPostId;
+    private String mPostAuthorId;
+    private String mPostAuthorName;
+    private String mPostAuthorImageUrl;
+    private String mPostTitle;
+    private String mPostText;
+    private int mPostStars;
+    private int mPostWatches;
+    private int mPostComments;
+    private int mPostCreationTimestamp;
+    private String mPostImageUrl;
+    private String mPostCreationDate;
+    private boolean mPostAsDraft;
+    private boolean mPostPublished;
+    private boolean mPostAccepted;
+    private boolean mPostPremium;
 
 
     public Post() {
@@ -141,16 +141,16 @@ public class Post {
         mPostWatches = postWatches;
     }
 
-    public int getPostCreationTimestamp() {
-        return mPostCreationTimestamp;
-    }
-
     public int getPostComments() {
         return mPostComments;
     }
 
     public void setPostComments(int postComments) {
         mPostComments = postComments;
+    }
+
+    public int getPostCreationTimestamp() {
+        return mPostCreationTimestamp;
     }
 
     public void setPostCreationTimestamp(int postCreationTimestamp) {

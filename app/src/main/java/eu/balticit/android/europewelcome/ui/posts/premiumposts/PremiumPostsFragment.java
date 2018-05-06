@@ -46,6 +46,7 @@ import eu.balticit.android.europewelcome.ui.posts.PostsActivity;
 public class PremiumPostsFragment extends BaseFragment implements
         PremiumPostsMvpView, PremiumPostsAdapter.Callback, PostsActivity.Callback {
 
+    @SuppressWarnings("unused")
     private static final String TAG = "PremiumPostsFragment";
 
     @Inject

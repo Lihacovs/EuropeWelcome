@@ -24,22 +24,21 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.Task;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
-import eu.balticit.android.europewelcome.BuildConfig;
 import eu.balticit.android.europewelcome.R;
 import eu.balticit.android.europewelcome.di.ApplicationContext;
-import eu.balticit.android.europewelcome.utils.AppConstants;
 
 /**
  * Created by BIT on 12/26/2017.
  */
-
+@Singleton
 public class AppNetworkHelper implements NetworkHelper {
 
     private GoogleSignInClient mGoogleSignInClient;
 
     @Inject
-    public AppNetworkHelper(@ApplicationContext Context context) {
+    AppNetworkHelper(@ApplicationContext Context context) {
 
         //Creates GoogleSignInClient once per app run
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

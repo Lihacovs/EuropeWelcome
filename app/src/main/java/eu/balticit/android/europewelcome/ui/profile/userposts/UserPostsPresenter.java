@@ -17,11 +17,10 @@ package eu.balticit.android.europewelcome.ui.profile.userposts;
 
 import eu.balticit.android.europewelcome.data.DataManager;
 import eu.balticit.android.europewelcome.ui.base.BasePresenter;
+
 import com.google.firebase.firestore.Query;
 
 import javax.inject.Inject;
-
-import eu.balticit.android.europewelcome.data.DataManager;
 
 public class UserPostsPresenter<V extends UserPostsMvpView> extends BasePresenter<V>
         implements UserPostsMvpPresenter<V> {
@@ -33,6 +32,6 @@ public class UserPostsPresenter<V extends UserPostsMvpView> extends BasePresente
 
     @Override
     public Query getUserPostsQuery(String userId) {
-            return getDataManager().getUserPostsQuery(userId);
+        return getDataManager().getUserPostsQuery(userId);
     }
 }

@@ -16,6 +16,7 @@
 package eu.balticit.android.europewelcome.ui.profile.userposts;
 
 import eu.balticit.android.europewelcome.ui.base.MvpPresenter;
+
 import com.google.firebase.firestore.Query;
 
 public interface UserPostsMvpPresenter<V extends UserPostsMvpView>

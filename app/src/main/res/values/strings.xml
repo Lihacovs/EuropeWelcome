@@ -19,9 +19,16 @@
     <string name="app_creator" translatable="false">Created by: Baltic Information Technologies for EuropeWelcome app</string>
     <string name="app_version" translatable="false">(Version code)</string>
 
+
     <!--Facebook login-->
     <string name="facebook_app_id">1997719713823775</string>
     <string name="fb_login_protocol_scheme">fb1997719713823775</string>
+
+
+    <!--ui.about.About-->
+    <string name="email_subject">Suggestion to improve App</string>
+    <string name="email_body">Enter your message here</string>
+    <string name="email_chooser_title">Send Email</string>
 
     <!--ui.auth.Login-->
     <string name="login_empty_email">Please enter your Email</string>
@@ -49,14 +56,6 @@
     <string name="register_try_again">Please try again</string>
     <string name="register_some_error">Some error occurred. Try again</string>
 
-    <!--ui.newpost.NewPost-->
-    <string name="newpost_save_to_draft">Save Post to Draft?</string>
-    <string name="newpost_save">Save</string>
-    <string name="newpost_delete">Delete</string>
-    <string name="newpost_add_title">Please enter Post Title</string>
-    <string name="newpost_add_text">Please add Text</string>
-    <string name="newpost_add_image">Please add Image</string>
-
     <!--ui.bookmarks.Bookmarks-->
     <string name="bookmarks_remove_bookmark">Are you sure to remove Bookmark?</string>
     <string name="bookmarks_remove_all_bookmarks">Are you sure to remove all Bookmarks?</string>
@@ -73,16 +72,13 @@
     <string name="drafts_deleted">Draft deleted</string>
     <string name="drafts_some_error">Some error occurred. Try again</string>
 
-    <!--ui.posts.free.FreePosts-->
-    <string name="free_posts_some_error">Some error occurred. Try again</string>
-    <string name="free_posts_login_to_rate">Please login to rate Post</string>
-    <string name="free_posts_login_to_bookmark">Please login to bookmark Post</string>
-    <string name="free_posts_bookmark_saved">Bookmark saved</string>
-    <string name="free_posts_bookmark_removed">Bookmark removed</string>
-
-    <!--ui.posts.rating.RateUs-->
-    <string name="rating_not_provided_error">Please provide us stars</string>
-    <string name="rating_thanks">Thank you for your feedback</string>
+    <!--ui.newpost.NewPost-->
+    <string name="newpost_save_to_draft">Save Post to Draft?</string>
+    <string name="newpost_save">Save</string>
+    <string name="newpost_delete">Delete</string>
+    <string name="newpost_add_title">Please enter Post Title</string>
+    <string name="newpost_add_text">Please add Text</string>
+    <string name="newpost_add_image">Please add Image</string>
 
     <!--ui.postdetail.PostDetail-->
     <string name="post_detail_some_error">Some error occurred. Try again</string>
@@ -96,15 +92,34 @@
     <string name="post_detail_login_to_comment">Please login to comment Post</string>
     <string name="post_detail_login_to_like_comment">Please login to like Comment</string>
 
+    <!--ui.posts.Posts-->
+    <string name="posts_free_posts">Posts</string>
+    <string name="posts_premium_posts">Premium</string>
+    <string name="posts_some_error">Some error occurred. Try again</string>
+    <string name="posts_verification_failed">Error purchasing. Authenticity verification failed.</string>
+    <string name="posts_thanks_for_premium">Thank you for upgrading to premium!</string>
+
+    <!--ui.posts.free.FreePosts-->
+    <!--ui.posts.free.PremiumPosts-->
+    <string name="free_posts_some_error">Some error occurred. Try again</string>
+    <string name="free_posts_login_to_rate">Please login to rate Post</string>
+    <string name="free_posts_login_to_bookmark">Please login to bookmark Post</string>
+    <string name="free_posts_bookmark_saved">Bookmark saved</string>
+    <string name="free_posts_bookmark_removed">Bookmark removed</string>
+
+    <!--ui.posts.rating.RateUs-->
+    <string name="rating_not_provided_error">Please provide us stars</string>
+    <string name="rating_thanks">Thank you for your feedback</string>
+
+    <!--ui.premium.Premium-->
+    <string name="premium_email_subject">Message to EuropeWelcome Assistance stuff</string>
+
     <!--ui.profile.Profile-->
     <string name="profile_user_posts">User Posts</string>
     <string name="profile_user_comments">User Comments</string>
     <string name="profile_some_error">Some error occurred. Try again</string>
 
-    <!--ui.about.About-->
-    <string name="email_subject">Suggestion to improve App</string>
-    <string name="email_body">Enter your message here</string>
-    <string name="email_chooser_title">Send Email</string>
+
 
 
 
@@ -303,16 +318,12 @@
     <string name="open_drawer">Drawer Open</string>
     <string name="close_drawer">Drawer Close</string>
 
-
     <!--App Message-->
     <string name="api_retry_error">Please retry!</string>
     <string name="api_default_error">Something wrong happened!</string>
     <string name="some_error">Some Error Occurred!</string>
     <string name="action_canceled">Action canceled!</string>
     <string name="connection_error">Internet connection lost!</string>
-
-    <!--about fragment-->
-    <string name="version">"version"</string>
 
     <!--play store-->
     <string name="app_google_play_store_link">"https://play.google.com/store/apps/details?id="</string>
@@ -321,16 +332,6 @@
     <!--button-->
     <string name="later">Later</string>
     <string name="submit">Submit</string>
-
-    <!--feed-->
-    <string name="title">My Feed</string>
-    <string name="open_source">Open Source</string>
-    <string name="blog">Blog</string>
-
-    <!--empty state-->
-    <string name="empty_screen">We do not have anything\nhere right now.</string>
-    <string name="please_retry">Please Retry</string>
-    <string name="retry">Retry</string>
 
     <!--Add Image-->
     <string name="rational_image_perm">This sample will read an image from local storage to upload to Cloud Storage.</string>

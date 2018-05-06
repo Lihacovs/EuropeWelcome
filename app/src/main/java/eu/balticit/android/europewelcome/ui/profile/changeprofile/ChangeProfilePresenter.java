@@ -31,6 +31,7 @@ import javax.inject.Inject;
 public class ChangeProfilePresenter<V extends ChangeProfileMvpView> extends BasePresenter<V>
         implements ChangeProfileMvpPresenter<V> {
 
+    @SuppressWarnings("unused")
     private static final String TAG = "ChangeProfilePresenter";
 
     private String mPhotoUrl;
@@ -65,7 +66,8 @@ public class ChangeProfilePresenter<V extends ChangeProfileMvpView> extends Base
                             getMvpView().loadUserPhoto(downloadUrl);
                         }
                     }
-                }).removeOnFailureListener(e -> getMvpView().onError(R.string.register_upload_error));
+                })
+                .removeOnFailureListener(e -> getMvpView().onError(R.string.register_upload_error));
     }
 
     @Override
@@ -86,34 +88,36 @@ public class ChangeProfilePresenter<V extends ChangeProfileMvpView> extends Base
         getDataManager().getUser(getDataManager().getCurrentUserId())
                 .addOnSuccessListener(documentSnapshot -> {
                     User user = documentSnapshot.toObject(User.class);
+                    if (user != null) {
+                        if (photoUrl != null) {
+                            user.setUserPhotoUrl(photoUrl);
+                        }
+                        user.setUserGender(gender);
+                        user.setUserBirthDate(birthDate);
+                        getDataManager().updateUser(user)
+                                .addOnSuccessListener(aVoid -> {
 
-                    if (photoUrl != null) {
-                        user.setUserPhotoUrl(photoUrl);
+                                    //2.3. Updates Firebase Auth, And SharedPrefs
+                                    if (photoUrl != null) {
+                                        getDataManager().setFirebaseUserImageUrl(photoUrl);
+                                        getDataManager().setCurrentUserProfilePicUrl(photoUrl);
+                                    }
+                                    getDataManager().setCurrentUserGender(gender);
+                                    getDataManager().setCurrentUserBirthDate(birthDate);
+
+                                    getMvpView().hideLoading();
+
+                                    getMvpView().detachFragment();
+
+                                }).addOnFailureListener(e -> {
+                            getMvpView().hideLoading();
+                            getMvpView().onError(R.string.profile_some_error);
+                        });
                     }
-                    user.setUserGender(gender);
-                    user.setUserBirthDate(birthDate);
-                    getDataManager().updateUser(user)
-                            .addOnSuccessListener(aVoid -> {
-
-                                //2.3. Updates Firebase Auth, And SharedPrefs
-                                if (photoUrl != null) {
-                                    getDataManager().setFirebaseUserImageUrl(photoUrl);
-                                    getDataManager().setCurrentUserProfilePicUrl(photoUrl);
-                                }
-                                getDataManager().setCurrentUserGender(gender);
-                                getDataManager().setCurrentUserBirthDate(birthDate);
-
-                                getMvpView().hideLoading();
-
-                                getMvpView().detachFragment();
-
-                            }).addOnFailureListener(e -> {
-                        getMvpView().hideLoading();
-                        getMvpView().onError(R.string.profile_some_error);
-                    });
-                }).addOnFailureListener(e -> {
-            getMvpView().hideLoading();
-            getMvpView().onError(R.string.profile_some_error);
-        });
+                })
+                .addOnFailureListener(e -> {
+                    getMvpView().hideLoading();
+                    getMvpView().onError(R.string.profile_some_error);
+                });
     }
 }

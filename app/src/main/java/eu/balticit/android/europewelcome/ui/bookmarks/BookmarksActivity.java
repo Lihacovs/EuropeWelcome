@@ -35,6 +35,7 @@ import eu.balticit.android.europewelcome.ui.about.AboutFragment;
 import eu.balticit.android.europewelcome.ui.base.BaseActivity;
 import eu.balticit.android.europewelcome.ui.postdetail.PostDetailActivity;
 import eu.balticit.android.europewelcome.ui.posts.freeposts.FreePostsAdapter;
+
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
 import javax.inject.Inject;
@@ -50,6 +51,7 @@ import butterknife.ButterKnife;
  */
 public class BookmarksActivity extends BaseActivity implements BookmarksMvpView, BookmarksAdapter.Callback {
 
+    @SuppressWarnings("unused")
     private static final String TAG = "BookmarksActivity";
 
     @Inject
@@ -216,7 +218,7 @@ public class BookmarksActivity extends BaseActivity implements BookmarksMvpView,
         startActivity(PostDetailActivity.getStartIntent(this, post.getPostId()));
     }
 
-    private void deleteAllBookmarks(){
+    private void deleteAllBookmarks() {
         showYesNoDialog(getString(R.string.bookmarks_remove_all_bookmarks),
                 getString(R.string.bookmarks_remove),
                 getString(R.string.bookmarks_cancel),

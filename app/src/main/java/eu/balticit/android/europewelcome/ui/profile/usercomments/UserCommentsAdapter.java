@@ -34,11 +34,10 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import eu.balticit.android.europewelcome.data.firebase.model.PostComment;
-import eu.balticit.android.europewelcome.ui.base.BaseViewHolder;
 
 public class UserCommentsAdapter extends FirestoreRecyclerAdapter<PostComment, UserCommentsAdapter.ViewHolder> {
 
+    @SuppressWarnings("unused")
     private static final String TAG = "UserCommentsAdapter";
 
     private Callback mCallback;

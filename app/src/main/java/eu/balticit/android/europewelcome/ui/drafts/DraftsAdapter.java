@@ -16,7 +16,6 @@
 package eu.balticit.android.europewelcome.ui.drafts;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +39,7 @@ import butterknife.OnClick;
  */
 public class DraftsAdapter extends FirestoreRecyclerAdapter<Post, DraftsAdapter.DraftViewHolder> {
 
+    @SuppressWarnings("unused")
     private static final String TAG = "DraftsAdapter";
 
     private DraftsAdapter.Callback mCallback;
@@ -71,7 +71,6 @@ public class DraftsAdapter extends FirestoreRecyclerAdapter<Post, DraftsAdapter.
     @Override
     public void onError(@NonNull FirebaseFirestoreException e) {
         super.onError(e);
-        Log.d(TAG, "onError: " + e);
     }
 
     @Override
@@ -83,7 +82,6 @@ public class DraftsAdapter extends FirestoreRecyclerAdapter<Post, DraftsAdapter.
     @NonNull
     @Override
     public DraftViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.d(TAG, "onCreateViewHolder: ");
         return new DraftViewHolder(LayoutInflater.from(parent.getContext()).inflate
                 (R.layout.item_draft, parent, false));
     }

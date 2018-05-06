@@ -35,12 +35,6 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import eu.balticit.android.europewelcome.data.DataManager;
-import eu.balticit.android.europewelcome.data.network.AppNetworkHelper;
-import eu.balticit.android.europewelcome.data.network.NetworkHelper;
-import eu.balticit.android.europewelcome.data.prefs.AppPreferencesHelper;
-import eu.balticit.android.europewelcome.data.prefs.PreferencesHelper;
-import eu.balticit.android.europewelcome.utils.AppConstants;
 
 /**
  * Provides dependencies expressed in the {@link eu.balticit.android.europewelcome.MyApp}
@@ -102,6 +96,7 @@ public class ApplicationModule {
         return appNetworkHelper;
     }
 
+    //TODO: remove calligraphy from app completely
     /*@Provides
     @Singleton
     CalligraphyConfig provideCalligraphyDefaultConfig() {

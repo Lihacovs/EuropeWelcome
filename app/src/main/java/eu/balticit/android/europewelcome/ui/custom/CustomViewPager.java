@@ -15,6 +15,7 @@
 
 package eu.balticit.android.europewelcome.ui.custom;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -30,12 +31,13 @@ public class CustomViewPager extends ViewPager {
     }
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
-        return disable ? false : super.onInterceptTouchEvent(event);
+        return !disable && super.onInterceptTouchEvent(event);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        return disable ? false : super.onTouchEvent(event);
+        return !disable && super.onTouchEvent(event);
     }
 
     public void disableScroll(Boolean disable){

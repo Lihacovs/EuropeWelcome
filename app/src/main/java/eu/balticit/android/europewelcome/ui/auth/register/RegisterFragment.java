@@ -26,17 +26,16 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
-import android.widget.TextView;
 
 import eu.balticit.android.europewelcome.R;
 import eu.balticit.android.europewelcome.di.component.ActivityComponent;
 import eu.balticit.android.europewelcome.di.module.GlideApp;
 import eu.balticit.android.europewelcome.ui.base.BaseFragment;
 import eu.balticit.android.europewelcome.ui.posts.PostsActivity;
+
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 
@@ -49,8 +48,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import eu.balticit.android.europewelcome.ui.base.BaseFragment;
-import eu.balticit.android.europewelcome.ui.posts.PostsActivity;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -120,26 +117,14 @@ public class RegisterFragment extends BaseFragment implements RegisterMvpView {
 
     @Override
     protected void setUp(View view) {
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
 
         myCalendar = Calendar.getInstance();
 
-        date = new DatePickerDialog.OnDateSetListener() {
-
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                  int dayOfMonth) {
-                myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH, monthOfYear);
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                updateLabel();
-            }
-
+        date = (view1, year, monthOfYear, dayOfMonth) -> {
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, monthOfYear);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateLabel();
         };
     }
 
@@ -149,7 +134,7 @@ public class RegisterFragment extends BaseFragment implements RegisterMvpView {
     }
 
     @OnClick(R.id.tv_register_terms)
-    void onTermsTvClick(){
+    void onTermsTvClick() {
         getBaseActivity().showAboutFragment();
     }
 

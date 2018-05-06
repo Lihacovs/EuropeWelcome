@@ -44,6 +44,7 @@ public class CustomImageView extends AppCompatImageView {
     }
 
     // How far right or down should we place the upper-left corner of the cropbox? [0, 1]
+    @SuppressWarnings("unused")
     public void setOffset(float widthPercent, float heightPercent) {
         mWidthPercent = widthPercent;
         mHeightPercent = heightPercent;

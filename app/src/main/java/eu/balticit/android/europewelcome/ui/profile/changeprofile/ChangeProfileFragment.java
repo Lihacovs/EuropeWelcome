@@ -28,7 +28,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -39,6 +38,7 @@ import eu.balticit.android.europewelcome.di.component.ActivityComponent;
 import eu.balticit.android.europewelcome.di.module.GlideApp;
 import eu.balticit.android.europewelcome.ui.base.BaseFragment;
 import eu.balticit.android.europewelcome.ui.profile.ProfileActivity;
+
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 
@@ -127,17 +127,11 @@ public class ChangeProfileFragment extends BaseFragment implements ChangeProfile
 
         myCalendar = Calendar.getInstance();
 
-        date = new DatePickerDialog.OnDateSetListener() {
-
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                  int dayOfMonth) {
-                myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH, monthOfYear);
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                updateLabel();
-            }
-
+        date = (view1, year, monthOfYear, dayOfMonth) -> {
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, monthOfYear);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateLabel();
         };
 
     }
@@ -240,7 +234,7 @@ public class ChangeProfileFragment extends BaseFragment implements ChangeProfile
     @Override
     public void detachFragment() {
         getBaseActivity().onFragmentDetached(TAG);
-        if(mCallback != null){
+        if (mCallback != null) {
             mCallback.updateUserData();
         }
     }

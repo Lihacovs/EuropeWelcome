@@ -34,8 +34,9 @@ import eu.balticit.android.europewelcome.R;
 import eu.balticit.android.europewelcome.ui.about.AboutFragment;
 import eu.balticit.android.europewelcome.ui.base.BaseActivity;
 
-public class PremiumActivity extends BaseActivity implements PremiumMvpView{
+public class PremiumActivity extends BaseActivity implements PremiumMvpView {
 
+    @SuppressWarnings("unused")
     private static final String TAG = "PremiumActivity";
 
     @Inject
@@ -140,18 +141,17 @@ public class PremiumActivity extends BaseActivity implements PremiumMvpView{
     }
 
     @OnClick(R.id.iv_premium_document)
-    void onApplyFormClick(){
+    void onApplyFormClick() {
         showMessage("In development");
     }
 
     //Opens email to send
     @OnClick(R.id.iv_premium_mail)
-    void onSendEmailClick(){
+    void onSendEmailClick() {
         Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
                 "mailto", getString(R.string.app_email), null));
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Message to EuropeWelcome Assistance stuff");
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.premium_email_subject));
         emailIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.email_body));
-        startActivity(Intent.createChooser(emailIntent,
-                getString(R.string.email_chooser_title)));
+        startActivity(Intent.createChooser(emailIntent, getString(R.string.email_chooser_title)));
     }
 }

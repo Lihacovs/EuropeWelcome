@@ -21,25 +21,16 @@ package eu.balticit.android.europewelcome.utils;
 
 public final class AppConstants {
 
-    public static final String STATUS_CODE_SUCCESS = "success";
-    public static final String STATUS_CODE_FAILED = "failed";
-
-    public static final int API_STATUS_CODE_LOCAL_ERROR = 0;
-
     public static final String DB_NAME = "europe_welcome.db";
     public static final String PREF_NAME = "europe_welcome_pref";
-
-    public static final long NULL_INDEX = -1L;
-
-    public static final String SEED_DATABASE_OPTIONS = "seed/options.json";
-    public static final String SEED_DATABASE_QUESTIONS = "seed/questions.json";
-
-    public static final String GOOGLE_WEB_CLIENT_ID_TOKEN
-            = "42826527257-8g2htcveu0n8iebroi1hqj3e8cuonlf0.apps.googleusercontent.com";
 
     public static final String TIMESTAMP_FORMAT = "yyyyMMdd_HHmmss";
     public static final String DATE_FORMAT = "d MMM yyyy";
 
+    /**
+     * Constants for data collections in firestore database. used in
+     * {@link eu.balticit.android.europewelcome.data.firebase.FirebaseHelper}
+     */
     public static final String POSTS_COLLECTION = "posts";
     public static final String BOOKMARKS_COLLECTION = "bookmarks";
     public static final String STARS_COLLECTION = "stars";

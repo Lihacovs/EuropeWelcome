@@ -25,9 +25,6 @@ import eu.balticit.android.europewelcome.utils.CommonUtils;
 
 import javax.inject.Inject;
 
-import eu.balticit.android.europewelcome.data.DataManager;
-import eu.balticit.android.europewelcome.data.firebase.model.Rating;
-
 /**
  * Rating dialog presenter
  */
@@ -105,7 +102,7 @@ public class RatingDialogPresenter<V extends RatingDialogMvpView> extends BasePr
     }
 
     @NonNull
-    private Rating newRating(float rating, String message){
+    private Rating newRating(float rating, String message) {
         return new Rating(getDataManager().getCurrentUserId(),
                 getDataManager().getCurrentUserName(),
                 getDataManager().getCurrentUserEmail(),

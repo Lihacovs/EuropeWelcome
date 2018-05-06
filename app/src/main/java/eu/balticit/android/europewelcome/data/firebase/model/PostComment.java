@@ -20,16 +20,17 @@ import java.util.UUID;
 /**
  * Post Comment POJO
  */
+@SuppressWarnings("ALL")
 public class PostComment {
-    public String mPostCommentId;
-    public String mPostCommentPostId;
-    public String mPostCommentUserId;
-    public String mPostCommentUserImageUrl;
-    public String mPostCommentUserName;
-    public String mPostCommentCreationDate;
-    public int mPostCommentTimestamp;
-    public String mPostCommentText;
-    public int mPostCommentStars;
+    private String mPostCommentId;
+    private String mPostCommentPostId;
+    private String mPostCommentUserId;
+    private String mPostCommentUserImageUrl;
+    private String mPostCommentUserName;
+    private String mPostCommentCreationDate;
+    private int mPostCommentTimestamp;
+    private String mPostCommentText;
+    private int mPostCommentStars;
 
     public PostComment() {
     }

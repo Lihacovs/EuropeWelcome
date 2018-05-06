@@ -33,9 +33,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.Objects;
 import java.util.UUID;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import eu.balticit.android.europewelcome.data.firebase.model.Post;
 import eu.balticit.android.europewelcome.data.firebase.model.PostComment;
@@ -47,7 +49,7 @@ import eu.balticit.android.europewelcome.utils.AppConstants;
 /**
  * Reads and writes the data from Firebase database.
  */
-
+@Singleton
 public class AppFirebaseHelper implements FirebaseHelper {
 
     private final FirebaseFirestore mFirestore;
@@ -90,23 +92,22 @@ public class AppFirebaseHelper implements FirebaseHelper {
 
     @Override
     public String getFirebaseUserId() {
-        return mAuth.getCurrentUser().getUid();
+        return Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
     }
 
     @Override
     public String getFirebaseUserName() {
-        return mAuth.getCurrentUser().getDisplayName();
+        return Objects.requireNonNull(mAuth.getCurrentUser()).getDisplayName();
     }
 
     @Override
     public String getFirebaseUserEmail() {
-        return mAuth.getCurrentUser().getEmail();
+        return Objects.requireNonNull(mAuth.getCurrentUser()).getEmail();
     }
 
-    //TODO: check lint's nullPointerExceptions
     @Override
     public String getFirebaseUserImageUrl() {
-        return mAuth.getCurrentUser().getPhotoUrl().toString();
+        return Objects.requireNonNull(Objects.requireNonNull(mAuth.getCurrentUser()).getPhotoUrl()).toString();
     }
 
     @Override
@@ -266,7 +267,7 @@ public class AppFirebaseHelper implements FirebaseHelper {
 
     @Override
     public Query getBookmarkedPostsQuery(String userId) {
-        return  mFirestore
+        return mFirestore
                 .collection(AppConstants.USERS_COLLECTION)
                 .document(userId)
                 .collection(AppConstants.BOOKMARKS_COLLECTION)

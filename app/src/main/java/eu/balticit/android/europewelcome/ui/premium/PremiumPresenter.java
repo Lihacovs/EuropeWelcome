@@ -23,6 +23,7 @@ import eu.balticit.android.europewelcome.ui.base.BasePresenter;
 public class PremiumPresenter<V extends PremiumMvpView> extends BasePresenter<V> implements
         PremiumMvpPresenter<V> {
 
+    @SuppressWarnings("unused")
     private static final String TAG = "PremiumPresenter";
 
     @Inject

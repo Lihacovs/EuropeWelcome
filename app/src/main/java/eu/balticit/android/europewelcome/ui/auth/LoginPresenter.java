@@ -16,17 +16,15 @@
 package eu.balticit.android.europewelcome.ui.auth;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
 
 import eu.balticit.android.europewelcome.R;
 import eu.balticit.android.europewelcome.data.DataManager;
 import eu.balticit.android.europewelcome.data.firebase.model.User;
 import eu.balticit.android.europewelcome.ui.base.BasePresenter;
 import eu.balticit.android.europewelcome.utils.CommonUtils;
+
 import com.facebook.AccessToken;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
@@ -36,11 +34,9 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentSnapshot;
 
-import javax.inject.Inject;
+import java.util.Objects;
 
-import eu.balticit.android.europewelcome.data.DataManager;
-import eu.balticit.android.europewelcome.data.firebase.model.User;
-import eu.balticit.android.europewelcome.ui.base.BasePresenter;
+import javax.inject.Inject;
 
 /**
  * Login Presenter.
@@ -54,6 +50,7 @@ import eu.balticit.android.europewelcome.ui.base.BasePresenter;
 public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
         implements LoginMvpPresenter<V> {
 
+    @SuppressWarnings("unused")
     private static final String TAG = "LoginPresenter";
 
     @Inject
@@ -99,7 +96,7 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
                                         getDataManager().getFirebaseUserName(),
                                         getDataManager().getFirebaseUserEmail(),
                                         getDataManager().getFirebaseUserImageUrl(),
-                                        user.getUserBirthDate(),
+                                        Objects.requireNonNull(user).getUserBirthDate(),
                                         user.getUserGender()
                                 );
 
@@ -107,33 +104,35 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
                                 getMvpView().hideLoading();
                                 getMvpView().openMainActivity();
 
-                            }).addOnFailureListener(e -> {
+                            })
+                            .addOnFailureListener(e -> {
+                                getMvpView().hideLoading();
                                 getMvpView().onError(R.string.login_some_error);
                             });
                 }).addOnFailureListener(e -> {
-                    if (!isViewAttached()) {
-                        return;
-                    }
-                    getMvpView().hideLoading();
-                    if (e instanceof FirebaseAuthInvalidUserException) {
-                        if (((FirebaseAuthInvalidUserException) e)
-                                .getErrorCode().equals("ERROR_USER_NOT_FOUND")) {
-                            getMvpView().onError(R.string.login_email_not_exist);
-                            return;
-                        }
-                        getMvpView().onError(e.getMessage());
-                        return;
-                    }
-                    if (e instanceof FirebaseAuthInvalidCredentialsException) {
-                        getMvpView().onError(R.string.login_invalid_password);
-                        return;
-                    }
-                    if (e instanceof FirebaseAuthUserCollisionException) {
-                        getMvpView().onError(R.string.login_email_already_used);
-                        return;
-                    }
-                    getMvpView().onError(R.string.login_some_error);
-                });
+            if (!isViewAttached()) {
+                return;
+            }
+            getMvpView().hideLoading();
+            if (e instanceof FirebaseAuthInvalidUserException) {
+                if (((FirebaseAuthInvalidUserException) e)
+                        .getErrorCode().equals("ERROR_USER_NOT_FOUND")) {
+                    getMvpView().onError(R.string.login_email_not_exist);
+                    return;
+                }
+                getMvpView().onError(e.getMessage());
+                return;
+            }
+            if (e instanceof FirebaseAuthInvalidCredentialsException) {
+                getMvpView().onError(R.string.login_invalid_password);
+                return;
+            }
+            if (e instanceof FirebaseAuthUserCollisionException) {
+                getMvpView().onError(R.string.login_email_already_used);
+                return;
+            }
+            getMvpView().onError(R.string.login_some_error);
+        });
     }
 
     @Override
@@ -156,16 +155,16 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
                     createNewFirestoreUser(authResult, DataManager.LoggedInMode.LOGGED_IN_MODE_GOOGLE);
 
                 }).addOnFailureListener(e -> {
-                    if (!isViewAttached()) {
-                        return;
-                    }
-                    getMvpView().hideLoading();
-                    if (e instanceof FirebaseAuthUserCollisionException) {
-                        getMvpView().onError(R.string.login_email_already_used);
-                        return;
-                    }
-                    getMvpView().onError(R.string.login_some_error);
-                });
+            if (!isViewAttached()) {
+                return;
+            }
+            getMvpView().hideLoading();
+            if (e instanceof FirebaseAuthUserCollisionException) {
+                getMvpView().onError(R.string.login_email_already_used);
+                return;
+            }
+            getMvpView().onError(R.string.login_some_error);
+        });
     }
 
     @Override
@@ -182,16 +181,16 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
                     createNewFirestoreUser(authResult, DataManager.LoggedInMode.LOGGED_IN_MODE_FB);
 
                 }).addOnFailureListener(e -> {
-                    if (!isViewAttached()) {
-                        return;
-                    }
-                    getMvpView().hideLoading();
-                    if (e instanceof FirebaseAuthUserCollisionException) {
-                        getMvpView().onError(R.string.login_email_already_used);
-                        return;
-                    }
-                    getMvpView().onError(R.string.login_some_error);
-                });
+            if (!isViewAttached()) {
+                return;
+            }
+            getMvpView().hideLoading();
+            if (e instanceof FirebaseAuthUserCollisionException) {
+                getMvpView().onError(R.string.login_email_already_used);
+                return;
+            }
+            getMvpView().onError(R.string.login_some_error);
+        });
     }
 
     @Override
@@ -217,19 +216,17 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
                                     false,
                                     false
                             );
-                            getDataManager().saveUser(newUser).addOnSuccessListener(aVoid -> {
-                                updateUserInfo(authResult, mode);
-                            }).addOnFailureListener(e -> {
-                                getMvpView().onError(R.string.login_some_error);
-                            });
-                        }else{
+                            getDataManager().saveUser(newUser)
+                                    .addOnSuccessListener(aVoid -> updateUserInfo(authResult, mode))
+                                    .addOnFailureListener(e -> getMvpView().onError(R.string.login_some_error));
+                        } else {
                             updateUserInfo(authResult, mode);
                         }
                     }
                 });
     }
 
-    private void updateUserInfo(AuthResult authResult, DataManager.LoggedInMode mode){
+    private void updateUserInfo(AuthResult authResult, DataManager.LoggedInMode mode) {
         getDataManager().getUser(authResult.getUser().getUid())
                 .addOnSuccessListener(documentSnapshot -> {
                     User user = documentSnapshot.toObject(User.class);
@@ -242,15 +239,17 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
                             getDataManager().getFirebaseUserName(),
                             getDataManager().getFirebaseUserEmail(),
                             getDataManager().getFirebaseUserImageUrl(),
-                            user.getUserBirthDate(),
+                            Objects.requireNonNull(user).getUserBirthDate(),
                             user.getUserGender()
                     );
 
                     getMvpView().hideLoading();
                     getMvpView().openMainActivity();
 
-                }).addOnFailureListener(e -> {
-            getMvpView().onError(R.string.login_some_error);
-        });
+                })
+                .addOnFailureListener(e -> {
+                    getMvpView().hideLoading();
+                    getMvpView().onError(R.string.login_some_error);
+                });
     }
 }
