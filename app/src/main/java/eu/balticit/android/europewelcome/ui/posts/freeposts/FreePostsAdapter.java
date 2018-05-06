@@ -241,7 +241,7 @@ public class FreePostsAdapter extends FirestoreRecyclerAdapter<Post, FreePostsAd
          */
         @Override
         public void removeBookmarkedIcon(ViewHolder holder) {
-            holder.mBookmarkIv.setImageResource(R.drawable.ic_border_bookmark_blue_24px);
+            holder.mBookmarkIv.setImageResource(R.drawable.ic_border_bookmark_gray_24px);
             holder.mBookmarkIv.setEnabled(true);
         }
 
@@ -251,7 +251,7 @@ public class FreePostsAdapter extends FirestoreRecyclerAdapter<Post, FreePostsAd
          */
         @Override
         public void setStarRatedIcon(ViewHolder holder) {
-            holder.mStarIv.setImageResource(R.drawable.ic_fill_star_blue_24px);
+            holder.mStarIv.setImageResource(R.drawable.ic_fill_star_gold_24px);
             holder.mPostStarsTv.setTextColor(itemView
                     .getContext().getResources().getColor(R.color.orange));
             holder.mStarContainerCl.setEnabled(true);
@@ -263,7 +263,7 @@ public class FreePostsAdapter extends FirestoreRecyclerAdapter<Post, FreePostsAd
          */
         @Override
         public void removeStarRatedIcon(ViewHolder holder) {
-            holder.mStarIv.setImageResource(R.drawable.ic_border_star_blue_24px);
+            holder.mStarIv.setImageResource(R.drawable.ic_border_star_gray_24px);
             holder.mPostStarsTv.setTextColor(itemView
                     .getContext().getResources().getColor(R.color.gray_500));
             holder.mStarContainerCl.setEnabled(true);

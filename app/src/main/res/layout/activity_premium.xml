@@ -103,11 +103,11 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginTop="8dp"
+                android:contentDescription="@string/activity_premium_document_icon"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_premium_text_one"
-                app:srcCompat="@drawable/ic_edit_document"
-                android:contentDescription="@string/activity_premium_document_icon" />
+                app:srcCompat="@drawable/ic_edit_document" />
 
             <TextView
                 android:id="@+id/tv_premium_text_two"
@@ -149,11 +149,11 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginTop="8dp"
+                android:contentDescription="@string/activity_premium_mail_icon"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_premium_text_three"
-                app:srcCompat="@drawable/ic_mail_outline"
-                android:contentDescription="@string/activity_premium_mail_icon" />
+                app:srcCompat="@drawable/ic_mail_outline" />
         </android.support.constraint.ConstraintLayout>
     </android.support.v4.widget.NestedScrollView>
 

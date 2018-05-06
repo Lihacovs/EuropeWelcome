@@ -36,7 +36,7 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:title="Bookmarks"
-            app:titleTextColor="@color/white"></android.support.v7.widget.Toolbar>
+            app:titleTextColor="@color/white" />
     </android.support.design.widget.AppBarLayout>
 
     <android.support.constraint.ConstraintLayout

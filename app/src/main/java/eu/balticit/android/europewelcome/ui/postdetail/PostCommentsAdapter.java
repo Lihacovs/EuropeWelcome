@@ -190,7 +190,7 @@ public class PostCommentsAdapter extends FirestoreRecyclerAdapter<PostComment, P
 
         @Override
         public void setCommentLikeIcon(ViewHolder holder) {
-            holder.mStarIv.setImageResource(R.drawable.ic_fill_star_blue_24px);
+            holder.mStarIv.setImageResource(R.drawable.ic_fill_star_gold_24px);
             holder.mPostStarsTv.setTextColor(itemView
                     .getContext().getResources().getColor(R.color.orange));
             holder.mStarContainerCl.setEnabled(true);
@@ -198,7 +198,7 @@ public class PostCommentsAdapter extends FirestoreRecyclerAdapter<PostComment, P
 
         @Override
         public void removeCommentLikeIcon(ViewHolder holder) {
-            holder.mStarIv.setImageResource(R.drawable.ic_border_star_blue_24px);
+            holder.mStarIv.setImageResource(R.drawable.ic_border_star_gray_24px);
             holder.mPostStarsTv.setTextColor(itemView
                     .getContext().getResources().getColor(R.color.gray_500));
             holder.mStarContainerCl.setEnabled(true);

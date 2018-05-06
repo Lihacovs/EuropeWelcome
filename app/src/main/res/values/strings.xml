@@ -19,10 +19,10 @@
     <string name="app_creator" translatable="false">Created by: Baltic Information Technologies for EuropeWelcome app</string>
     <string name="app_version" translatable="false">(Version code)</string>
 
-
     <!--Facebook login-->
     <string name="facebook_app_id">1997719713823775</string>
     <string name="fb_login_protocol_scheme">fb1997719713823775</string>
+
 
 
     <!--ui.about.About-->
@@ -121,15 +121,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
     <!--res.layout.activity_login-->
     <string name="activity_login_app_logo">EuropeWelcome</string>
     <string name="activity_login_email">Email</string>
@@ -186,6 +177,10 @@
     <string name="post_item_default_count">0</string>
     <string name="post_item_draft_edit">Edit Draft icon</string>
 
+    <!--res.layout.item_comment-->
+    <string name="comment_item_user_image">User image</string>
+    <string name="comment_item_star_icon">Star icon</string>
+
     <!--res.layout.activity_new_post-->
     <string name="activity_new_post_publish">Publish</string>
     <string name="activity_new_post_type_title">Type post title here</string>
@@ -202,6 +197,17 @@
     <string name="new_post_item_youtube_icon">Youtube icon</string>
     <string name="new_post_item_type_text">Type your text here</string>
     <string name="new_post_item_post_image">Post image</string>
+
+    <!--res.layout.dialog_buy_premium-->
+    <string name="dialog_buy_premium_title">Premium gives you:</string>
+    <string name="dialog_buy_premium_number_one_icon">Number one icon</string>
+    <string name="dialog_buy_premium_number_two_icon">Number two icon</string>
+    <string name="dialog_buy_premium_number_three_icon">Number three icon</string>
+    <string name="dialog_buy_premium_text_one">Access to premium posts</string>
+    <string name="dialog_buy_premium_text_two">Asylum seeker apply form</string>
+    <string name="dialog_buy_premium_text_three">Email personal assistance</string>
+    <string name="dialog_buy_premium_get_premium">Get Premium</string>
+    <string name="dialog_buy_premium_apply_terms">Proceeding you apply to Terms of Service</string>
 
     <!--res.layout.dialog_rate_us-->
     <string name="rating_rate_us">Rate Us</string>
@@ -304,19 +310,25 @@
     <string name="intro_layout_five_title">Equality and Freedom</string>
     <string name="intro_layout_five_text">Europe is open to everybody, no matter of religion, color or sex</string>
 
-
-
-
-
-
-
-
+    <!--res.menu-->
+    <string name="menu_delete_all_bookmarks">Delete All Bookmarks</string>
+    <string name="menu_delete_all_drafts">Delete All Drafts</string>
+    <string name="menu_about_app">About App</string>
+    <string name="menu_filter_by_stars">Filter by Stars</string>
+    <string name="menu_filter_by_comments">Filter by Comments</string>
+    <string name="menu_filter_by_date">Filter by Date</string>
+    <string name="menu_bookmark_post">Bookmark Post</string>
+    <string name="menu_filter_posts">Filter Posts</string>
+    <string name="menu_new_post">New Post</string>
+    <string name="menu_my_profile">My Profile</string>
+    <string name="menu_logout">Logout</string>
 
 
 
     <!--Drawer-->
     <string name="open_drawer">Drawer Open</string>
     <string name="close_drawer">Drawer Close</string>
+    <string name="version">"version"</string>
 
     <!--App Message-->
     <string name="api_retry_error">Please retry!</string>
@@ -345,6 +357,5 @@
     <string name="item_post_stars">Post stars</string>
     <string name="item_post_views">Post views</string>
     <string name="item_post_share">Share post</string>
-
 
 </resources>

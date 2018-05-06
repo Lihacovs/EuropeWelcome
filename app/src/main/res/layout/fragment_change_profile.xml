@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2018 Baltic Information Technologies
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -14,8 +13,7 @@
   ~ limitations under the License.
   -->
 
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cl_root_view"
@@ -52,12 +50,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginStart="16dp"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginStart="16dp"
                     android:background="@color/transparent"
+                    android:contentDescription="@string/fragment_register_back_btn"
                     android:tint="@color/white"
-                    app:srcCompat="@drawable/ic_keyboard_backspace_24px"
-                    android:contentDescription="@string/fragment_register_back_btn" />
+                    app:srcCompat="@drawable/ic_keyboard_backspace_24px" />
 
                 <TextView
                     style="@style/TextStyle.Heading"
@@ -67,7 +65,7 @@
                     android:layout_marginStart="16dp"
                     android:text="@string/fragment_change_profile_change_profile"
                     android:textColor="@color/white"
-                    android:textSize="20sp"/>
+                    android:textSize="20sp" />
             </LinearLayout>
 
             <ImageView
@@ -89,9 +87,9 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
+                android:singleLine="true"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:singleLine="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/iv_change_profile_add_photo"
@@ -165,12 +163,12 @@
                 android:id="@+id/tv_change_profile_birth_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:text="@string/fragment_change_profile_date_of_birth"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rg_change_profile_radio_group"/>
+                app:layout_constraintTop_toBottomOf="@+id/rg_change_profile_radio_group" />
 
             <EditText
                 android:id="@+id/et_change_profile_birth_date"

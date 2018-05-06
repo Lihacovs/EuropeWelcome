@@ -89,7 +89,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_add_text_black_24dp" />
+            app:srcCompat="@drawable/ic_add_text_white_24dp" />
 
         <ImageView
             android:id="@+id/iv_new_post_image_icon"
@@ -102,7 +102,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/iv_new_post_text_icon"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_add_image_black_24dp" />
+            app:srcCompat="@drawable/ic_add_image_white_24dp" />
 
         <ImageView
             android:id="@+id/iv_new_post_location_icon"
@@ -115,7 +115,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/iv_new_post_image_icon"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_add_location_black_24dp" />
+            app:srcCompat="@drawable/ic_add_location_white_24dp" />
 
         <ImageView
             android:id="@+id/iv_new_post_video_icon"
@@ -128,7 +128,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/iv_new_post_location_icon"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_add_video_black_24dp" />
+            app:srcCompat="@drawable/ic_add_video_white_24dp" />
 
     </android.support.constraint.ConstraintLayout>
 

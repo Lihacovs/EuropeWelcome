@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2018 Baltic Information Technologies
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -14,8 +13,7 @@
   ~ limitations under the License.
   -->
 
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cl_root_view"
@@ -52,12 +50,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginStart="16dp"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginStart="16dp"
                     android:background="@color/transparent"
+                    android:contentDescription="@string/fragment_register_back_btn"
                     android:tint="@color/white"
-                    app:srcCompat="@drawable/ic_keyboard_backspace_24px"
-                    android:contentDescription="@string/fragment_register_back_btn" />
+                    app:srcCompat="@drawable/ic_keyboard_backspace_24px" />
 
                 <TextView
                     style="@style/TextStyle.Heading"
@@ -67,7 +65,7 @@
                     android:layout_marginStart="16dp"
                     android:text="@string/fragment_register_register_screen"
                     android:textColor="@color/white"
-                    android:textSize="20sp"/>
+                    android:textSize="20sp" />
             </LinearLayout>
 
             <EditText
@@ -105,13 +103,13 @@
                 android:id="@+id/iv_register_add_photo"
                 android:layout_width="72dp"
                 android:layout_height="72dp"
-                android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
+                android:contentDescription="@string/fragment_register_add_photo"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_register_password"
-                app:srcCompat="@drawable/ic_add_photo_24px"
-                android:contentDescription="@string/fragment_register_add_photo" />
+                app:srcCompat="@drawable/ic_add_photo_24px" />
 
             <EditText
                 android:id="@+id/et_register_name"
@@ -142,7 +140,7 @@
                 android:singleLine="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/iv_register_add_photo"
-                app:layout_constraintTop_toBottomOf="@+id/et_register_name"/>
+                app:layout_constraintTop_toBottomOf="@+id/et_register_name" />
 
             <TextView
                 android:id="@+id/tv_register_gender"
@@ -153,7 +151,7 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/fragment_register_gender"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/et_register_surname"/>
+                app:layout_constraintTop_toBottomOf="@+id/et_register_surname" />
 
             <RadioGroup
                 android:id="@+id/rg_register_radio_group"
@@ -199,12 +197,12 @@
                 android:id="@+id/tv_register_birth_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:text="@string/fragment_register_date_of_birth"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rg_register_radio_group"/>
+                app:layout_constraintTop_toBottomOf="@+id/rg_register_radio_group" />
 
             <EditText
                 android:id="@+id/et_register_birth_date"
@@ -245,7 +243,7 @@
                     android:textAlignment="center"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <Button
                     android:id="@+id/btn_register_register"
@@ -258,7 +256,7 @@
                     android:text="@string/fragment_register_register"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_register_terms"/>
+                    app:layout_constraintTop_toBottomOf="@+id/tv_register_terms" />
             </android.support.constraint.ConstraintLayout>
 
         </android.support.constraint.ConstraintLayout>

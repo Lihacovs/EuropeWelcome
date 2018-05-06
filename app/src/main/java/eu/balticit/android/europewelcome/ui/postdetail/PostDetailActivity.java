@@ -324,20 +324,20 @@ public class PostDetailActivity extends BaseActivity implements PostDetailMvpVie
 
     @Override
     public void setNotBookmarkedIcon() {
-        mBookmarkIv.setImageResource(R.drawable.ic_border_bookmark_blue_24px);
+        mBookmarkIv.setImageResource(R.drawable.ic_border_bookmark_gray_24px);
         mBookmarkIv.setEnabled(true);
     }
 
     @Override
     public void setStarRatedIcon() {
-        mStarIv.setImageResource(R.drawable.ic_fill_star_blue_24px);
+        mStarIv.setImageResource(R.drawable.ic_fill_star_gold_24px);
         mPostStarsTv.setTextColor(getResources().getColor(R.color.orange));
         mStarContainerCl.setEnabled(true);
     }
 
     @Override
     public void setNotStarRatedIcon() {
-        mStarIv.setImageResource(R.drawable.ic_border_star_blue_24px);
+        mStarIv.setImageResource(R.drawable.ic_border_star_gray_24px);
         mPostStarsTv.setTextColor(getResources().getColor(R.color.gray_500));
         mStarContainerCl.setEnabled(true);
     }

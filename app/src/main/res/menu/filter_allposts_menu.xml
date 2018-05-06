@@ -18,16 +18,16 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/filter_posts_by_stars"
-        android:title="Filter by Stars"
+        android:title="@string/menu_filter_by_stars"
         app:showAsAction="never"/>
 
     <item
         android:id="@+id/filter_posts_by_comments"
-        android:title="Filter by Comments"
+        android:title="@string/menu_filter_by_comments"
         app:showAsAction="never"/>
 
     <item
         android:id="@+id/filter_posts_by_date"
-        android:title="Filter by Date"
+        android:title="@string/menu_filter_by_date"
         app:showAsAction="never"/>
 </menu>

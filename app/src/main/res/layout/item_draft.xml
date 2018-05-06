@@ -35,11 +35,11 @@
             android:layout_height="48dp"
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
+            android:contentDescription="@string/post_item_draft_edit"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_playlist_edit"
-            android:contentDescription="@string/post_item_draft_edit" />
+            app:srcCompat="@drawable/ic_playlist_edit" />
 
         <TextView
             android:id="@+id/tv_draft_item_post_date"

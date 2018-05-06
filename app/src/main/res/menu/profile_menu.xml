@@ -18,6 +18,6 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/about"
-        android:title="About App"
+        android:title="@string/menu_about_app"
         app:showAsAction="never"/>
 </menu>

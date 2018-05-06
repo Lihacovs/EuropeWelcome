@@ -18,23 +18,23 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/filter_posts"
-        android:title="Filter Posts"
+        android:title="@string/menu_filter_posts"
         android:icon="@drawable/ic_filter_list_white_24dp"
         app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/new_post"
-        android:title="New Post"
+        android:title="@string/menu_new_post"
         app:showAsAction="never"/>
     <item
         android:id="@+id/my_profile"
-        android:title="My Profile"
+        android:title="@string/menu_my_profile"
         app:showAsAction="never"/>
     <item
         android:id="@+id/about"
-        android:title="About App"
+        android:title="@string/menu_about_app"
         app:showAsAction="never"/>
     <item
         android:id="@+id/logout_user"
-        android:title="Logout"
+        android:title="@string/menu_logout"
         app:showAsAction="never"/>
 </menu>

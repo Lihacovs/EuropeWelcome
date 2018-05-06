@@ -122,10 +122,10 @@
                     android:layout_marginRight="16dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
+                    android:singleLine="true"
+                    android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:singleLine="true"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/iv_profile_user_photo"
                     app:layout_constraintTop_toTopOf="parent" />

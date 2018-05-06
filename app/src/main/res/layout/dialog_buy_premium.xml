@@ -15,7 +15,6 @@
 
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -41,7 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Premium gives you:"
+                android:text="@string/dialog_buy_premium_title"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -55,6 +54,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
+                android:contentDescription="@string/dialog_buy_premium_number_one_icon"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_buy_premium_title"
                 app:srcCompat="@drawable/ic_number_one" />
@@ -68,7 +68,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="24dp"
-                android:text="Access to premium posts"
+                android:text="@string/dialog_buy_premium_text_one"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/iv_buy_premium_one"
@@ -81,6 +81,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
+                android:contentDescription="@string/dialog_buy_premium_number_two_icon"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/iv_buy_premium_one"
                 app:srcCompat="@drawable/ic_number_two" />
@@ -94,7 +95,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="24dp"
-                android:text="Asylum seeker apply form"
+                android:text="@string/dialog_buy_premium_text_two"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/iv_buy_premium_two"
@@ -107,6 +108,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
+                android:contentDescription="@string/dialog_buy_premium_number_three_icon"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/iv_buy_premium_two"
                 app:srcCompat="@drawable/ic_number_three" />
@@ -120,7 +122,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="24dp"
-                android:text="Email personal assistance"
+                android:text="@string/dialog_buy_premium_text_three"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/iv_buy_premium_three"
@@ -136,7 +138,7 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="Get Premium"
+                android:text="@string/dialog_buy_premium_get_premium"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/iv_buy_premium_three" />
@@ -147,7 +149,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
-                android:text="Proceeding you apply to Terms of Service"
+                android:text="@string/dialog_buy_premium_apply_terms"
                 android:textColor="@color/gray_600"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"

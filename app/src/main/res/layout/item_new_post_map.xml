@@ -37,8 +37,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        map:mapType="normal"
-        map:liteMode="true"/>
+        map:liteMode="true"
+        map:mapType="normal" />
 
     <ImageView
         android:id="@+id/iv_new_post_item_delete_map"

@@ -36,8 +36,7 @@
         app:layout_constraintDimensionRatio="H,16:9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_new_post_item_delete_video">
-    </fragment>
+        app:layout_constraintTop_toBottomOf="@+id/iv_new_post_item_delete_video" />
 
     <ImageView
         android:id="@+id/iv_new_post_item_youtube"
