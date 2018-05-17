@@ -227,6 +227,8 @@ public class PostsActivity extends BaseActivity implements PostsMvpView, BuyPrem
         //For security, generate your payload here for verification.
         String payload = mPresenter.getCurrentUserId();
 
+        Log.d(TAG, "payload: " + payload);
+
         try {
             mHelper.launchPurchaseFlow(this, mPremiumProductSKU, RC_REQUEST,
                     mPurchaseFinishedListener, payload);
@@ -315,6 +317,7 @@ public class PostsActivity extends BaseActivity implements PostsMvpView, BuyPrem
      */
     boolean verifyDeveloperPayload(Purchase p) {
         String payload = p.getDeveloperPayload();
+        Log.d(TAG, "verifyDeveloperPayload: payload: " + payload);
         /*
          * verify that the developer payload of the purchase is correct. It will be
          * the same one that you sent when initiating the purchase.
@@ -337,7 +340,7 @@ public class PostsActivity extends BaseActivity implements PostsMvpView, BuyPrem
          * Using your own server to store and verify developer payloads across app
          * installations is recommended.
          */
-        return mPresenter.getCurrentUserId().equals(payload);
+        return mPresenter.getCurrentUserId() != null && mPresenter.getCurrentUserId().equals(payload);
     }
     //--//--// Google In App Billing Methods //--//--//
     //--//--// E N D //--//--//

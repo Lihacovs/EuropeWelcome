@@ -29,6 +29,7 @@ import eu.balticit.android.europewelcome.R;
 import eu.balticit.android.europewelcome.data.firebase.model.Post;
 import eu.balticit.android.europewelcome.di.component.ActivityComponent;
 import eu.balticit.android.europewelcome.ui.base.BaseFragment;
+import eu.balticit.android.europewelcome.ui.newpost.NewPostActivity;
 import eu.balticit.android.europewelcome.ui.postdetail.PostDetailActivity;
 import eu.balticit.android.europewelcome.ui.posts.PostsActivity;
 
@@ -188,8 +189,23 @@ public class FreePostsFragment extends BaseFragment implements
     }
 
     @Override
+    public void loadPostsFilteredByDate() {
+        onFilterPostsByDateClick();
+    }
+
+    @Override
     public void acceptPost(Post post) {
         mPresenter.acceptPost(post);
+    }
+
+    @Override
+    public void editPost(Post post) {
+        startActivity(NewPostActivity.getStartIntent(getBaseActivity(), post.getPostId()));
+    }
+
+    @Override
+    public void unpublishPost(Post post) {
+        showMessage("Unpublish Click");
     }
 
     @Override

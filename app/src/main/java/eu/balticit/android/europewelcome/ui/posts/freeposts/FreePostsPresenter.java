@@ -36,6 +36,8 @@ public class FreePostsPresenter<V extends FreePostsMvpView> extends BasePresente
     @SuppressWarnings("unused")
     private static final String TAG = "FreePostsPresenter";
 
+    private boolean mNotAcceptedPostsQuery = false;
+
     @Inject
     FreePostsPresenter(DataManager dataManager) {
         super(dataManager);
@@ -59,7 +61,13 @@ public class FreePostsPresenter<V extends FreePostsMvpView> extends BasePresente
             getDataManager().getUser(currentUserId).addOnSuccessListener(documentSnapshot -> {
                 User user = documentSnapshot.toObject(User.class);
                 if (user != null && user.isUserAdmin()) {
-                    getMvpView().loadNotAcceptedPosts();
+                    if (!mNotAcceptedPostsQuery) {
+                        getMvpView().loadNotAcceptedPosts();
+                        mNotAcceptedPostsQuery = true;
+                    } else {
+                        getMvpView().loadPostsFilteredByDate();
+                        mNotAcceptedPostsQuery = false;
+                    }
                 }
                 getMvpView().hideLoading();
             }).addOnFailureListener(e -> getMvpView().hideLoading());

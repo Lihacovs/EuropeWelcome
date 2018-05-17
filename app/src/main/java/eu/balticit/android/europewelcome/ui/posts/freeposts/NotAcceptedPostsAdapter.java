@@ -16,11 +16,9 @@
 package eu.balticit.android.europewelcome.ui.posts.freeposts;
 
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -40,6 +38,7 @@ import eu.balticit.android.europewelcome.ui.base.BaseViewHolder;
 
 public class NotAcceptedPostsAdapter extends FirestoreRecyclerAdapter<Post, NotAcceptedPostsAdapter.ViewHolder> {
 
+    @SuppressWarnings("unused")
     private static final String TAG = "FreePostsAdapter";
     private Callback mCallback;
 
@@ -49,7 +48,7 @@ public class NotAcceptedPostsAdapter extends FirestoreRecyclerAdapter<Post, NotA
      *
      * @param options - data to query from DB
      */
-    public NotAcceptedPostsAdapter(FirestoreRecyclerOptions<Post> options) {
+    NotAcceptedPostsAdapter(FirestoreRecyclerOptions<Post> options) {
         super(options);
     }
 
@@ -90,6 +89,10 @@ public class NotAcceptedPostsAdapter extends FirestoreRecyclerAdapter<Post, NotA
         void onPostItemViewClick(Post post);
 
         void acceptPost(Post post);
+
+        void editPost(Post post);
+
+        void unpublishPost(Post post);
 
         void deletePost(Post post);
     }
@@ -182,6 +185,20 @@ public class NotAcceptedPostsAdapter extends FirestoreRecyclerAdapter<Post, NotA
         void onDeletePostBtnClick(){
             if(mCallback != null){
                 mCallback.deletePost(mPost);
+            }
+        }
+
+        @OnClick(R.id.btn_post_item_edit_post)
+        void onEditPostBtnClick(){
+            if(mCallback != null){
+                mCallback.editPost(mPost);
+            }
+        }
+
+        @OnClick(R.id.btn_post_item_unpublish_post)
+        void onUnpublishPostBtnClick(){
+            if(mCallback != null){
+                mCallback.unpublishPost(mPost);
             }
         }
     }
